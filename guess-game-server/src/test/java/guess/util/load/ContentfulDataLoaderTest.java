@@ -1,4 +1,4 @@
-package guess.util;
+package guess.util.load;
 
 import guess.domain.Conference;
 import guess.domain.Language;
@@ -35,6 +35,7 @@ import guess.domain.source.contentful.talk.response.ContentfulTalkResponseCommon
 import guess.domain.source.extract.ExtractPair;
 import guess.domain.source.extract.ExtractSet;
 import guess.domain.source.image.UrlDates;
+import guess.util.ImageUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -63,8 +64,8 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-@DisplayName("ContentfulUtils class tests")
-class ContentfulUtilsTest {
+@DisplayName("ContentfulDataLoader class tests")
+class ContentfulDataLoaderTest {
     private static ContentfulTalk<ContentfulTalkFieldsCommon> createContentfulTalk(String conference, String conferences) {
         ContentfulTalkFieldsCommon contentfulTalkFields = new ContentfulTalkFieldsCommon();
         if (conference != null) {
@@ -82,7 +83,7 @@ class ContentfulUtilsTest {
 
     @Test
     void getRestTemplate() {
-        assertNotNull(ContentfulUtils.getRestTemplate());
+        assertNotNull(ContentfulDataLoader.getRestTemplate());
     }
 
     @Test
@@ -92,8 +93,8 @@ class ContentfulUtilsTest {
         final String CODE3 = "code3";
         final String CODE4 = "code4";
 
-        try (MockedStatic<ContentfulUtils> mockedStatic = Mockito.mockStatic(ContentfulUtils.class)) {
-            mockedStatic.when(() -> ContentfulUtils.getTags(Mockito.nullable(String.class)))
+        try (MockedStatic<ContentfulDataLoader> mockedStatic = Mockito.mockStatic(ContentfulDataLoader.class)) {
+            mockedStatic.when(() -> ContentfulDataLoader.getTags(Mockito.nullable(String.class)))
                     .thenCallRealMethod();
 
             ContentfulTalkResponse<ContentfulTalkFieldsCommon> response = new ContentfulTalkResponseCommon();
@@ -109,26 +110,26 @@ class ContentfulUtilsTest {
             Mockito.when(restTemplateMock.getForObject(Mockito.any(URI.class), Mockito.any()))
                     .thenReturn(response);
 
-            mockedStatic.when(ContentfulUtils::getRestTemplate)
+            mockedStatic.when(ContentfulDataLoader::getRestTemplate)
                     .thenReturn(restTemplateMock);
 
-            Map<ContentfulUtils.ConferenceSpaceInfo, List<String>> expected = Map.of(
-                    ContentfulUtils.ConferenceSpaceInfo.COMMON_SPACE_INFO, List.of(CODE1, CODE2, CODE3, CODE4),
-                    ContentfulUtils.ConferenceSpaceInfo.HOLY_JS_SPACE_INFO, List.of(CODE1, CODE2, CODE3, CODE4),
-                    ContentfulUtils.ConferenceSpaceInfo.DOT_NEXT_SPACE_INFO, List.of(CODE1, CODE2, CODE3, CODE4),
-                    ContentfulUtils.ConferenceSpaceInfo.HEISENBUG_SPACE_INFO, List.of(CODE1, CODE2, CODE3, CODE4),
-                    ContentfulUtils.ConferenceSpaceInfo.MOBIUS_SPACE_INFO, List.of(CODE1, CODE2, CODE3, CODE4));
+            Map<ContentfulDataLoader.ConferenceSpaceInfo, List<String>> expected = Map.of(
+                    ContentfulDataLoader.ConferenceSpaceInfo.COMMON_SPACE_INFO, List.of(CODE1, CODE2, CODE3, CODE4),
+                    ContentfulDataLoader.ConferenceSpaceInfo.HOLY_JS_SPACE_INFO, List.of(CODE1, CODE2, CODE3, CODE4),
+                    ContentfulDataLoader.ConferenceSpaceInfo.DOT_NEXT_SPACE_INFO, List.of(CODE1, CODE2, CODE3, CODE4),
+                    ContentfulDataLoader.ConferenceSpaceInfo.HEISENBUG_SPACE_INFO, List.of(CODE1, CODE2, CODE3, CODE4),
+                    ContentfulDataLoader.ConferenceSpaceInfo.MOBIUS_SPACE_INFO, List.of(CODE1, CODE2, CODE3, CODE4));
 
-            assertEquals(expected, ContentfulUtils.getTags("2021"));
-            assertEquals(expected, ContentfulUtils.getTags(""));
-            assertEquals(expected, ContentfulUtils.getTags(null));
+            assertEquals(expected, ContentfulDataLoader.getTags("2021"));
+            assertEquals(expected, ContentfulDataLoader.getTags(""));
+            assertEquals(expected, ContentfulDataLoader.getTags(null));
         }
     }
 
     @Test
     void getLocales() throws URISyntaxException {
-        try (MockedStatic<ContentfulUtils> mockedStatic = Mockito.mockStatic(ContentfulUtils.class)) {
-            mockedStatic.when(ContentfulUtils::getLocales)
+        try (MockedStatic<ContentfulDataLoader> mockedStatic = Mockito.mockStatic(ContentfulDataLoader.class)) {
+            mockedStatic.when(ContentfulDataLoader::getLocales)
                     .thenCallRealMethod();
 
             ContentfulLocale locale0 = new ContentfulLocale();
@@ -144,19 +145,19 @@ class ContentfulUtilsTest {
             Mockito.when(restTemplateMock.getForObject(Mockito.any(URI.class), Mockito.any()))
                     .thenReturn(response);
 
-            mockedStatic.when(ContentfulUtils::getRestTemplate)
+            mockedStatic.when(ContentfulDataLoader::getRestTemplate)
                     .thenReturn(restTemplateMock);
 
-            assertEquals(List.of("en", "ru-RU"), ContentfulUtils.getLocales());
+            assertEquals(List.of("en", "ru-RU"), ContentfulDataLoader.getLocales());
         }
     }
 
     @Test
-    void getEventTypes() {
-        try (MockedStatic<ContentfulUtils> mockedStatic = Mockito.mockStatic(ContentfulUtils.class)) {
-            mockedStatic.when(ContentfulUtils::getEventTypes)
+    void getEventTypesOld() {
+        try (MockedStatic<ContentfulDataLoader> mockedStatic = Mockito.mockStatic(ContentfulDataLoader.class)) {
+            mockedStatic.when(ContentfulDataLoader::getEventTypesOld)
                     .thenCallRealMethod();
-            mockedStatic.when(() -> ContentfulUtils.createEventType(Mockito.any(ContentfulEventType.class), Mockito.any(AtomicLong.class)))
+            mockedStatic.when(() -> ContentfulDataLoader.createEventType(Mockito.any(ContentfulEventType.class), Mockito.any(AtomicLong.class)))
                     .thenReturn(new EventType());
 
             ContentfulEventTypeResponse response = new ContentfulEventTypeResponse();
@@ -166,10 +167,10 @@ class ContentfulUtilsTest {
             Mockito.when(restTemplateMock.getForObject(Mockito.any(URI.class), Mockito.any()))
                     .thenReturn(response);
 
-            mockedStatic.when(ContentfulUtils::getRestTemplate)
+            mockedStatic.when(ContentfulDataLoader::getRestTemplate)
                     .thenReturn(restTemplateMock);
 
-            assertEquals(2, ContentfulUtils.getEventTypes().size());
+            assertEquals(2, ContentfulDataLoader.getEventTypesOld().size());
         }
     }
 
@@ -186,53 +187,53 @@ class ContentfulUtilsTest {
 
             ContentfulEventTypeFields contentfulEventTypeFields0 = new ContentfulEventTypeFields();
             contentfulEventTypeFields0.setEventName(Map.of(
-                    ContentfulUtils.ENGLISH_LOCALE, "Name0"));
+                    ContentfulDataLoader.ENGLISH_LOCALE, "Name0"));
             contentfulEventTypeFields0.setEventDescriptions(Collections.emptyMap());
             contentfulEventTypeFields0.setSiteLink(Collections.emptyMap());
 
             ContentfulEventTypeFields contentfulEventTypeFields1 = new ContentfulEventTypeFields();
             contentfulEventTypeFields1.setEventName(Map.of(
-                    ContentfulUtils.ENGLISH_LOCALE, "Name1"));
+                    ContentfulDataLoader.ENGLISH_LOCALE, "Name1"));
             contentfulEventTypeFields1.setEventDescriptions(Collections.emptyMap());
             contentfulEventTypeFields1.setSiteLink(Collections.emptyMap());
             contentfulEventTypeFields1.setVkLink(Map.of(
-                    ContentfulUtils.ENGLISH_LOCALE, VK_LINK));
+                    ContentfulDataLoader.ENGLISH_LOCALE, VK_LINK));
 
             ContentfulEventTypeFields contentfulEventTypeFields2 = new ContentfulEventTypeFields();
             contentfulEventTypeFields2.setEventName(Map.of(
-                    ContentfulUtils.ENGLISH_LOCALE, "Name2"));
+                    ContentfulDataLoader.ENGLISH_LOCALE, "Name2"));
             contentfulEventTypeFields2.setEventDescriptions(Collections.emptyMap());
             contentfulEventTypeFields2.setSiteLink(Collections.emptyMap());
             contentfulEventTypeFields2.setTwLink(Map.of(
-                    ContentfulUtils.ENGLISH_LOCALE, TWITTER_LINK));
+                    ContentfulDataLoader.ENGLISH_LOCALE, TWITTER_LINK));
 
             ContentfulEventTypeFields contentfulEventTypeFields3 = new ContentfulEventTypeFields();
             contentfulEventTypeFields3.setEventName(Map.of(
-                    ContentfulUtils.ENGLISH_LOCALE, "Name3"));
+                    ContentfulDataLoader.ENGLISH_LOCALE, "Name3"));
             contentfulEventTypeFields3.setEventDescriptions(Collections.emptyMap());
             contentfulEventTypeFields3.setSiteLink(Collections.emptyMap());
             contentfulEventTypeFields3.setFbLink(Map.of(
-                    ContentfulUtils.ENGLISH_LOCALE, FACEBOOK_LINK));
+                    ContentfulDataLoader.ENGLISH_LOCALE, FACEBOOK_LINK));
 
             ContentfulEventTypeFields contentfulEventTypeFields4 = new ContentfulEventTypeFields();
             contentfulEventTypeFields4.setEventName(Map.of(
-                    ContentfulUtils.ENGLISH_LOCALE, "Name4"));
+                    ContentfulDataLoader.ENGLISH_LOCALE, "Name4"));
             contentfulEventTypeFields4.setEventDescriptions(Collections.emptyMap());
             contentfulEventTypeFields4.setSiteLink(Collections.emptyMap());
             contentfulEventTypeFields4.setYoutubeLink(Map.of(
-                    ContentfulUtils.ENGLISH_LOCALE, YOUTUBE_LINK));
+                    ContentfulDataLoader.ENGLISH_LOCALE, YOUTUBE_LINK));
 
             ContentfulEventTypeFields contentfulEventTypeFields5 = new ContentfulEventTypeFields();
             contentfulEventTypeFields5.setEventName(Map.of(
-                    ContentfulUtils.ENGLISH_LOCALE, "Name5"));
+                    ContentfulDataLoader.ENGLISH_LOCALE, "Name5"));
             contentfulEventTypeFields5.setEventDescriptions(Collections.emptyMap());
             contentfulEventTypeFields5.setSiteLink(Collections.emptyMap());
             contentfulEventTypeFields5.setTelegramLink(Map.of(
-                    ContentfulUtils.ENGLISH_LOCALE, TELEGRAM_LINK));
+                    ContentfulDataLoader.ENGLISH_LOCALE, TELEGRAM_LINK));
 
             ContentfulEventTypeFields contentfulEventTypeFields6 = new ContentfulEventTypeFields();
             contentfulEventTypeFields6.setEventName(Map.of(
-                    ContentfulUtils.ENGLISH_LOCALE, "Name6"));
+                    ContentfulDataLoader.ENGLISH_LOCALE, "Name6"));
             contentfulEventTypeFields6.setEventDescriptions(Collections.emptyMap());
             contentfulEventTypeFields6.setSiteLink(Collections.emptyMap());
 
@@ -303,7 +304,7 @@ class ContentfulUtilsTest {
         @ParameterizedTest
         @MethodSource("data")
         void createEventType(ContentfulEventType contentfulEventType, AtomicLong id, EventType expected) {
-            EventType actual = ContentfulUtils.createEventType(contentfulEventType, id);
+            EventType actual = ContentfulDataLoader.createEventType(contentfulEventType, id);
 
             assertEquals(expected, actual);
             assertEquals(expected.getVkLink(), actual.getVkLink());
@@ -341,23 +342,23 @@ class ContentfulUtilsTest {
         @ParameterizedTest
         @MethodSource("data")
         void getFirstMapValue(Map<String, String> map, String expected) {
-            assertEquals(expected, ContentfulUtils.getFirstMapValue(map));
+            assertEquals(expected, ContentfulDataLoader.getFirstMapValue(map));
         }
     }
 
     @Test
     @SuppressWarnings("unchecked")
     void getEvents() {
-        try (MockedStatic<ContentfulUtils> mockedStatic = Mockito.mockStatic(ContentfulUtils.class)) {
-            mockedStatic.when(() -> ContentfulUtils.getEvents(Mockito.nullable(String.class), Mockito.nullable(LocalDate.class)))
+        try (MockedStatic<ContentfulDataLoader> mockedStatic = Mockito.mockStatic(ContentfulDataLoader.class)) {
+            mockedStatic.when(() -> ContentfulDataLoader.getEvents(Mockito.nullable(String.class), Mockito.nullable(LocalDate.class)))
                     .thenCallRealMethod();
-            mockedStatic.when(() -> ContentfulUtils.createEvent(Mockito.any(ContentfulEvent.class), Mockito.anyMap(), Mockito.anySet()))
+            mockedStatic.when(() -> ContentfulDataLoader.createEvent(Mockito.any(ContentfulEvent.class), Mockito.anyMap(), Mockito.anySet()))
                     .thenReturn(new Event());
-            mockedStatic.when(() -> ContentfulUtils.createUtcZonedDateTime(Mockito.any(LocalDate.class)))
+            mockedStatic.when(() -> ContentfulDataLoader.createUtcZonedDateTime(Mockito.any(LocalDate.class)))
                     .thenReturn(ZonedDateTime.now());
-            mockedStatic.when(() -> ContentfulUtils.getCityMap(Mockito.any(ContentfulEventResponse.class)))
+            mockedStatic.when(() -> ContentfulDataLoader.getCityMap(Mockito.any(ContentfulEventResponse.class)))
                     .thenReturn(Collections.emptyMap());
-            mockedStatic.when(() -> ContentfulUtils.getErrorSet(Mockito.any(ContentfulResponse.class), Mockito.anyString()))
+            mockedStatic.when(() -> ContentfulDataLoader.getErrorSet(Mockito.any(ContentfulResponse.class), Mockito.anyString()))
                     .thenReturn(Collections.emptySet());
 
             ContentfulEventResponse response = new ContentfulEventResponse();
@@ -367,13 +368,13 @@ class ContentfulUtilsTest {
             Mockito.when(restTemplateMock.getForObject(Mockito.any(URI.class), Mockito.any()))
                     .thenReturn(response);
 
-            mockedStatic.when(ContentfulUtils::getRestTemplate)
+            mockedStatic.when(ContentfulDataLoader::getRestTemplate)
                     .thenReturn(restTemplateMock);
 
-            assertEquals(2, ContentfulUtils.getEvents("JPoint", LocalDate.of(2020, 6, 29)).size());
-            assertEquals(2, ContentfulUtils.getEvents(null, LocalDate.of(2020, 6, 29)).size());
-            assertEquals(2, ContentfulUtils.getEvents("", LocalDate.of(2020, 6, 29)).size());
-            assertEquals(2, ContentfulUtils.getEvents("JPoint", null).size());
+            assertEquals(2, ContentfulDataLoader.getEvents("JPoint", LocalDate.of(2020, 6, 29)).size());
+            assertEquals(2, ContentfulDataLoader.getEvents(null, LocalDate.of(2020, 6, 29)).size());
+            assertEquals(2, ContentfulDataLoader.getEvents("", LocalDate.of(2020, 6, 29)).size());
+            assertEquals(2, ContentfulDataLoader.getEvents("JPoint", null).size());
         }
     }
 
@@ -391,7 +392,7 @@ class ContentfulUtilsTest {
         @ParameterizedTest
         @MethodSource("data")
         void createUtcZonedDateTime(LocalDate localDate, ZonedDateTime expected) {
-            assertEquals(expected, ContentfulUtils.createUtcZonedDateTime(localDate));
+            assertEquals(expected, ContentfulDataLoader.createUtcZonedDateTime(localDate));
         }
     }
 
@@ -435,36 +436,36 @@ class ContentfulUtilsTest {
 
             ContentfulEventFields contentfulEventFields0 = new ContentfulEventFields();
             contentfulEventFields0.setConferenceName(Map.of(
-                    ContentfulUtils.ENGLISH_LOCALE, "Event Name0"));
-            contentfulEventFields0.setEventStart(Map.of(ContentfulUtils.ENGLISH_LOCALE, "2020-01-01T00:00+03:00"));
-            contentfulEventFields0.setEventCity(Map.of(ContentfulUtils.ENGLISH_LOCALE, contentfulLink0));
+                    ContentfulDataLoader.ENGLISH_LOCALE, "Event Name0"));
+            contentfulEventFields0.setEventStart(Map.of(ContentfulDataLoader.ENGLISH_LOCALE, "2020-01-01T00:00+03:00"));
+            contentfulEventFields0.setEventCity(Map.of(ContentfulDataLoader.ENGLISH_LOCALE, contentfulLink0));
 
             ContentfulEventFields contentfulEventFields1 = new ContentfulEventFields();
             contentfulEventFields1.setConferenceName(Map.of(
-                    ContentfulUtils.RUSSIAN_LOCALE, "Наименование события1"));
-            contentfulEventFields1.setEventStart(Map.of(ContentfulUtils.ENGLISH_LOCALE, "2020-01-01T00:00+03:00"));
-            contentfulEventFields1.setEventCity(Map.of(ContentfulUtils.ENGLISH_LOCALE, contentfulLink1));
+                    ContentfulDataLoader.RUSSIAN_LOCALE, "Наименование события1"));
+            contentfulEventFields1.setEventStart(Map.of(ContentfulDataLoader.ENGLISH_LOCALE, "2020-01-01T00:00+03:00"));
+            contentfulEventFields1.setEventCity(Map.of(ContentfulDataLoader.ENGLISH_LOCALE, contentfulLink1));
 
             ContentfulEventFields contentfulEventFields2 = new ContentfulEventFields();
             contentfulEventFields2.setConferenceName(Map.of(
-                    ContentfulUtils.ENGLISH_LOCALE, "Event Name2"));
-            contentfulEventFields2.setEventStart(Map.of(ContentfulUtils.ENGLISH_LOCALE, "2020-01-01T00:00+03:00"));
-            contentfulEventFields2.setEventEnd(Map.of(ContentfulUtils.ENGLISH_LOCALE, "2020-01-02T00:00+03:00"));
-            contentfulEventFields2.setEventCity(Map.of(ContentfulUtils.ENGLISH_LOCALE, contentfulLink2));
+                    ContentfulDataLoader.ENGLISH_LOCALE, "Event Name2"));
+            contentfulEventFields2.setEventStart(Map.of(ContentfulDataLoader.ENGLISH_LOCALE, "2020-01-01T00:00+03:00"));
+            contentfulEventFields2.setEventEnd(Map.of(ContentfulDataLoader.ENGLISH_LOCALE, "2020-01-02T00:00+03:00"));
+            contentfulEventFields2.setEventCity(Map.of(ContentfulDataLoader.ENGLISH_LOCALE, contentfulLink2));
 
             ContentfulEventFields contentfulEventFields3 = new ContentfulEventFields();
             contentfulEventFields3.setConferenceName(Map.of(
-                    ContentfulUtils.ENGLISH_LOCALE, "Event Name3"));
-            contentfulEventFields3.setEventStart(Map.of(ContentfulUtils.ENGLISH_LOCALE, "2020-01-01T00:00+03:00"));
-            contentfulEventFields3.setEventCity(Map.of(ContentfulUtils.ENGLISH_LOCALE, contentfulLink3));
-            contentfulEventFields3.setYoutubePlayList(Map.of(ContentfulUtils.ENGLISH_LOCALE, YOUTUBE_PLAY_LIST));
+                    ContentfulDataLoader.ENGLISH_LOCALE, "Event Name3"));
+            contentfulEventFields3.setEventStart(Map.of(ContentfulDataLoader.ENGLISH_LOCALE, "2020-01-01T00:00+03:00"));
+            contentfulEventFields3.setEventCity(Map.of(ContentfulDataLoader.ENGLISH_LOCALE, contentfulLink3));
+            contentfulEventFields3.setYoutubePlayList(Map.of(ContentfulDataLoader.ENGLISH_LOCALE, YOUTUBE_PLAY_LIST));
 
             ContentfulEventFields contentfulEventFields4 = new ContentfulEventFields();
             contentfulEventFields4.setConferenceName(Map.of(
-                    ContentfulUtils.ENGLISH_LOCALE, "Event Name4"));
-            contentfulEventFields4.setEventStart(Map.of(ContentfulUtils.ENGLISH_LOCALE, "2020-01-01T00:00+03:00"));
-            contentfulEventFields4.setEventCity(Map.of(ContentfulUtils.ENGLISH_LOCALE, contentfulLink4));
-            contentfulEventFields4.setAddressLink(Map.of(ContentfulUtils.ENGLISH_LOCALE, MAP_COORDINATES));
+                    ContentfulDataLoader.ENGLISH_LOCALE, "Event Name4"));
+            contentfulEventFields4.setEventStart(Map.of(ContentfulDataLoader.ENGLISH_LOCALE, "2020-01-01T00:00+03:00"));
+            contentfulEventFields4.setEventCity(Map.of(ContentfulDataLoader.ENGLISH_LOCALE, contentfulLink4));
+            contentfulEventFields4.setAddressLink(Map.of(ContentfulDataLoader.ENGLISH_LOCALE, MAP_COORDINATES));
 
             ContentfulEvent contentfulEvent0 = new ContentfulEvent();
             contentfulEvent0.setFields(contentfulEventFields0);
@@ -520,23 +521,23 @@ class ContentfulUtilsTest {
             // Cities
             ContentfulCityFields contentfulCityFields0 = new ContentfulCityFields();
             contentfulCityFields0.setCityName(Map.of(
-                    ContentfulUtils.ENGLISH_LOCALE, "City Name0"));
+                    ContentfulDataLoader.ENGLISH_LOCALE, "City Name0"));
 
             ContentfulCityFields contentfulCityFields1 = new ContentfulCityFields();
             contentfulCityFields1.setCityName(Map.of(
-                    ContentfulUtils.ENGLISH_LOCALE, "City Name1"));
+                    ContentfulDataLoader.ENGLISH_LOCALE, "City Name1"));
 
             ContentfulCityFields contentfulCityFields2 = new ContentfulCityFields();
             contentfulCityFields2.setCityName(Map.of(
-                    ContentfulUtils.ENGLISH_LOCALE, "City Name2"));
+                    ContentfulDataLoader.ENGLISH_LOCALE, "City Name2"));
 
             ContentfulCityFields contentfulCityFields3 = new ContentfulCityFields();
             contentfulCityFields3.setCityName(Map.of(
-                    ContentfulUtils.ENGLISH_LOCALE, "City Name3"));
+                    ContentfulDataLoader.ENGLISH_LOCALE, "City Name3"));
 
             ContentfulCityFields contentfulCityFields4 = new ContentfulCityFields();
             contentfulCityFields4.setCityName(Map.of(
-                    ContentfulUtils.ENGLISH_LOCALE, "City Name4"));
+                    ContentfulDataLoader.ENGLISH_LOCALE, "City Name4"));
 
             ContentfulCity contentfulCity0 = new ContentfulCity();
             contentfulCity0.setSys(contentfulSys0);
@@ -574,7 +575,7 @@ class ContentfulUtilsTest {
         @ParameterizedTest
         @MethodSource("data")
         void createEvent(ContentfulEvent contentfulEvent, Map<String, ContentfulCity> cityMap, Set<String> entryErrorSet, Event expected) {
-            Event actual = ContentfulUtils.createEvent(contentfulEvent, cityMap, entryErrorSet);
+            Event actual = ContentfulDataLoader.createEvent(contentfulEvent, cityMap, entryErrorSet);
 
             assertEquals(expected, actual);
             assertEquals(expected.getName(), actual.getName());
@@ -601,7 +602,7 @@ class ContentfulUtilsTest {
         @ParameterizedTest
         @MethodSource("data")
         void createUtcZonedDateTime(String zonedDateTimeString, LocalDate expected) {
-            assertEquals(expected, ContentfulUtils.createEventLocalDate(zonedDateTimeString));
+            assertEquals(expected, ContentfulDataLoader.createEventLocalDate(zonedDateTimeString));
         }
     }
 
@@ -655,12 +656,12 @@ class ContentfulUtilsTest {
         @ParameterizedTest
         @MethodSource("data")
         void getEvent(Conference conference, LocalDate startDate, List<Event> events, Class<? extends Throwable> expectedException, Event expectedEvent) {
-            try (MockedStatic<ContentfulUtils> mockedStatic = Mockito.mockStatic(ContentfulUtils.class)) {
-                mockedStatic.when(() -> ContentfulUtils.getEvent(Mockito.any(Conference.class), Mockito.any(LocalDate.class)))
+            try (MockedStatic<ContentfulDataLoader> mockedStatic = Mockito.mockStatic(ContentfulDataLoader.class)) {
+                mockedStatic.when(() -> ContentfulDataLoader.getEvent(Mockito.any(Conference.class), Mockito.any(LocalDate.class)))
                         .thenCallRealMethod();
-                mockedStatic.when(() -> ContentfulUtils.getEvents(Mockito.anyString(), Mockito.any(LocalDate.class)))
+                mockedStatic.when(() -> ContentfulDataLoader.getEvents(Mockito.anyString(), Mockito.any(LocalDate.class)))
                         .thenReturn(events);
-                mockedStatic.when(() -> ContentfulUtils.fixNonexistentEventError(Mockito.any(Conference.class), Mockito.any(LocalDate.class)))
+                mockedStatic.when(() -> ContentfulDataLoader.fixNonexistentEventError(Mockito.any(Conference.class), Mockito.any(LocalDate.class)))
                         .thenAnswer(
                                 (Answer<Event>) invocation -> {
                                     Object[] args = invocation.getArguments();
@@ -691,14 +692,14 @@ class ContentfulUtilsTest {
                         );
 
                 if (expectedException == null) {
-                    Event event = ContentfulUtils.getEvent(conference, startDate);
+                    Event event = ContentfulDataLoader.getEvent(conference, startDate);
 
                     assertEquals(expectedEvent, event);
                     assertEquals(expectedEvent.getName(), event.getName());
                     assertEquals(expectedEvent.getStartDate(), event.getStartDate());
                     assertEquals(expectedEvent.getEndDate(), event.getEndDate());
                 } else {
-                    assertThrows(expectedException, () -> ContentfulUtils.getEvent(conference, startDate));
+                    assertThrows(expectedException, () -> ContentfulDataLoader.getEvent(conference, startDate));
                 }
             }
         }
@@ -707,15 +708,15 @@ class ContentfulUtilsTest {
     @Test
     @SuppressWarnings("unchecked")
     void getSpeakersByConferenceSpaceInfo() {
-        try (MockedStatic<ContentfulUtils> mockedStatic = Mockito.mockStatic(ContentfulUtils.class)) {
-            mockedStatic.when(() -> ContentfulUtils.getSpeakers(Mockito.any(ContentfulUtils.ConferenceSpaceInfo.class), Mockito.nullable(String.class)))
+        try (MockedStatic<ContentfulDataLoader> mockedStatic = Mockito.mockStatic(ContentfulDataLoader.class)) {
+            mockedStatic.when(() -> ContentfulDataLoader.getSpeakers(Mockito.any(ContentfulDataLoader.ConferenceSpaceInfo.class), Mockito.nullable(String.class)))
                     .thenCallRealMethod();
-            mockedStatic.when(() -> ContentfulUtils.createSpeaker(
+            mockedStatic.when(() -> ContentfulDataLoader.createSpeaker(
                             Mockito.any(ContentfulSpeaker.class), Mockito.anyMap(), Mockito.anySet(), Mockito.any(AtomicLong.class), Mockito.any(AtomicLong.class), Mockito.anyBoolean()))
                     .thenReturn(new Speaker());
-            mockedStatic.when(() -> ContentfulUtils.getAssetMap(Mockito.any(ContentfulResponse.class)))
+            mockedStatic.when(() -> ContentfulDataLoader.getAssetMap(Mockito.any(ContentfulResponse.class)))
                     .thenReturn(Collections.emptyMap());
-            mockedStatic.when(() -> ContentfulUtils.getErrorSet(Mockito.any(ContentfulResponse.class), Mockito.anyString()))
+            mockedStatic.when(() -> ContentfulDataLoader.getErrorSet(Mockito.any(ContentfulResponse.class), Mockito.anyString()))
                     .thenReturn(Collections.emptySet());
 
             ContentfulSpeakerResponse response = new ContentfulSpeakerResponse();
@@ -725,32 +726,32 @@ class ContentfulUtilsTest {
             Mockito.when(restTemplateMock.getForObject(Mockito.any(URI.class), Mockito.any()))
                     .thenReturn(response);
 
-            mockedStatic.when(ContentfulUtils::getRestTemplate)
+            mockedStatic.when(ContentfulDataLoader::getRestTemplate)
                     .thenReturn(restTemplateMock);
 
-            assertEquals(2, ContentfulUtils.getSpeakers(ContentfulUtils.ConferenceSpaceInfo.COMMON_SPACE_INFO, "code").size());
-            assertEquals(2, ContentfulUtils.getSpeakers(ContentfulUtils.ConferenceSpaceInfo.HOLY_JS_SPACE_INFO, "code").size());
-            assertEquals(2, ContentfulUtils.getSpeakers(ContentfulUtils.ConferenceSpaceInfo.COMMON_SPACE_INFO, null).size());
-            assertEquals(2, ContentfulUtils.getSpeakers(ContentfulUtils.ConferenceSpaceInfo.COMMON_SPACE_INFO, "").size());
+            assertEquals(2, ContentfulDataLoader.getSpeakers(ContentfulDataLoader.ConferenceSpaceInfo.COMMON_SPACE_INFO, "code").size());
+            assertEquals(2, ContentfulDataLoader.getSpeakers(ContentfulDataLoader.ConferenceSpaceInfo.HOLY_JS_SPACE_INFO, "code").size());
+            assertEquals(2, ContentfulDataLoader.getSpeakers(ContentfulDataLoader.ConferenceSpaceInfo.COMMON_SPACE_INFO, null).size());
+            assertEquals(2, ContentfulDataLoader.getSpeakers(ContentfulDataLoader.ConferenceSpaceInfo.COMMON_SPACE_INFO, "").size());
         }
     }
 
     @Test
     void createSpeaker() {
-        try (MockedStatic<ContentfulUtils> mockedStatic = Mockito.mockStatic(ContentfulUtils.class)) {
-            mockedStatic.when(() -> ContentfulUtils.createSpeaker(
+        try (MockedStatic<ContentfulDataLoader> mockedStatic = Mockito.mockStatic(ContentfulDataLoader.class)) {
+            mockedStatic.when(() -> ContentfulDataLoader.createSpeaker(
                             Mockito.any(ContentfulSpeaker.class), Mockito.anyMap(), Mockito.anySet(), Mockito.any(AtomicLong.class),
                             Mockito.any(AtomicLong.class), Mockito.anyBoolean()))
                     .thenCallRealMethod();
-            mockedStatic.when(() -> ContentfulUtils.extractPhoto(Mockito.nullable(ContentfulLink.class), Mockito.anyMap(), Mockito.anySet(), Mockito.nullable(String.class)))
+            mockedStatic.when(() -> ContentfulDataLoader.extractPhoto(Mockito.nullable(ContentfulLink.class), Mockito.anyMap(), Mockito.anySet(), Mockito.nullable(String.class)))
                     .thenReturn(new UrlDates(null, null, null));
-            mockedStatic.when(() -> ContentfulUtils.extractTwitter(Mockito.nullable(String.class)))
+            mockedStatic.when(() -> ContentfulDataLoader.extractTwitter(Mockito.nullable(String.class)))
                     .thenReturn(null);
-            mockedStatic.when(() -> ContentfulUtils.extractGitHub(Mockito.nullable(String.class)))
+            mockedStatic.when(() -> ContentfulDataLoader.extractGitHub(Mockito.nullable(String.class)))
                     .thenReturn(null);
-            mockedStatic.when(() -> ContentfulUtils.extractBoolean(Mockito.nullable(Boolean.class)))
+            mockedStatic.when(() -> ContentfulDataLoader.extractBoolean(Mockito.nullable(Boolean.class)))
                     .thenReturn(true);
-            mockedStatic.when(() -> ContentfulUtils.extractLocaleItems(Mockito.nullable(String.class), Mockito.nullable(String.class), Mockito.anyBoolean()))
+            mockedStatic.when(() -> ContentfulDataLoader.extractLocaleItems(Mockito.nullable(String.class), Mockito.nullable(String.class), Mockito.anyBoolean()))
                     .thenReturn(Collections.emptyList());
 
             ContentfulSpeaker contentfulSpeaker = new ContentfulSpeaker();
@@ -764,7 +765,7 @@ class ContentfulUtilsTest {
             Speaker speaker = new Speaker();
             speaker.setId(42);
 
-            assertEquals(42, ContentfulUtils.createSpeaker(contentfulSpeaker, assetMap, assetErrorSet, speakerId, companyId, true).getId());
+            assertEquals(42, ContentfulDataLoader.createSpeaker(contentfulSpeaker, assetMap, assetErrorSet, speakerId, companyId, true).getId());
         }
     }
 
@@ -804,13 +805,13 @@ class ContentfulUtilsTest {
         @MethodSource("data")
         void createCompanies(ContentfulSpeaker contentfulSpeaker, AtomicLong companyId, boolean checkEnTextExistence,
                              List<Company> expected) {
-            try (MockedStatic<ContentfulUtils> mockedStatic = Mockito.mockStatic(ContentfulUtils.class)) {
-                mockedStatic.when(() -> ContentfulUtils.createCompanies(Mockito.any(ContentfulSpeaker.class), Mockito.any(AtomicLong.class), Mockito.anyBoolean()))
+            try (MockedStatic<ContentfulDataLoader> mockedStatic = Mockito.mockStatic(ContentfulDataLoader.class)) {
+                mockedStatic.when(() -> ContentfulDataLoader.createCompanies(Mockito.any(ContentfulSpeaker.class), Mockito.any(AtomicLong.class), Mockito.anyBoolean()))
                         .thenCallRealMethod();
-                mockedStatic.when(() -> ContentfulUtils.extractLocaleItems(Mockito.nullable(String.class), Mockito.nullable(String.class), Mockito.anyBoolean()))
+                mockedStatic.when(() -> ContentfulDataLoader.extractLocaleItems(Mockito.nullable(String.class), Mockito.nullable(String.class), Mockito.anyBoolean()))
                         .thenReturn(Collections.emptyList());
 
-                assertEquals(expected, ContentfulUtils.createCompanies(contentfulSpeaker, companyId, checkEnTextExistence));
+                assertEquals(expected, ContentfulDataLoader.createCompanies(contentfulSpeaker, companyId, checkEnTextExistence));
             }
         }
     }
@@ -866,16 +867,16 @@ class ContentfulUtilsTest {
         @MethodSource("data")
         void extractPhoto(ContentfulLink link, Map<String, ContentfulAsset> assetMap, Set<String> assetErrorSet,
                           String speakerNameEn, Class<? extends Throwable> expectedException, UrlDates expectedValue) {
-            try (MockedStatic<ContentfulUtils> mockedStatic = Mockito.mockStatic(ContentfulUtils.class)) {
-                mockedStatic.when(() -> ContentfulUtils.extractPhoto(Mockito.any(ContentfulLink.class), Mockito.anyMap(), Mockito.anySet(), Mockito.anyString()))
+            try (MockedStatic<ContentfulDataLoader> mockedStatic = Mockito.mockStatic(ContentfulDataLoader.class)) {
+                mockedStatic.when(() -> ContentfulDataLoader.extractPhoto(Mockito.any(ContentfulLink.class), Mockito.anyMap(), Mockito.anySet(), Mockito.anyString()))
                         .thenCallRealMethod();
-                mockedStatic.when(() -> ContentfulUtils.extractAssetUrl(Mockito.nullable(String.class)))
+                mockedStatic.when(() -> ContentfulDataLoader.extractAssetUrl(Mockito.nullable(String.class)))
                         .thenReturn(ASSET_URL);
 
                 if (expectedException == null) {
-                    assertEquals(expectedValue, ContentfulUtils.extractPhoto(link, assetMap, assetErrorSet, speakerNameEn));
+                    assertEquals(expectedValue, ContentfulDataLoader.extractPhoto(link, assetMap, assetErrorSet, speakerNameEn));
                 } else {
-                    assertThrows(expectedException, () -> ContentfulUtils.extractPhoto(link, assetMap, assetErrorSet, speakerNameEn));
+                    assertThrows(expectedException, () -> ContentfulDataLoader.extractPhoto(link, assetMap, assetErrorSet, speakerNameEn));
                 }
             }
         }
@@ -913,9 +914,9 @@ class ContentfulUtilsTest {
         @MethodSource("data")
         void extractTwitter(String value, Class<? extends Throwable> expectedException, String expectedValue) {
             if (expectedException == null) {
-                assertEquals(expectedValue, ContentfulUtils.extractTwitter(value));
+                assertEquals(expectedValue, ContentfulDataLoader.extractTwitter(value));
             } else {
-                assertThrows(expectedException, () -> ContentfulUtils.extractTwitter(value));
+                assertThrows(expectedException, () -> ContentfulDataLoader.extractTwitter(value));
             }
         }
     }
@@ -954,22 +955,22 @@ class ContentfulUtilsTest {
         @MethodSource("data")
         void extractGitHub(String value, Class<? extends Throwable> expectedException, String expectedValue) {
             if (expectedException == null) {
-                assertEquals(expectedValue, ContentfulUtils.extractGitHub(value));
+                assertEquals(expectedValue, ContentfulDataLoader.extractGitHub(value));
             } else {
-                assertThrows(IllegalArgumentException.class, () -> ContentfulUtils.extractGitHub(value));
+                assertThrows(IllegalArgumentException.class, () -> ContentfulDataLoader.extractGitHub(value));
             }
         }
     }
 
     @Test
     void getSpeakersByConference() {
-        try (MockedStatic<ContentfulUtils> mockedStatic = Mockito.mockStatic(ContentfulUtils.class)) {
-            mockedStatic.when(() -> ContentfulUtils.getSpeakers(Mockito.any(Conference.class), Mockito.anyString()))
+        try (MockedStatic<ContentfulDataLoader> mockedStatic = Mockito.mockStatic(ContentfulDataLoader.class)) {
+            mockedStatic.when(() -> ContentfulDataLoader.getSpeakers(Mockito.any(Conference.class), Mockito.anyString()))
                     .thenCallRealMethod();
-            mockedStatic.when(() -> ContentfulUtils.getSpeakers(Mockito.any(ContentfulUtils.ConferenceSpaceInfo.class), Mockito.anyString()))
+            mockedStatic.when(() -> ContentfulDataLoader.getSpeakers(Mockito.any(ContentfulDataLoader.ConferenceSpaceInfo.class), Mockito.anyString()))
                     .thenReturn(Collections.emptyList());
 
-            assertDoesNotThrow(() -> ContentfulUtils.getSpeakers(Conference.JPOINT, "code"));
+            assertDoesNotThrow(() -> ContentfulDataLoader.getSpeakers(Conference.JPOINT, "code"));
         }
     }
 
@@ -991,19 +992,19 @@ class ContentfulUtilsTest {
     @Test
     @SuppressWarnings("unchecked")
     void getTalks() {
-        try (MockedStatic<ContentfulUtils> mockedStatic = Mockito.mockStatic(ContentfulUtils.class)) {
-            mockedStatic.when(() -> ContentfulUtils.getTalks(Mockito.any(ContentfulUtils.ConferenceSpaceInfo.class), Mockito.nullable(String.class), Mockito.anyBoolean()))
+        try (MockedStatic<ContentfulDataLoader> mockedStatic = Mockito.mockStatic(ContentfulDataLoader.class)) {
+            mockedStatic.when(() -> ContentfulDataLoader.getTalks(Mockito.any(ContentfulDataLoader.ConferenceSpaceInfo.class), Mockito.nullable(String.class), Mockito.anyBoolean()))
                     .thenCallRealMethod();
-            mockedStatic.when(() -> ContentfulUtils.createTalk(
+            mockedStatic.when(() -> ContentfulDataLoader.createTalk(
                             Mockito.any(ContentfulTalk.class), Mockito.anyMap(), Mockito.anySet(), Mockito.anySet(), Mockito.anyMap(), Mockito.any(AtomicLong.class)))
                     .thenReturn(new Talk());
-            mockedStatic.when(() -> ContentfulUtils.getSpeakerMap(Mockito.any(ContentfulTalkResponse.class), Mockito.anyMap(), Mockito.anySet()))
+            mockedStatic.when(() -> ContentfulDataLoader.getSpeakerMap(Mockito.any(ContentfulTalkResponse.class), Mockito.anyMap(), Mockito.anySet()))
                     .thenReturn(Collections.emptyMap());
-            mockedStatic.when(() -> ContentfulUtils.getAssetMap(Mockito.any(ContentfulResponse.class)))
+            mockedStatic.when(() -> ContentfulDataLoader.getAssetMap(Mockito.any(ContentfulResponse.class)))
                     .thenReturn(Collections.emptyMap());
-            mockedStatic.when(() -> ContentfulUtils.getErrorSet(Mockito.any(ContentfulResponse.class), Mockito.anyString()))
+            mockedStatic.when(() -> ContentfulDataLoader.getErrorSet(Mockito.any(ContentfulResponse.class), Mockito.anyString()))
                     .thenReturn(Collections.emptySet());
-            mockedStatic.when(() -> ContentfulUtils.isValidTalk(Mockito.any(ContentfulTalk.class), Mockito.anyBoolean()))
+            mockedStatic.when(() -> ContentfulDataLoader.isValidTalk(Mockito.any(ContentfulTalk.class), Mockito.anyBoolean()))
                     .thenCallRealMethod();
 
             final Long TALK_DAY = 1L;
@@ -1027,16 +1028,16 @@ class ContentfulUtilsTest {
             Mockito.when(restTemplateMock.getForObject(Mockito.any(URI.class), Mockito.any()))
                     .thenReturn(response);
 
-            mockedStatic.when(ContentfulUtils::getRestTemplate)
+            mockedStatic.when(ContentfulDataLoader::getRestTemplate)
                     .thenReturn(restTemplateMock);
 
-            assertEquals(4, ContentfulUtils.getTalks(ContentfulUtils.ConferenceSpaceInfo.COMMON_SPACE_INFO, "code", true).size());
-            assertEquals(4, ContentfulUtils.getTalks(ContentfulUtils.ConferenceSpaceInfo.COMMON_SPACE_INFO, null, true).size());
-            assertEquals(4, ContentfulUtils.getTalks(ContentfulUtils.ConferenceSpaceInfo.COMMON_SPACE_INFO, "", true).size());
+            assertEquals(4, ContentfulDataLoader.getTalks(ContentfulDataLoader.ConferenceSpaceInfo.COMMON_SPACE_INFO, "code", true).size());
+            assertEquals(4, ContentfulDataLoader.getTalks(ContentfulDataLoader.ConferenceSpaceInfo.COMMON_SPACE_INFO, null, true).size());
+            assertEquals(4, ContentfulDataLoader.getTalks(ContentfulDataLoader.ConferenceSpaceInfo.COMMON_SPACE_INFO, "", true).size());
 
-            assertEquals(9, ContentfulUtils.getTalks(ContentfulUtils.ConferenceSpaceInfo.COMMON_SPACE_INFO, "code", false).size());
-            assertEquals(9, ContentfulUtils.getTalks(ContentfulUtils.ConferenceSpaceInfo.COMMON_SPACE_INFO, null, false).size());
-            assertEquals(9, ContentfulUtils.getTalks(ContentfulUtils.ConferenceSpaceInfo.COMMON_SPACE_INFO, "", false).size());
+            assertEquals(9, ContentfulDataLoader.getTalks(ContentfulDataLoader.ConferenceSpaceInfo.COMMON_SPACE_INFO, "code", false).size());
+            assertEquals(9, ContentfulDataLoader.getTalks(ContentfulDataLoader.ConferenceSpaceInfo.COMMON_SPACE_INFO, null, false).size());
+            assertEquals(9, ContentfulDataLoader.getTalks(ContentfulDataLoader.ConferenceSpaceInfo.COMMON_SPACE_INFO, "", false).size());
         }
     }
 
@@ -1082,26 +1083,26 @@ class ContentfulUtilsTest {
         @ParameterizedTest
         @MethodSource("data")
         void isValidTalk(ContentfulTalk<? extends ContentfulTalkFields> talk, boolean ignoreDemoStage, boolean expected) {
-            assertEquals(expected, ContentfulUtils.isValidTalk(talk, ignoreDemoStage));
+            assertEquals(expected, ContentfulDataLoader.isValidTalk(talk, ignoreDemoStage));
         }
     }
 
     @Test
     @SuppressWarnings("unchecked")
     void createTalk() {
-        try (MockedStatic<ContentfulUtils> mockedStatic = Mockito.mockStatic(ContentfulUtils.class)) {
-            mockedStatic.when(() -> ContentfulUtils.createTalk(
+        try (MockedStatic<ContentfulDataLoader> mockedStatic = Mockito.mockStatic(ContentfulDataLoader.class)) {
+            mockedStatic.when(() -> ContentfulDataLoader.createTalk(
                             Mockito.any(ContentfulTalk.class), Mockito.anyMap(), Mockito.anySet(), Mockito.anySet(), Mockito.anyMap(), Mockito.any(AtomicLong.class)))
                     .thenCallRealMethod();
-            mockedStatic.when(() -> ContentfulUtils.extractLocaleItems(Mockito.anyString(), Mockito.anyString(), Mockito.anyBoolean()))
+            mockedStatic.when(() -> ContentfulDataLoader.extractLocaleItems(Mockito.anyString(), Mockito.anyString(), Mockito.anyBoolean()))
                     .thenReturn(Collections.emptyList());
-            mockedStatic.when(() -> ContentfulUtils.extractLanguage(Mockito.anyBoolean()))
+            mockedStatic.when(() -> ContentfulDataLoader.extractLanguage(Mockito.anyBoolean()))
                     .thenReturn(null);
-            mockedStatic.when(() -> ContentfulUtils.extractPresentationLinks(Mockito.anyList(), Mockito.anyMap(), Mockito.anySet(), Mockito.anyString()))
+            mockedStatic.when(() -> ContentfulDataLoader.extractPresentationLinks(Mockito.anyList(), Mockito.anyMap(), Mockito.anySet(), Mockito.anyString()))
                     .thenReturn(Collections.emptyList());
-            mockedStatic.when(() -> ContentfulUtils.combineContentfulLinks(Mockito.anyList(), Mockito.any(ContentfulLink.class)))
+            mockedStatic.when(() -> ContentfulDataLoader.combineContentfulLinks(Mockito.anyList(), Mockito.any(ContentfulLink.class)))
                     .thenReturn(Collections.emptyList());
-            mockedStatic.when(() -> ContentfulUtils.extractVideoLinks(Mockito.anyString()))
+            mockedStatic.when(() -> ContentfulDataLoader.extractVideoLinks(Mockito.anyString()))
                     .thenReturn(Collections.emptyList());
 
             ContentfulSys contentfulSys0 = new ContentfulSys();
@@ -1149,22 +1150,22 @@ class ContentfulUtilsTest {
             AtomicLong id1 = new AtomicLong(43);
             AtomicLong id2 = new AtomicLong(44);
 
-            assertThrows(IllegalArgumentException.class, () -> ContentfulUtils.createTalk(contentfulTalk0, assetMap, entryErrorSet, assetErrorSet, speakerMap, id0));
-            assertThrows(NullPointerException.class, () -> ContentfulUtils.createTalk(contentfulTalk1, assetMap, entryErrorSet, assetErrorSet, speakerMap, id1));
-            assertEquals(44, ContentfulUtils.createTalk(contentfulTalk2, assetMap, entryErrorSet, assetErrorSet, speakerMap, id2).getId());
+            assertThrows(IllegalArgumentException.class, () -> ContentfulDataLoader.createTalk(contentfulTalk0, assetMap, entryErrorSet, assetErrorSet, speakerMap, id0));
+            assertThrows(NullPointerException.class, () -> ContentfulDataLoader.createTalk(contentfulTalk1, assetMap, entryErrorSet, assetErrorSet, speakerMap, id1));
+            assertEquals(44, ContentfulDataLoader.createTalk(contentfulTalk2, assetMap, entryErrorSet, assetErrorSet, speakerMap, id2).getId());
         }
     }
 
     @Test
     void testGetTalks() {
-        try (MockedStatic<ContentfulUtils> mockedStatic = Mockito.mockStatic(ContentfulUtils.class)) {
-            mockedStatic.when(() -> ContentfulUtils.getTalks(Mockito.any(Conference.class), Mockito.anyString(), Mockito.anyBoolean()))
+        try (MockedStatic<ContentfulDataLoader> mockedStatic = Mockito.mockStatic(ContentfulDataLoader.class)) {
+            mockedStatic.when(() -> ContentfulDataLoader.getTalks(Mockito.any(Conference.class), Mockito.anyString(), Mockito.anyBoolean()))
                     .thenCallRealMethod();
-            mockedStatic.when(() -> ContentfulUtils.getTalks(Mockito.any(ContentfulUtils.ConferenceSpaceInfo.class), Mockito.anyString(), Mockito.anyBoolean()))
+            mockedStatic.when(() -> ContentfulDataLoader.getTalks(Mockito.any(ContentfulDataLoader.ConferenceSpaceInfo.class), Mockito.anyString(), Mockito.anyBoolean()))
                     .thenReturn(Collections.emptyList());
 
-            assertDoesNotThrow(() -> ContentfulUtils.getTalks(Conference.JPOINT, "code", true));
-            assertDoesNotThrow(() -> ContentfulUtils.getTalks(Conference.JPOINT, "code", false));
+            assertDoesNotThrow(() -> ContentfulDataLoader.getTalks(Conference.JPOINT, "code", true));
+            assertDoesNotThrow(() -> ContentfulDataLoader.getTalks(Conference.JPOINT, "code", false));
         }
     }
 
@@ -1206,14 +1207,14 @@ class ContentfulUtilsTest {
         void getSpeakerMap(ContentfulTalkResponse<? extends ContentfulTalkFields> response,
                            Map<String, ContentfulAsset> assetMap, Set<String> assetErrorSet,
                            Map<String, Speaker> expected) {
-            try (MockedStatic<ContentfulUtils> mockedStatic = Mockito.mockStatic(ContentfulUtils.class)) {
-                mockedStatic.when(() -> ContentfulUtils.getSpeakerMap(Mockito.any(ContentfulTalkResponse.class), Mockito.nullable(Map.class), Mockito.nullable(Set.class)))
+            try (MockedStatic<ContentfulDataLoader> mockedStatic = Mockito.mockStatic(ContentfulDataLoader.class)) {
+                mockedStatic.when(() -> ContentfulDataLoader.getSpeakerMap(Mockito.any(ContentfulTalkResponse.class), Mockito.nullable(Map.class), Mockito.nullable(Set.class)))
                         .thenCallRealMethod();
-                mockedStatic.when(() -> ContentfulUtils.createSpeaker(
+                mockedStatic.when(() -> ContentfulDataLoader.createSpeaker(
                                 Mockito.any(ContentfulSpeaker.class), Mockito.nullable(Map.class), Mockito.nullable(Set.class), Mockito.any(AtomicLong.class), Mockito.any(AtomicLong.class), Mockito.anyBoolean()))
                         .thenReturn(speaker);
 
-                assertEquals(expected, ContentfulUtils.getSpeakerMap(response, assetMap, assetErrorSet));
+                assertEquals(expected, ContentfulDataLoader.getSpeakerMap(response, assetMap, assetErrorSet));
             }
         }
     }
@@ -1247,7 +1248,7 @@ class ContentfulUtilsTest {
         @MethodSource("data")
         void getAssetMap(ContentfulResponse<?, ? extends ContentfulIncludes> response,
                          Map<String, ContentfulAsset> expected) {
-            assertEquals(expected, ContentfulUtils.getAssetMap(response));
+            assertEquals(expected, ContentfulDataLoader.getAssetMap(response));
         }
     }
 
@@ -1280,7 +1281,7 @@ class ContentfulUtilsTest {
         @ParameterizedTest
         @MethodSource("data")
         void getCityMap(ContentfulEventResponse response, Map<String, ContentfulCity> expected) {
-            assertEquals(expected, ContentfulUtils.getCityMap(response));
+            assertEquals(expected, ContentfulDataLoader.getCityMap(response));
         }
     }
 
@@ -1325,37 +1326,37 @@ class ContentfulUtilsTest {
                     createContentfulError(true, false, "notResolvable", "error", null, null, "id4"),
                     createContentfulError(false, true, null, null, null, null, "id5"),
                     createContentfulError(false, true, null, null, "Link", null, "id6"),
-                    createContentfulError(false, true, null, null, null, ContentfulUtils.ENTRY_LINK_TYPE, "id7"),
-                    createContentfulError(false, true, null, null, "Link", ContentfulUtils.ENTRY_LINK_TYPE, "id8"),
+                    createContentfulError(false, true, null, null, null, ContentfulDataLoader.ENTRY_LINK_TYPE, "id7"),
+                    createContentfulError(false, true, null, null, "Link", ContentfulDataLoader.ENTRY_LINK_TYPE, "id8"),
                     createContentfulError(true, true, null, null, null, null, "id10"),
-                    createContentfulError(true, true, null, null, null, ContentfulUtils.ENTRY_LINK_TYPE, "id10"),
+                    createContentfulError(true, true, null, null, null, ContentfulDataLoader.ENTRY_LINK_TYPE, "id10"),
                     createContentfulError(true, true, null, null, "Link", null, "id11"),
-                    createContentfulError(true, true, null, null, "Link", ContentfulUtils.ENTRY_LINK_TYPE, "id12"),
+                    createContentfulError(true, true, null, null, "Link", ContentfulDataLoader.ENTRY_LINK_TYPE, "id12"),
                     createContentfulError(true, true, null, "error", null, null, "id13"),
-                    createContentfulError(true, true, null, "error", null, ContentfulUtils.ENTRY_LINK_TYPE, "id14"),
+                    createContentfulError(true, true, null, "error", null, ContentfulDataLoader.ENTRY_LINK_TYPE, "id14"),
                     createContentfulError(true, true, null, "error", "Link", null, "id15"),
-                    createContentfulError(true, true, null, "error", "Link", ContentfulUtils.ENTRY_LINK_TYPE, "id16"),
+                    createContentfulError(true, true, null, "error", "Link", ContentfulDataLoader.ENTRY_LINK_TYPE, "id16"),
                     createContentfulError(true, true, "notResolvable", null, null, null, "id17"),
-                    createContentfulError(true, true, "notResolvable", null, null, ContentfulUtils.ENTRY_LINK_TYPE, "id18"),
+                    createContentfulError(true, true, "notResolvable", null, null, ContentfulDataLoader.ENTRY_LINK_TYPE, "id18"),
                     createContentfulError(true, true, "notResolvable", null, "Link", null, "id19"),
-                    createContentfulError(true, true, "notResolvable", null, "Link", ContentfulUtils.ENTRY_LINK_TYPE, "id20"),
+                    createContentfulError(true, true, "notResolvable", null, "Link", ContentfulDataLoader.ENTRY_LINK_TYPE, "id20"),
                     createContentfulError(true, true, "notResolvable", "error", null, null, "id21"),
-                    createContentfulError(true, true, "notResolvable", "error", null, ContentfulUtils.ENTRY_LINK_TYPE, "id22"),
+                    createContentfulError(true, true, "notResolvable", "error", null, ContentfulDataLoader.ENTRY_LINK_TYPE, "id22"),
                     createContentfulError(true, true, "notResolvable", "error", "Link", null, "id23"),
-                    createContentfulError(true, true, "notResolvable", "error", "Link", ContentfulUtils.ENTRY_LINK_TYPE, "id24")
+                    createContentfulError(true, true, "notResolvable", "error", "Link", ContentfulDataLoader.ENTRY_LINK_TYPE, "id24")
             ));
 
             return Stream.of(
                     arguments(response0, null, Collections.emptySet()),
                     arguments(response1, "", Collections.emptySet()),
-                    arguments(response1, ContentfulUtils.ENTRY_LINK_TYPE, Set.of("id24"))
+                    arguments(response1, ContentfulDataLoader.ENTRY_LINK_TYPE, Set.of("id24"))
             );
         }
 
         @ParameterizedTest
         @MethodSource("data")
         void getErrorSet(ContentfulResponse<?, ? extends ContentfulIncludes> response, String linkType, Set<String> expected) {
-            assertEquals(expected, ContentfulUtils.getErrorSet(response, linkType));
+            assertEquals(expected, ContentfulDataLoader.getErrorSet(response, linkType));
         }
     }
 
@@ -1383,7 +1384,7 @@ class ContentfulUtilsTest {
         @ParameterizedTest
         @MethodSource("data")
         void extractBoolean(String value, boolean removeDuplicateWhiteSpaces, String expected) {
-            assertEquals(expected, ContentfulUtils.extractString(value, removeDuplicateWhiteSpaces));
+            assertEquals(expected, ContentfulDataLoader.extractString(value, removeDuplicateWhiteSpaces));
         }
     }
 
@@ -1391,16 +1392,16 @@ class ContentfulUtilsTest {
     void extractString() {
         final String SOURCE = "source";
 
-        try (MockedStatic<ContentfulUtils> mockedStatic = Mockito.mockStatic(ContentfulUtils.class)) {
-            mockedStatic.when(() -> ContentfulUtils.extractString(Mockito.anyString()))
+        try (MockedStatic<ContentfulDataLoader> mockedStatic = Mockito.mockStatic(ContentfulDataLoader.class)) {
+            mockedStatic.when(() -> ContentfulDataLoader.extractString(Mockito.anyString()))
                     .thenCallRealMethod();
-            mockedStatic.when(() -> ContentfulUtils.extractString(Mockito.anyString(), Mockito.anyBoolean()))
+            mockedStatic.when(() -> ContentfulDataLoader.extractString(Mockito.anyString(), Mockito.anyBoolean()))
                     .thenReturn("42");
 
-            ContentfulUtils.extractString(SOURCE);
+            ContentfulDataLoader.extractString(SOURCE);
 
-            mockedStatic.verify(() -> ContentfulUtils.extractString(SOURCE), VerificationModeFactory.times(1));
-            mockedStatic.verify(() -> ContentfulUtils.extractString(SOURCE, false), VerificationModeFactory.times(1));
+            mockedStatic.verify(() -> ContentfulDataLoader.extractString(SOURCE), VerificationModeFactory.times(1));
+            mockedStatic.verify(() -> ContentfulDataLoader.extractString(SOURCE, false), VerificationModeFactory.times(1));
             mockedStatic.verifyNoMoreInteractions();
         }
     }
@@ -1420,7 +1421,7 @@ class ContentfulUtilsTest {
         @ParameterizedTest
         @MethodSource("data")
         void extractBoolean(Boolean value, boolean expected) {
-            assertEquals(expected, ContentfulUtils.extractBoolean(value));
+            assertEquals(expected, ContentfulDataLoader.extractBoolean(value));
         }
     }
 
@@ -1477,9 +1478,9 @@ class ContentfulUtilsTest {
         @MethodSource("data")
         void extractProperty(String value, ExtractSet extractSet, Class<? extends Throwable> expectedException, String expectedValue) {
             if (expectedException == null) {
-                assertEquals(expectedValue, ContentfulUtils.extractProperty(value, extractSet));
+                assertEquals(expectedValue, ContentfulDataLoader.extractProperty(value, extractSet));
             } else {
-                assertThrows(expectedException, () -> ContentfulUtils.extractProperty(value, extractSet));
+                assertThrows(expectedException, () -> ContentfulDataLoader.extractProperty(value, extractSet));
             }
         }
     }
@@ -1499,7 +1500,7 @@ class ContentfulUtilsTest {
         @ParameterizedTest
         @MethodSource("data")
         void extractLanguage(Boolean value, String expected) {
-            assertEquals(expected, ContentfulUtils.extractLanguage(value));
+            assertEquals(expected, ContentfulDataLoader.extractLanguage(value));
         }
     }
 
@@ -1538,7 +1539,7 @@ class ContentfulUtilsTest {
         @ParameterizedTest
         @MethodSource("data")
         void combineContentfulLinks(List<ContentfulLink> presentations, ContentfulLink presentation, List<ContentfulLink> expected) {
-            assertEquals(expected, ContentfulUtils.combineContentfulLinks(presentations, presentation));
+            assertEquals(expected, ContentfulDataLoader.combineContentfulLinks(presentations, presentation));
         }
     }
 
@@ -1590,16 +1591,16 @@ class ContentfulUtilsTest {
         void extractPresentationLinks(List<ContentfulLink> links, Map<String, ContentfulAsset> assetMap,
                                       Set<String> assetErrorSet, String talkNameEn, Class<? extends Throwable> expectedException,
                                       List<String> expectedValue) {
-            try (MockedStatic<ContentfulUtils> mockedStatic = Mockito.mockStatic(ContentfulUtils.class)) {
-                mockedStatic.when(() -> ContentfulUtils.extractPresentationLinks(Mockito.nullable(List.class), Mockito.nullable(Map.class), Mockito.nullable(Set.class), Mockito.nullable(String.class)))
+            try (MockedStatic<ContentfulDataLoader> mockedStatic = Mockito.mockStatic(ContentfulDataLoader.class)) {
+                mockedStatic.when(() -> ContentfulDataLoader.extractPresentationLinks(Mockito.nullable(List.class), Mockito.nullable(Map.class), Mockito.nullable(Set.class), Mockito.nullable(String.class)))
                         .thenCallRealMethod();
-                mockedStatic.when(() -> ContentfulUtils.extractAssetUrl(Mockito.nullable(String.class)))
+                mockedStatic.when(() -> ContentfulDataLoader.extractAssetUrl(Mockito.nullable(String.class)))
                         .thenReturn(ASSET_URL);
 
                 if (expectedException == null) {
-                    assertEquals(expectedValue, ContentfulUtils.extractPresentationLinks(links, assetMap, assetErrorSet, talkNameEn));
+                    assertEquals(expectedValue, ContentfulDataLoader.extractPresentationLinks(links, assetMap, assetErrorSet, talkNameEn));
                 } else {
-                    assertThrows(expectedException, () -> ContentfulUtils.extractPresentationLinks(links, assetMap, assetErrorSet, talkNameEn));
+                    assertThrows(expectedException, () -> ContentfulDataLoader.extractPresentationLinks(links, assetMap, assetErrorSet, talkNameEn));
                 }
             }
         }
@@ -1619,7 +1620,7 @@ class ContentfulUtilsTest {
         @ParameterizedTest
         @MethodSource("data")
         void extractMaterialLinks(String material, List<String> expected) {
-            assertEquals(expected, ContentfulUtils.extractMaterialLinks(material));
+            assertEquals(expected, ContentfulDataLoader.extractMaterialLinks(material));
         }
     }
 
@@ -1637,7 +1638,7 @@ class ContentfulUtilsTest {
         @ParameterizedTest
         @MethodSource("data")
         void extractVideoLinks(String videoLink, List<String> expected) {
-            assertEquals(expected, ContentfulUtils.extractVideoLinks(videoLink));
+            assertEquals(expected, ContentfulDataLoader.extractVideoLinks(videoLink));
         }
     }
 
@@ -1671,9 +1672,9 @@ class ContentfulUtilsTest {
         @MethodSource("data")
         void extractAssetUrl(String value, Class<? extends Throwable> expectedException, String expectedValue) {
             if (expectedException == null) {
-                assertEquals(expectedValue, ContentfulUtils.extractAssetUrl(value));
+                assertEquals(expectedValue, ContentfulDataLoader.extractAssetUrl(value));
             } else {
-                assertThrows(expectedException, () -> ContentfulUtils.extractAssetUrl(value));
+                assertThrows(expectedException, () -> ContentfulDataLoader.extractAssetUrl(value));
             }
         }
     }
@@ -1761,11 +1762,11 @@ class ContentfulUtilsTest {
         @MethodSource("data")
         void extractLocaleItems(String enText, String ruText, boolean checkEnTextExistence, boolean removeDuplicateWhiteSpaces,
                                 List<LocaleItem> expected) {
-            assertEquals(expected, ContentfulUtils.extractLocaleItems(enText, ruText, checkEnTextExistence, removeDuplicateWhiteSpaces));
+            assertEquals(expected, ContentfulDataLoader.extractLocaleItems(enText, ruText, checkEnTextExistence, removeDuplicateWhiteSpaces));
 
             if (!removeDuplicateWhiteSpaces) {
-                assertEquals(expected, ContentfulUtils.extractLocaleItems(enText, ruText, checkEnTextExistence));
-                assertEquals(expected, ContentfulUtils.extractLocaleItems(enText, ruText));
+                assertEquals(expected, ContentfulDataLoader.extractLocaleItems(enText, ruText, checkEnTextExistence));
+                assertEquals(expected, ContentfulDataLoader.extractLocaleItems(enText, ruText));
             }
         }
     }
@@ -1821,9 +1822,9 @@ class ContentfulUtilsTest {
         @MethodSource("data")
         void extractEventName(String name, String locale, Class<? extends Throwable> expectedException, String expectedValue) {
             if (expectedException == null) {
-                assertEquals(expectedValue, ContentfulUtils.extractEventName(name, locale));
+                assertEquals(expectedValue, ContentfulDataLoader.extractEventName(name, locale));
             } else {
-                assertThrows(expectedException, () -> ContentfulUtils.extractEventName(name, locale));
+                assertThrows(expectedException, () -> ContentfulDataLoader.extractEventName(name, locale));
             }
         }
     }
@@ -1843,7 +1844,7 @@ class ContentfulUtilsTest {
         @ParameterizedTest
         @MethodSource("data")
         void extractLocaleValue(Map<String, String> map, String locale, String expected) {
-            assertEquals(expected, ContentfulUtils.extractLocaleValue(map, locale));
+            assertEquals(expected, ContentfulDataLoader.extractLocaleValue(map, locale));
         }
     }
 
@@ -1891,9 +1892,9 @@ class ContentfulUtilsTest {
         void extractCity(ContentfulLink link, Map<String, ContentfulCity> cityMap, Set<String> entryErrorSet, String locale,
                          String eventName, Class<? extends Throwable> expectedException, String expectedValue) {
             if (expectedException == null) {
-                assertEquals(expectedValue, ContentfulUtils.extractCity(link, cityMap, entryErrorSet, locale, eventName));
+                assertEquals(expectedValue, ContentfulDataLoader.extractCity(link, cityMap, entryErrorSet, locale, eventName));
             } else {
-                assertThrows(expectedException, () -> ContentfulUtils.extractCity(link, cityMap, entryErrorSet, locale, eventName));
+                assertThrows(expectedException, () -> ContentfulDataLoader.extractCity(link, cityMap, entryErrorSet, locale, eventName));
             }
         }
     }
@@ -1943,7 +1944,7 @@ class ContentfulUtilsTest {
         @ParameterizedTest
         @MethodSource("data")
         void fixNonexistentEventError(Conference conference, LocalDate startDate, Event expected) {
-            Event event = ContentfulUtils.fixNonexistentEventError(conference, startDate);
+            Event event = ContentfulDataLoader.fixNonexistentEventError(conference, startDate);
 
             assertEquals(expected, event);
 
@@ -1959,7 +1960,7 @@ class ContentfulUtilsTest {
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     @DisplayName("fixEntryNotResolvableError method tests")
     class FixEntryNotResolvableErrorTest {
-        private Stream<Arguments> createStream(ContentfulUtils.ConferenceSpaceInfo existingConferenceSpaceInfo, String existingEntryId) {
+        private Stream<Arguments> createStream(ContentfulDataLoader.ConferenceSpaceInfo existingConferenceSpaceInfo, String existingEntryId) {
             Speaker speaker0 = new Speaker();
             speaker0.setId(0);
 
@@ -2025,27 +2026,27 @@ class ContentfulUtilsTest {
                                     Stream.concat(
                                             Stream.concat(
                                                     Stream.concat(
-                                                            createStream(ContentfulUtils.ConferenceSpaceInfo.COMMON_SPACE_INFO, "6yIC7EpG1EhejCEJDEsuqA"),
-                                                            createStream(ContentfulUtils.ConferenceSpaceInfo.COMMON_SPACE_INFO, "2i2OfmHelyMCiK2sCUoGsS")
+                                                            createStream(ContentfulDataLoader.ConferenceSpaceInfo.COMMON_SPACE_INFO, "6yIC7EpG1EhejCEJDEsuqA"),
+                                                            createStream(ContentfulDataLoader.ConferenceSpaceInfo.COMMON_SPACE_INFO, "2i2OfmHelyMCiK2sCUoGsS")
                                                     ),
-                                                    createStream(ContentfulUtils.ConferenceSpaceInfo.COMMON_SPACE_INFO, "1FDbCMYfsEkiQG6s8CWQwS")
+                                                    createStream(ContentfulDataLoader.ConferenceSpaceInfo.COMMON_SPACE_INFO, "1FDbCMYfsEkiQG6s8CWQwS")
                                             ),
-                                            createStream(ContentfulUtils.ConferenceSpaceInfo.COMMON_SPACE_INFO, "MPZSTxFNbbjBdf5M5uoOZ")
+                                            createStream(ContentfulDataLoader.ConferenceSpaceInfo.COMMON_SPACE_INFO, "MPZSTxFNbbjBdf5M5uoOZ")
                                     ),
-                                    createStream(ContentfulUtils.ConferenceSpaceInfo.HOLY_JS_SPACE_INFO, "3YSoYRePW0OIeaAAkaweE6")
+                                    createStream(ContentfulDataLoader.ConferenceSpaceInfo.HOLY_JS_SPACE_INFO, "3YSoYRePW0OIeaAAkaweE6")
                             ),
-                            createStream(ContentfulUtils.ConferenceSpaceInfo.HOLY_JS_SPACE_INFO, "2UddvLNyXmy4YaukAuE4Ao")
+                            createStream(ContentfulDataLoader.ConferenceSpaceInfo.HOLY_JS_SPACE_INFO, "2UddvLNyXmy4YaukAuE4Ao")
                     ),
-                    createStream(ContentfulUtils.ConferenceSpaceInfo.MOBIUS_SPACE_INFO, "33qzWXnXYsgyCsSiwK0EOy")
+                    createStream(ContentfulDataLoader.ConferenceSpaceInfo.MOBIUS_SPACE_INFO, "33qzWXnXYsgyCsSiwK0EOy")
             );
         }
 
         @ParameterizedTest
         @MethodSource("data")
-        void fixEntryNotResolvableError(ContentfulUtils.ConferenceSpaceInfo conferenceSpaceInfo,
+        void fixEntryNotResolvableError(ContentfulDataLoader.ConferenceSpaceInfo conferenceSpaceInfo,
                                         Set<String> entryErrorSet, Map<String, Speaker> speakerMap,
                                         Set<String> expectedEntryErrorSet, Map<String, Speaker> expectedSpeakerMap) {
-            assertDoesNotThrow(() -> ContentfulUtils.fixEntryNotResolvableError(conferenceSpaceInfo, entryErrorSet, speakerMap));
+            assertDoesNotThrow(() -> ContentfulDataLoader.fixEntryNotResolvableError(conferenceSpaceInfo, entryErrorSet, speakerMap));
             assertEquals(expectedEntryErrorSet, entryErrorSet);
             assertEquals(expectedSpeakerMap, speakerMap);
         }
@@ -2072,7 +2073,7 @@ class ContentfulUtilsTest {
         @ParameterizedTest
         @MethodSource("data")
         void getSpeakerFixedName(String name, String expected) {
-            assertEquals(expected, ContentfulUtils.getSpeakerFixedName(name));
+            assertEquals(expected, ContentfulDataLoader.getSpeakerFixedName(name));
         }
     }
 
@@ -2293,7 +2294,7 @@ class ContentfulUtilsTest {
         @ParameterizedTest
         @MethodSource("data")
         void needUpdate(EventType a, EventType b, boolean expected) {
-            assertEquals(expected, ContentfulUtils.needUpdate(a, b));
+            assertEquals(expected, ContentfulDataLoader.needUpdate(a, b));
         }
     }
 
@@ -2338,7 +2339,7 @@ class ContentfulUtilsTest {
         @ParameterizedTest
         @MethodSource("data")
         void needUpdate(Place a, Place b, boolean expected) {
-            assertEquals(expected, ContentfulUtils.needUpdate(a, b));
+            assertEquals(expected, ContentfulDataLoader.needUpdate(a, b));
         }
     }
 
@@ -2488,7 +2489,7 @@ class ContentfulUtilsTest {
         @ParameterizedTest
         @MethodSource("data")
         void needUpdate(Speaker a, Speaker b, boolean expected) {
-            assertEquals(expected, ContentfulUtils.needUpdate(a, b));
+            assertEquals(expected, ContentfulDataLoader.needUpdate(a, b));
         }
     }
 
@@ -2633,7 +2634,7 @@ class ContentfulUtilsTest {
         @ParameterizedTest
         @MethodSource("data")
         void needUpdate(Talk a, Talk b, boolean expected) {
-            assertEquals(expected, ContentfulUtils.needUpdate(a, b));
+            assertEquals(expected, ContentfulDataLoader.needUpdate(a, b));
         }
     }
 
@@ -2732,7 +2733,7 @@ class ContentfulUtilsTest {
         @ParameterizedTest
         @MethodSource("data")
         void needUpdate(Event a, Event b, boolean expected) {
-            assertEquals(expected, ContentfulUtils.needUpdate(a, b));
+            assertEquals(expected, ContentfulDataLoader.needUpdate(a, b));
         }
     }
 
@@ -2770,7 +2771,7 @@ class ContentfulUtilsTest {
                 mockedStatic.when(() -> ImageUtils.needUpdate(Mockito.anyString(), Mockito.anyString()))
                         .thenReturn(needUpdate);
 
-                assertEquals(expected, ContentfulUtils.needPhotoUpdate(targetPhotoUpdatedAt, resourcePhotoUpdatedAt,
+                assertEquals(expected, ContentfulDataLoader.needPhotoUpdate(targetPhotoUpdatedAt, resourcePhotoUpdatedAt,
                         targetPhotoUrl, resourcePhotoFileName));
             }
         }
@@ -2799,27 +2800,27 @@ class ContentfulUtilsTest {
         @ParameterizedTest
         @MethodSource("data")
         void equals(List<String> a, List<String> b, boolean expected) {
-            assertEquals(expected, ContentfulUtils.equals(a, b));
+            assertEquals(expected, ContentfulDataLoader.equals(a, b));
         }
     }
 
     @Test
     void iterateAllEntities() {
-        try (MockedStatic<ContentfulUtils> mockedStatic = Mockito.mockStatic(ContentfulUtils.class)) {
-            mockedStatic.when(ContentfulUtils::iterateAllEntities)
+        try (MockedStatic<ContentfulDataLoader> mockedStatic = Mockito.mockStatic(ContentfulDataLoader.class)) {
+            mockedStatic.when(ContentfulDataLoader::iterateAllEntities)
                     .thenCallRealMethod();
-            mockedStatic.when(ContentfulUtils::getLocales)
+            mockedStatic.when(ContentfulDataLoader::getLocales)
                     .thenReturn(Collections.emptyList());
-            mockedStatic.when(ContentfulUtils::getEventTypes)
+            mockedStatic.when(ContentfulDataLoader::getEventTypesOld)
                     .thenReturn(Collections.emptyList());
-            mockedStatic.when(() -> ContentfulUtils.getEvents(Mockito.anyString(), Mockito.any(LocalDate.class)))
+            mockedStatic.when(() -> ContentfulDataLoader.getEvents(Mockito.anyString(), Mockito.any(LocalDate.class)))
                     .thenReturn(Collections.emptyList());
-            mockedStatic.when(() -> ContentfulUtils.getSpeakers(Mockito.any(ContentfulUtils.ConferenceSpaceInfo.class), Mockito.anyString()))
+            mockedStatic.when(() -> ContentfulDataLoader.getSpeakers(Mockito.any(ContentfulDataLoader.ConferenceSpaceInfo.class), Mockito.anyString()))
                     .thenReturn(Collections.emptyList());
-            mockedStatic.when(() -> ContentfulUtils.getTalks(Mockito.any(ContentfulUtils.ConferenceSpaceInfo.class), Mockito.anyString(), Mockito.anyBoolean()))
+            mockedStatic.when(() -> ContentfulDataLoader.getTalks(Mockito.any(ContentfulDataLoader.ConferenceSpaceInfo.class), Mockito.anyString(), Mockito.anyBoolean()))
                     .thenReturn(Collections.emptyList());
 
-            assertDoesNotThrow(ContentfulUtils::iterateAllEntities);
+            assertDoesNotThrow(ContentfulDataLoader::iterateAllEntities);
         }
     }
 }

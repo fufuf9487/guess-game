@@ -1,4 +1,4 @@
-package guess.util;
+package guess.util.load;
 
 import guess.dao.exception.SpeakerDuplicatedException;
 import guess.domain.Conference;
@@ -10,6 +10,8 @@ import guess.domain.source.load.LoadResult;
 import guess.domain.source.load.LoadSettings;
 import guess.domain.source.load.SpeakerLoadMaps;
 import guess.domain.source.load.SpeakerLoadResult;
+import guess.util.ImageUtils;
+import guess.util.LocalizationUtils;
 import guess.util.yaml.YamlUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,12 +28,12 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
- * Conference data loader.
+ * Conference data loader executor.
  */
-public class ConferenceDataLoader {
-    private static final Logger log = LoggerFactory.getLogger(ConferenceDataLoader.class);
+public class ConferenceDataLoaderExecutor {
+    private static final Logger log = LoggerFactory.getLogger(ConferenceDataLoaderExecutor.class);
 
-    private ConferenceDataLoader() {
+    private ConferenceDataLoaderExecutor() {
     }
 
     /**
@@ -40,7 +42,7 @@ public class ConferenceDataLoader {
      * @param conferenceCodePrefix conference code prefix
      */
     static void loadSpaceTags(String conferenceCodePrefix) {
-        ContentfulUtils.getTags(conferenceCodePrefix)
+        ContentfulDataLoader.getTags(conferenceCodePrefix)
                 .forEach((s, t) -> log.info("Space: {}, tags: {}", s, String.join(",", t)));
     }
 
@@ -59,9 +61,9 @@ public class ConferenceDataLoader {
         List<EventType> resourceEventTypes = getConferences(resourceSourceInformation.getEventTypes());
         log.info("Event types (in resource files): {}", resourceEventTypes.size());
 
-        // Read event types from Contentful
-        List<EventType> contentfulEventTypes = getConferences(ContentfulUtils.getEventTypes());
-        log.info("Event types (in Contentful): {}", contentfulEventTypes.size());
+        // Read event types from CMS
+        List<EventType> contentfulEventTypes = getConferences(ContentfulDataLoader.getEventTypesOld());
+        log.info("Event types (in CMS): {}", contentfulEventTypes.size());
 
         // Find event types
         Map<Conference, EventType> resourceEventTypeMap = getResourceEventTypeMap(resourceEventTypes);
@@ -155,7 +157,7 @@ public class ConferenceDataLoader {
                         fillStringAttributeValue(resourceEventType::getHabrLink, et::getHabrLink, et::setHabrLink);
                         fillStringAttributeValue(resourceEventType::getTimeZone, et::getTimeZone, et::setTimeZone);
 
-                        if (ContentfulUtils.needUpdate(resourceEventType, et)) {
+                        if (ContentfulDataLoader.needUpdate(resourceEventType, et)) {
                             // Event type need to update
                             eventTypesToUpdate.add(et);
                         }
@@ -238,16 +240,16 @@ public class ConferenceDataLoader {
                     resourceEvent.getStartDate(), resourceEvent.getEndDate());
         }
 
-        // Read event from Contentful
-        var contentfulEvent = ContentfulUtils.getEvent(conference, startDate);
-        log.info("Event (in Contentful): nameEn: {}, nameRu: {}, startDate: {}, endDate: {}",
+        // Read event from CMS
+        var contentfulEvent = ContentfulDataLoader.getEvent(conference, startDate);
+        log.info("Event (in CMS): nameEn: {}, nameRu: {}, startDate: {}, endDate: {}",
                 LocalizationUtils.getString(contentfulEvent.getName(), Language.ENGLISH),
                 LocalizationUtils.getString(contentfulEvent.getName(), Language.RUSSIAN),
                 contentfulEvent.getStartDate(), contentfulEvent.getEndDate());
 
-        // Read talks from Contentful
-        List<Talk> contentfulTalks = ContentfulUtils.getTalks(conference, conferenceCode, loadSettings.ignoreDemoStage());
-        log.info("Talks (in Contentful): {}", contentfulTalks.size());
+        // Read talks from CMS
+        List<Talk> contentfulTalks = ContentfulDataLoader.getTalks(conference, conferenceCode, loadSettings.ignoreDemoStage());
+        log.info("Talks (in CMS): {}", contentfulTalks.size());
         contentfulTalks.forEach(
                 t -> log.trace("Talk: nameEn: '{}', name: '{}'",
                         LocalizationUtils.getString(t.getName(), Language.ENGLISH),
@@ -265,7 +267,7 @@ public class ConferenceDataLoader {
 
         // Order speakers with talk order
         List<Speaker> contentfulSpeakers = getTalkSpeakers(contentfulTalks);
-        log.info("Speakers (in Contentful): {}", contentfulSpeakers.size());
+        log.info("Speakers (in CMS): {}", contentfulSpeakers.size());
         contentfulSpeakers.forEach(
                 s -> log.trace("Speaker: nameEn: '{}', name: '{}'",
                         LocalizationUtils.getString(s.getName(), Language.ENGLISH),
@@ -283,7 +285,7 @@ public class ConferenceDataLoader {
 
         // Order company with talk order
         contentfulCompanies = getSpeakerCompanies(contentfulSpeakers);
-        log.info("Companies (in Contentful): {}", contentfulCompanies.size());
+        log.info("Companies (in CMS): {}", contentfulCompanies.size());
         contentfulCompanies.forEach(
                 c -> log.trace("Company: nameEn: '{}', name: '{}'",
                         LocalizationUtils.getString(c.getName(), Language.ENGLISH),
@@ -397,7 +399,7 @@ public class ConferenceDataLoader {
                     .filter(t -> !invalidTalksSet.contains(LocalizationUtils.getString(t.getName(), Language.RUSSIAN)))
                     .toList();
 
-            log.info("Fixed talks (in Contentful): {}", fixedTalks.size());
+            log.info("Fixed talks (in CMS): {}", fixedTalks.size());
             fixedTalks.forEach(
                     t -> log.trace("Fixed talk: nameEn: '{}', name: '{}'",
                             LocalizationUtils.getString(t.getName(), Language.ENGLISH),
@@ -765,14 +767,14 @@ public class ConferenceDataLoader {
                 fillSpeakerMvp(speaker, resourceSpeaker);
 
                 // Update speaker photo
-                if (ContentfulUtils.needPhotoUpdate(speaker.getPhotoUpdatedAt(), resourceSpeaker.getPhotoUpdatedAt(), targetPhotoUrl, resourcePhotoFileName)) {
+                if (ContentfulDataLoader.needPhotoUpdate(speaker.getPhotoUpdatedAt(), resourceSpeaker.getPhotoUpdatedAt(), targetPhotoUrl, resourcePhotoFileName)) {
                     urlFilenamesToUpdate.add(new UrlFilename(targetPhotoUrl, resourcePhotoFileName));
                 }
 
                 fillUpdatedAt(speaker, resourceSpeaker);
 
                 // Update speaker
-                if (ContentfulUtils.needUpdate(resourceSpeaker, speaker)) {
+                if (ContentfulDataLoader.needUpdate(resourceSpeaker, speaker)) {
                     speakersToUpdate.add(speaker);
                 }
             }
@@ -828,7 +830,7 @@ public class ConferenceDataLoader {
             if (targetSpeaker.isMvp()) {
                 targetSpeaker.setMvpReconnect(false);
             } else {
-                // Neither "MVP" nor "MVP Reconnect" in Contentful
+                // Neither "MVP" nor "MVP Reconnect" in CMS
                 if (resourceSpeaker.isMvpReconnect()) {
                     targetSpeaker.setMvpReconnect(true);
                     targetSpeaker.setMvp(false);
@@ -916,7 +918,7 @@ public class ConferenceDataLoader {
                             // Talk exists
                             t.setId(resourceTalk.getId());
 
-                            if (ContentfulUtils.needUpdate(resourceTalk, t)) {
+                            if (ContentfulDataLoader.needUpdate(resourceTalk, t)) {
                                 talksToUpdate.add(t);
                             }
                         }
@@ -981,7 +983,7 @@ public class ConferenceDataLoader {
             // Place exists
             place.setId(resourcePlace.getId());
 
-            if (ContentfulUtils.needUpdate(resourcePlace, place)) {
+            if (ContentfulDataLoader.needUpdate(resourcePlace, place)) {
                 placeToUpdate = place;
             }
         }
@@ -1008,7 +1010,7 @@ public class ConferenceDataLoader {
         } else {
             fillEventTimeZone(event, resourceEvent);
 
-            if (ContentfulUtils.needUpdate(resourceEvent, event)) {
+            if (ContentfulDataLoader.needUpdate(resourceEvent, event)) {
                 eventToUpdate = event;
             }
         }
@@ -1477,7 +1479,7 @@ public class ConferenceDataLoader {
                         .map(c -> LocalizationUtils.getString(c.getName(), Language.RUSSIAN))
                         .collect(Collectors.joining(", "));
 
-                log.warn("Speaker found only by name '{}', speaker company (in resource files): '{}', speaker company (in Contentful): '{}')",
+                log.warn("Speaker found only by name '{}', speaker company (in resource files): '{}', speaker company (in CMS): '{}')",
                         speakerName, resourceSpeakerCompanies, speakerCompanies);
 
                 return resourceSpeaker;
@@ -1596,7 +1598,7 @@ public class ConferenceDataLoader {
                 LocalizationUtils.getString(place.getVenueAddress(), Language.RUSSIAN),
                 ruFixingVenueAddresses);
 
-        return ContentfulUtils.extractLocaleItems(enVenueAddress, ruVenueAddress, true);
+        return ContentfulDataLoader.extractLocaleItems(enVenueAddress, ruVenueAddress, true);
     }
 
     /**
@@ -1942,11 +1944,13 @@ public class ConferenceDataLoader {
 //                        "VideoTech 2021 Virtual Afterparty")));
 
         // 2022
-//        loadTalksSpeakersEvent(Conference.DOT_NEXT, LocalDate.of(2022, 4, 7), "2022spring");
-//        loadTalksSpeakersEvent(Conference.HEISENBUG, LocalDate.of(2022, 4, 12), "2022spring");
-//        loadTalksSpeakersEvent(Conference.HOLY_JS, LocalDate.of(2022, 4, 18), "2022spring");
-//        loadTalksSpeakersEvent(Conference.JPOINT, LocalDate.of(2022, 4, 25), "2022jpoint");
-//        loadTalksSpeakersEvent(Conference.HYDRA, LocalDate.of(2022, 6, 1), "2022hydra");
-//        loadTalksSpeakersEvent(Conference.CPP_RUSSIA, LocalDate.of(2022, 6, 6), "2022springcpp");
+//        loadTalksSpeakersEvent(Conference.TECH_TRAIN, LocalDate.of(2022, 5, 14), null);
+//        loadTalksSpeakersEvent(Conference.MOBIUS, LocalDate.of(2022, 5, 25), null);
+//        loadTalksSpeakersEvent(Conference.HEISENBUG, LocalDate.of(2022, 5, 30), null);
+//        loadTalksSpeakersEvent(Conference.HYDRA, LocalDate.of(2022, 6, 2), null);
+//        loadTalksSpeakersEvent(Conference.CPP_RUSSIA, LocalDate.of(2022, 6, 6), null);
+//        loadTalksSpeakersEvent(Conference.HOLY_JS, LocalDate.of(2022, 6, 8), null);
+//        loadTalksSpeakersEvent(Conference.JPOINT, LocalDate.of(2022, 6, 13), null);
+//        loadTalksSpeakersEvent(Conference.DOT_NEXT, LocalDate.of(2022, 6, 16), null);
     }
 }

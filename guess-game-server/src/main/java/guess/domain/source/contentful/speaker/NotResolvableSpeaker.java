@@ -1,18 +1,18 @@
 package guess.domain.source.contentful.speaker;
 
 import guess.domain.source.Speaker;
-import guess.util.ContentfulUtils;
+import guess.util.load.ContentfulDataLoader;
 
 public abstract class NotResolvableSpeaker {
-    private final ContentfulUtils.ConferenceSpaceInfo conferenceSpaceInfo;
+    private final ContentfulDataLoader.ConferenceSpaceInfo conferenceSpaceInfo;
     private final String entryId;
 
-    protected NotResolvableSpeaker(ContentfulUtils.ConferenceSpaceInfo conferenceSpaceInfo, String entryId) {
+    protected NotResolvableSpeaker(ContentfulDataLoader.ConferenceSpaceInfo conferenceSpaceInfo, String entryId) {
         this.conferenceSpaceInfo = conferenceSpaceInfo;
         this.entryId = entryId;
     }
 
-    public ContentfulUtils.ConferenceSpaceInfo getConferenceSpaceInfo() {
+    public ContentfulDataLoader.ConferenceSpaceInfo getConferenceSpaceInfo() {
         return conferenceSpaceInfo;
     }
 

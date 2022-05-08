@@ -1,4 +1,4 @@
-package guess.util;
+package guess.util.load;
 
 import guess.domain.Conference;
 import guess.domain.Language;
@@ -25,6 +25,8 @@ import guess.domain.source.contentful.talk.response.*;
 import guess.domain.source.extract.ExtractPair;
 import guess.domain.source.extract.ExtractSet;
 import guess.domain.source.image.UrlDates;
+import guess.util.DateTimeUtils;
+import guess.util.ImageUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -46,10 +48,10 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * Contentful utility methods.
+ * Contentful data loader.
  */
-public class ContentfulUtils {
-    private static final Logger log = LoggerFactory.getLogger(ContentfulUtils.class);
+public class ContentfulDataLoader implements CmsDataLoader {
+    private static final Logger log = LoggerFactory.getLogger(ContentfulDataLoader.class);
 
     private static final String BASE_URL = "https://cdn.contentful.com/spaces/{spaceId}/{entityName}";
     private static final String MAIN_SPACE_ID = "2jxgmeypnru5";
@@ -170,9 +172,6 @@ public class ContentfulUtils {
         restTemplate = new RestTemplate(converters);
     }
 
-    private ContentfulUtils() {
-    }
-
     static RestTemplate getRestTemplate() {
         return restTemplate;
     }
@@ -241,7 +240,17 @@ public class ContentfulUtils {
      *
      * @return event types
      */
-    public static List<EventType> getEventTypes() {
+    public List<EventType> getEventTypes() {
+        //TODO: implement
+        return getEventTypesOld();
+    }
+
+    /**
+     * Gets event types.
+     *
+     * @return event types
+     */
+    public static List<EventType> getEventTypesOld() {
         // https://cdn.contentful.com/spaces/{spaceId}/entries?access_token={accessToken}&locale={locale}&content_type=eventsList&select={fields}&order={fields}&limit=1000
         UriComponentsBuilder builder = UriComponentsBuilder
                 .fromUriString(BASE_URL)
@@ -730,7 +739,7 @@ public class ContentfulUtils {
                     String speakerId = s.getSys().getId();
                     boolean isErrorAsset = entryErrorSet.contains(speakerId);
                     if (isErrorAsset) {
-                        throw new IllegalArgumentException(String.format("Speaker id %s not resolvable for '%s' talk (change ContentfulUtils:fixEntryNotResolvableError() method and rerun)", speakerId, contentfulTalk.getFields().getNameEn()));
+                        throw new IllegalArgumentException(String.format("Speaker id %s not resolvable for '%s' talk (change ContentfulDataLoader:fixEntryNotResolvableError() method and rerun)", speakerId, contentfulTalk.getFields().getNameEn()));
                     }
 
                     return true;
@@ -1653,7 +1662,7 @@ public class ContentfulUtils {
         List<String> locales = getLocales();
         log.info("Locales: {}, {}", locales.size(), locales);
 
-        List<EventType> eventTypes = getEventTypes();
+        List<EventType> eventTypes = getEventTypesOld();
         log.info("Event types: {}, {}", eventTypes.size(), eventTypes);
 
         List<Event> events = getEvents(null, null);
