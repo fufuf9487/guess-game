@@ -94,9 +94,6 @@ class ContentfulDataLoaderTest {
         final String CODE4 = "code4";
 
         try (MockedStatic<ContentfulDataLoader> mockedStatic = Mockito.mockStatic(ContentfulDataLoader.class)) {
-            mockedStatic.when(() -> ContentfulDataLoader.getTags(Mockito.nullable(String.class)))
-                    .thenCallRealMethod();
-
             ContentfulTalkResponse<ContentfulTalkFieldsCommon> response = new ContentfulTalkResponseCommon();
             response.setItems(List.of(
                     createContentfulTalk(CODE2, null),
@@ -120,9 +117,13 @@ class ContentfulDataLoaderTest {
                     ContentfulDataLoader.ConferenceSpaceInfo.HEISENBUG_SPACE_INFO, List.of(CODE1, CODE2, CODE3, CODE4),
                     ContentfulDataLoader.ConferenceSpaceInfo.MOBIUS_SPACE_INFO, List.of(CODE1, CODE2, CODE3, CODE4));
 
-            assertEquals(expected, ContentfulDataLoader.getTags("2021"));
-            assertEquals(expected, ContentfulDataLoader.getTags(""));
-            assertEquals(expected, ContentfulDataLoader.getTags(null));
+            ContentfulDataLoader contentfulDataLoader = Mockito.mock(ContentfulDataLoader.class);
+            Mockito.when(contentfulDataLoader.getTags(Mockito.nullable(String.class)))
+                    .thenCallRealMethod();
+
+            assertEquals(expected, contentfulDataLoader.getTags("2021"));
+            assertEquals(expected, contentfulDataLoader.getTags(""));
+            assertEquals(expected, contentfulDataLoader.getTags(null));
         }
     }
 
@@ -2816,11 +2817,11 @@ class ContentfulDataLoaderTest {
             contentfulDataLoaderMockedStatic.when(() -> ContentfulDataLoader.getTalks(Mockito.any(ContentfulDataLoader.ConferenceSpaceInfo.class), Mockito.anyString(), Mockito.anyBoolean()))
                     .thenReturn(Collections.emptyList());
 
-            ContentfulDataLoader cmsDataLoader = Mockito.mock(ContentfulDataLoader.class);
-            Mockito.doCallRealMethod().when(cmsDataLoader).iterateAllEntities();
-            Mockito.when(cmsDataLoader.getEventTypes()).thenReturn(Collections.emptyList());
+            ContentfulDataLoader contentfulDataLoader = Mockito.mock(ContentfulDataLoader.class);
+            Mockito.doCallRealMethod().when(contentfulDataLoader).iterateAllEntities();
+            Mockito.when(contentfulDataLoader.getEventTypes()).thenReturn(Collections.emptyList());
 
-            assertDoesNotThrow(cmsDataLoader::iterateAllEntities);
+            assertDoesNotThrow(contentfulDataLoader::iterateAllEntities);
         }
     }
 }

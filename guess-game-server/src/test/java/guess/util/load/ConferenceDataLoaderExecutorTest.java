@@ -38,17 +38,22 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 class ConferenceDataLoaderExecutorTest {
     @Test
     void loadSpaceTags() {
-        try (MockedStatic<ContentfulDataLoader> mockedStatic = Mockito.mockStatic(ContentfulDataLoader.class)) {
+        try (MockedStatic<CmsDataLoaderFactory> mockedStatic = Mockito.mockStatic(CmsDataLoaderFactory.class)) {
             final String CODE1 = "code1";
             final String CODE2 = "code2";
             final String CODE3 = "code3";
             final String CODE4 = "code4";
 
-            mockedStatic.when(() -> ContentfulDataLoader.getTags(Mockito.anyString()))
+            CmsDataLoader cmsDataLoader = Mockito.mock(CmsDataLoader.class);
+            Mockito.when(cmsDataLoader.getTags(Mockito.anyString()))
                     .thenReturn(Map.of(
                             ContentfulDataLoader.ConferenceSpaceInfo.COMMON_SPACE_INFO,
                             List.of(CODE1, CODE2, CODE3, CODE4)));
-            assertDoesNotThrow(() -> ConferenceDataLoaderExecutor.loadSpaceTags(null));
+
+            mockedStatic.when(() -> CmsDataLoaderFactory.createDataLoader(Mockito.any(CmsType.class)))
+                    .thenReturn(cmsDataLoader);
+
+            assertDoesNotThrow(() -> ConferenceDataLoaderExecutor.loadSpaceTags(CmsType.CONTENTFUL, null));
         }
     }
 

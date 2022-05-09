@@ -176,7 +176,7 @@ public class ContentfulDataLoader implements CmsDataLoader {
         return restTemplate;
     }
 
-    static Map<ConferenceSpaceInfo, List<String>> getTags(String conferenceCodePrefix) {
+    public Map<ConferenceSpaceInfo, List<String>> getTags(String conferenceCodePrefix) {
         Map<ConferenceSpaceInfo, List<String>> spaceTagsMap = new LinkedHashMap<>();
 
         for (ConferenceSpaceInfo conferenceSpaceInfo : ConferenceSpaceInfo.values()) {
