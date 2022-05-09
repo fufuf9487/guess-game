@@ -35,7 +35,6 @@ import guess.domain.source.contentful.talk.response.ContentfulTalkResponseCommon
 import guess.domain.source.extract.ExtractPair;
 import guess.domain.source.extract.ExtractSet;
 import guess.domain.source.image.UrlDates;
-import guess.domain.source.load.CmsType;
 import guess.util.ImageUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -2807,10 +2806,7 @@ class ContentfulDataLoaderTest {
 
     @Test
     void iterateAllEntities() {
-        try (MockedStatic<ContentfulDataLoader> contentfulDataLoaderMockedStatic = Mockito.mockStatic(ContentfulDataLoader.class);
-             MockedStatic<CmsDataLoaderFactory> cmsDataLoaderFactoryMockedStatic = Mockito.mockStatic(CmsDataLoaderFactory.class)) {
-            contentfulDataLoaderMockedStatic.when(ContentfulDataLoader::iterateAllEntities)
-                    .thenCallRealMethod();
+        try (MockedStatic<ContentfulDataLoader> contentfulDataLoaderMockedStatic = Mockito.mockStatic(ContentfulDataLoader.class)) {
             contentfulDataLoaderMockedStatic.when(ContentfulDataLoader::getLocales)
                     .thenReturn(Collections.emptyList());
             contentfulDataLoaderMockedStatic.when(() -> ContentfulDataLoader.getEvents(Mockito.anyString(), Mockito.any(LocalDate.class)))
@@ -2820,12 +2816,11 @@ class ContentfulDataLoaderTest {
             contentfulDataLoaderMockedStatic.when(() -> ContentfulDataLoader.getTalks(Mockito.any(ContentfulDataLoader.ConferenceSpaceInfo.class), Mockito.anyString(), Mockito.anyBoolean()))
                     .thenReturn(Collections.emptyList());
 
-            CmsDataLoader cmsDataLoader = Mockito.mock(CmsDataLoader.class);
+            ContentfulDataLoader cmsDataLoader = Mockito.mock(ContentfulDataLoader.class);
+            Mockito.doCallRealMethod().when(cmsDataLoader).iterateAllEntities();
             Mockito.when(cmsDataLoader.getEventTypes()).thenReturn(Collections.emptyList());
-            cmsDataLoaderFactoryMockedStatic.when(() -> CmsDataLoaderFactory.createDataLoader(Mockito.any(CmsType.class)))
-                    .thenReturn(cmsDataLoader);
 
-            assertDoesNotThrow(ContentfulDataLoader::iterateAllEntities);
+            assertDoesNotThrow(cmsDataLoader::iterateAllEntities);
         }
     }
 }

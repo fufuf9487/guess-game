@@ -1648,13 +1648,11 @@ public class ContentfulDataLoader implements CmsDataLoader {
         }
     }
 
-    static void iterateAllEntities() {
-        CmsDataLoader cmsDataLoader = new ContentfulDataLoader();
-
+    public void iterateAllEntities() {
         List<String> locales = getLocales();
         log.info("Locales: {}, {}", locales.size(), locales);
 
-        List<EventType> eventTypes = cmsDataLoader.getEventTypes();
+        List<EventType> eventTypes = getEventTypes();
         log.info("Event types: {}, {}", eventTypes.size(), eventTypes);
 
         List<Event> events = getEvents(null, null);

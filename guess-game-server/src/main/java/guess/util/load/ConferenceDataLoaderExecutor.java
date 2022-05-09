@@ -1711,7 +1711,7 @@ public class ConferenceDataLoaderExecutor {
 //        loadSpaceTags("2022");
 
         // Load event types
-//        loadEventTypes();
+//        loadEventTypes(CmsType.CONTENTFUL);
 
         // Check video links
 //        checkVideoLinks();
