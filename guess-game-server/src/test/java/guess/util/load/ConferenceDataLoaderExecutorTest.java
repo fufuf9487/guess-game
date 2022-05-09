@@ -4,10 +4,7 @@ import guess.domain.Conference;
 import guess.domain.Language;
 import guess.domain.source.*;
 import guess.domain.source.image.UrlFilename;
-import guess.domain.source.load.LoadResult;
-import guess.domain.source.load.LoadSettings;
-import guess.domain.source.load.SpeakerLoadMaps;
-import guess.domain.source.load.SpeakerLoadResult;
+import guess.domain.source.load.*;
 import guess.util.ImageUtils;
 import guess.util.LocalizationUtils;
 import guess.util.yaml.YamlUtils;
@@ -58,7 +55,7 @@ class ConferenceDataLoaderExecutorTest {
     @Test
     void loadEventTypes() {
         try (MockedStatic<YamlUtils> yamlUtilsMockedStatic = Mockito.mockStatic(YamlUtils.class);
-             MockedStatic<ContentfulDataLoader> contentfulUtilsMockedStatic = Mockito.mockStatic(ContentfulDataLoader.class);
+             MockedStatic<CmsDataLoaderFactory> cmsDataLoaderFactoryMockedStatic = Mockito.mockStatic(CmsDataLoaderFactory.class);
              MockedStatic<ConferenceDataLoaderExecutor> conferenceDataLoaderMockedStatic = Mockito.mockStatic(ConferenceDataLoaderExecutor.class)) {
             yamlUtilsMockedStatic.when(YamlUtils::readSourceInformation)
                     .thenReturn(new SourceInformation(Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
@@ -71,9 +68,13 @@ class ConferenceDataLoaderExecutorTest {
                             ),
                             Collections.emptyList()
                     ));
-            contentfulUtilsMockedStatic.when(ContentfulDataLoader::getEventTypesOld)
-                    .thenReturn(Collections.emptyList());
-            conferenceDataLoaderMockedStatic.when(ConferenceDataLoaderExecutor::loadEventTypes)
+
+            CmsDataLoader cmsDataLoader = Mockito.mock(CmsDataLoader.class);
+            Mockito.when(cmsDataLoader.getEventTypes()).thenReturn(Collections.emptyList());
+            cmsDataLoaderFactoryMockedStatic.when(() -> CmsDataLoaderFactory.createDataLoader(Mockito.any(CmsType.class)))
+                    .thenReturn(cmsDataLoader);
+
+            conferenceDataLoaderMockedStatic.when(() -> ConferenceDataLoaderExecutor.loadEventTypes(Mockito.any()))
                     .thenCallRealMethod();
             conferenceDataLoaderMockedStatic.when(() -> ConferenceDataLoaderExecutor.getConferences(Mockito.anyList()))
                     .thenReturn(Collections.emptyList());
@@ -84,7 +85,7 @@ class ConferenceDataLoaderExecutorTest {
             conferenceDataLoaderMockedStatic.when(() -> ConferenceDataLoaderExecutor.getEventTypeLoadResult(Mockito.anyList(), Mockito.anyMap(), Mockito.any()))
                     .thenReturn(new LoadResult<>(Collections.emptyList(), Collections.emptyList(), Collections.emptyList()));
 
-            assertDoesNotThrow(ConferenceDataLoaderExecutor::loadEventTypes);
+            assertDoesNotThrow(() -> ConferenceDataLoaderExecutor.loadEventTypes(CmsType.CONTENTFUL));
         }
     }
 

@@ -241,16 +241,6 @@ public class ContentfulDataLoader implements CmsDataLoader {
      * @return event types
      */
     public List<EventType> getEventTypes() {
-        //TODO: implement
-        return getEventTypesOld();
-    }
-
-    /**
-     * Gets event types.
-     *
-     * @return event types
-     */
-    public static List<EventType> getEventTypesOld() {
         // https://cdn.contentful.com/spaces/{spaceId}/entries?access_token={accessToken}&locale={locale}&content_type=eventsList&select={fields}&order={fields}&limit=1000
         UriComponentsBuilder builder = UriComponentsBuilder
                 .fromUriString(BASE_URL)
@@ -1659,10 +1649,12 @@ public class ContentfulDataLoader implements CmsDataLoader {
     }
 
     static void iterateAllEntities() {
+        CmsDataLoader cmsDataLoader = new ContentfulDataLoader();
+
         List<String> locales = getLocales();
         log.info("Locales: {}, {}", locales.size(), locales);
 
-        List<EventType> eventTypes = getEventTypesOld();
+        List<EventType> eventTypes = cmsDataLoader.getEventTypes();
         log.info("Event types: {}, {}", eventTypes.size(), eventTypes);
 
         List<Event> events = getEvents(null, null);

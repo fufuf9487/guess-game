@@ -35,6 +35,7 @@ import guess.domain.source.contentful.talk.response.ContentfulTalkResponseCommon
 import guess.domain.source.extract.ExtractPair;
 import guess.domain.source.extract.ExtractSet;
 import guess.domain.source.image.UrlDates;
+import guess.domain.source.load.CmsType;
 import guess.util.ImageUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -153,10 +154,8 @@ class ContentfulDataLoaderTest {
     }
 
     @Test
-    void getEventTypesOld() {
+    void getEventTypes() {
         try (MockedStatic<ContentfulDataLoader> mockedStatic = Mockito.mockStatic(ContentfulDataLoader.class)) {
-            mockedStatic.when(ContentfulDataLoader::getEventTypesOld)
-                    .thenCallRealMethod();
             mockedStatic.when(() -> ContentfulDataLoader.createEventType(Mockito.any(ContentfulEventType.class), Mockito.any(AtomicLong.class)))
                     .thenReturn(new EventType());
 
@@ -170,7 +169,9 @@ class ContentfulDataLoaderTest {
             mockedStatic.when(ContentfulDataLoader::getRestTemplate)
                     .thenReturn(restTemplateMock);
 
-            assertEquals(2, ContentfulDataLoader.getEventTypesOld().size());
+            ContentfulDataLoader contentfulDataLoader = new ContentfulDataLoader();
+
+            assertEquals(2, contentfulDataLoader.getEventTypes().size());
         }
     }
 
@@ -2806,19 +2807,23 @@ class ContentfulDataLoaderTest {
 
     @Test
     void iterateAllEntities() {
-        try (MockedStatic<ContentfulDataLoader> mockedStatic = Mockito.mockStatic(ContentfulDataLoader.class)) {
-            mockedStatic.when(ContentfulDataLoader::iterateAllEntities)
+        try (MockedStatic<ContentfulDataLoader> contentfulDataLoaderMockedStatic = Mockito.mockStatic(ContentfulDataLoader.class);
+             MockedStatic<CmsDataLoaderFactory> cmsDataLoaderFactoryMockedStatic = Mockito.mockStatic(CmsDataLoaderFactory.class)) {
+            contentfulDataLoaderMockedStatic.when(ContentfulDataLoader::iterateAllEntities)
                     .thenCallRealMethod();
-            mockedStatic.when(ContentfulDataLoader::getLocales)
+            contentfulDataLoaderMockedStatic.when(ContentfulDataLoader::getLocales)
                     .thenReturn(Collections.emptyList());
-            mockedStatic.when(ContentfulDataLoader::getEventTypesOld)
+            contentfulDataLoaderMockedStatic.when(() -> ContentfulDataLoader.getEvents(Mockito.anyString(), Mockito.any(LocalDate.class)))
                     .thenReturn(Collections.emptyList());
-            mockedStatic.when(() -> ContentfulDataLoader.getEvents(Mockito.anyString(), Mockito.any(LocalDate.class)))
+            contentfulDataLoaderMockedStatic.when(() -> ContentfulDataLoader.getSpeakers(Mockito.any(ContentfulDataLoader.ConferenceSpaceInfo.class), Mockito.anyString()))
                     .thenReturn(Collections.emptyList());
-            mockedStatic.when(() -> ContentfulDataLoader.getSpeakers(Mockito.any(ContentfulDataLoader.ConferenceSpaceInfo.class), Mockito.anyString()))
+            contentfulDataLoaderMockedStatic.when(() -> ContentfulDataLoader.getTalks(Mockito.any(ContentfulDataLoader.ConferenceSpaceInfo.class), Mockito.anyString(), Mockito.anyBoolean()))
                     .thenReturn(Collections.emptyList());
-            mockedStatic.when(() -> ContentfulDataLoader.getTalks(Mockito.any(ContentfulDataLoader.ConferenceSpaceInfo.class), Mockito.anyString(), Mockito.anyBoolean()))
-                    .thenReturn(Collections.emptyList());
+
+            CmsDataLoader cmsDataLoader = Mockito.mock(CmsDataLoader.class);
+            Mockito.when(cmsDataLoader.getEventTypes()).thenReturn(Collections.emptyList());
+            cmsDataLoaderFactoryMockedStatic.when(() -> CmsDataLoaderFactory.createDataLoader(Mockito.any(CmsType.class)))
+                    .thenReturn(cmsDataLoader);
 
             assertDoesNotThrow(ContentfulDataLoader::iterateAllEntities);
         }

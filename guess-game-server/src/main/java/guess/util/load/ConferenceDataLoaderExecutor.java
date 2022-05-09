@@ -6,10 +6,7 @@ import guess.domain.Identifier;
 import guess.domain.Language;
 import guess.domain.source.*;
 import guess.domain.source.image.UrlFilename;
-import guess.domain.source.load.LoadResult;
-import guess.domain.source.load.LoadSettings;
-import guess.domain.source.load.SpeakerLoadMaps;
-import guess.domain.source.load.SpeakerLoadResult;
+import guess.domain.source.load.*;
 import guess.util.ImageUtils;
 import guess.util.LocalizationUtils;
 import guess.util.yaml.YamlUtils;
@@ -49,20 +46,22 @@ public class ConferenceDataLoaderExecutor {
     /**
      * Loads all conference event types.
      *
+     * @param cmsType CMS Type
      * @throws IOException                if file creation error occurs
      * @throws SpeakerDuplicatedException if speaker duplicated
      * @throws IOException                if file creation error occurs
      * @throws SpeakerDuplicatedException if speaker duplicated
      * @throws NoSuchFieldException       if field name is invalid
      */
-    static void loadEventTypes() throws IOException, SpeakerDuplicatedException, NoSuchFieldException {
+    static void loadEventTypes(CmsType cmsType) throws IOException, SpeakerDuplicatedException, NoSuchFieldException {
         // Read event types from resource files
         var resourceSourceInformation = YamlUtils.readSourceInformation();
         List<EventType> resourceEventTypes = getConferences(resourceSourceInformation.getEventTypes());
         log.info("Event types (in resource files): {}", resourceEventTypes.size());
 
         // Read event types from CMS
-        List<EventType> contentfulEventTypes = getConferences(ContentfulDataLoader.getEventTypesOld());
+        CmsDataLoader cmsDataLoader = CmsDataLoaderFactory.createDataLoader(cmsType);
+        List<EventType> contentfulEventTypes = getConferences(cmsDataLoader.getEventTypes());
         log.info("Event types (in CMS): {}", contentfulEventTypes.size());
 
         // Find event types
@@ -140,28 +139,28 @@ public class ConferenceDataLoaderExecutor {
 
         eventTypes.forEach(
                 et -> {
-                    var resourceEventType = eventTypeMap.get(et.getConference());
+            var resourceEventType = eventTypeMap.get(et.getConference());
 
-                    if (resourceEventType == null) {
-                        // Event type not exists
-                        et.setId(lastEventTypeId.incrementAndGet());
+            if (resourceEventType == null) {
+                // Event type not exists
+                et.setId(lastEventTypeId.incrementAndGet());
 
-                        eventTypesToAppend.add(et);
-                    } else {
-                        // Event type exists
-                        et.setId(resourceEventType.getId());
-                        et.setShortDescription(resourceEventType.getShortDescription());
-                        et.setLogoFileName(resourceEventType.getLogoFileName());
+                eventTypesToAppend.add(et);
+            } else {
+                // Event type exists
+                et.setId(resourceEventType.getId());
+                et.setShortDescription(resourceEventType.getShortDescription());
+                et.setLogoFileName(resourceEventType.getLogoFileName());
 
-                        fillStringAttributeValue(resourceEventType::getSpeakerdeckLink, et::getSpeakerdeckLink, et::setSpeakerdeckLink);
-                        fillStringAttributeValue(resourceEventType::getHabrLink, et::getHabrLink, et::setHabrLink);
-                        fillStringAttributeValue(resourceEventType::getTimeZone, et::getTimeZone, et::setTimeZone);
+                fillStringAttributeValue(resourceEventType::getSpeakerdeckLink, et::getSpeakerdeckLink, et::setSpeakerdeckLink);
+                fillStringAttributeValue(resourceEventType::getHabrLink, et::getHabrLink, et::setHabrLink);
+                fillStringAttributeValue(resourceEventType::getTimeZone, et::getTimeZone, et::setTimeZone);
 
-                        if (ContentfulDataLoader.needUpdate(resourceEventType, et)) {
-                            // Event type need to update
-                            eventTypesToUpdate.add(et);
-                        }
-                    }
+                if (ContentfulDataLoader.needUpdate(resourceEventType, et)) {
+                    // Event type need to update
+                    eventTypesToUpdate.add(et);
+                }
+            }
                 }
         );
 
@@ -422,17 +421,17 @@ public class ConferenceDataLoaderExecutor {
 
         return talks.stream()
                 .filter(t -> {
-                    String enName = LocalizationUtils.getString(t.getName(), Language.ENGLISH).trim();
-                    String ruName = LocalizationUtils.getString(t.getName(), Language.RUSSIAN).trim();
+            String enName = LocalizationUtils.getString(t.getName(), Language.ENGLISH).trim();
+            String ruName = LocalizationUtils.getString(t.getName(), Language.RUSSIAN).trim();
 
-                    if (deletedTalks.contains(enName) || deletedTalks.contains(ruName)) {
+            if (deletedTalks.contains(enName) || deletedTalks.contains(ruName)) {
                         log.warn("Conference opening or closing talk is deleted, name: '{}', '{}', talkDay: {}, trackTime: {}, track: {}, language: {}",
                                 enName, ruName, t.getTalkDay(), t.getTrackTime(), t.getTrack(), t.getLanguage());
 
-                        return false;
-                    } else {
-                        return true;
-                    }
+                return false;
+            } else {
+                return true;
+            }
                 })
                 .toList();
     }
@@ -500,13 +499,13 @@ public class ConferenceDataLoaderExecutor {
         for (Speaker speaker : speakers) {
             Set<Long> ids = speaker.getCompanies().stream()
                     .filter(c -> {
-                        if ((c.getName() == null) || c.getName().isEmpty()) {
-                            return true;
-                        } else {
+                if ((c.getName() == null) || c.getName().isEmpty()) {
+                    return true;
+                } else {
                             return c.getName().stream()
                                     .map(LocaleItem::getText)
                                     .anyMatch(invalidCompanyNames::contains);
-                        }
+                }
                     })
                     .map(Company::getId)
                     .collect(Collectors.toSet());
@@ -890,8 +889,8 @@ public class ConferenceDataLoaderExecutor {
             // Event not exists
             talks.forEach(
                     t -> {
-                        t.setId(lastTalksId.incrementAndGet());
-                        talksToAppend.add(t);
+                t.setId(lastTalksId.incrementAndGet());
+                talksToAppend.add(t);
                     }
             );
         } else {
@@ -908,20 +907,20 @@ public class ConferenceDataLoaderExecutor {
                     ));
             talks.forEach(
                     t -> {
-                        var resourceTalk = findResourceTalk(t, resourceRuNameTalks, resourceEnNameTalks);
+                var resourceTalk = findResourceTalk(t, resourceRuNameTalks, resourceEnNameTalks);
 
-                        if (resourceTalk == null) {
-                            // Talk not exists
-                            t.setId(lastTalksId.incrementAndGet());
-                            talksToAppend.add(t);
-                        } else {
-                            // Talk exists
-                            t.setId(resourceTalk.getId());
+                if (resourceTalk == null) {
+                    // Talk not exists
+                    t.setId(lastTalksId.incrementAndGet());
+                    talksToAppend.add(t);
+                } else {
+                    // Talk exists
+                    t.setId(resourceTalk.getId());
 
-                            if (ContentfulDataLoader.needUpdate(resourceTalk, t)) {
-                                talksToUpdate.add(t);
-                            }
-                        }
+                    if (ContentfulDataLoader.needUpdate(resourceTalk, t)) {
+                        talksToUpdate.add(t);
+                    }
+                }
                     }
             );
 
