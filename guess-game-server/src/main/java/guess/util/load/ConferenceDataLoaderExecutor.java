@@ -30,6 +30,8 @@ import java.util.stream.Collectors;
 public class ConferenceDataLoaderExecutor {
     private static final Logger log = LoggerFactory.getLogger(ConferenceDataLoaderExecutor.class);
 
+    static final String RESOURCE_PHOTO_FILE_NAME_PATH = "guess-game-web/src/assets/images/speakers/%s";
+
     private ConferenceDataLoaderExecutor() {
     }
 
@@ -158,7 +160,7 @@ public class ConferenceDataLoaderExecutor {
                         fillStringAttributeValue(resourceEventType::getHabrLink, et::getHabrLink, et::setHabrLink);
                         fillStringAttributeValue(resourceEventType::getTimeZone, et::getTimeZone, et::setTimeZone);
 
-                        if (ContentfulDataLoader.needUpdate(resourceEventType, et)) {
+                        if (needUpdate(resourceEventType, et)) {
                             // Event type need to update
                             eventTypesToUpdate.add(et);
                         }
@@ -768,14 +770,14 @@ public class ConferenceDataLoaderExecutor {
                 fillSpeakerMvp(speaker, resourceSpeaker);
 
                 // Update speaker photo
-                if (ContentfulDataLoader.needPhotoUpdate(speaker.getPhotoUpdatedAt(), resourceSpeaker.getPhotoUpdatedAt(), targetPhotoUrl, resourcePhotoFileName)) {
+                if (needPhotoUpdate(speaker.getPhotoUpdatedAt(), resourceSpeaker.getPhotoUpdatedAt(), targetPhotoUrl, resourcePhotoFileName)) {
                     urlFilenamesToUpdate.add(new UrlFilename(targetPhotoUrl, resourcePhotoFileName));
                 }
 
                 fillUpdatedAt(speaker, resourceSpeaker);
 
                 // Update speaker
-                if (ContentfulDataLoader.needUpdate(resourceSpeaker, speaker)) {
+                if (needUpdate(resourceSpeaker, speaker)) {
                     speakersToUpdate.add(speaker);
                 }
             }
@@ -919,7 +921,7 @@ public class ConferenceDataLoaderExecutor {
                             // Talk exists
                             t.setId(resourceTalk.getId());
 
-                            if (ContentfulDataLoader.needUpdate(resourceTalk, t)) {
+                            if (needUpdate(resourceTalk, t)) {
                                 talksToUpdate.add(t);
                             }
                         }
@@ -984,7 +986,7 @@ public class ConferenceDataLoaderExecutor {
             // Place exists
             place.setId(resourcePlace.getId());
 
-            if (ContentfulDataLoader.needUpdate(resourcePlace, place)) {
+            if (needUpdate(resourcePlace, place)) {
                 placeToUpdate = place;
             }
         }
@@ -1011,7 +1013,7 @@ public class ConferenceDataLoaderExecutor {
         } else {
             fillEventTimeZone(event, resourceEvent);
 
-            if (ContentfulDataLoader.needUpdate(resourceEvent, event)) {
+            if (needUpdate(resourceEvent, event)) {
                 eventToUpdate = event;
             }
         }
@@ -1702,6 +1704,152 @@ public class ConferenceDataLoaderExecutor {
                 .map(c -> LocalizationUtils.getString(c.getName(), Language.ENGLISH))
                 .sorted()
                 .forEach(e -> log.info(LOG_FORMAT, number.incrementAndGet(), e));
+    }
+
+    /**
+     * Indicates the need to update event type.
+     *
+     * @param a first event type
+     * @param b second event type
+     * @return {@code true} if need to update, {@code false} otherwise
+     */
+    public static boolean needUpdate(EventType a, EventType b) {
+        return !((a.getId() == b.getId()) &&
+                (a.getConference() == b.getConference()) &&
+                equals(a.getLogoFileName(), b.getLogoFileName()) &&
+                equals(a.getName(), b.getName()) &&
+                equals(a.getShortDescription(), b.getShortDescription()) &&
+                equals(a.getLongDescription(), b.getLongDescription()) &&
+                equals(a.getSiteLink(), b.getSiteLink()) &&
+                equals(a.getVkLink(), b.getVkLink()) &&
+                equals(a.getTwitterLink(), b.getTwitterLink()) &&
+                equals(a.getFacebookLink(), b.getFacebookLink()) &&
+                equals(a.getYoutubeLink(), b.getYoutubeLink()) &&
+                equals(a.getTelegramLink(), b.getTelegramLink()) &&
+                equals(a.getSpeakerdeckLink(), b.getSpeakerdeckLink()) &&
+                equals(a.getHabrLink(), b.getHabrLink()) &&
+                equals(a.getOrganizer(), b.getOrganizer()) &&
+                equals(a.getTimeZone(), b.getTimeZone()));
+    }
+
+    /**
+     * Indicates the need to update place.
+     *
+     * @param a first place
+     * @param b second place
+     * @return {@code true} if need to update, {@code false} otherwise
+     */
+    public static boolean needUpdate(Place a, Place b) {
+        return !((a.getId() == b.getId()) &&
+                equals(a.getCity(), b.getCity()) &&
+                equals(a.getVenueAddress(), b.getVenueAddress()) &&
+                equals(a.getMapCoordinates(), b.getMapCoordinates()));
+    }
+
+    /**
+     * Indicates the need to update speaker.
+     *
+     * @param a first speaker
+     * @param b second speaker
+     * @return {@code true} if need to update, {@code false} otherwise
+     */
+    public static boolean needUpdate(Speaker a, Speaker b) {
+        return !((a.getId() == b.getId()) &&
+                equals(a.getPhotoFileName(), b.getPhotoFileName()) &&
+                equals(a.getPhotoUpdatedAt(), b.getPhotoUpdatedAt()) &&
+                equals(a.getName(), b.getName()) &&
+                equals(a.getCompanies(), b.getCompanies()) &&
+                equals(a.getBio(), b.getBio()) &&
+                equals(a.getTwitter(), b.getTwitter()) &&
+                equals(a.getGitHub(), b.getGitHub()) &&
+                equals(a.getHabr(), b.getHabr()) &&
+                (a.isJavaChampion() == b.isJavaChampion()) &&
+                (a.isMvp() == b.isMvp()) &&
+                (a.isMvpReconnect() == b.isMvpReconnect()));
+    }
+
+    /**
+     * Indicates the need to update talk.
+     *
+     * @param a first talk
+     * @param b second talk
+     * @return {@code true} if need to update, {@code false} otherwise
+     */
+    public static boolean needUpdate(Talk a, Talk b) {
+        return !((a.getId() == b.getId()) &&
+                equals(a.getName(), b.getName()) &&
+                equals(a.getShortDescription(), b.getShortDescription()) &&
+                equals(a.getLongDescription(), b.getLongDescription()) &&
+                equals(a.getTalkDay(), b.getTalkDay()) &&
+                equals(a.getTrackTime(), b.getTrackTime()) &&
+                equals(a.getTrack(), b.getTrack()) &&
+                equals(a.getLanguage(), b.getLanguage()) &&
+                equals(a.getPresentationLinks(), b.getPresentationLinks()) &&
+                equals(a.getMaterialLinks(), b.getMaterialLinks()) &&
+                equals(a.getVideoLinks(), b.getVideoLinks()) &&
+                equals(a.getSpeakerIds(), b.getSpeakerIds()));
+    }
+
+    /**
+     * Indicates the need to update event.
+     *
+     * @param a first event
+     * @param b second event
+     * @return {@code true} if need to update, {@code false} otherwise
+     */
+    public static boolean needUpdate(Event a, Event b) {
+        return !((a.getEventTypeId() == b.getEventTypeId()) &&
+                equals(a.getName(), b.getName()) &&
+                a.getStartDate().equals(b.getStartDate()) &&
+                a.getEndDate().equals(b.getEndDate()) &&
+                equals(a.getSiteLink(), b.getSiteLink()) &&
+                equals(a.getYoutubeLink(), b.getYoutubeLink()) &&
+                (a.getPlaceId() == b.getPlaceId()) &&
+                equals(a.getTalkIds(), b.getTalkIds()) &&
+                equals(a.getTimeZone(), b.getTimeZone()));
+    }
+
+    /**
+     * Indicates the need to update speaker photo.
+     *
+     * @param targetPhotoUpdatedAt   updated datetime of target speaker
+     * @param resourcePhotoUpdatedAt updated datetime of resource speaker
+     * @param targetPhotoUrl         photo URL of target speaker
+     * @param resourcePhotoFileName  photo filename of resource speaker
+     * @return {@code true} if need to update, {@code false} otherwise
+     * @throws IOException if read error occurs
+     */
+    public static boolean needPhotoUpdate(ZonedDateTime targetPhotoUpdatedAt, ZonedDateTime resourcePhotoUpdatedAt,
+                                          String targetPhotoUrl, String resourcePhotoFileName) throws IOException {
+        if (targetPhotoUpdatedAt == null) {
+            // New updated datetime is null
+            return ImageUtils.needUpdate(targetPhotoUrl, String.format(RESOURCE_PHOTO_FILE_NAME_PATH, resourcePhotoFileName));
+        } else {
+            // New updated datetime is not null
+            if (resourcePhotoUpdatedAt == null) {
+                // Old updated datetime is null
+                return true;
+            } else {
+                // New updated datetime after old
+                return targetPhotoUpdatedAt.isAfter(resourcePhotoUpdatedAt);
+            }
+        }
+    }
+
+    private static <T> boolean equals(T a, T b) {
+        return Objects.equals(a, b);
+    }
+
+    static <T> boolean equals(List<T> a, List<T> b) {
+        if (a != null) {
+            if (b != null) {
+                return (a.containsAll(b) && b.containsAll(a));
+            } else {
+                return false;
+            }
+        } else {
+            return (b == null);
+        }
     }
 
     public static void main(String[] args) throws IOException, SpeakerDuplicatedException, NoSuchFieldException {
