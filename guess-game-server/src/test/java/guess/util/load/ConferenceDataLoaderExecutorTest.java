@@ -364,12 +364,13 @@ class ConferenceDataLoaderExecutorTest {
             try (MockedStatic<CmsDataLoaderFactory> cmsDataLoaderFactoryMockedStatic = Mockito.mockStatic(CmsDataLoaderFactory.class);
                  MockedStatic<YamlUtils> yamlUtilsMockedStatic = Mockito.mockStatic(YamlUtils.class);
                  MockedStatic<LocalizationUtils> localizationUtilsMockedStatic = Mockito.mockStatic(LocalizationUtils.class);
-                 MockedStatic<ContentfulDataLoader> contentfulDataLoaderMockedStatic = Mockito.mockStatic(ContentfulDataLoader.class);
                  MockedStatic<ConferenceDataLoaderExecutor> conferenceDataLoaderExecutorMockedStatic = Mockito.mockStatic(ConferenceDataLoaderExecutor.class)) {
 
                 CmsDataLoader cmsDataLoader = Mockito.mock(CmsDataLoader.class);
                 Mockito.when(cmsDataLoader.getEvent(Mockito.any(Conference.class), Mockito.any(LocalDate.class)))
                         .thenReturn(contentfulEvent);
+                Mockito.when(cmsDataLoader.getTalks(Mockito.any(Conference.class), Mockito.anyString(), Mockito.anyBoolean()))
+                        .thenReturn(contentfulTalks);
                 cmsDataLoaderFactoryMockedStatic.when(() -> CmsDataLoaderFactory.createDataLoader(Mockito.any(LocalDate.class)))
                         .thenReturn(cmsDataLoader);
 
@@ -377,8 +378,6 @@ class ConferenceDataLoaderExecutorTest {
                         .thenReturn(sourceInformation);
                 localizationUtilsMockedStatic.when(() -> LocalizationUtils.getString(Mockito.nullable(List.class), Mockito.any(Language.class)))
                         .thenReturn("");
-                contentfulDataLoaderMockedStatic.when(() -> ContentfulDataLoader.getTalks(Mockito.any(Conference.class), Mockito.anyString(), Mockito.anyBoolean()))
-                        .thenReturn(contentfulTalks);
                 conferenceDataLoaderExecutorMockedStatic.when(() -> ConferenceDataLoaderExecutor.loadTalksSpeakersEvent(
                                 Mockito.any(Conference.class), Mockito.any(LocalDate.class), Mockito.anyString(), Mockito.any(LoadSettings.class)))
                         .thenCallRealMethod();

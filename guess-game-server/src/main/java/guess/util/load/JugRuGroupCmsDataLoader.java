@@ -3,6 +3,7 @@ package guess.util.load;
 import guess.domain.Conference;
 import guess.domain.source.Event;
 import guess.domain.source.EventType;
+import guess.domain.source.Talk;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -28,5 +29,11 @@ public class JugRuGroupCmsDataLoader implements CmsDataLoader {
     public Event getEvent(Conference conference, LocalDate startDate) {
         //TODO: implement
         return null;
+    }
+
+    @Override
+    public List<Talk> getTalks(Conference conference, String conferenceCode, boolean ignoreDemoStage) {
+        //TODO: implement
+        return Collections.emptyList();
     }
 }

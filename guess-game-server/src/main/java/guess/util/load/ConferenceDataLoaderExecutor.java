@@ -252,7 +252,7 @@ public class ConferenceDataLoaderExecutor {
                 contentfulEvent.getStartDate(), contentfulEvent.getEndDate());
 
         // Read talks from CMS
-        List<Talk> contentfulTalks = ContentfulDataLoader.getTalks(conference, conferenceCode, loadSettings.ignoreDemoStage());
+        List<Talk> contentfulTalks = cmsDataLoader.getTalks(conference, conferenceCode, loadSettings.ignoreDemoStage());
         log.info("Talks (in CMS): {}", contentfulTalks.size());
         contentfulTalks.forEach(
                 t -> log.trace("Talk: nameEn: '{}', name: '{}'",

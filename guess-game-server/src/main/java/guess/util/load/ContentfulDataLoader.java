@@ -768,7 +768,7 @@ public class ContentfulDataLoader implements CmsDataLoader {
      * @param ignoreDemoStage ignore demo stage talks
      * @return talks
      */
-    public static List<Talk> getTalks(Conference conference, String conferenceCode, boolean ignoreDemoStage) {
+    public List<Talk> getTalks(Conference conference, String conferenceCode, boolean ignoreDemoStage) {
         var conferenceSpaceInfo = CONFERENCE_SPACE_INFO_MAP.get(conference);
 
         return getTalks(conferenceSpaceInfo, conferenceCode, ignoreDemoStage);

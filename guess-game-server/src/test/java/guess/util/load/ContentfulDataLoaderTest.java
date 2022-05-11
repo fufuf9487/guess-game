@@ -686,7 +686,7 @@ class ContentfulDataLoaderTest {
                                     }
                                 }
                         );
-                
+
                 ContentfulDataLoader contentfulDataLoader = new ContentfulDataLoader();
 
                 if (expectedException == null) {
@@ -1157,13 +1157,13 @@ class ContentfulDataLoaderTest {
     @Test
     void testGetTalks() {
         try (MockedStatic<ContentfulDataLoader> mockedStatic = Mockito.mockStatic(ContentfulDataLoader.class)) {
-            mockedStatic.when(() -> ContentfulDataLoader.getTalks(Mockito.any(Conference.class), Mockito.anyString(), Mockito.anyBoolean()))
-                    .thenCallRealMethod();
             mockedStatic.when(() -> ContentfulDataLoader.getTalks(Mockito.any(ContentfulDataLoader.ConferenceSpaceInfo.class), Mockito.anyString(), Mockito.anyBoolean()))
                     .thenReturn(Collections.emptyList());
 
-            assertDoesNotThrow(() -> ContentfulDataLoader.getTalks(Conference.JPOINT, "code", true));
-            assertDoesNotThrow(() -> ContentfulDataLoader.getTalks(Conference.JPOINT, "code", false));
+            ContentfulDataLoader contentfulDataLoader = new ContentfulDataLoader();
+
+            assertDoesNotThrow(() -> contentfulDataLoader.getTalks(Conference.JPOINT, "code", true));
+            assertDoesNotThrow(() -> contentfulDataLoader.getTalks(Conference.JPOINT, "code", false));
         }
     }
 
