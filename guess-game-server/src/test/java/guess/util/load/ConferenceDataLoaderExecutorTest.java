@@ -361,22 +361,28 @@ class ConferenceDataLoaderExecutorTest {
                                     LoadSettings loadSettings, SourceInformation sourceInformation, Event contentfulEvent,
                                     List<Talk> contentfulTalks, List<Speaker> talkSpeakers, List<Company> speakerCompanies,
                                     Map<String, Company> resourceLowerNameCompanyMap) {
-            try (MockedStatic<YamlUtils> yamlUtilsMockedStatic = Mockito.mockStatic(YamlUtils.class);
+            try (MockedStatic<CmsDataLoaderFactory> cmsDataLoaderFactoryMockedStatic = Mockito.mockStatic(CmsDataLoaderFactory.class);
+                 MockedStatic<YamlUtils> yamlUtilsMockedStatic = Mockito.mockStatic(YamlUtils.class);
                  MockedStatic<LocalizationUtils> localizationUtilsMockedStatic = Mockito.mockStatic(LocalizationUtils.class);
-                 MockedStatic<ContentfulDataLoader> contentfulUtilsMockedStatic = Mockito.mockStatic(ContentfulDataLoader.class);
-                 MockedStatic<ConferenceDataLoaderExecutor> conferenceDataLoaderMockedStatic = Mockito.mockStatic(ConferenceDataLoaderExecutor.class)) {
+                 MockedStatic<ContentfulDataLoader> contentfulDataLoaderMockedStatic = Mockito.mockStatic(ContentfulDataLoader.class);
+                 MockedStatic<ConferenceDataLoaderExecutor> conferenceDataLoaderExecutorMockedStatic = Mockito.mockStatic(ConferenceDataLoaderExecutor.class)) {
+
+                CmsDataLoader cmsDataLoader = Mockito.mock(CmsDataLoader.class);
+                Mockito.when(cmsDataLoader.getEvent(Mockito.any(Conference.class), Mockito.any(LocalDate.class)))
+                        .thenReturn(contentfulEvent);
+                cmsDataLoaderFactoryMockedStatic.when(() -> CmsDataLoaderFactory.createDataLoader(Mockito.any(LocalDate.class)))
+                        .thenReturn(cmsDataLoader);
+
                 yamlUtilsMockedStatic.when(YamlUtils::readSourceInformation)
                         .thenReturn(sourceInformation);
                 localizationUtilsMockedStatic.when(() -> LocalizationUtils.getString(Mockito.nullable(List.class), Mockito.any(Language.class)))
                         .thenReturn("");
-                contentfulUtilsMockedStatic.when(() -> ContentfulDataLoader.getEvent(Mockito.any(Conference.class), Mockito.any(LocalDate.class)))
-                        .thenReturn(contentfulEvent);
-                contentfulUtilsMockedStatic.when(() -> ContentfulDataLoader.getTalks(Mockito.any(Conference.class), Mockito.anyString(), Mockito.anyBoolean()))
+                contentfulDataLoaderMockedStatic.when(() -> ContentfulDataLoader.getTalks(Mockito.any(Conference.class), Mockito.anyString(), Mockito.anyBoolean()))
                         .thenReturn(contentfulTalks);
-                conferenceDataLoaderMockedStatic.when(() -> ConferenceDataLoaderExecutor.loadTalksSpeakersEvent(
+                conferenceDataLoaderExecutorMockedStatic.when(() -> ConferenceDataLoaderExecutor.loadTalksSpeakersEvent(
                                 Mockito.any(Conference.class), Mockito.any(LocalDate.class), Mockito.anyString(), Mockito.any(LoadSettings.class)))
                         .thenCallRealMethod();
-                conferenceDataLoaderMockedStatic.when(() -> ConferenceDataLoaderExecutor.deleteInvalidTalks(Mockito.anyList(), Mockito.anySet()))
+                conferenceDataLoaderExecutorMockedStatic.when(() -> ConferenceDataLoaderExecutor.deleteInvalidTalks(Mockito.anyList(), Mockito.anySet()))
                         .thenAnswer(
                                 (Answer<List<Talk>>) invocation -> {
                                     Object[] args = invocation.getArguments();
@@ -384,7 +390,7 @@ class ConferenceDataLoaderExecutorTest {
                                     return (List<Talk>) args[0];
                                 }
                         );
-                conferenceDataLoaderMockedStatic.when(() -> ConferenceDataLoaderExecutor.deleteOpeningAndClosingTalks(Mockito.anyList()))
+                conferenceDataLoaderExecutorMockedStatic.when(() -> ConferenceDataLoaderExecutor.deleteOpeningAndClosingTalks(Mockito.anyList()))
                         .thenAnswer(
                                 (Answer<List<Talk>>) invocation -> {
                                     Object[] args = invocation.getArguments();
@@ -392,7 +398,7 @@ class ConferenceDataLoaderExecutorTest {
                                     return (List<Talk>) args[0];
                                 }
                         );
-                conferenceDataLoaderMockedStatic.when(() -> ConferenceDataLoaderExecutor.deleteTalkDuplicates(Mockito.anyList()))
+                conferenceDataLoaderExecutorMockedStatic.when(() -> ConferenceDataLoaderExecutor.deleteTalkDuplicates(Mockito.anyList()))
                         .thenAnswer(
                                 (Answer<List<Talk>>) invocation -> {
                                     Object[] args = invocation.getArguments();
@@ -400,25 +406,25 @@ class ConferenceDataLoaderExecutorTest {
                                     return (List<Talk>) args[0];
                                 }
                         );
-                conferenceDataLoaderMockedStatic.when(() -> ConferenceDataLoaderExecutor.getTalkSpeakers(Mockito.anyList()))
+                conferenceDataLoaderExecutorMockedStatic.when(() -> ConferenceDataLoaderExecutor.getTalkSpeakers(Mockito.anyList()))
                         .thenReturn(talkSpeakers);
-                conferenceDataLoaderMockedStatic.when(() -> ConferenceDataLoaderExecutor.getSpeakerCompanies(Mockito.anyList()))
+                conferenceDataLoaderExecutorMockedStatic.when(() -> ConferenceDataLoaderExecutor.getSpeakerCompanies(Mockito.anyList()))
                         .thenReturn(speakerCompanies);
-                conferenceDataLoaderMockedStatic.when(() -> ConferenceDataLoaderExecutor.getResourceLowerNameCompanyMap(Mockito.anyList()))
+                conferenceDataLoaderExecutorMockedStatic.when(() -> ConferenceDataLoaderExecutor.getResourceLowerNameCompanyMap(Mockito.anyList()))
                         .thenReturn(resourceLowerNameCompanyMap);
-                conferenceDataLoaderMockedStatic.when(() -> ConferenceDataLoaderExecutor.getLastId(Mockito.anyList()))
+                conferenceDataLoaderExecutorMockedStatic.when(() -> ConferenceDataLoaderExecutor.getLastId(Mockito.anyList()))
                         .thenReturn(42L);
-                conferenceDataLoaderMockedStatic.when(() -> ConferenceDataLoaderExecutor.getCompanyLoadResult(
+                conferenceDataLoaderExecutorMockedStatic.when(() -> ConferenceDataLoaderExecutor.getCompanyLoadResult(
                                 Mockito.anyList(), Mockito.anyMap(), Mockito.any()))
                         .thenReturn(new LoadResult<>(
                                 Collections.emptyList(),
                                 Collections.emptyList(),
                                 Collections.emptyList()));
-                conferenceDataLoaderMockedStatic.when(() -> ConferenceDataLoaderExecutor.getResourceNameCompanySpeakerMap(Mockito.anyList()))
+                conferenceDataLoaderExecutorMockedStatic.when(() -> ConferenceDataLoaderExecutor.getResourceNameCompanySpeakerMap(Mockito.anyList()))
                         .thenReturn(Collections.emptyMap());
-                conferenceDataLoaderMockedStatic.when(() -> ConferenceDataLoaderExecutor.getResourceNameSpeakersMap(Mockito.anyList()))
+                conferenceDataLoaderExecutorMockedStatic.when(() -> ConferenceDataLoaderExecutor.getResourceNameSpeakersMap(Mockito.anyList()))
                         .thenReturn(Collections.emptyMap());
-                conferenceDataLoaderMockedStatic.when(() -> ConferenceDataLoaderExecutor.getSpeakerLoadResult(
+                conferenceDataLoaderExecutorMockedStatic.when(() -> ConferenceDataLoaderExecutor.getSpeakerLoadResult(
                                 Mockito.anyList(), Mockito.any(SpeakerLoadMaps.class), Mockito.any()))
                         .thenReturn(new SpeakerLoadResult(
                                 new LoadResult<>(
@@ -429,15 +435,15 @@ class ConferenceDataLoaderExecutorTest {
                                         Collections.emptyList(),
                                         Collections.emptyList(),
                                         Collections.emptyList())));
-                conferenceDataLoaderMockedStatic.when(() -> ConferenceDataLoaderExecutor.getTalkLoadResult(
+                conferenceDataLoaderExecutorMockedStatic.when(() -> ConferenceDataLoaderExecutor.getTalkLoadResult(
                                 Mockito.anyList(), Mockito.any(Event.class), Mockito.anyList(), Mockito.any()))
                         .thenReturn(new LoadResult<>(
                                 Collections.emptyList(),
                                 Collections.emptyList(),
                                 Collections.emptyList()));
-                conferenceDataLoaderMockedStatic.when(() -> ConferenceDataLoaderExecutor.fixVenueAddress(Mockito.any(Place.class)))
+                conferenceDataLoaderExecutorMockedStatic.when(() -> ConferenceDataLoaderExecutor.fixVenueAddress(Mockito.any(Place.class)))
                         .thenReturn(Collections.emptyList());
-                conferenceDataLoaderMockedStatic.when(() -> ConferenceDataLoaderExecutor.findResourcePlace(
+                conferenceDataLoaderExecutorMockedStatic.when(() -> ConferenceDataLoaderExecutor.findResourcePlace(
                                 Mockito.any(Place.class), Mockito.anyMap(), Mockito.anyMap()))
                         .thenAnswer(
                                 (Answer<Place>) invocation -> {
@@ -446,13 +452,13 @@ class ConferenceDataLoaderExecutorTest {
                                     return (Place) args[0];
                                 }
                         );
-                conferenceDataLoaderMockedStatic.when(() -> ConferenceDataLoaderExecutor.getPlaceLoadResult(
+                conferenceDataLoaderExecutorMockedStatic.when(() -> ConferenceDataLoaderExecutor.getPlaceLoadResult(
                                 Mockito.any(Place.class), Mockito.any(Place.class), Mockito.any()))
                         .thenReturn(new LoadResult<>(
                                 null,
                                 null,
                                 null));
-                conferenceDataLoaderMockedStatic.when(() -> ConferenceDataLoaderExecutor.getEventLoadResult(Mockito.any(Event.class), Mockito.any(Event.class)))
+                conferenceDataLoaderExecutorMockedStatic.when(() -> ConferenceDataLoaderExecutor.getEventLoadResult(Mockito.any(Event.class), Mockito.any(Event.class)))
                         .thenReturn(new LoadResult<>(
                                 null,
                                 null,
@@ -1738,7 +1744,7 @@ class ConferenceDataLoaderExecutorTest {
         void getPlaceLoadResult(Place place, Place resourcePlace, AtomicLong lastPlaceId, LoadResult<Place> expected) {
             try (MockedStatic<ConferenceDataLoaderExecutor> mockedStatic = Mockito.mockStatic(ConferenceDataLoaderExecutor.class)) {
                 mockedStatic.when(() -> ConferenceDataLoaderExecutor.getPlaceLoadResult(Mockito.nullable(Place.class), Mockito.nullable(Place.class), Mockito.any()))
-                                .thenCallRealMethod();
+                        .thenCallRealMethod();
                 mockedStatic.when(() -> ConferenceDataLoaderExecutor.needUpdate(Mockito.any(Place.class), Mockito.any(Place.class)))
                         .thenAnswer(
                                 (Answer<Boolean>) invocation -> {

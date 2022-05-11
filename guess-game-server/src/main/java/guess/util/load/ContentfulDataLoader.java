@@ -439,7 +439,7 @@ public class ContentfulDataLoader implements CmsDataLoader {
      * @param startDate  start date
      * @return event
      */
-    public static Event getEvent(Conference conference, LocalDate startDate) {
+    public Event getEvent(Conference conference, LocalDate startDate) {
         var fixedEvent = fixNonexistentEventError(conference, startDate);
         if (fixedEvent != null) {
             return fixedEvent;

@@ -655,8 +655,6 @@ class ContentfulDataLoaderTest {
         @MethodSource("data")
         void getEvent(Conference conference, LocalDate startDate, List<Event> events, Class<? extends Throwable> expectedException, Event expectedEvent) {
             try (MockedStatic<ContentfulDataLoader> mockedStatic = Mockito.mockStatic(ContentfulDataLoader.class)) {
-                mockedStatic.when(() -> ContentfulDataLoader.getEvent(Mockito.any(Conference.class), Mockito.any(LocalDate.class)))
-                        .thenCallRealMethod();
                 mockedStatic.when(() -> ContentfulDataLoader.getEvents(Mockito.anyString(), Mockito.any(LocalDate.class)))
                         .thenReturn(events);
                 mockedStatic.when(() -> ContentfulDataLoader.fixNonexistentEventError(Mockito.any(Conference.class), Mockito.any(LocalDate.class)))
@@ -688,16 +686,18 @@ class ContentfulDataLoaderTest {
                                     }
                                 }
                         );
+                
+                ContentfulDataLoader contentfulDataLoader = new ContentfulDataLoader();
 
                 if (expectedException == null) {
-                    Event event = ContentfulDataLoader.getEvent(conference, startDate);
+                    Event event = contentfulDataLoader.getEvent(conference, startDate);
 
                     assertEquals(expectedEvent, event);
                     assertEquals(expectedEvent.getName(), event.getName());
                     assertEquals(expectedEvent.getStartDate(), event.getStartDate());
                     assertEquals(expectedEvent.getEndDate(), event.getEndDate());
                 } else {
-                    assertThrows(expectedException, () -> ContentfulDataLoader.getEvent(conference, startDate));
+                    assertThrows(expectedException, () -> contentfulDataLoader.getEvent(conference, startDate));
                 }
             }
         }

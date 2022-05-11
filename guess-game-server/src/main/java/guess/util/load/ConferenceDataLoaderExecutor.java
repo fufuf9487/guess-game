@@ -244,7 +244,8 @@ public class ConferenceDataLoaderExecutor {
         }
 
         // Read event from CMS
-        var contentfulEvent = ContentfulDataLoader.getEvent(conference, startDate);
+        var cmsDataLoader = CmsDataLoaderFactory.createDataLoader(startDate);
+        var contentfulEvent = cmsDataLoader.getEvent(conference, startDate);
         log.info("Event (in CMS): nameEn: {}, nameRu: {}, startDate: {}, endDate: {}",
                 LocalizationUtils.getString(contentfulEvent.getName(), Language.ENGLISH),
                 LocalizationUtils.getString(contentfulEvent.getName(), Language.RUSSIAN),

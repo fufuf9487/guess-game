@@ -1,7 +1,10 @@
 package guess.util.load;
 
+import guess.domain.Conference;
+import guess.domain.source.Event;
 import guess.domain.source.EventType;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -19,5 +22,11 @@ public class JugRuGroupCmsDataLoader implements CmsDataLoader {
     public List<EventType> getEventTypes() {
         //TODO: implement
         return Collections.emptyList();
+    }
+
+    @Override
+    public Event getEvent(Conference conference, LocalDate startDate) {
+        //TODO: implement
+        return null;
     }
 }
