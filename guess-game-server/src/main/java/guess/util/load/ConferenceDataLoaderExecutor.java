@@ -1602,7 +1602,7 @@ public class ConferenceDataLoaderExecutor {
                 LocalizationUtils.getString(place.getVenueAddress(), Language.RUSSIAN),
                 ruFixingVenueAddresses);
 
-        return ContentfulDataLoader.extractLocaleItems(enVenueAddress, ruVenueAddress, true);
+        return CmsDataLoader.extractLocaleItems(enVenueAddress, ruVenueAddress, true);
     }
 
     /**

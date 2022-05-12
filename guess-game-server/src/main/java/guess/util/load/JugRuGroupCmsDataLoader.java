@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Data loader of JUG Ru Group CMS.
  */
-public class JugRuGroupCmsDataLoader implements CmsDataLoader {
+public class JugRuGroupCmsDataLoader extends CmsDataLoader {
     @Override
     public Map<ContentfulDataLoader.ConferenceSpaceInfo, List<String>> getTags(String conferenceCodePrefix) {
         throw new UnsupportedOperationException();

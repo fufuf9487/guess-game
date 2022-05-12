@@ -736,20 +736,21 @@ class ContentfulDataLoaderTest {
 
     @Test
     void createSpeaker() {
-        try (MockedStatic<ContentfulDataLoader> mockedStatic = Mockito.mockStatic(ContentfulDataLoader.class)) {
-            mockedStatic.when(() -> ContentfulDataLoader.createSpeaker(
+        try (MockedStatic<ContentfulDataLoader> contentfulDataLoaderMockedStatic = Mockito.mockStatic(ContentfulDataLoader.class);
+             MockedStatic<CmsDataLoader> cmsDataLoaderMockedStatic = Mockito.mockStatic(CmsDataLoader.class)) {
+            contentfulDataLoaderMockedStatic.when(() -> ContentfulDataLoader.createSpeaker(
                             Mockito.any(ContentfulSpeaker.class), Mockito.anyMap(), Mockito.anySet(), Mockito.any(AtomicLong.class),
                             Mockito.any(AtomicLong.class), Mockito.anyBoolean()))
                     .thenCallRealMethod();
-            mockedStatic.when(() -> ContentfulDataLoader.extractPhoto(Mockito.nullable(ContentfulLink.class), Mockito.anyMap(), Mockito.anySet(), Mockito.nullable(String.class)))
+            contentfulDataLoaderMockedStatic.when(() -> ContentfulDataLoader.extractPhoto(Mockito.nullable(ContentfulLink.class), Mockito.anyMap(), Mockito.anySet(), Mockito.nullable(String.class)))
                     .thenReturn(new UrlDates(null, null, null));
-            mockedStatic.when(() -> ContentfulDataLoader.extractTwitter(Mockito.nullable(String.class)))
+            contentfulDataLoaderMockedStatic.when(() -> ContentfulDataLoader.extractTwitter(Mockito.nullable(String.class)))
                     .thenReturn(null);
-            mockedStatic.when(() -> ContentfulDataLoader.extractGitHub(Mockito.nullable(String.class)))
+            contentfulDataLoaderMockedStatic.when(() -> ContentfulDataLoader.extractGitHub(Mockito.nullable(String.class)))
                     .thenReturn(null);
-            mockedStatic.when(() -> ContentfulDataLoader.extractBoolean(Mockito.nullable(Boolean.class)))
+            contentfulDataLoaderMockedStatic.when(() -> ContentfulDataLoader.extractBoolean(Mockito.nullable(Boolean.class)))
                     .thenReturn(true);
-            mockedStatic.when(() -> ContentfulDataLoader.extractLocaleItems(Mockito.nullable(String.class), Mockito.nullable(String.class), Mockito.anyBoolean()))
+            cmsDataLoaderMockedStatic.when(() -> CmsDataLoader.extractLocaleItems(Mockito.nullable(String.class), Mockito.nullable(String.class), Mockito.anyBoolean()))
                     .thenReturn(Collections.emptyList());
 
             ContentfulSpeaker contentfulSpeaker = new ContentfulSpeaker();
@@ -803,10 +804,11 @@ class ContentfulDataLoaderTest {
         @MethodSource("data")
         void createCompanies(ContentfulSpeaker contentfulSpeaker, AtomicLong companyId, boolean checkEnTextExistence,
                              List<Company> expected) {
-            try (MockedStatic<ContentfulDataLoader> mockedStatic = Mockito.mockStatic(ContentfulDataLoader.class)) {
-                mockedStatic.when(() -> ContentfulDataLoader.createCompanies(Mockito.any(ContentfulSpeaker.class), Mockito.any(AtomicLong.class), Mockito.anyBoolean()))
+            try (MockedStatic<ContentfulDataLoader> contentfulDataLoaderMockedStatic = Mockito.mockStatic(ContentfulDataLoader.class);
+                 MockedStatic<CmsDataLoader> cmsDataLoaderMockedStatic = Mockito.mockStatic(CmsDataLoader.class)) {
+                contentfulDataLoaderMockedStatic.when(() -> ContentfulDataLoader.createCompanies(Mockito.any(ContentfulSpeaker.class), Mockito.any(AtomicLong.class), Mockito.anyBoolean()))
                         .thenCallRealMethod();
-                mockedStatic.when(() -> ContentfulDataLoader.extractLocaleItems(Mockito.nullable(String.class), Mockito.nullable(String.class), Mockito.anyBoolean()))
+                cmsDataLoaderMockedStatic.when(() -> CmsDataLoader.extractLocaleItems(Mockito.nullable(String.class), Mockito.nullable(String.class), Mockito.anyBoolean()))
                         .thenReturn(Collections.emptyList());
 
                 assertEquals(expected, ContentfulDataLoader.createCompanies(contentfulSpeaker, companyId, checkEnTextExistence));
@@ -1088,19 +1090,20 @@ class ContentfulDataLoaderTest {
     @Test
     @SuppressWarnings("unchecked")
     void createTalk() {
-        try (MockedStatic<ContentfulDataLoader> mockedStatic = Mockito.mockStatic(ContentfulDataLoader.class)) {
-            mockedStatic.when(() -> ContentfulDataLoader.createTalk(
+        try (MockedStatic<ContentfulDataLoader> contentfulDataLoaderMockedStatic = Mockito.mockStatic(ContentfulDataLoader.class);
+             MockedStatic<CmsDataLoader> cmsDataLoaderMockedStatic = Mockito.mockStatic(CmsDataLoader.class)) {
+            contentfulDataLoaderMockedStatic.when(() -> ContentfulDataLoader.createTalk(
                             Mockito.any(ContentfulTalk.class), Mockito.anyMap(), Mockito.anySet(), Mockito.anySet(), Mockito.anyMap(), Mockito.any(AtomicLong.class)))
                     .thenCallRealMethod();
-            mockedStatic.when(() -> ContentfulDataLoader.extractLocaleItems(Mockito.anyString(), Mockito.anyString(), Mockito.anyBoolean()))
-                    .thenReturn(Collections.emptyList());
-            mockedStatic.when(() -> ContentfulDataLoader.extractLanguage(Mockito.anyBoolean()))
+            contentfulDataLoaderMockedStatic.when(() -> ContentfulDataLoader.extractLanguage(Mockito.anyBoolean()))
                     .thenReturn(null);
-            mockedStatic.when(() -> ContentfulDataLoader.extractPresentationLinks(Mockito.anyList(), Mockito.anyMap(), Mockito.anySet(), Mockito.anyString()))
+            contentfulDataLoaderMockedStatic.when(() -> ContentfulDataLoader.extractPresentationLinks(Mockito.anyList(), Mockito.anyMap(), Mockito.anySet(), Mockito.anyString()))
                     .thenReturn(Collections.emptyList());
-            mockedStatic.when(() -> ContentfulDataLoader.combineContentfulLinks(Mockito.anyList(), Mockito.any(ContentfulLink.class)))
+            contentfulDataLoaderMockedStatic.when(() -> ContentfulDataLoader.combineContentfulLinks(Mockito.anyList(), Mockito.any(ContentfulLink.class)))
                     .thenReturn(Collections.emptyList());
-            mockedStatic.when(() -> ContentfulDataLoader.extractVideoLinks(Mockito.anyString()))
+            contentfulDataLoaderMockedStatic.when(() -> ContentfulDataLoader.extractVideoLinks(Mockito.anyString()))
+                    .thenReturn(Collections.emptyList());
+            cmsDataLoaderMockedStatic.when(() -> CmsDataLoader.extractLocaleItems(Mockito.anyString(), Mockito.anyString(), Mockito.anyBoolean()))
                     .thenReturn(Collections.emptyList());
 
             ContentfulSys contentfulSys0 = new ContentfulSys();
@@ -1311,7 +1314,6 @@ class ContentfulDataLoaderTest {
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     @DisplayName("getErrorSet method tests")
     class GetErrorSetTest {
-
         private Stream<Arguments> data() {
             ContentfulEventResponse response0 = new ContentfulEventResponse();
 
@@ -1355,52 +1357,6 @@ class ContentfulDataLoaderTest {
         @MethodSource("data")
         void getErrorSet(ContentfulResponse<?, ? extends ContentfulIncludes> response, String linkType, Set<String> expected) {
             assertEquals(expected, ContentfulDataLoader.getErrorSet(response, linkType));
-        }
-    }
-
-    @Nested
-    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    @DisplayName("extractString method tests")
-    class ExtractStringTest {
-        private Stream<Arguments> data() {
-            return Stream.of(
-                    arguments(null, false, null),
-                    arguments(null, true, null),
-                    arguments("", false, ""),
-                    arguments("", true, ""),
-                    arguments(" value0", false, "value0"),
-                    arguments(" value0", true, "value0"),
-                    arguments("value1 ", false, "value1"),
-                    arguments("value1 ", true, "value1"),
-                    arguments(" value2 ", false, "value2"),
-                    arguments(" value2 ", true, "value2"),
-                    arguments("value3  value4", false, "value3  value4"),
-                    arguments("value3  value4", true, "value3 value4")
-            );
-        }
-
-        @ParameterizedTest
-        @MethodSource("data")
-        void extractBoolean(String value, boolean removeDuplicateWhiteSpaces, String expected) {
-            assertEquals(expected, ContentfulDataLoader.extractString(value, removeDuplicateWhiteSpaces));
-        }
-    }
-
-    @Test
-    void extractString() {
-        final String SOURCE = "source";
-
-        try (MockedStatic<ContentfulDataLoader> mockedStatic = Mockito.mockStatic(ContentfulDataLoader.class)) {
-            mockedStatic.when(() -> ContentfulDataLoader.extractString(Mockito.anyString()))
-                    .thenCallRealMethod();
-            mockedStatic.when(() -> ContentfulDataLoader.extractString(Mockito.anyString(), Mockito.anyBoolean()))
-                    .thenReturn("42");
-
-            ContentfulDataLoader.extractString(SOURCE);
-
-            mockedStatic.verify(() -> ContentfulDataLoader.extractString(SOURCE), VerificationModeFactory.times(1));
-            mockedStatic.verify(() -> ContentfulDataLoader.extractString(SOURCE, false), VerificationModeFactory.times(1));
-            mockedStatic.verifyNoMoreInteractions();
         }
     }
 
@@ -1673,98 +1629,6 @@ class ContentfulDataLoaderTest {
                 assertEquals(expectedValue, ContentfulDataLoader.extractAssetUrl(value));
             } else {
                 assertThrows(expectedException, () -> ContentfulDataLoader.extractAssetUrl(value));
-            }
-        }
-    }
-
-    @Nested
-    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    @DisplayName("extractLocaleItems method tests")
-    class ExtractLocaleItemsTest {
-        private Stream<Arguments> data() {
-            return Stream.of(
-                    arguments(null, null, true, false, Collections.emptyList()),
-                    arguments(null, "", true, false, Collections.emptyList()),
-                    arguments("", null, true, false, Collections.emptyList()),
-                    arguments("", "", true, false, Collections.emptyList()),
-                    arguments("value0", null, true, false, List.of(
-                            new LocaleItem(
-                                    Language.ENGLISH.getCode(),
-                                    "value0"))),
-                    arguments("value0", "", true, false, List.of(
-                            new LocaleItem(
-                                    Language.ENGLISH.getCode(),
-                                    "value0"))),
-                    arguments("value0", "value0", true, false, List.of(
-                            new LocaleItem(
-                                    Language.ENGLISH.getCode(),
-                                    "value0"))),
-                    arguments("value0", "value1", true, false, List.of(
-                            new LocaleItem(
-                                    Language.ENGLISH.getCode(),
-                                    "value0"),
-                            new LocaleItem(
-                                    Language.RUSSIAN.getCode(),
-                                    "value1"))),
-                    arguments(null, "value1", true, false, List.of(
-                            new LocaleItem(
-                                    Language.RUSSIAN.getCode(),
-                                    "value1"))),
-                    arguments("", "value1", true, false, List.of(
-                            new LocaleItem(
-                                    Language.RUSSIAN.getCode(),
-                                    "value1"))),
-                    arguments(null, null, false, false, Collections.emptyList()),
-                    arguments(null, "", false, false, Collections.emptyList()),
-                    arguments("", null, false, false, Collections.emptyList()),
-                    arguments("", "", false, false, Collections.emptyList()),
-                    arguments("value0", null, false, false, List.of(
-                            new LocaleItem(
-                                    Language.ENGLISH.getCode(),
-                                    "value0"))),
-                    arguments("value0", "", false, false, List.of(
-                            new LocaleItem(
-                                    Language.ENGLISH.getCode(),
-                                    "value0"))),
-                    arguments("value0", "value0", false, false, List.of(
-                            new LocaleItem(
-                                    Language.ENGLISH.getCode(),
-                                    "value0"))),
-                    arguments("value0", "value1", false, false, List.of(
-                            new LocaleItem(
-                                    Language.ENGLISH.getCode(),
-                                    "value0"),
-                            new LocaleItem(
-                                    Language.RUSSIAN.getCode(),
-                                    "value1"))),
-                    arguments(null, "value1", false, false, List.of(
-                            new LocaleItem(
-                                    Language.RUSSIAN.getCode(),
-                                    "value1"))),
-                    arguments("", "value1", false, false, List.of(
-                            new LocaleItem(
-                                    Language.RUSSIAN.getCode(),
-                                    "value1"))),
-                    arguments("", "value1  value2", false, false, List.of(
-                            new LocaleItem(
-                                    Language.RUSSIAN.getCode(),
-                                    "value1  value2"))),
-                    arguments("", "value1  value2", false, true, List.of(
-                            new LocaleItem(
-                                    Language.RUSSIAN.getCode(),
-                                    "value1 value2")))
-            );
-        }
-
-        @ParameterizedTest
-        @MethodSource("data")
-        void extractLocaleItems(String enText, String ruText, boolean checkEnTextExistence, boolean removeDuplicateWhiteSpaces,
-                                List<LocaleItem> expected) {
-            assertEquals(expected, ContentfulDataLoader.extractLocaleItems(enText, ruText, checkEnTextExistence, removeDuplicateWhiteSpaces));
-
-            if (!removeDuplicateWhiteSpaces) {
-                assertEquals(expected, ContentfulDataLoader.extractLocaleItems(enText, ruText, checkEnTextExistence));
-                assertEquals(expected, ContentfulDataLoader.extractLocaleItems(enText, ruText));
             }
         }
     }
