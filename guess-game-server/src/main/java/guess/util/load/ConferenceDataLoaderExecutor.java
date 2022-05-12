@@ -389,6 +389,20 @@ public class ConferenceDataLoaderExecutor {
     }
 
     /**
+     * Loads talks, speakers, event information.
+     *
+     * @param conference conference
+     * @param startDate  start date
+     * @throws IOException                if resource files could not be opened
+     * @throws SpeakerDuplicatedException if speakers duplicated
+     * @throws NoSuchFieldException       if field name is invalid
+     */
+    static void loadTalksSpeakersEvent(Conference conference, LocalDate startDate)
+            throws IOException, SpeakerDuplicatedException, NoSuchFieldException {
+        loadTalksSpeakersEvent(conference, startDate, null);
+    }
+
+    /**
      * Deletes invalid talks.
      *
      * @param talks           talks
@@ -2094,13 +2108,13 @@ public class ConferenceDataLoaderExecutor {
 //                        "VideoTech 2021 Virtual Afterparty")));
 
         // 2022
-//        loadTalksSpeakersEvent(Conference.TECH_TRAIN, LocalDate.of(2022, 5, 14), null);
-//        loadTalksSpeakersEvent(Conference.MOBIUS, LocalDate.of(2022, 5, 25), null);
-//        loadTalksSpeakersEvent(Conference.HEISENBUG, LocalDate.of(2022, 5, 30), null);
-//        loadTalksSpeakersEvent(Conference.HYDRA, LocalDate.of(2022, 6, 2), null);
-//        loadTalksSpeakersEvent(Conference.CPP_RUSSIA, LocalDate.of(2022, 6, 6), null);
-//        loadTalksSpeakersEvent(Conference.HOLY_JS, LocalDate.of(2022, 6, 8), null);
-//        loadTalksSpeakersEvent(Conference.JPOINT, LocalDate.of(2022, 6, 13), null);
-//        loadTalksSpeakersEvent(Conference.DOT_NEXT, LocalDate.of(2022, 6, 16), null);
+        loadTalksSpeakersEvent(Conference.TECH_TRAIN, LocalDate.of(2022, 5, 14));
+//        loadTalksSpeakersEvent(Conference.MOBIUS, LocalDate.of(2022, 5, 25));
+//        loadTalksSpeakersEvent(Conference.HEISENBUG, LocalDate.of(2022, 5, 30));
+//        loadTalksSpeakersEvent(Conference.HYDRA, LocalDate.of(2022, 6, 2));
+//        loadTalksSpeakersEvent(Conference.CPP_RUSSIA, LocalDate.of(2022, 6, 6));
+//        loadTalksSpeakersEvent(Conference.HOLY_JS, LocalDate.of(2022, 6, 8));
+//        loadTalksSpeakersEvent(Conference.JPOINT, LocalDate.of(2022, 6, 13));
+//        loadTalksSpeakersEvent(Conference.DOT_NEXT, LocalDate.of(2022, 6, 16));
     }
 }
