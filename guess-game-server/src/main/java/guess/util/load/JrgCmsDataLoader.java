@@ -2,7 +2,7 @@ package guess.util.load;
 
 import guess.domain.Conference;
 import guess.domain.source.*;
-import guess.domain.source.cms.jugrugroupcms.talk.JrgCmsTalkResponse;
+import guess.domain.source.cms.jrgcms.talk.JrgCmsTalkResponse;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDate;
@@ -15,7 +15,7 @@ import static guess.util.load.ContentfulDataLoader.getRestTemplate;
 /**
  * Data loader of JUG Ru Group CMS.
  */
-public class JugRuGroupCmsDataLoader extends CmsDataLoader {
+public class JrgCmsDataLoader extends CmsDataLoader {
     private static final String BASE_URL = "https://speakers.jugru.org/api/v1/public/{entityName}";
     private static final String EVENTS_VARIABLE_VALUE = "events";
     

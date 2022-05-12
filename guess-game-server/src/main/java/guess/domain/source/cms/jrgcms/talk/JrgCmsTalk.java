@@ -1,4 +1,4 @@
-package guess.domain.source.cms.jugrugroupcms.talk;
+package guess.domain.source.cms.jrgcms.talk;
 
 public class JrgCmsTalk {
     private Long id;

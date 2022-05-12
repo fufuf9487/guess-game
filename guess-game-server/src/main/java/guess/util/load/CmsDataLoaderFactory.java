@@ -16,7 +16,7 @@ public class CmsDataLoaderFactory {
     static CmsDataLoader createDataLoader(CmsType cmsType) {
         return switch (cmsType) {
             case CONTENTFUL -> new ContentfulDataLoader();
-            case JUGRUGROUP_CMS -> new JugRuGroupCmsDataLoader();
+            case JUGRUGROUP_CMS -> new JrgCmsDataLoader();
             default -> throw new IllegalArgumentException(String.format("Unknown CMS type: %s", cmsType));
         };
     }
@@ -25,7 +25,7 @@ public class CmsDataLoaderFactory {
         if (startDate.isBefore(CONTENTFUL_AND_DATE)) {
             return new ContentfulDataLoader();
         } else {
-            return new JugRuGroupCmsDataLoader();
+            return new JrgCmsDataLoader();
         }
     }
 }
