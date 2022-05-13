@@ -173,6 +173,7 @@ public class ContentfulDataLoader extends CmsDataLoader {
         return restTemplate;
     }
 
+    @Override
     public Map<ConferenceSpaceInfo, List<String>> getTags(String conferenceCodePrefix) {
         Map<ConferenceSpaceInfo, List<String>> spaceTagsMap = new LinkedHashMap<>();
 
@@ -232,11 +233,7 @@ public class ContentfulDataLoader extends CmsDataLoader {
                 .toList();
     }
 
-    /**
-     * Gets event types.
-     *
-     * @return event types
-     */
+    @Override
     public List<EventType> getEventTypes() {
         // https://cdn.contentful.com/spaces/{spaceId}/entries?access_token={accessToken}&locale={locale}&content_type=eventsList&select={fields}&order={fields}&limit=1000
         UriComponentsBuilder builder = UriComponentsBuilder
@@ -432,13 +429,7 @@ public class ContentfulDataLoader extends CmsDataLoader {
                 .toLocalDate();
     }
 
-    /**
-     * Gets event.
-     *
-     * @param conference conference
-     * @param startDate  start date
-     * @return event
-     */
+    @Override
     public Event getEvent(Conference conference, LocalDate startDate) {
         var fixedEvent = fixNonexistentEventError(conference, startDate);
         if (fixedEvent != null) {
@@ -760,14 +751,7 @@ public class ContentfulDataLoader extends CmsDataLoader {
                 speakers);
     }
 
-    /**
-     * Gets talks
-     *
-     * @param conference      conference
-     * @param conferenceCode  conference code
-     * @param ignoreDemoStage ignore demo stage talks
-     * @return talks
-     */
+    @Override
     public List<Talk> getTalks(Conference conference, String conferenceCode, boolean ignoreDemoStage) {
         var conferenceSpaceInfo = CONFERENCE_SPACE_INFO_MAP.get(conference);
 

@@ -5,7 +5,7 @@ import java.util.List;
 public class JrgCmsTalkResponse {
     private Long total;
     private Long totalElements;
-    private List<JrgCmsTalkResponseData> data;
+    private List<JrgCmsActivity> data;
 
     public Long getTotal() {
         return total;
@@ -23,11 +23,11 @@ public class JrgCmsTalkResponse {
         this.totalElements = totalElements;
     }
 
-    public List<JrgCmsTalkResponseData> getData() {
+    public List<JrgCmsActivity> getData() {
         return data;
     }
 
-    public void setData(List<JrgCmsTalkResponseData> data) {
+    public void setData(List<JrgCmsActivity> data) {
         this.data = data;
     }
 }

@@ -21,12 +21,38 @@ import java.util.Objects;
 public abstract class CmsDataLoader {
     private static final Logger log = LoggerFactory.getLogger(ContentfulDataLoader.class);
 
+    /**
+     * Gets tags by conference code prefix.
+     *
+     * @param conferenceCodePrefix conference code prefix
+     * @return tags
+     */
     abstract Map<ContentfulDataLoader.ConferenceSpaceInfo, List<String>> getTags(String conferenceCodePrefix);
 
+    /**
+     * Gets event types.
+     *
+     * @return event types
+     */
     abstract List<EventType> getEventTypes();
 
+    /**
+     * Gets event.
+     *
+     * @param conference conference
+     * @param startDate  start date
+     * @return event
+     */
     abstract Event getEvent(Conference conference, LocalDate startDate);
 
+    /**
+     * Gets talks
+     *
+     * @param conference      conference
+     * @param conferenceCode  conference code
+     * @param ignoreDemoStage ignore demo stage talks
+     * @return talks
+     */
     abstract List<Talk> getTalks(Conference conference, String conferenceCode, boolean ignoreDemoStage);
 
     /**

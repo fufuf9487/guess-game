@@ -65,13 +65,13 @@ public class ConferenceDataLoaderExecutor {
 
         // Read event types from CMS
         CmsDataLoader cmsDataLoader = CmsDataLoaderFactory.createDataLoader(cmsType);
-        List<EventType> contentfulEventTypes = getConferences(cmsDataLoader.getEventTypes());
-        log.info("Event types (in CMS): {}", contentfulEventTypes.size());
+        List<EventType> cmsEventTypes = getConferences(cmsDataLoader.getEventTypes());
+        log.info("Event types (in CMS): {}", cmsEventTypes.size());
 
         // Find event types
         Map<Conference, EventType> resourceEventTypeMap = getResourceEventTypeMap(resourceEventTypes);
         var lastEventTypeId = new AtomicLong(getLastId(resourceSourceInformation.getEventTypes()));
-        LoadResult<List<EventType>> loadResult = getEventTypeLoadResult(contentfulEventTypes, resourceEventTypeMap, lastEventTypeId);
+        LoadResult<List<EventType>> loadResult = getEventTypeLoadResult(cmsEventTypes, resourceEventTypeMap, lastEventTypeId);
 
         // Save files
         saveEventTypes(loadResult);
@@ -245,34 +245,34 @@ public class ConferenceDataLoaderExecutor {
 
         // Read event from CMS
         var cmsDataLoader = CmsDataLoaderFactory.createDataLoader(startDate);
-        var contentfulEvent = cmsDataLoader.getEvent(conference, startDate);
+        var cmsEvent = cmsDataLoader.getEvent(conference, startDate);
         log.info("Event (in CMS): nameEn: {}, nameRu: {}, startDate: {}, endDate: {}",
-                LocalizationUtils.getString(contentfulEvent.getName(), Language.ENGLISH),
-                LocalizationUtils.getString(contentfulEvent.getName(), Language.RUSSIAN),
-                contentfulEvent.getStartDate(), contentfulEvent.getEndDate());
+                LocalizationUtils.getString(cmsEvent.getName(), Language.ENGLISH),
+                LocalizationUtils.getString(cmsEvent.getName(), Language.RUSSIAN),
+                cmsEvent.getStartDate(), cmsEvent.getEndDate());
 
         // Read talks from CMS
-        List<Talk> contentfulTalks = cmsDataLoader.getTalks(conference, conferenceCode, loadSettings.ignoreDemoStage());
-        log.info("Talks (in CMS): {}", contentfulTalks.size());
-        contentfulTalks.forEach(
+        List<Talk> cmsTalks = cmsDataLoader.getTalks(conference, conferenceCode, loadSettings.ignoreDemoStage());
+        log.info("Talks (in CMS): {}", cmsTalks.size());
+        cmsTalks.forEach(
                 t -> log.trace("Talk: nameEn: '{}', name: '{}'",
                         LocalizationUtils.getString(t.getName(), Language.ENGLISH),
                         LocalizationUtils.getString(t.getName(), Language.RUSSIAN))
         );
 
         // Delete invalid talks
-        contentfulTalks = deleteInvalidTalks(contentfulTalks, loadSettings.invalidTalksSet());
+        cmsTalks = deleteInvalidTalks(cmsTalks, loadSettings.invalidTalksSet());
 
         // Delete opening and closing talks
-        contentfulTalks = deleteOpeningAndClosingTalks(contentfulTalks);
+        cmsTalks = deleteOpeningAndClosingTalks(cmsTalks);
 
         // Delete talk duplicates
-        contentfulTalks = deleteTalkDuplicates(contentfulTalks);
+        cmsTalks = deleteTalkDuplicates(cmsTalks);
 
         // Order speakers with talk order
-        List<Speaker> contentfulSpeakers = getTalkSpeakers(contentfulTalks);
-        log.info("Speakers (in CMS): {}", contentfulSpeakers.size());
-        contentfulSpeakers.forEach(
+        List<Speaker> cmsSpeakers = getTalkSpeakers(cmsTalks);
+        log.info("Speakers (in CMS): {}", cmsSpeakers.size());
+        cmsSpeakers.forEach(
                 s -> log.trace("Speaker: nameEn: '{}', name: '{}'",
                         LocalizationUtils.getString(s.getName(), Language.ENGLISH),
                         LocalizationUtils.getString(s.getName(), Language.RUSSIAN))
@@ -280,17 +280,17 @@ public class ConferenceDataLoaderExecutor {
 
         // Delete invalid speaker companies
         Set<String> invalidCompanyNames = getInvalidCompanyNames(resourceSourceInformation.getCompanySynonyms());
-        deleteInvalidSpeakerCompanies(contentfulSpeakers, invalidCompanyNames);
+        deleteInvalidSpeakerCompanies(cmsSpeakers, invalidCompanyNames);
 
         // Split company group names
-        List<Company> contentfulCompanies = getSpeakerCompanies(contentfulSpeakers);
-        var firstCompanyId = new AtomicLong(getFirstId(contentfulCompanies));
-        splitCompanyGroupNames(contentfulSpeakers, resourceSourceInformation.getCompanyGroups(), firstCompanyId);
+        List<Company> cmsCompanies = getSpeakerCompanies(cmsSpeakers);
+        var firstCompanyId = new AtomicLong(getFirstId(cmsCompanies));
+        splitCompanyGroupNames(cmsSpeakers, resourceSourceInformation.getCompanyGroups(), firstCompanyId);
 
         // Order company with talk order
-        contentfulCompanies = getSpeakerCompanies(contentfulSpeakers);
-        log.info("Companies (in CMS): {}", contentfulCompanies.size());
-        contentfulCompanies.forEach(
+        cmsCompanies = getSpeakerCompanies(cmsSpeakers);
+        log.info("Companies (in CMS): {}", cmsCompanies.size());
+        cmsCompanies.forEach(
                 c -> log.trace("Company: nameEn: '{}', name: '{}'",
                         LocalizationUtils.getString(c.getName(), Language.ENGLISH),
                         LocalizationUtils.getString(c.getName(), Language.RUSSIAN))
@@ -302,12 +302,12 @@ public class ConferenceDataLoaderExecutor {
 
         var lastCompanyId = new AtomicLong(getLastId(resourceSourceInformation.getCompanies()));
         LoadResult<List<Company>> companyLoadResult = getCompanyLoadResult(
-                contentfulCompanies,
+                cmsCompanies,
                 resourceCompanyMap,
                 lastCompanyId);
 
         // Find speakers
-        fillCompanyIds(contentfulSpeakers);
+        fillCompanyIds(cmsSpeakers);
 
         Map<Long, Speaker> resourceSpeakerIdsMap = resourceSourceInformation.getSpeakers().stream()
                 .collect(Collectors.toMap(
@@ -318,7 +318,7 @@ public class ConferenceDataLoaderExecutor {
         Map<String, Set<Speaker>> resourceNameSpeakers = getResourceNameSpeakersMap(resourceSourceInformation.getSpeakers());
         var lastSpeakerId = new AtomicLong(getLastId(resourceSourceInformation.getSpeakers()));
         var speakerLoadResult = getSpeakerLoadResult(
-                contentfulSpeakers,
+                cmsSpeakers,
                 new SpeakerLoadMaps(
                         loadSettings.knownSpeakerIdsMap(),
                         resourceSpeakerIdsMap,
@@ -327,11 +327,11 @@ public class ConferenceDataLoaderExecutor {
                 lastSpeakerId);
 
         // Find talks
-        fillSpeakerIds(contentfulTalks);
+        fillSpeakerIds(cmsTalks);
 
         var lastTalksId = new AtomicLong(getLastId(resourceSourceInformation.getTalks()));
         LoadResult<List<Talk>> talkLoadResult = getTalkLoadResult(
-                contentfulTalks,
+                cmsTalks,
                 resourceEvent,
                 resourceSourceInformation.getEvents(),
                 lastTalksId);
@@ -351,23 +351,23 @@ public class ConferenceDataLoaderExecutor {
                                 LocalizationUtils.getString(p.getVenueAddress(), Language.ENGLISH).trim()),
                         p -> p
                 ));
-        var contentfulPlace = contentfulEvent.getPlace();
-        contentfulPlace.setVenueAddress(fixVenueAddress(contentfulPlace));
-        var resourcePlace = findResourcePlace(contentfulPlace, resourceRuCityVenueAddressPlaces, resourceEnCityVenueAddressPlaces);
+        var cmsPlace = cmsEvent.getPlace();
+        cmsPlace.setVenueAddress(fixVenueAddress(cmsPlace));
+        var resourcePlace = findResourcePlace(cmsPlace, resourceRuCityVenueAddressPlaces, resourceEnCityVenueAddressPlaces);
         var lastPlaceId = new AtomicLong(getLastId(resourceSourceInformation.getPlaces()));
-        LoadResult<Place> placeLoadResult = getPlaceLoadResult(contentfulPlace, resourcePlace, lastPlaceId);
+        LoadResult<Place> placeLoadResult = getPlaceLoadResult(cmsPlace, resourcePlace, lastPlaceId);
 
-        contentfulEvent.setPlaceId(contentfulPlace.getId());
+        cmsEvent.setPlaceId(cmsPlace.getId());
 
         // Find event
-        contentfulEvent.setEventType(resourceEventType);
-        contentfulEvent.setEventTypeId(resourceEventType.getId());
-        contentfulEvent.setTalks(contentfulTalks);
-        contentfulEvent.setTalkIds(contentfulTalks.stream()
+        cmsEvent.setEventType(resourceEventType);
+        cmsEvent.setEventTypeId(resourceEventType.getId());
+        cmsEvent.setTalks(cmsTalks);
+        cmsEvent.setTalkIds(cmsTalks.stream()
                 .map(Talk::getId)
                 .toList());
 
-        LoadResult<Event> eventLoadResult = getEventLoadResult(contentfulEvent, resourceEvent);
+        LoadResult<Event> eventLoadResult = getEventLoadResult(cmsEvent, resourceEvent);
 
         // Save files
         saveFiles(companyLoadResult, speakerLoadResult, talkLoadResult, placeLoadResult, eventLoadResult);
@@ -2108,7 +2108,7 @@ public class ConferenceDataLoaderExecutor {
 //                        "VideoTech 2021 Virtual Afterparty")));
 
         // 2022
-        loadTalksSpeakersEvent(Conference.TECH_TRAIN, LocalDate.of(2022, 5, 14));
+//        loadTalksSpeakersEvent(Conference.TECH_TRAIN, LocalDate.of(2022, 5, 14));
 //        loadTalksSpeakersEvent(Conference.MOBIUS, LocalDate.of(2022, 5, 25));
 //        loadTalksSpeakersEvent(Conference.HEISENBUG, LocalDate.of(2022, 5, 30));
 //        loadTalksSpeakersEvent(Conference.HYDRA, LocalDate.of(2022, 6, 2));

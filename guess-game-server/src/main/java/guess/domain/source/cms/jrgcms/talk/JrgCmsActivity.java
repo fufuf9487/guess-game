@@ -2,9 +2,18 @@ package guess.domain.source.cms.jrgcms.talk;
 
 import java.util.List;
 
-public class JrgCmsTalkResponseData {
+public class JrgCmsActivity {
+    private String type;
     private JrgCmsTalk data;
     private List<JrgCmsParticipant> participants;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public JrgCmsTalk getData() {
         return data;
