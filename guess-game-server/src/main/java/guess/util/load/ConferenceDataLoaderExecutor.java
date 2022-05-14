@@ -399,7 +399,22 @@ public class ConferenceDataLoaderExecutor {
      */
     static void loadTalksSpeakersEvent(Conference conference, LocalDate startDate)
             throws IOException, SpeakerDuplicatedException, NoSuchFieldException {
-        loadTalksSpeakersEvent(conference, startDate, null);
+        loadTalksSpeakersEvent(conference, startDate, null, LoadSettings.defaultSettings());
+    }
+
+    /**
+     * Loads talks, speakers, event information.
+     *
+     * @param conference   conference
+     * @param startDate    start date
+     * @param loadSettings load settings
+     * @throws IOException                if resource files could not be opened
+     * @throws SpeakerDuplicatedException if speakers duplicated
+     * @throws NoSuchFieldException       if field name is invalid
+     */
+    static void loadTalksSpeakersEvent(Conference conference, LocalDate startDate, LoadSettings loadSettings)
+            throws IOException, SpeakerDuplicatedException, NoSuchFieldException {
+        loadTalksSpeakersEvent(conference, startDate, null, loadSettings);
     }
 
     /**
@@ -2108,7 +2123,8 @@ public class ConferenceDataLoaderExecutor {
 //                        "VideoTech 2021 Virtual Afterparty")));
 
         // 2022
-//        loadTalksSpeakersEvent(Conference.TECH_TRAIN, LocalDate.of(2022, 5, 14));
+//        loadTalksSpeakersEvent(Conference.TECH_TRAIN, LocalDate.of(2022, 5, 14),
+//                LoadSettings.invalidTalksSet(Set.of("Открытие фестиваля TechTrain 2022 Spring", "Закрытие фестиваля TechTrain 2022 Spring")));
 //        loadTalksSpeakersEvent(Conference.MOBIUS, LocalDate.of(2022, 5, 25));
 //        loadTalksSpeakersEvent(Conference.HEISENBUG, LocalDate.of(2022, 5, 30));
 //        loadTalksSpeakersEvent(Conference.HYDRA, LocalDate.of(2022, 6, 2));

@@ -21,7 +21,6 @@ import static guess.util.load.ContentfulDataLoader.getRestTemplate;
 public class JrgCmsDataLoader extends CmsDataLoader {
     private static final String BASE_URL = "https://speakers.jugru.org/api/v1/public/{entityName}";
     private static final String EVENTS_VARIABLE_VALUE = "events";
-    private static final String UNDECIDED_ACTIVITY_TYPE = "UNDECIDED";
 
     @Override
     public Map<ContentfulDataLoader.ConferenceSpaceInfo, List<String>> getTags(String conferenceCodePrefix) {
@@ -86,16 +85,11 @@ public class JrgCmsDataLoader extends CmsDataLoader {
 
         return Objects.requireNonNull(response)
                 .getData().stream()
-                .filter(JrgCmsDataLoader::isValidActivity)
                 .map(JrgCmsActivity::getData)
                 .filter(t -> JrgCmsDataLoader.isValidTalk(t, ignoreDemoStage))
                 .map(t -> JrgCmsDataLoader.createTalk(t, talkId))
                 .toList();
 
-    }
-
-    static boolean isValidActivity(JrgCmsActivity activity) {
-        return !UNDECIDED_ACTIVITY_TYPE.equals(activity.getType());
     }
 
     static boolean isValidTalk(JrgCmsTalk jrgCmsTalk, boolean ignoreDemoStage) {
