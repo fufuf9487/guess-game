@@ -1,5 +1,7 @@
 package guess.domain.source.cms.jrgcms.talk;
 
+import guess.domain.source.cms.jrgcms.speaker.JrgCmsParticipant;
+
 import java.util.List;
 
 public class JrgCmsActivity {

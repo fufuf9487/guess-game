@@ -922,7 +922,7 @@ public class ContentfulDataLoader extends CmsDataLoader {
     static List<String> extractPresentationLinks(List<ContentfulLink> links, Map<String, ContentfulAsset> assetMap,
                                                  Set<String> assetErrorSet, String talkNameEn) {
         if (links == null) {
-            return Collections.emptyList();
+            return new ArrayList<>();
         }
 
         return links.stream()

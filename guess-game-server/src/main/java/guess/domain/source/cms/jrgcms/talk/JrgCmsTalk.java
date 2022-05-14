@@ -8,6 +8,7 @@ public class JrgCmsTalk {
     private Map<String, String> fullDescription;
     private String language;
     private JrgTalkOptions options;
+    private JrgTalkPresentation presentation;
 
     public Map<String, String> getTitle() {
         return title;
@@ -47,5 +48,13 @@ public class JrgCmsTalk {
 
     public void setOptions(JrgTalkOptions options) {
         this.options = options;
+    }
+
+    public JrgTalkPresentation getPresentation() {
+        return presentation;
+    }
+
+    public void setPresentation(JrgTalkPresentation presentation) {
+        this.presentation = presentation;
     }
 }

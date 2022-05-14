@@ -3,9 +3,11 @@ package guess.util.load;
 import guess.domain.Conference;
 import guess.domain.Language;
 import guess.domain.source.*;
+import guess.domain.source.cms.jrgcms.speaker.JrgCmsParticipant;
 import guess.domain.source.cms.jrgcms.talk.JrgCmsActivity;
 import guess.domain.source.cms.jrgcms.talk.JrgCmsTalk;
-import guess.domain.source.cms.jrgcms.talk.JrgCmsTalkResponse;
+import guess.domain.source.cms.jrgcms.talk.JrgCmsActivityResponse;
+import guess.domain.source.cms.jrgcms.talk.JrgTalkPresentation;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDate;
@@ -21,6 +23,10 @@ import static guess.util.load.ContentfulDataLoader.getRestTemplate;
 public class JrgCmsDataLoader extends CmsDataLoader {
     private static final String BASE_URL = "https://speakers.jugru.org/api/v1/public/{entityName}";
     private static final String EVENTS_VARIABLE_VALUE = "events";
+    private static final String SPEAKER_ROLE = "SPEAKER";
+
+    private static final String ENGLISH_TEXT_KEY = "en";
+    private static final String RUSSIAN_TEXT_KEY = "ru";
 
     @Override
     public Map<ContentfulDataLoader.ConferenceSpaceInfo, List<String>> getTags(String conferenceCodePrefix) {
@@ -80,26 +86,55 @@ public class JrgCmsDataLoader extends CmsDataLoader {
                 .buildAndExpand(EVENTS_VARIABLE_VALUE, 100130)
                 .encode()
                 .toUri();
-        JrgCmsTalkResponse response = getRestTemplate().getForObject(uri, JrgCmsTalkResponse.class);
+        JrgCmsActivityResponse response = getRestTemplate().getForObject(uri, JrgCmsActivityResponse.class);
         var talkId = new AtomicLong(-1);
+        Map<String, Speaker> speakerMap = getSpeakerMap(response, ignoreDemoStage);
 
         return Objects.requireNonNull(response)
                 .getData().stream()
-                .map(JrgCmsActivity::getData)
-                .filter(t -> JrgCmsDataLoader.isValidTalk(t, ignoreDemoStage))
-                .map(t -> JrgCmsDataLoader.createTalk(t, talkId))
+                .filter(a -> JrgCmsDataLoader.isValidTalk(a, ignoreDemoStage))
+                .map(a -> JrgCmsDataLoader.createTalk(a, speakerMap, talkId))
                 .toList();
 
     }
 
-    static boolean isValidTalk(JrgCmsTalk jrgCmsTalk, boolean ignoreDemoStage) {
+    static boolean isValidTalk(JrgCmsActivity jrgCmsActivity, boolean ignoreDemoStage) {
         return !ignoreDemoStage ||
-                ((jrgCmsTalk.getOptions().getDemoStage() == null) || !jrgCmsTalk.getOptions().getDemoStage());
+                ((jrgCmsActivity.getData().getOptions().getDemoStage() == null) || !jrgCmsActivity.getData().getOptions().getDemoStage());
     }
 
-    static Talk createTalk(JrgCmsTalk jrgCmsTalk, AtomicLong talkId) {
+    static boolean isValidSpeaker(JrgCmsParticipant jrgCmsParticipant) {
+        return SPEAKER_ROLE.equals(jrgCmsParticipant.getParticipation().getRole());
+    }
+
+    static Map<String, Speaker> getSpeakerMap(JrgCmsActivityResponse response, boolean ignoreDemoStage) {
+        var speakerId = new AtomicLong(-1);
+        var companyId = new AtomicLong(-1);
+
         //TODO: implement
-        List<Speaker> speakers = new ArrayList<>();
+        response.getData().stream()
+                .filter(a -> JrgCmsDataLoader.isValidTalk(a, ignoreDemoStage))
+                .forEach(a -> {
+                    a.getParticipants().stream()
+                            .filter(JrgCmsDataLoader::isValidSpeaker)
+                            .map(JrgCmsParticipant::getData)
+                            .forEach(s -> System.out.printf("Speaker id: %s\n", s.getId()));
+                });
+
+        return Collections.emptyMap();
+    }
+
+    static Talk createTalk(JrgCmsActivity jrgCmsActivity, Map<String, Speaker> speakerMap, AtomicLong talkId) {
+        JrgCmsTalk jrgCmsTalk = jrgCmsActivity.getData();
+        List<Speaker> speakers = jrgCmsActivity.getParticipants().stream()
+                .filter(JrgCmsDataLoader::isValidSpeaker)
+                .map(p -> {
+                    String speakerId = p.getData().getId();
+                    var speaker = speakerMap.get(speakerId);
+                    return Objects.requireNonNull(speaker,
+                            () -> String.format("Speaker id %s not found for '%s' talk", speakerId, jrgCmsTalk.getTitle().get(ENGLISH_TEXT_KEY)));
+                })
+                .toList();
 
         return new Talk(
                 new Descriptionable(
@@ -113,7 +148,7 @@ public class JrgCmsDataLoader extends CmsDataLoader {
                 1L,  //TODO: change
                 extractLanguage(jrgCmsTalk.getLanguage()),
                 new Talk.TalkLinks(
-                        new ArrayList<>(),    //TODO: fill (playlist?)
+                        extractPresentationLinks(jrgCmsTalk.getPresentation()),
                         new ArrayList<>(),    //TODO: fill (extra?)
                         new ArrayList<>()     //TODO: fill (video?)
                 ),
@@ -121,7 +156,7 @@ public class JrgCmsDataLoader extends CmsDataLoader {
     }
 
     static List<LocaleItem> extractLocaleItems(Map<String, String> texts) {
-        return extractLocaleItems(texts.get("en"), texts.get("ru"));
+        return extractLocaleItems(texts.get(ENGLISH_TEXT_KEY), texts.get(RUSSIAN_TEXT_KEY));
     }
 
     static String extractLanguage(String language) {
@@ -132,5 +167,15 @@ public class JrgCmsDataLoader extends CmsDataLoader {
         } else {
             return null;
         }
+    }
+
+    static List<String> extractPresentationLinks(JrgTalkPresentation presentation) {
+        if (presentation == null) {
+            return new ArrayList<>();
+        }
+
+        return presentation.getFiles().stream()
+                .map(f -> f.getLinks().getContent())
+                .toList();
     }
 }

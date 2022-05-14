@@ -2,7 +2,7 @@ package guess.domain.source.cms.jrgcms.talk;
 
 import java.util.List;
 
-public class JrgCmsTalkResponse {
+public class JrgCmsActivityResponse {
     private Long total;
     private Long totalElements;
     private List<JrgCmsActivity> data;
