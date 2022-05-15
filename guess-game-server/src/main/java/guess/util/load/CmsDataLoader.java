@@ -19,7 +19,7 @@ import java.util.Objects;
  * CMS data loader.
  */
 public abstract class CmsDataLoader {
-    private static final Logger log = LoggerFactory.getLogger(ContentfulDataLoader.class);
+    private static final Logger log = LoggerFactory.getLogger(CmsDataLoader.class);
 
     /**
      * Gets tags by conference code prefix.
@@ -147,5 +147,49 @@ public abstract class CmsDataLoader {
      */
     static List<LocaleItem> extractLocaleItems(String enText, String ruText) {
         return extractLocaleItems(enText, ruText, true);
+    }
+
+    /**
+     * Gets fixed name.
+     *
+     * @param name name
+     * @return fixed name
+     */
+    static String getSpeakerFixedName(String name) {
+        Map<String, String> fixedLastNames = Map.of("Аксенов", "Аксёнов", "Богачев", "Богачёв", "Горбачев", "Горбачёв",
+                "Королев", "Королёв", "Плетнев", "Плетнёв", "Пономарев", "Пономарёв",
+                "Толкачев", "Толкачёв", "Усачев", "Усачёв", "Федоров", "Фёдоров", "Шипилев", "Шипилёв");
+        Map<String, String> fixedFirstNames = Map.of("Алена", "Алёна", "Артем", "Артём",
+                "Петр", "Пётр", "Семен", "Семён", "Федор", "Фёдор");
+
+        if ((name == null) || name.isEmpty()) {
+            return name;
+        }
+
+        // Change last names
+        for (var fixedLastName : fixedLastNames.entrySet()) {
+            String nameWithFixedLastName = name.replaceAll(String.format("\\b%s$", fixedLastName.getKey()), fixedLastName.getValue());
+
+            if (!name.equals(nameWithFixedLastName)) {
+                log.warn("Speaker last name is changed; original: {}, changed: {}", name, nameWithFixedLastName);
+                name = nameWithFixedLastName;
+
+                break;
+            }
+        }
+
+        // Change first names
+        for (var fixedFirstName : fixedFirstNames.entrySet()) {
+            String nameWithFixedFirstName = name.replaceAll(String.format("^%s\\b", fixedFirstName.getKey()), fixedFirstName.getValue());
+
+            if (!name.equals(nameWithFixedFirstName)) {
+                log.warn("Speaker first name is changed; original: {}, changed: {}", name, nameWithFixedFirstName);
+                name = nameWithFixedFirstName;
+
+                break;
+            }
+        }
+
+        return name;
     }
 }

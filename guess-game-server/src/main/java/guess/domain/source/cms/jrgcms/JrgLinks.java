@@ -1,6 +1,6 @@
-package guess.domain.source.cms.jrgcms.talk;
+package guess.domain.source.cms.jrgcms;
 
-public class JrgTalkPresentationFileLinks {
+public class JrgLinks {
     private String content;
 
     public String getContent() {

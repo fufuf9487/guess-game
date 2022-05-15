@@ -552,7 +552,7 @@ public class ContentfulDataLoader extends CmsDataLoader {
 
             companies.add(new Company(
                     companyId.getAndDecrement(),
-                    extractLocaleItems(contentfulSpeaker.getFields().getCompanyEn(), contentfulSpeaker.getFields().getCompany(), checkEnTextExistence, true)));
+                    extractLocaleItems(enName, ruName, checkEnTextExistence, true)));
 
             return companies;
         } else {
@@ -1343,50 +1343,6 @@ public class ContentfulDataLoader extends CmsDataLoader {
                 entryErrorSet.remove(entryId);
             }
         }
-    }
-
-    /**
-     * Gets fixed name.
-     *
-     * @param name name
-     * @return fixed name
-     */
-    static String getSpeakerFixedName(String name) {
-        Map<String, String> fixedLastNames = Map.of("Богачев", "Богачёв", "Горбачев", "Горбачёв",
-                "Королев", "Королёв", "Плетнев", "Плетнёв", "Пономарев", "Пономарёв",
-                "Толкачев", "Толкачёв", "Усачев", "Усачёв", "Федоров", "Фёдоров", "Шипилев", "Шипилёв");
-        Map<String, String> fixedFirstNames = Map.of("Алена", "Алёна", "Артем", "Артём",
-                "Петр", "Пётр", "Семен", "Семён", "Федор", "Фёдор");
-
-        if ((name == null) || name.isEmpty()) {
-            return name;
-        }
-
-        // Change last names
-        for (var fixedLastName : fixedLastNames.entrySet()) {
-            String nameWithFixedLastName = name.replaceAll(String.format("\\b%s$", fixedLastName.getKey()), fixedLastName.getValue());
-
-            if (!name.equals(nameWithFixedLastName)) {
-                log.warn("Speaker last name is changed; original: {}, changed: {}", name, nameWithFixedLastName);
-                name = nameWithFixedLastName;
-
-                break;
-            }
-        }
-
-        // Change first names
-        for (var fixedFirstName : fixedFirstNames.entrySet()) {
-            String nameWithFixedFirstName = name.replaceAll(String.format("^%s\\b", fixedFirstName.getKey()), fixedFirstName.getValue());
-
-            if (!name.equals(nameWithFixedFirstName)) {
-                log.warn("Speaker first name is changed; original: {}, changed: {}", name, nameWithFixedFirstName);
-                name = nameWithFixedFirstName;
-
-                break;
-            }
-        }
-
-        return name;
     }
 
     public void iterateAllEntities() {
