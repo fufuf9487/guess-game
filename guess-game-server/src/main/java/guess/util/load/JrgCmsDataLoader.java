@@ -209,16 +209,16 @@ public class JrgCmsDataLoader extends CmsDataLoader {
     static String getSpeakerName(String lastName, String firstName) {
         String name = null;
 
-        if ((lastName != null) && !lastName.isEmpty()) {
-            name = lastName;
+        if ((firstName != null) && !firstName.isEmpty()) {
+            name = firstName;
         }
 
-        if ((firstName != null) && !firstName.isEmpty()) {
+        if ((lastName != null) && !lastName.isEmpty()) {
             if (name != null) {
                 name += " ";
-                name += firstName;
+                name += lastName;
             } else {
-                name = firstName;
+                name = lastName;
             }
         }
 
