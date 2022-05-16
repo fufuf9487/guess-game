@@ -35,6 +35,7 @@ public class JrgCmsDataLoader extends CmsDataLoader {
     private static final String BASE_URL = "https://speakers.jugru.org/api/v1/public/{entityName}";
     private static final String EVENTS_VARIABLE_VALUE = "events";
     private static final String SPEAKER_ROLE = "SPEAKER";
+    private static final String JAVA_CHAMPION_TITULUS = "Java Champion";
 
     private static final String TWITTER_CONTACT_TYPE = "twitter";
     private static final String GITHUB_CONTACT_TYPE = "github";
@@ -172,7 +173,7 @@ public class JrgCmsDataLoader extends CmsDataLoader {
                         null
                 ),
                 new Speaker.SpeakerDegrees(
-                        false,  //TODO: implement
+                        JAVA_CHAMPION_TITULUS.equals(jrgCmsSpeaker.getTitulus()),
                         false,  //TODO: implement
                         false  //TODO: implement
                 )

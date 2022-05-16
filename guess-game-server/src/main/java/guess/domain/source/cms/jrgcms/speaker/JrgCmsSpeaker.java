@@ -11,6 +11,7 @@ public class JrgCmsSpeaker {
     private List<JrgPhoto> photo;
     private Map<String, String> firstName;
     private Map<String, String> lastName;
+    private String titulus;
     private Map<String, String> company;
     private Map<String, String> description;
     private List<JrgContact> contacts;
@@ -45,6 +46,14 @@ public class JrgCmsSpeaker {
 
     public void setLastName(Map<String, String> lastName) {
         this.lastName = lastName;
+    }
+
+    public String getTitulus() {
+        return titulus;
+    }
+
+    public void setTitulus(String titulus) {
+        this.titulus = titulus;
     }
 
     public Map<String, String> getCompany() {
