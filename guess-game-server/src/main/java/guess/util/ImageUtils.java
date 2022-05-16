@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Map;
 
 /**
  * Image utility methods.
@@ -138,8 +139,30 @@ public class ImageUtils {
             }
         }
 
-        if (!ImageIO.write(image, "jpg", file)) {
+        BufferedImage fixedImage = fixImageType(image);
+
+        if (!ImageIO.write(fixedImage, "jpg", file)) {
             throw new IOException(String.format("Creation error for '%s' URL and '%s' file name", sourceUrl, destinationFileName));
+        }
+    }
+
+    /**
+     * Fixes image type by alpha channel information removing.
+     *
+     * @param image source image
+     * @return fixed image
+     */
+    public static BufferedImage fixImageType(BufferedImage image) {
+        Map<Integer, Integer> IMAGE_TYPES = Map.of(BufferedImage.TYPE_4BYTE_ABGR, BufferedImage.TYPE_3BYTE_BGR);
+        Integer newImageType = IMAGE_TYPES.get(image.getType());
+
+        if (newImageType != null) {
+            var newImage = new BufferedImage(image.getWidth(), image.getHeight(), newImageType);
+            newImage.createGraphics().drawImage(image, 0, 0, Color.WHITE, null);
+
+            return newImage;
+        } else {
+            return image;
         }
     }
 }
