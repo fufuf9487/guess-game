@@ -13,6 +13,7 @@ public class JrgCmsSpeaker {
     private Map<String, String> lastName;
     private Map<String, String> company;
     private Map<String, String> description;
+    private List<JrgContact> contacts;
 
     public String getId() {
         return id;
@@ -60,6 +61,14 @@ public class JrgCmsSpeaker {
 
     public void setDescription(Map<String, String> description) {
         this.description = description;
+    }
+
+    public List<JrgContact> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(List<JrgContact> contacts) {
+        this.contacts = contacts;
     }
 
     @Override

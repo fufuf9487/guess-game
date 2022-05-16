@@ -588,39 +588,6 @@ public class ContentfulDataLoader extends CmsDataLoader {
     }
 
     /**
-     * Extracts Twitter username.
-     *
-     * @param value source value
-     * @return extracted Twitter username
-     */
-    static String extractTwitter(String value) {
-        return extractProperty(value, new ExtractSet(
-                List.of(
-                        new ExtractPair("^[\\s]*[@]?(\\w{1,15})[\\s]*$", 1),
-                        new ExtractPair("^[\\s]*((http(s)?://)?twitter.com/)?(\\w{1,15})[\\s]*$", 4)),
-                "Invalid Twitter username: %s (change regular expression and rerun)"));
-    }
-
-    /**
-     * Extracts GitHub username.
-     *
-     * @param value source value
-     * @return extracted GitHub username
-     */
-    public static String extractGitHub(String value) {
-        if (value != null) {
-            value = value.replaceAll("\\.+", "-");
-        }
-
-        return extractProperty(value, new ExtractSet(
-                List.of(
-                        new ExtractPair("^[\\s]*((http(s)?://)?github.com/)?([a-zA-Z0-9\\-]+)(/)?[\\s]*$", 4),
-                        new ExtractPair("^[\\s]*((http(s)?://)?github.com/)?([a-zA-Z0-9\\-]+)/.+$", 4),
-                        new ExtractPair("^[\\s]*(http(s)?://)?([a-zA-Z0-9\\-]+).github.io/blog(/)?[\\s]*$", 3)),
-                "Invalid GitHub username: %s (change regular expressions and rerun)"));
-    }
-
-    /**
      * Gets speakers.
      *
      * @param conference     conference
@@ -847,35 +814,6 @@ public class ContentfulDataLoader extends CmsDataLoader {
      */
     static boolean extractBoolean(Boolean value) {
         return (value != null) && value;
-    }
-
-    /**
-     * Extracts value.
-     *
-     * @param value      source value
-     * @param extractSet extract set
-     * @return property
-     */
-    public static String extractProperty(String value, ExtractSet extractSet) {
-        if (value == null) {
-            return null;
-        }
-
-        value = value.trim();
-
-        if (value.isEmpty()) {
-            return value;
-        }
-
-        for (ExtractPair extractPair : extractSet.pairs()) {
-            var pattern = Pattern.compile(extractPair.patternRegex());
-            var matcher = pattern.matcher(value);
-            if (matcher.matches()) {
-                return matcher.group(extractPair.groupIndex());
-            }
-        }
-
-        throw new IllegalArgumentException(String.format(extractSet.exceptionMessage(), value));
     }
 
     /**

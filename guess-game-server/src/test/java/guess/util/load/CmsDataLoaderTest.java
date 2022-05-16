@@ -2,6 +2,8 @@ package guess.util.load;
 
 import guess.domain.Language;
 import guess.domain.source.LocaleItem;
+import guess.domain.source.extract.ExtractPair;
+import guess.domain.source.extract.ExtractSet;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -18,6 +20,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 @DisplayName("CmsDataLoaderTest class tests")
@@ -182,6 +185,146 @@ class CmsDataLoaderTest {
         @MethodSource("data")
         void getSpeakerFixedName(String name, String expected) {
             assertEquals(expected, ContentfulDataLoader.getSpeakerFixedName(name));
+        }
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DisplayName("extractProperty method tests")
+    class ExtractPropertyTest {
+        private Stream<Arguments> data() {
+            return Stream.of(
+                    arguments("abc", new ExtractSet(
+                                    List.of(new ExtractPair("([a-z]+)", 1)),
+                                    "Invalid property: %s"),
+                            null, "abc"),
+                    arguments("abc", new ExtractSet(
+                                    List.of(new ExtractPair("^[\\s]*([a-z]+)[\\s]*$", 1)),
+                                    "Invalid property: %s"),
+                            null, "abc"),
+                    arguments(" abc", new ExtractSet(
+                                    List.of(new ExtractPair("^[\\s]*([a-z]+)[\\s]*$", 1)),
+                                    "Invalid property: %s"),
+                            null, "abc"),
+                    arguments("abc ", new ExtractSet(
+                                    List.of(new ExtractPair("^[\\s]*([a-z]+)[\\s]*$", 1)),
+                                    "Invalid property: %s"),
+                            null, "abc"),
+                    arguments(" abc ", new ExtractSet(
+                                    List.of(new ExtractPair("^[\\s]*([a-z]+)[\\s]*$", 1)),
+                                    "Invalid property: %s"),
+                            null, "abc"),
+                    arguments("42", new ExtractSet(
+                                    List.of(new ExtractPair("([a-z]+)", 1)),
+                                    "Invalid property: %s"),
+                            IllegalArgumentException.class, null),
+                    arguments("42", new ExtractSet(
+                                    List.of(new ExtractPair("^[\\s]*([a-z]+)[\\s]*$", 1)),
+                                    "Invalid property: %s"),
+                            IllegalArgumentException.class, null),
+                    arguments(" 42", new ExtractSet(
+                                    List.of(new ExtractPair("^[\\s]*([a-z]+)[\\s]*$", 1)),
+                                    "Invalid property: %s"),
+                            IllegalArgumentException.class, null),
+                    arguments("42 ", new ExtractSet(
+                                    List.of(new ExtractPair("^[\\s]*([a-z]+)[\\s]*$", 1)),
+                                    "Invalid property: %s"),
+                            IllegalArgumentException.class, null),
+                    arguments(" 42 ", new ExtractSet(
+                                    List.of(new ExtractPair("^[\\s]*([a-z]+)[\\s]*$", 1)),
+                                    "Invalid property: %s"),
+                            IllegalArgumentException.class, null)
+            );
+        }
+
+        @ParameterizedTest
+        @MethodSource("data")
+        void extractProperty(String value, ExtractSet extractSet, Class<? extends Throwable> expectedException, String expectedValue) {
+            if (expectedException == null) {
+                assertEquals(expectedValue, ContentfulDataLoader.extractProperty(value, extractSet));
+            } else {
+                assertThrows(expectedException, () -> ContentfulDataLoader.extractProperty(value, extractSet));
+            }
+        }
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DisplayName("extractTwitter method tests")
+    class ExtractTwitterTest {
+        private Stream<Arguments> data() {
+            return Stream.of(
+                    arguments(null, null, null),
+                    arguments("", null, ""),
+                    arguments(" ", null, ""),
+                    arguments("arungupta", null, "arungupta"),
+                    arguments(" arungupta", null, "arungupta"),
+                    arguments("arungupta ", null, "arungupta"),
+                    arguments(" arungupta ", null, "arungupta"),
+                    arguments("tagir_valeev", null, "tagir_valeev"),
+                    arguments("kuksenk0", null, "kuksenk0"),
+                    arguments("DaschnerS", null, "DaschnerS"),
+                    arguments("@dougqh", null, "dougqh"),
+                    arguments("42", null, "42"),
+                    arguments("@42", null, "42"),
+                    arguments("https://twitter.com/_bravit", null, "_bravit"),
+                    arguments("%", IllegalArgumentException.class, null),
+                    arguments("%42", IllegalArgumentException.class, null),
+                    arguments("%dougqh", IllegalArgumentException.class, null),
+                    arguments("dougqh%", IllegalArgumentException.class, null),
+                    arguments("dou%gqh", IllegalArgumentException.class, null)
+            );
+        }
+
+        @ParameterizedTest
+        @MethodSource("data")
+        void extractTwitter(String value, Class<? extends Throwable> expectedException, String expectedValue) {
+            if (expectedException == null) {
+                assertEquals(expectedValue, ContentfulDataLoader.extractTwitter(value));
+            } else {
+                assertThrows(expectedException, () -> ContentfulDataLoader.extractTwitter(value));
+            }
+        }
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DisplayName("extractGitHub method tests")
+    class ExtractGitHubTest {
+        private Stream<Arguments> data() {
+            return Stream.of(
+                    arguments(null, null, null),
+                    arguments("", null, ""),
+                    arguments(" ", null, ""),
+                    arguments("cloudkserg", null, "cloudkserg"),
+                    arguments(" cloudkserg", null, "cloudkserg"),
+                    arguments("cloudkserg ", null, "cloudkserg"),
+                    arguments(" cloudkserg ", null, "cloudkserg"),
+                    arguments("pjBooms", null, "pjBooms"),
+                    arguments("andre487", null, "andre487"),
+                    arguments("Marina-Miranovich", null, "Marina-Miranovich"),
+                    arguments("https://github.com/inponomarev", null, "inponomarev"),
+                    arguments("http://github.com/inponomarev", null, "inponomarev"),
+                    arguments("https://niquola.github.io/blog/", null, "niquola"),
+                    arguments("http://niquola.github.io/blog/", null, "niquola"),
+                    arguments("https://github.com/Drill4J/realworld-java-and-js-coverage", null, "Drill4J"),
+                    arguments("%", IllegalArgumentException.class, null),
+                    arguments("%42", IllegalArgumentException.class, null),
+                    arguments("%dougqh", IllegalArgumentException.class, null),
+                    arguments("dougqh%", IllegalArgumentException.class, null),
+                    arguments("dou%gqh", IllegalArgumentException.class, null),
+                    arguments("anton.okolelov", null, "anton-okolelov")
+            );
+        }
+
+        @ParameterizedTest
+        @MethodSource("data")
+        void extractGitHub(String value, Class<? extends Throwable> expectedException, String expectedValue) {
+            if (expectedException == null) {
+                assertEquals(expectedValue, ContentfulDataLoader.extractGitHub(value));
+            } else {
+                assertThrows(IllegalArgumentException.class, () -> ContentfulDataLoader.extractGitHub(value));
+            }
         }
     }
 }

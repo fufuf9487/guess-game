@@ -6,6 +6,7 @@ import guess.domain.source.*;
 import guess.domain.source.cms.jrgcms.JrgPhoto;
 import guess.domain.source.cms.jrgcms.speaker.JrgCmsParticipant;
 import guess.domain.source.cms.jrgcms.speaker.JrgCmsSpeaker;
+import guess.domain.source.cms.jrgcms.speaker.JrgContact;
 import guess.domain.source.cms.jrgcms.talk.JrgCmsActivity;
 import guess.domain.source.cms.jrgcms.talk.JrgCmsActivityResponse;
 import guess.domain.source.cms.jrgcms.talk.JrgCmsTalk;
@@ -20,6 +21,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static guess.util.load.ContentfulDataLoader.getRestTemplate;
@@ -33,6 +35,9 @@ public class JrgCmsDataLoader extends CmsDataLoader {
     private static final String BASE_URL = "https://speakers.jugru.org/api/v1/public/{entityName}";
     private static final String EVENTS_VARIABLE_VALUE = "events";
     private static final String SPEAKER_ROLE = "SPEAKER";
+
+    private static final String TWITTER_CONTACT_TYPE = "twitter";
+    private static final String GITHUB_CONTACT_TYPE = "github";
 
     private static final String ENGLISH_TEXT_KEY = "en";
     private static final String RUSSIAN_TEXT_KEY = "ru";
@@ -144,6 +149,13 @@ public class JrgCmsDataLoader extends CmsDataLoader {
         List<LocaleItem> firstName = extractLocaleItems(jrgCmsSpeaker.getFirstName());
         String enSpeakerName = getSpeakerName(lastName, firstName, Language.ENGLISH);
         String ruSpeakerName = getSpeakerFixedName(getSpeakerName(lastName, firstName, Language.RUSSIAN));
+        Map<String, JrgContact> contactMap = jrgCmsSpeaker.getContacts().stream()
+                .collect(Collectors.toMap(
+                        JrgContact::getType,
+                        c -> c
+                ));
+        String twitter = extractContactValue(contactMap, TWITTER_CONTACT_TYPE, CmsDataLoader::extractTwitter);
+        String gitHub = extractContactValue(contactMap, GITHUB_CONTACT_TYPE, CmsDataLoader::extractGitHub);
 
         return new Speaker(
                 speakerId.getAndDecrement(),
@@ -155,8 +167,8 @@ public class JrgCmsDataLoader extends CmsDataLoader {
                 createCompanies(jrgCmsSpeaker, companyId, checkEnTextExistence),
                 extractLocaleItems(jrgCmsSpeaker.getDescription(), checkEnTextExistence),
                 new Speaker.SpeakerSocials(
-                        null,   //TODO: implement
-                        null,   //TODO: implement
+                        twitter,
+                        gitHub,
                         null
                 ),
                 new Speaker.SpeakerDegrees(
@@ -288,5 +300,12 @@ public class JrgCmsDataLoader extends CmsDataLoader {
         } else {
             return new ArrayList<>();
         }
+    }
+
+    static String extractContactValue(Map<String, JrgContact> contactMap, String type, Function<String, String> extractFunction) {
+        JrgContact jrgContact = contactMap.get(type);
+
+        return ((jrgContact != null) && (jrgContact.getValue() != null) && !jrgContact.getValue().isEmpty()) ?
+                extractFunction.apply(jrgContact.getValue()) : null;
     }
 }
