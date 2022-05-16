@@ -56,6 +56,13 @@ public abstract class CmsDataLoader {
     abstract List<Talk> getTalks(Conference conference, String conferenceCode, boolean ignoreDemoStage);
 
     /**
+     * Gets name of image width parameter.
+     * 
+     * @return name of image width parameter
+     */
+    abstract String getImageWidthParameterName();
+
+    /**
      * Extracts string, i.e. trims not null string.
      *
      * @param value                      source value

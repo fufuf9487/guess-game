@@ -324,7 +324,8 @@ public class ConferenceDataLoaderExecutor {
                         resourceSpeakerIdsMap,
                         resourceNameCompanySpeakers,
                         resourceNameSpeakers),
-                lastSpeakerId);
+                lastSpeakerId,
+                cmsDataLoader.getImageWidthParameterName());
 
         // Find talks
         fillSpeakerIds(cmsTalks);
@@ -370,7 +371,8 @@ public class ConferenceDataLoaderExecutor {
         LoadResult<Event> eventLoadResult = getEventLoadResult(cmsEvent, resourceEvent);
 
         // Save files
-        saveFiles(companyLoadResult, speakerLoadResult, talkLoadResult, placeLoadResult, eventLoadResult);
+        saveFiles(companyLoadResult, speakerLoadResult, talkLoadResult, placeLoadResult, eventLoadResult,
+                cmsDataLoader.getImageWidthParameterName());
     }
 
     /**
@@ -758,14 +760,15 @@ public class ConferenceDataLoaderExecutor {
     /**
      * Gets load result for speakers.
      *
-     * @param speakers        speakers
-     * @param speakerLoadMaps speaker load maps
-     * @param lastSpeakerId   identifier of last speaker
+     * @param speakers                speakers
+     * @param speakerLoadMaps         speaker load maps
+     * @param lastSpeakerId           identifier of last speaker
+     * @param imageWidthParameterName name of image width parameter
      * @return load result for speakers
      * @throws IOException if read error occurs
      */
     static SpeakerLoadResult getSpeakerLoadResult(List<Speaker> speakers, SpeakerLoadMaps speakerLoadMaps,
-                                                  AtomicLong lastSpeakerId) throws IOException {
+                                                  AtomicLong lastSpeakerId, String imageWidthParameterName) throws IOException {
         List<Speaker> speakersToAppend = new ArrayList<>();
         List<Speaker> speakersToUpdate = new ArrayList<>();
         List<UrlFilename> urlFilenamesToAppend = new ArrayList<>();
@@ -800,7 +803,8 @@ public class ConferenceDataLoaderExecutor {
                 fillSpeakerMvp(speaker, resourceSpeaker);
 
                 // Update speaker photo
-                if (needPhotoUpdate(speaker.getPhotoUpdatedAt(), resourceSpeaker.getPhotoUpdatedAt(), targetPhotoUrl, resourcePhotoFileName)) {
+                if (needPhotoUpdate(speaker.getPhotoUpdatedAt(), resourceSpeaker.getPhotoUpdatedAt(), targetPhotoUrl,
+                        resourcePhotoFileName, imageWidthParameterName)) {
                     urlFilenamesToUpdate.add(new UrlFilename(targetPhotoUrl, resourcePhotoFileName));
                 }
 
@@ -1070,16 +1074,18 @@ public class ConferenceDataLoaderExecutor {
     /**
      * Saves files.
      *
-     * @param companyLoadResult company load result
-     * @param speakerLoadResult speaker load result
-     * @param talkLoadResult    talk load result
-     * @param placeLoadResult   place load result
-     * @param eventLoadResult   event load result
+     * @param companyLoadResult       company load result
+     * @param speakerLoadResult       speaker load result
+     * @param talkLoadResult          talk load result
+     * @param placeLoadResult         place load result
+     * @param eventLoadResult         event load result
+     * @param imageWidthParameterName name of image width parameter
      * @throws IOException          if file creation error occurs
      * @throws NoSuchFieldException if field name is invalid
      */
     static void saveFiles(LoadResult<List<Company>> companyLoadResult, SpeakerLoadResult speakerLoadResult, LoadResult<List<Talk>> talkLoadResult,
-                          LoadResult<Place> placeLoadResult, LoadResult<Event> eventLoadResult) throws IOException, NoSuchFieldException {
+                          LoadResult<Place> placeLoadResult, LoadResult<Event> eventLoadResult,
+                          String imageWidthParameterName) throws IOException, NoSuchFieldException {
         List<Company> companiesToAppend = companyLoadResult.itemToAppend();
 
         List<Speaker> speakersToAppend = speakerLoadResult.speakers().itemToAppend();
@@ -1109,7 +1115,7 @@ public class ConferenceDataLoaderExecutor {
             YamlUtils.clearOutputDirectory();
 
             saveCompanies(companyLoadResult);
-            saveImages(speakerLoadResult);
+            saveImages(speakerLoadResult, imageWidthParameterName);
             saveSpeakers(speakerLoadResult);
             saveTalks(talkLoadResult);
             savePlaces(placeLoadResult);
@@ -1135,19 +1141,20 @@ public class ConferenceDataLoaderExecutor {
     /**
      * Saves images.
      *
-     * @param speakerLoadResult speaker load result
+     * @param speakerLoadResult       speaker load result
+     * @param imageWidthParameterName name of image width parameter
      * @throws IOException if file creation error occurs
      */
-    static void saveImages(SpeakerLoadResult speakerLoadResult) throws IOException {
+    static void saveImages(SpeakerLoadResult speakerLoadResult, String imageWidthParameterName) throws IOException {
         List<UrlFilename> urlFilenamesToAppend = speakerLoadResult.urlFilenames().itemToAppend();
         List<UrlFilename> urlFilenamesToUpdate = speakerLoadResult.urlFilenames().itemToUpdate();
 
         if (!urlFilenamesToAppend.isEmpty()) {
-            logAndCreateSpeakerImages(urlFilenamesToAppend, "Speaker images (to append): {}");
+            logAndCreateSpeakerImages(urlFilenamesToAppend, "Speaker images (to append): {}", imageWidthParameterName);
         }
 
         if (!urlFilenamesToUpdate.isEmpty()) {
-            logAndCreateSpeakerImages(urlFilenamesToUpdate, "Speaker images (to update): {}");
+            logAndCreateSpeakerImages(urlFilenamesToUpdate, "Speaker images (to update): {}", imageWidthParameterName);
         }
     }
 
@@ -1291,14 +1298,15 @@ public class ConferenceDataLoaderExecutor {
     /**
      * Logs and creates speaker images.
      *
-     * @param urlFilenames url, filenames pairs
-     * @param logMessage   log message
+     * @param urlFilenames            url, filenames pairs
+     * @param logMessage              log message
+     * @param imageWidthParameterName name of image width parameter
      * @throws IOException if file creation error occurs
      */
-    static void logAndCreateSpeakerImages(List<UrlFilename> urlFilenames, String logMessage) throws IOException {
+    static void logAndCreateSpeakerImages(List<UrlFilename> urlFilenames, String logMessage, String imageWidthParameterName) throws IOException {
         log.info(logMessage, urlFilenames.size());
         for (UrlFilename urlFilename : urlFilenames) {
-            ImageUtils.create(urlFilename.url(), urlFilename.filename());
+            ImageUtils.create(urlFilename.url(), urlFilename.filename(), imageWidthParameterName);
         }
     }
 
@@ -1842,18 +1850,20 @@ public class ConferenceDataLoaderExecutor {
     /**
      * Indicates the need to update speaker photo.
      *
-     * @param targetPhotoUpdatedAt   updated datetime of target speaker
-     * @param resourcePhotoUpdatedAt updated datetime of resource speaker
-     * @param targetPhotoUrl         photo URL of target speaker
-     * @param resourcePhotoFileName  photo filename of resource speaker
+     * @param targetPhotoUpdatedAt    updated datetime of target speaker
+     * @param resourcePhotoUpdatedAt  updated datetime of resource speaker
+     * @param targetPhotoUrl          photo URL of target speaker
+     * @param resourcePhotoFileName   photo filename of resource speaker
+     * @param imageWidthParameterName name of image width parameter
      * @return {@code true} if need to update, {@code false} otherwise
      * @throws IOException if read error occurs
      */
     public static boolean needPhotoUpdate(ZonedDateTime targetPhotoUpdatedAt, ZonedDateTime resourcePhotoUpdatedAt,
-                                          String targetPhotoUrl, String resourcePhotoFileName) throws IOException {
+                                          String targetPhotoUrl, String resourcePhotoFileName,
+                                          String imageWidthParameterName) throws IOException {
         if (targetPhotoUpdatedAt == null) {
             // New updated datetime is null
-            return ImageUtils.needUpdate(targetPhotoUrl, String.format(RESOURCE_PHOTO_FILE_NAME_PATH, resourcePhotoFileName));
+            return ImageUtils.needUpdate(targetPhotoUrl, String.format(RESOURCE_PHOTO_FILE_NAME_PATH, resourcePhotoFileName), imageWidthParameterName);
         } else {
             // New updated datetime is not null
             if (resourcePhotoUpdatedAt == null) {

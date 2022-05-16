@@ -758,6 +758,11 @@ public class ContentfulDataLoader extends CmsDataLoader {
         return getTalks(conferenceSpaceInfo, conferenceCode, ignoreDemoStage);
     }
 
+    @Override
+    String getImageWidthParameterName() {
+        return "w";
+    }
+
     /**
      * Gets map id/speaker.
      *

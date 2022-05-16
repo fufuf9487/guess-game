@@ -109,6 +109,11 @@ public class JrgCmsDataLoader extends CmsDataLoader {
 
     }
 
+    @Override
+    String getImageWidthParameterName() {
+        return "width";
+    }
+
     static boolean isValidTalk(JrgCmsActivity jrgCmsActivity, boolean ignoreDemoStage) {
         return !ignoreDemoStage ||
                 ((jrgCmsActivity.getData().getOptions().getDemoStage() == null) || !jrgCmsActivity.getData().getOptions().getDemoStage());
