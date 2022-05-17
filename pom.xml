@@ -46,7 +46,7 @@
             **/*Exception.*,
             **/guess/App.*
         </sonar.coverage.exclusions>
-        <sonar.cpd.exclusions>**/guess/domain/source/contentful/**/*Fields*.*</sonar.cpd.exclusions>
+        <sonar.cpd.exclusions>**/guess/domain/source/cms/contentful/**/*Fields*.*</sonar.cpd.exclusions>
         <sonar.exclusions>**/org/yaml/snakeyaml/**/*</sonar.exclusions>
     </properties>
 

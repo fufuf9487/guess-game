@@ -120,15 +120,34 @@ public class JrgCmsDataLoader extends CmsDataLoader {
         return "width";
     }
 
-    static boolean isValidTalk(JrgCmsActivity jrgCmsActivity, boolean ignoreDemoStage) {
+    /**
+     * Checks talk validity.
+     *
+     * @param activity        activity
+     * @param ignoreDemoStage {@code true} if ignore demo stage, otherwise {@code false}
+     * @return talk validity
+     */
+    static boolean isValidTalk(JrgCmsActivity activity, boolean ignoreDemoStage) {
         return !ignoreDemoStage ||
-                ((jrgCmsActivity.getData().getOptions().getDemoStage() == null) || !jrgCmsActivity.getData().getOptions().getDemoStage());
+                ((activity.getData().getOptions().getDemoStage() == null) || !activity.getData().getOptions().getDemoStage());
     }
 
+    /**
+     * Checks speaker validity.
+     *
+     * @param jrgCmsParticipant participant
+     * @return speaker validity
+     */
     static boolean isValidSpeaker(JrgCmsParticipant jrgCmsParticipant) {
         return SPEAKER_ROLE.equals(jrgCmsParticipant.getParticipation().getRole());
     }
 
+    /**
+     * Gets map id/speaker.
+     *
+     * @param validJrgCmsActivities activities
+     * @return map id/speaker
+     */
     static Map<String, Speaker> getSpeakerMap(List<JrgCmsActivity> validJrgCmsActivities) {
         var speakerId = new AtomicLong(-1);
         var companyId = new AtomicLong(-1);
@@ -144,6 +163,15 @@ public class JrgCmsDataLoader extends CmsDataLoader {
                 ));
     }
 
+    /**
+     * Creates speaker from JUG Ru Group CMS information.
+     *
+     * @param jrgCmsSpeaker        JUG Ru Group CMS speaker
+     * @param speakerId            atomic speaker identifier
+     * @param companyId            atomic company identifier
+     * @param checkEnTextExistence {@code true} if need to check English text existence, {@code false} otherwise
+     * @return speaker
+     */
     static Speaker createSpeaker(JrgCmsSpeaker jrgCmsSpeaker, AtomicLong speakerId, AtomicLong companyId, boolean checkEnTextExistence) {
         var urlDates = extractPhoto(jrgCmsSpeaker);
         List<LocaleItem> lastName = extractLocaleItems(jrgCmsSpeaker.getLastName());
@@ -183,6 +211,14 @@ public class JrgCmsDataLoader extends CmsDataLoader {
         );
     }
 
+    /**
+     * Creates talk from JUG Ru Group CMS information.
+     *
+     * @param jrgCmsActivity JUG Ru Group CMS activity
+     * @param speakerMap     speaker map
+     * @param talkId         atomic talk identifier
+     * @return talk
+     */
     static Talk createTalk(JrgCmsActivity jrgCmsActivity, Map<String, Speaker> speakerMap, AtomicLong talkId) {
         JrgCmsTalk jrgCmsTalk = jrgCmsActivity.getData();
         List<Speaker> speakers = jrgCmsActivity.getParticipants().stream()
@@ -214,14 +250,34 @@ public class JrgCmsDataLoader extends CmsDataLoader {
                 speakers);
     }
 
+    /**
+     * Extracts local items.
+     *
+     * @param texts                text map
+     * @param checkEnTextExistence {@code true} if need to check English text existence, {@code false} otherwise
+     * @return local items
+     */
     static List<LocaleItem> extractLocaleItems(Map<String, String> texts, boolean checkEnTextExistence) {
         return extractLocaleItems(texts.get(ENGLISH_TEXT_KEY), texts.get(RUSSIAN_TEXT_KEY), checkEnTextExistence);
     }
 
+    /**
+     * Extracts local items.
+     *
+     * @param texts text map
+     * @return local items
+     */
     static List<LocaleItem> extractLocaleItems(Map<String, String> texts) {
         return extractLocaleItems(texts, true);
     }
 
+    /**
+     * Gets speaker name.
+     *
+     * @param lastName  last name
+     * @param firstName first name
+     * @return speaker name
+     */
     static String getSpeakerName(String lastName, String firstName) {
         String name = null;
 
@@ -241,6 +297,14 @@ public class JrgCmsDataLoader extends CmsDataLoader {
         return name;
     }
 
+    /**
+     * Gets speaker name.
+     *
+     * @param lastName  last name
+     * @param firstName first name
+     * @param language  language
+     * @return speaker name
+     */
     static String getSpeakerName(List<LocaleItem> lastName, List<LocaleItem> firstName, Language language) {
         String localLastName = LocalizationUtils.getString(lastName, language);
         String localFirstName = LocalizationUtils.getString(firstName, language);
@@ -248,6 +312,12 @@ public class JrgCmsDataLoader extends CmsDataLoader {
         return getSpeakerName(localLastName, localFirstName);
     }
 
+    /**
+     * Extracts talk language.
+     *
+     * @param language language string
+     * @return talk language
+     */
     static String extractLanguage(String language) {
         if (Language.ENGLISH.getCode().equalsIgnoreCase(language)) {
             return Language.ENGLISH.getCode();
@@ -258,6 +328,12 @@ public class JrgCmsDataLoader extends CmsDataLoader {
         }
     }
 
+    /**
+     * Extracts presentation links.
+     *
+     * @param presentation presentation
+     * @return presentation links
+     */
     static List<String> extractPresentationLinks(JrgTalkPresentation presentation) {
         if (presentation == null) {
             return new ArrayList<>();
@@ -268,6 +344,12 @@ public class JrgCmsDataLoader extends CmsDataLoader {
                 .toList();
     }
 
+    /**
+     * Extracts photo.
+     *
+     * @param jrgCmsSpeaker speaker
+     * @return photo URL and dates
+     */
     static UrlDates extractPhoto(JrgCmsSpeaker jrgCmsSpeaker) {
         List<JrgPhoto> photos = jrgCmsSpeaker.getPhoto();
         String speakerName = getSpeakerName(jrgCmsSpeaker.getLastName().get(ENGLISH_TEXT_KEY), jrgCmsSpeaker.getFirstName().get(ENGLISH_TEXT_KEY));
@@ -287,10 +369,18 @@ public class JrgCmsDataLoader extends CmsDataLoader {
         return new UrlDates(jrgPhoto.getLinks().getContent(), jrgPhoto.getCreated(), jrgPhoto.getLastModified());
     }
 
-    static String extractContactValue(Map<String, JrgContact> contactMap, String type, UnaryOperator<String> extractOperator) {
+    /**
+     * Extracts contact value.
+     *
+     * @param contactMap         contact map
+     * @param type               contact type
+     * @param extractionOperator extraction operation
+     * @return contact value
+     */
+    static String extractContactValue(Map<String, JrgContact> contactMap, String type, UnaryOperator<String> extractionOperator) {
         JrgContact jrgContact = contactMap.get(type);
 
         return ((jrgContact != null) && (jrgContact.getValue() != null) && !jrgContact.getValue().isEmpty()) ?
-                extractOperator.apply(jrgContact.getValue()) : null;
+                extractionOperator.apply(jrgContact.getValue()) : null;
     }
 }
