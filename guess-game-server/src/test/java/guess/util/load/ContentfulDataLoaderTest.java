@@ -767,54 +767,6 @@ class ContentfulDataLoaderTest {
         }
     }
 
-
-    @Nested
-    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    @DisplayName("createCompanies method tests")
-    class CreateCompaniesTest {
-        ContentfulSpeaker createContentfulSpeaker(String companyEn, String company) {
-            ContentfulSpeakerFields contentfulSpeakerFields = new ContentfulSpeakerFields();
-            contentfulSpeakerFields.setCompanyEn(companyEn);
-            contentfulSpeakerFields.setCompany(company);
-
-            ContentfulSpeaker contentfulSpeaker = new ContentfulSpeaker();
-            contentfulSpeaker.setFields(contentfulSpeakerFields);
-
-            return contentfulSpeaker;
-        }
-
-        Company company0 = new Company(0, Collections.emptyList());
-
-        private Stream<Arguments> data() {
-            return Stream.of(
-                    arguments(createContentfulSpeaker(null, null), new AtomicLong(), false, Collections.emptyList()),
-                    arguments(createContentfulSpeaker(null, ""), new AtomicLong(), false, Collections.emptyList()),
-                    arguments(createContentfulSpeaker("", null), new AtomicLong(), false, Collections.emptyList()),
-                    arguments(createContentfulSpeaker("", ""), new AtomicLong(), false, Collections.emptyList()),
-                    arguments(createContentfulSpeaker("Company", null), new AtomicLong(), false, List.of(company0)),
-                    arguments(createContentfulSpeaker("Company", ""), new AtomicLong(), false, List.of(company0)),
-                    arguments(createContentfulSpeaker(null, "Компания"), new AtomicLong(), false, List.of(company0)),
-                    arguments(createContentfulSpeaker("", "Компания"), new AtomicLong(), false, List.of(company0)),
-                    arguments(createContentfulSpeaker("Company", "Компания"), new AtomicLong(), false, List.of(company0))
-            );
-        }
-
-        @ParameterizedTest
-        @MethodSource("data")
-        void createCompanies(ContentfulSpeaker contentfulSpeaker, AtomicLong companyId, boolean checkEnTextExistence,
-                             List<Company> expected) {
-            try (MockedStatic<ContentfulDataLoader> contentfulDataLoaderMockedStatic = Mockito.mockStatic(ContentfulDataLoader.class);
-                 MockedStatic<CmsDataLoader> cmsDataLoaderMockedStatic = Mockito.mockStatic(CmsDataLoader.class)) {
-                contentfulDataLoaderMockedStatic.when(() -> ContentfulDataLoader.createCompanies(Mockito.any(ContentfulSpeaker.class), Mockito.any(AtomicLong.class), Mockito.anyBoolean()))
-                        .thenCallRealMethod();
-                cmsDataLoaderMockedStatic.when(() -> CmsDataLoader.extractLocaleItems(Mockito.nullable(String.class), Mockito.nullable(String.class), Mockito.anyBoolean()))
-                        .thenReturn(Collections.emptyList());
-
-                assertEquals(expected, ContentfulDataLoader.createCompanies(contentfulSpeaker, companyId, checkEnTextExistence));
-            }
-        }
-    }
-
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     @DisplayName("extractPhoto method tests")

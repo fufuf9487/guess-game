@@ -2,10 +2,7 @@ package guess.util.load;
 
 import guess.domain.Conference;
 import guess.domain.Language;
-import guess.domain.source.Event;
-import guess.domain.source.EventType;
-import guess.domain.source.LocaleItem;
-import guess.domain.source.Talk;
+import guess.domain.source.*;
 import guess.domain.source.extract.ExtractPair;
 import guess.domain.source.extract.ExtractSet;
 import org.slf4j.Logger;
@@ -16,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Pattern;
 
 /**
@@ -60,7 +58,7 @@ public abstract class CmsDataLoader {
 
     /**
      * Gets name of image width parameter.
-     * 
+     *
      * @return name of image width parameter
      */
     abstract String getImageWidthParameterName();
@@ -263,5 +261,29 @@ public abstract class CmsDataLoader {
                         new ExtractPair("^[\\s]*((http(s)?://)?github.com/)?([a-zA-Z0-9\\-]+)/.+$", 4),
                         new ExtractPair("^[\\s]*(http(s)?://)?([a-zA-Z0-9\\-]+).github.io/blog(/)?[\\s]*$", 3)),
                 "Invalid GitHub username: %s (change regular expressions and rerun)"));
+    }
+
+    /**
+     * Creates company list.
+     *
+     * @param enName               English name
+     * @param ruName               Russian name
+     * @param companyId            company identifier
+     * @param checkEnTextExistence {@code true} if need to check English text existence, {@code false} otherwise
+     * @return company list
+     */
+    static List<Company> createCompanies(String enName, String ruName, AtomicLong companyId, boolean checkEnTextExistence) {
+        if (((enName != null) && !enName.isEmpty()) ||
+                ((ruName != null) && !ruName.isEmpty())) {
+            List<Company> companies = new ArrayList<>();
+
+            companies.add(new Company(
+                    companyId.getAndDecrement(),
+                    extractLocaleItems(enName, ruName, checkEnTextExistence, true)));
+
+            return companies;
+        } else {
+            return new ArrayList<>();
+        }
     }
 }

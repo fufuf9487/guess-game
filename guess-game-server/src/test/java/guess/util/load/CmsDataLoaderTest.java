@@ -1,6 +1,7 @@
 package guess.util.load;
 
 import guess.domain.Language;
+import guess.domain.source.Company;
 import guess.domain.source.LocaleItem;
 import guess.domain.source.extract.ExtractPair;
 import guess.domain.source.extract.ExtractSet;
@@ -17,6 +18,7 @@ import org.mockito.internal.verification.VerificationModeFactory;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -324,6 +326,43 @@ class CmsDataLoaderTest {
                 assertEquals(expectedValue, ContentfulDataLoader.extractGitHub(value));
             } else {
                 assertThrows(IllegalArgumentException.class, () -> ContentfulDataLoader.extractGitHub(value));
+            }
+        }
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DisplayName("createCompanies method tests")
+    class CreateCompaniesTest {
+        Company company0 = new Company(0, Collections.emptyList());
+
+        private Stream<Arguments> data() {
+            return Stream.of(
+                    arguments(null, null, new AtomicLong(), false, Collections.emptyList()),
+                    arguments(null, "", new AtomicLong(), false, Collections.emptyList()),
+                    arguments("", null, new AtomicLong(), false, Collections.emptyList()),
+                    arguments("", "", new AtomicLong(), false, Collections.emptyList()),
+                    arguments("Company", null, new AtomicLong(), false, List.of(company0)),
+                    arguments("Company", "", new AtomicLong(), false, List.of(company0)),
+                    arguments(null, "Компания", new AtomicLong(), false, List.of(company0)),
+                    arguments("", "Компания", new AtomicLong(), false, List.of(company0)),
+                    arguments("Company", "Компания", new AtomicLong(), false, List.of(company0))
+            );
+        }
+
+        @ParameterizedTest
+        @MethodSource("data")
+        void createCompanies(String enName, String ruName, AtomicLong companyId, boolean checkEnTextExistence,
+                             List<Company> expected) {
+            try (MockedStatic<CmsDataLoader> cmsDataLoaderMockedStatic = Mockito.mockStatic(CmsDataLoader.class)) {
+                cmsDataLoaderMockedStatic.when(() -> CmsDataLoader.createCompanies(Mockito.nullable(String.class),
+                                Mockito.nullable(String.class), Mockito.any(AtomicLong.class), Mockito.anyBoolean()))
+                        .thenCallRealMethod();
+                cmsDataLoaderMockedStatic.when(() -> CmsDataLoader.extractLocaleItems(Mockito.nullable(String.class),
+                                Mockito.nullable(String.class), Mockito.anyBoolean()))
+                        .thenReturn(Collections.emptyList());
+
+                assertEquals(expected, CmsDataLoader.createCompanies(enName, ruName, companyId, checkEnTextExistence));
             }
         }
     }

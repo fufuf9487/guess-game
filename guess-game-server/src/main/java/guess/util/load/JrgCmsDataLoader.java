@@ -21,7 +21,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 import static guess.util.load.ContentfulDataLoader.getRestTemplate;
@@ -30,7 +30,7 @@ import static guess.util.load.ContentfulDataLoader.getRestTemplate;
  * Data loader of JUG Ru Group CMS.
  */
 public class JrgCmsDataLoader extends CmsDataLoader {
-    private static final Logger log = LoggerFactory.getLogger(CmsDataLoader.class);
+    private static final Logger log = LoggerFactory.getLogger(JrgCmsDataLoader.class);
 
     private static final String BASE_URL = "https://speakers.jugru.org/api/v1/public/{entityName}";
     private static final String EVENTS_VARIABLE_VALUE = "events";
@@ -150,13 +150,16 @@ public class JrgCmsDataLoader extends CmsDataLoader {
         List<LocaleItem> firstName = extractLocaleItems(jrgCmsSpeaker.getFirstName());
         String enSpeakerName = getSpeakerName(lastName, firstName, Language.ENGLISH);
         String ruSpeakerName = getSpeakerFixedName(getSpeakerName(lastName, firstName, Language.RUSSIAN));
+
+        List<LocaleItem> name = extractLocaleItems(jrgCmsSpeaker.getCompany());
+        String enName = LocalizationUtils.getString(name, Language.ENGLISH);
+        String ruName = LocalizationUtils.getString(name, Language.RUSSIAN);
+
         Map<String, JrgContact> contactMap = jrgCmsSpeaker.getContacts().stream()
                 .collect(Collectors.toMap(
                         JrgContact::getType,
                         c -> c
                 ));
-        String twitter = extractContactValue(contactMap, TWITTER_CONTACT_TYPE, CmsDataLoader::extractTwitter);
-        String gitHub = extractContactValue(contactMap, GITHUB_CONTACT_TYPE, CmsDataLoader::extractGitHub);
 
         return new Speaker(
                 speakerId.getAndDecrement(),
@@ -165,17 +168,17 @@ public class JrgCmsDataLoader extends CmsDataLoader {
                         urlDates.getUpdatedAt()
                 ),
                 extractLocaleItems(enSpeakerName, ruSpeakerName, checkEnTextExistence, true),
-                createCompanies(jrgCmsSpeaker, companyId, checkEnTextExistence),
+                createCompanies(enName, ruName, companyId, checkEnTextExistence),
                 extractLocaleItems(jrgCmsSpeaker.getDescription(), checkEnTextExistence),
                 new Speaker.SpeakerSocials(
-                        twitter,
-                        gitHub,
+                        extractContactValue(contactMap, TWITTER_CONTACT_TYPE, CmsDataLoader::extractTwitter),
+                        extractContactValue(contactMap, GITHUB_CONTACT_TYPE, CmsDataLoader::extractGitHub),
                         null
                 ),
                 new Speaker.SpeakerDegrees(
                         JAVA_CHAMPION_TITULUS.equals(jrgCmsSpeaker.getTitulus()),
-                        false,  //TODO: implement
-                        false  //TODO: implement
+                        false,
+                        false
                 )
         );
     }
@@ -205,8 +208,8 @@ public class JrgCmsDataLoader extends CmsDataLoader {
                 extractLanguage(jrgCmsTalk.getLanguage()),
                 new Talk.TalkLinks(
                         extractPresentationLinks(jrgCmsTalk.getPresentation()),
-                        new ArrayList<>(),    //TODO: fill (extra?)
-                        new ArrayList<>()     //TODO: fill (video?)
+                        new ArrayList<>(),
+                        new ArrayList<>()
                 ),
                 speakers);
     }
@@ -284,29 +287,10 @@ public class JrgCmsDataLoader extends CmsDataLoader {
         return new UrlDates(jrgPhoto.getLinks().getContent(), jrgPhoto.getCreated(), jrgPhoto.getLastModified());
     }
 
-    static List<Company> createCompanies(JrgCmsSpeaker jrgCmsSpeaker, AtomicLong companyId, boolean checkEnTextExistence) {
-        List<LocaleItem> name = extractLocaleItems(jrgCmsSpeaker.getCompany());
-        String enName = LocalizationUtils.getString(name, Language.ENGLISH);
-        String ruName = LocalizationUtils.getString(name, Language.RUSSIAN);
-
-        if (((enName != null) && !enName.isEmpty()) ||
-                ((ruName != null) && !ruName.isEmpty())) {
-            List<Company> companies = new ArrayList<>();
-
-            companies.add(new Company(
-                    companyId.getAndDecrement(),
-                    extractLocaleItems(enName, ruName, checkEnTextExistence, true)));
-
-            return companies;
-        } else {
-            return new ArrayList<>();
-        }
-    }
-
-    static String extractContactValue(Map<String, JrgContact> contactMap, String type, Function<String, String> extractFunction) {
+    static String extractContactValue(Map<String, JrgContact> contactMap, String type, UnaryOperator<String> extractOperator) {
         JrgContact jrgContact = contactMap.get(type);
 
         return ((jrgContact != null) && (jrgContact.getValue() != null) && !jrgContact.getValue().isEmpty()) ?
-                extractFunction.apply(jrgContact.getValue()) : null;
+                extractOperator.apply(jrgContact.getValue()) : null;
     }
 }

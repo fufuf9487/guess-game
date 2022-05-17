@@ -153,8 +153,8 @@ public class ImageUtils {
      * @return fixed image
      */
     public static BufferedImage fixImageType(BufferedImage image) {
-        Map<Integer, Integer> IMAGE_TYPES = Map.of(BufferedImage.TYPE_4BYTE_ABGR, BufferedImage.TYPE_3BYTE_BGR);
-        Integer newImageType = IMAGE_TYPES.get(image.getType());
+        Map<Integer, Integer> imageTypes = Map.of(BufferedImage.TYPE_4BYTE_ABGR, BufferedImage.TYPE_3BYTE_BGR);
+        Integer newImageType = imageTypes.get(image.getType());
 
         if (newImageType != null) {
             var newImage = new BufferedImage(image.getWidth(), image.getHeight(), newImageType);

@@ -42,7 +42,6 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -519,7 +518,7 @@ public class ContentfulDataLoader extends CmsDataLoader {
                         urlDates.getUpdatedAt()
                 ),
                 extractLocaleItems(contentfulSpeaker.getFields().getNameEn(), speakerFixedName, checkEnTextExistence, true),
-                createCompanies(contentfulSpeaker, companyId, checkEnTextExistence),
+                createCompanies(contentfulSpeaker.getFields().getCompanyEn(), contentfulSpeaker.getFields().getCompany(), companyId, checkEnTextExistence),
                 extractLocaleItems(contentfulSpeaker.getFields().getBioEn(), contentfulSpeaker.getFields().getBio(), checkEnTextExistence),
                 new Speaker.SpeakerSocials(
                         extractTwitter(contentfulSpeaker.getFields().getTwitter()),
@@ -532,32 +531,6 @@ public class ContentfulDataLoader extends CmsDataLoader {
                         extractBoolean(contentfulSpeaker.getFields().getMvpReconnect())
                 )
         );
-    }
-
-    /**
-     * Creates company list.
-     *
-     * @param contentfulSpeaker    Contentful speaker
-     * @param companyId            company identifier
-     * @param checkEnTextExistence {@code true} if need to check English text existence, {@code false} otherwise
-     * @return company list
-     */
-    static List<Company> createCompanies(ContentfulSpeaker contentfulSpeaker, AtomicLong companyId, boolean checkEnTextExistence) {
-        String enName = contentfulSpeaker.getFields().getCompanyEn();
-        String ruName = contentfulSpeaker.getFields().getCompany();
-
-        if (((enName != null) && !enName.isEmpty()) ||
-                ((ruName != null) && !ruName.isEmpty())) {
-            List<Company> companies = new ArrayList<>();
-
-            companies.add(new Company(
-                    companyId.getAndDecrement(),
-                    extractLocaleItems(enName, ruName, checkEnTextExistence, true)));
-
-            return companies;
-        } else {
-            return new ArrayList<>();
-        }
     }
 
     /**
