@@ -333,7 +333,7 @@ class ConferenceDataLoaderExecutorTest {
                             List.of(speaker0),
                             List.of(company0),
                             Map.of("name0", company0)),
-                    arguments(JPOINT_CONFERENCE, LocalDate.of(2020, 6, 30), EVENT_CODE, LoadSettings.defaultSettings(),
+                    arguments(JPOINT_CONFERENCE, LocalDate.of(2020, 6, 30), null, LoadSettings.defaultSettings(),
                             new SourceInformation(
                                     List.of(place0),
                                     List.of(organizer0),
@@ -369,7 +369,7 @@ class ConferenceDataLoaderExecutorTest {
                 CmsDataLoader cmsDataLoader = Mockito.mock(CmsDataLoader.class);
                 Mockito.when(cmsDataLoader.getEvent(Mockito.any(Conference.class), Mockito.any(LocalDate.class)))
                         .thenReturn(contentfulEvent);
-                Mockito.when(cmsDataLoader.getTalks(Mockito.any(Conference.class), Mockito.anyString(), Mockito.anyBoolean()))
+                Mockito.when(cmsDataLoader.getTalks(Mockito.any(Conference.class), Mockito.nullable(String.class), Mockito.anyBoolean()))
                         .thenReturn(contentfulTalks);
                 cmsDataLoaderFactoryMockedStatic.when(() -> CmsDataLoaderFactory.createDataLoader(Mockito.any(LocalDate.class)))
                         .thenReturn(cmsDataLoader);
@@ -474,11 +474,24 @@ class ConferenceDataLoaderExecutorTest {
             mockedStatic.when(() -> ConferenceDataLoaderExecutor.loadTalksSpeakersEvent(
                             Mockito.any(Conference.class), Mockito.any(LocalDate.class), Mockito.anyString()))
                     .thenCallRealMethod();
+            mockedStatic.when(() -> ConferenceDataLoaderExecutor.loadTalksSpeakersEvent(
+                            Mockito.any(Conference.class), Mockito.any(LocalDate.class)))
+                    .thenCallRealMethod();
+            mockedStatic.when(() -> ConferenceDataLoaderExecutor.loadTalksSpeakersEvent(
+                            Mockito.any(Conference.class), Mockito.any(LocalDate.class), Mockito.any(LoadSettings.class)))
+                    .thenCallRealMethod();
 
             assertDoesNotThrow(() -> ConferenceDataLoaderExecutor.loadTalksSpeakersEvent(
                     Conference.JPOINT,
                     LocalDate.of(2020, 6, 29),
                     "2020-jpoint"));
+            assertDoesNotThrow(() -> ConferenceDataLoaderExecutor.loadTalksSpeakersEvent(
+                    Conference.JPOINT,
+                    LocalDate.of(2020, 6, 29)));
+            assertDoesNotThrow(() -> ConferenceDataLoaderExecutor.loadTalksSpeakersEvent(
+                    Conference.JPOINT,
+                    LocalDate.of(2020, 6, 29),
+                    LoadSettings.defaultSettings()));
         }
     }
 

@@ -1041,6 +1041,11 @@ class ContentfulDataLoaderTest {
         }
     }
 
+    @Test
+    void getImageWidthParameterName() {
+        assertEquals("w", new ContentfulDataLoader().getImageWidthParameterName());
+    }
+
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     @DisplayName("getSpeakerMap method tests")

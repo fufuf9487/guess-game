@@ -1,10 +1,10 @@
 package guess.util;
 
 import guess.domain.source.image.ImageFormat;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
@@ -17,8 +17,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 @DisplayName("ImageUtils class tests")
 class ImageUtilsTest {
@@ -216,6 +218,28 @@ class ImageUtilsTest {
             assertDoesNotThrow(() -> ImageUtils.create(PNG_IMAGE_400X400_URL_STRING, FILE_NAME1, WIDTH_PARAMETER_NAME));
             assertThrows(IOException.class, () -> ImageUtils.create(JPG_IMAGE_400X400_URL_STRING, FILE_NAME2, WIDTH_PARAMETER_NAME));
             assertThrows(IllegalStateException.class, () -> ImageUtils.create(JPG_IMAGE_1X1_URL_STRING, FILE_NAME3, WIDTH_PARAMETER_NAME));
+        }
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DisplayName("fixImageType method tests")
+    class FixImageTypeTest {
+        private Stream<Arguments> data() {
+            return Stream.of(
+                    arguments(new BufferedImage(1, 2, BufferedImage.TYPE_4BYTE_ABGR), new BufferedImage(1, 2, BufferedImage.TYPE_3BYTE_BGR)),
+                    arguments(new BufferedImage(3, 4, BufferedImage.TYPE_INT_RGB), new BufferedImage(3, 4, BufferedImage.TYPE_INT_RGB))
+            );
+        }
+
+        @ParameterizedTest
+        @MethodSource("data")
+        void fixImageType(BufferedImage image, BufferedImage expected) {
+            BufferedImage actual = ImageUtils.fixImageType(image);
+
+            assertEquals(expected.getType(), actual.getType());
+            assertEquals(expected.getWidth(), actual.getWidth());
+            assertEquals(expected.getHeight(), actual.getHeight());
         }
     }
 }

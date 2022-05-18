@@ -17,7 +17,6 @@ public class CmsDataLoaderFactory {
         return switch (cmsType) {
             case CONTENTFUL -> new ContentfulDataLoader();
             case JUGRUGROUP_CMS -> new JrgCmsDataLoader();
-            default -> throw new IllegalArgumentException(String.format("Unknown CMS type: %s", cmsType));
         };
     }
 
