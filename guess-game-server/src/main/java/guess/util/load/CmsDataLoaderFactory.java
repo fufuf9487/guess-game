@@ -14,13 +14,12 @@ public class CmsDataLoaderFactory {
     }
 
     static CmsDataLoader createDataLoader(CmsType cmsType) {
-        if (cmsType != null) {
-            return switch (cmsType) {
-                case CONTENTFUL -> new ContentfulDataLoader();
-                case JUGRUGROUP_CMS -> new JrgCmsDataLoader();
-            };
+        if (CmsType.CONTENTFUL.equals(cmsType)) {
+            return new ContentfulDataLoader();
+        } else if (CmsType.JUGRUGROUP_CMS.equals(cmsType)) {
+            return new JrgCmsDataLoader();
         } else {
-            throw new IllegalArgumentException("CMS type is null");
+            throw new IllegalArgumentException(String.format("Unknown CMS type: %s", cmsType));
         }
     }
 
