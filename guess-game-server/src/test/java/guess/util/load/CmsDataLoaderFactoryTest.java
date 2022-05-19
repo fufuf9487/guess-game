@@ -25,7 +25,7 @@ class CmsDataLoaderFactoryTest {
             return Stream.of(
                     arguments(CmsType.CONTENTFUL, null, ContentfulDataLoader.class),
                     arguments(CmsType.JUGRUGROUP_CMS, null, JrgCmsDataLoader.class),
-                    arguments(null, NullPointerException.class, null)
+                    arguments(null, IllegalArgumentException.class, null)
             );
         }
 

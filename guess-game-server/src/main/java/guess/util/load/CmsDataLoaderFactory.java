@@ -14,10 +14,14 @@ public class CmsDataLoaderFactory {
     }
 
     static CmsDataLoader createDataLoader(CmsType cmsType) {
-        return switch (cmsType) {
-            case CONTENTFUL -> new ContentfulDataLoader();
-            case JUGRUGROUP_CMS -> new JrgCmsDataLoader();
-        };
+        if (cmsType != null) {
+            return switch (cmsType) {
+                case CONTENTFUL -> new ContentfulDataLoader();
+                case JUGRUGROUP_CMS -> new JrgCmsDataLoader();
+            };
+        } else {
+            throw new IllegalArgumentException("CMS type is null");
+        }
     }
 
     static CmsDataLoader createDataLoader(LocalDate startDate) {
