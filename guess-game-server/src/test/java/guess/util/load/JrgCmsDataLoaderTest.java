@@ -30,6 +30,7 @@ class JrgCmsDataLoaderTest {
     class ExtractContactValueTest {
         private Stream<Arguments> data() {
             final String TWITTER_CONTACT_TYPE = "twitter";
+            final String FACEBOOK_CONTACT_TYPE = "facebook";
             final String GITHUB_CONTACT_TYPE = "github";
             final String HABR_CONTACT_TYPE = "habr";
             final String UNKNOWN_CONTACT_TYPE = "unknown";
@@ -42,19 +43,25 @@ class JrgCmsDataLoaderTest {
             jrgContact0.setValue(TWITTER_CONTACT_VALUE);
 
             final JrgContact jrgContact1 = new JrgContact();
-            jrgContact1.setType(HABR_CONTACT_TYPE);
-            jrgContact1.setValue(HABR_CONTACT_VALUE);
+            jrgContact1.setType(FACEBOOK_CONTACT_TYPE);
+            jrgContact1.setValue(null);
+
+            final JrgContact jrgContact2 = new JrgContact();
+            jrgContact2.setType(HABR_CONTACT_TYPE);
+            jrgContact2.setValue(HABR_CONTACT_VALUE);
 
             UnaryOperator<String> extractionOperator = v -> v;
-            
+
             Map<String, JrgContact> contactMap = new HashMap<>();
             contactMap.put(TWITTER_CONTACT_TYPE, jrgContact0);
             contactMap.put(GITHUB_CONTACT_TYPE, null);
-            contactMap.put(HABR_CONTACT_TYPE, jrgContact1);
+            contactMap.put(FACEBOOK_CONTACT_TYPE, jrgContact1);
+            contactMap.put(HABR_CONTACT_TYPE, jrgContact2);
 
             return Stream.of(
                     arguments(contactMap, UNKNOWN_CONTACT_TYPE, null, null),
                     arguments(contactMap, GITHUB_CONTACT_TYPE, null, null),
+                    arguments(contactMap, FACEBOOK_CONTACT_TYPE, null, null),
                     arguments(contactMap, HABR_CONTACT_TYPE, null, null),
                     arguments(contactMap, TWITTER_CONTACT_TYPE, extractionOperator, extractionOperator.apply(TWITTER_CONTACT_VALUE))
             );
