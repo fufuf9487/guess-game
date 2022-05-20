@@ -1,6 +1,10 @@
 package guess.util.load;
 
+import guess.domain.source.cms.jrgcms.JrgLinks;
+import guess.domain.source.cms.jrgcms.JrgPhoto;
+import guess.domain.source.cms.jrgcms.speaker.JrgCmsSpeaker;
 import guess.domain.source.cms.jrgcms.speaker.JrgContact;
+import guess.domain.source.image.UrlDates;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -8,8 +12,14 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
@@ -22,6 +32,71 @@ class JrgCmsDataLoaderTest {
     @Test
     void getImageWidthParameterName() {
         assertEquals("width", new JrgCmsDataLoader().getImageWidthParameterName());
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DisplayName("extractPhoto method tests")
+    class ExtractPhotoTest {
+        private Stream<Arguments> data() {
+            final UrlDates EMPTY_URL_DATES = new UrlDates(null, null, null);
+            final String CONTENT = "https://valid.com/fileName0.jpg";
+            final ZonedDateTime DATE0 = ZonedDateTime.of(2022, 5, 20, 21, 0, 0, 0, ZoneId.of("UTC"));
+            final ZonedDateTime DATE1 = ZonedDateTime.of(2022, 5, 20, 22, 0, 0, 0, ZoneId.of("UTC"));
+            final ZonedDateTime DATE2 = ZonedDateTime.of(2022, 5, 20, 22, 30, 0, 0, ZoneId.of("UTC"));
+
+            JrgLinks jrgLinks0 = new JrgLinks();
+            jrgLinks0.setContent(CONTENT);
+
+            JrgPhoto jrgPhoto0 = new JrgPhoto();
+            jrgPhoto0.setLinks(jrgLinks0);
+            jrgPhoto0.setCreated(DATE0);
+            jrgPhoto0.setLastModified(DATE1);
+
+            JrgPhoto jrgPhoto1 = new JrgPhoto();
+            jrgPhoto1.setLinks(jrgLinks0);
+            jrgPhoto1.setCreated(DATE0);
+            jrgPhoto1.setLastModified(DATE2);
+
+            JrgCmsSpeaker jrgCmsSpeaker0 = new JrgCmsSpeaker();
+            jrgCmsSpeaker0.setLastName(Collections.emptyMap());
+            jrgCmsSpeaker0.setFirstName(Collections.emptyMap());
+
+            JrgCmsSpeaker jrgCmsSpeaker1 = new JrgCmsSpeaker();
+            jrgCmsSpeaker1.setLastName(Collections.emptyMap());
+            jrgCmsSpeaker1.setFirstName(Collections.emptyMap());
+            jrgCmsSpeaker1.setPhoto(Collections.emptyList());
+
+            JrgCmsSpeaker jrgCmsSpeaker2 = new JrgCmsSpeaker();
+            jrgCmsSpeaker2.setLastName(Collections.emptyMap());
+            jrgCmsSpeaker2.setFirstName(Collections.emptyMap());
+            jrgCmsSpeaker2.setPhoto(List.of(jrgPhoto0));
+
+            JrgCmsSpeaker jrgCmsSpeaker3 = new JrgCmsSpeaker();
+            jrgCmsSpeaker3.setLastName(Collections.emptyMap());
+            jrgCmsSpeaker3.setFirstName(Collections.emptyMap());
+            jrgCmsSpeaker3.setPhoto(List.of(jrgPhoto0, jrgPhoto1));
+
+            return Stream.of(
+                    arguments(jrgCmsSpeaker0, EMPTY_URL_DATES),
+                    arguments(jrgCmsSpeaker1, EMPTY_URL_DATES),
+                    arguments(jrgCmsSpeaker2, new UrlDates(CONTENT, DATE0, DATE1)),
+                    arguments(jrgCmsSpeaker3, new UrlDates(CONTENT, DATE0, DATE1))
+            );
+        }
+
+        @ParameterizedTest
+        @MethodSource("data")
+        void extractPhoto(JrgCmsSpeaker jrgCmsSpeaker, UrlDates expected) {
+            try (MockedStatic<JrgCmsDataLoader> jrgCmsDataLoaderMockedStatic = Mockito.mockStatic(JrgCmsDataLoader.class)) {
+                jrgCmsDataLoaderMockedStatic.when(() -> JrgCmsDataLoader.extractPhoto(Mockito.any(JrgCmsSpeaker.class)))
+                        .thenCallRealMethod();
+                jrgCmsDataLoaderMockedStatic.when(() -> JrgCmsDataLoader.getSpeakerName(Mockito.any(), Mockito.any()))
+                        .thenReturn("");
+
+                assertEquals(expected, JrgCmsDataLoader.extractPhoto(jrgCmsSpeaker));
+            }
+        }
     }
 
     @Nested

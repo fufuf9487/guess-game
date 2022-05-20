@@ -366,6 +366,10 @@ public class JrgCmsDataLoader extends CmsDataLoader {
 
         JrgPhoto jrgPhoto = photos.get(0);
 
+        if (photos.size() > 1) {
+            log.warn("There are many photos ({}) for '{}' speaker", photos.size(), speakerName);
+        }
+
         return new UrlDates(jrgPhoto.getLinks().getContent(), jrgPhoto.getCreated(), jrgPhoto.getLastModified());
     }
 
