@@ -1,9 +1,13 @@
 package guess.util.load;
 
+import guess.domain.Language;
+import guess.domain.source.LocaleItem;
 import guess.domain.source.cms.jrgcms.JrgLinks;
 import guess.domain.source.cms.jrgcms.JrgPhoto;
 import guess.domain.source.cms.jrgcms.speaker.JrgCmsSpeaker;
 import guess.domain.source.cms.jrgcms.speaker.JrgContact;
+import guess.domain.source.cms.jrgcms.talk.JrgTalkPresentation;
+import guess.domain.source.cms.jrgcms.talk.JrgTalkPresentationFile;
 import guess.domain.source.image.UrlDates;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -32,6 +36,91 @@ class JrgCmsDataLoaderTest {
     @Test
     void getImageWidthParameterName() {
         assertEquals("width", new JrgCmsDataLoader().getImageWidthParameterName());
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DisplayName("getSpeakerName method tests")
+    class GetSpeakerNameTest {
+        private Stream<Arguments> data() {
+            return Stream.of(
+                    arguments(null, null, null, null),
+                    arguments(
+                            List.of(new LocaleItem(Language.ENGLISH.getCode(), "Last")),
+                            List.of(new LocaleItem(Language.ENGLISH.getCode(), "First")),
+                            Language.ENGLISH,
+                            "First Last")
+            );
+        }
+
+        @ParameterizedTest
+        @MethodSource("data")
+        void getSpeakerName(List<LocaleItem> lastName, List<LocaleItem> firstName, Language language, String expected) {
+            assertEquals(expected, JrgCmsDataLoader.getSpeakerName(lastName, firstName, language));
+        }
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DisplayName("extractLanguage method tests")
+    class ExtractLanguageTest {
+        private Stream<Arguments> data() {
+            return Stream.of(
+                    arguments(null, null),
+                    arguments("", null),
+                    arguments("un", null),
+                    arguments("en", "en"),
+                    arguments("EN", "en"),
+                    arguments("ru", "ru"),
+                    arguments("RU", "ru")
+            );
+        }
+
+        @ParameterizedTest
+        @MethodSource("data")
+        void extractLanguage(String language, String expected) {
+            assertEquals(expected, JrgCmsDataLoader.extractLanguage(language));
+        }
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DisplayName("extractPresentationLinks method tests")
+    class ExtractPresentationLinksTest {
+        private Stream<Arguments> data() {
+            final String CONTENT0 = "https://valid.com/fileName0.pdf";
+            final String CONTENT1 = "https://valid.com/fileName1.pdf";
+
+            JrgLinks jrgLinks0 = new JrgLinks();
+            jrgLinks0.setContent(CONTENT0);
+
+            JrgLinks jrgLinks1 = new JrgLinks();
+            jrgLinks1.setContent(CONTENT1);
+
+            JrgTalkPresentationFile jrgTalkPresentationFile0 = new JrgTalkPresentationFile();
+            jrgTalkPresentationFile0.setLinks(jrgLinks0);
+
+            JrgTalkPresentationFile jrgTalkPresentationFile1 = new JrgTalkPresentationFile();
+            jrgTalkPresentationFile1.setLinks(jrgLinks1);
+
+            JrgTalkPresentation jrgTalkPresentation0 = new JrgTalkPresentation();
+            jrgTalkPresentation0.setFiles(List.of(jrgTalkPresentationFile0));
+
+            JrgTalkPresentation jrgTalkPresentation1 = new JrgTalkPresentation();
+            jrgTalkPresentation1.setFiles(List.of(jrgTalkPresentationFile0, jrgTalkPresentationFile1));
+
+            return Stream.of(
+                    arguments(null, Collections.emptyList()),
+                    arguments(jrgTalkPresentation0, List.of(CONTENT0)),
+                    arguments(jrgTalkPresentation1, List.of(CONTENT0, CONTENT1))
+            );
+        }
+
+        @ParameterizedTest
+        @MethodSource("data")
+        void extractPresentationLinks(JrgTalkPresentation presentation, List<String> expected) {
+            assertEquals(expected, JrgCmsDataLoader.extractPresentationLinks(presentation));
+        }
     }
 
     @Nested
