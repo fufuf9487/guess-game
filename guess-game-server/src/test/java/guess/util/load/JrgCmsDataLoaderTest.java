@@ -9,6 +9,7 @@ import guess.domain.source.cms.jrgcms.speaker.JrgContact;
 import guess.domain.source.cms.jrgcms.talk.JrgTalkPresentation;
 import guess.domain.source.cms.jrgcms.talk.JrgTalkPresentationFile;
 import guess.domain.source.image.UrlDates;
+import guess.util.LocalizationUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,8 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+import org.mockito.internal.verification.VerificationModeFactory;
+import org.mockito.stubbing.Answer;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -28,6 +31,7 @@ import java.util.Map;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
@@ -38,25 +42,92 @@ class JrgCmsDataLoaderTest {
         assertEquals("width", new JrgCmsDataLoader().getImageWidthParameterName());
     }
 
+    @Test
+    void extractLocaleItems() {
+        try (MockedStatic<JrgCmsDataLoader> jrgCmsDataLoaderMockedStatic = Mockito.mockStatic(JrgCmsDataLoader.class);
+             MockedStatic<CmsDataLoader> cmsDataLoaderMockedStatic = Mockito.mockStatic(CmsDataLoader.class)) {
+            jrgCmsDataLoaderMockedStatic.when(() -> JrgCmsDataLoader.extractLocaleItems(Mockito.anyMap(), Mockito.anyBoolean()))
+                    .thenCallRealMethod();
+            cmsDataLoaderMockedStatic.when(() -> CmsDataLoader.extractLocaleItems(Mockito.anyString(), Mockito.anyString(), Mockito.anyBoolean()))
+                    .thenReturn(Collections.emptyList());
+
+            assertDoesNotThrow(() -> JrgCmsDataLoader.extractLocaleItems(Map.of(), true));
+            cmsDataLoaderMockedStatic.verify(() -> CmsDataLoader.extractLocaleItems(Mockito.nullable(String.class), Mockito.nullable(String.class), Mockito.anyBoolean()),
+                    VerificationModeFactory.times(1));
+        }
+    }
+
+    @Test
+    void testExtractLocaleItems() {
+        try (MockedStatic<JrgCmsDataLoader> mockedStatic = Mockito.mockStatic(JrgCmsDataLoader.class)) {
+            mockedStatic.when(() -> JrgCmsDataLoader.extractLocaleItems(Mockito.anyMap()))
+                    .thenCallRealMethod();
+            mockedStatic.when(() -> JrgCmsDataLoader.extractLocaleItems(Mockito.anyMap(), Mockito.anyBoolean()))
+                    .thenReturn(Collections.emptyList());
+
+            assertDoesNotThrow(() -> JrgCmsDataLoader.extractLocaleItems(Map.of()));
+            mockedStatic.verify(() -> JrgCmsDataLoader.extractLocaleItems(Mockito.anyMap(), Mockito.anyBoolean()),
+                    VerificationModeFactory.times(1));
+        }
+    }
+
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     @DisplayName("getSpeakerName method tests")
     class GetSpeakerNameTest {
         private Stream<Arguments> data() {
             return Stream.of(
-                    arguments(null, null, null, null),
-                    arguments(
-                            List.of(new LocaleItem(Language.ENGLISH.getCode(), "Last")),
-                            List.of(new LocaleItem(Language.ENGLISH.getCode(), "First")),
-                            Language.ENGLISH,
-                            "First Last")
+                    arguments(null, null, null),
+                    arguments("", null, null),
+                    arguments(null, "", null),
+                    arguments("", "", null),
+                    arguments(null, "Last", "Last"),
+                    arguments("First", null, "First"),
+                    arguments("Last", "First", "First Last")
             );
         }
 
         @ParameterizedTest
         @MethodSource("data")
-        void getSpeakerName(List<LocaleItem> lastName, List<LocaleItem> firstName, Language language, String expected) {
-            assertEquals(expected, JrgCmsDataLoader.getSpeakerName(lastName, firstName, language));
+        void getSpeakerName(String lastName, String firstName, String expected) {
+            assertEquals(expected, JrgCmsDataLoader.getSpeakerName(lastName, firstName));
+        }
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void getSpeakerName() {
+        try (MockedStatic<LocalizationUtils> localizationUtilsMockedStatic = Mockito.mockStatic(LocalizationUtils.class);
+             MockedStatic<JrgCmsDataLoader> jrgCmsDataLoaderMockedStatic = Mockito.mockStatic(JrgCmsDataLoader.class)) {
+            jrgCmsDataLoaderMockedStatic.when(() -> JrgCmsDataLoader.getSpeakerName(Mockito.anyList(), Mockito.anyList(), Mockito.nullable(Language.class)))
+                    .thenCallRealMethod();
+            jrgCmsDataLoaderMockedStatic.when(() -> JrgCmsDataLoader.getSpeakerName(Mockito.nullable(String.class), Mockito.nullable(String.class)))
+                    .thenReturn("");
+
+            final String FIRST_NAME = "First";
+            final String LAST_NAME = "Last";
+            localizationUtilsMockedStatic.when(() -> LocalizationUtils.getString(Mockito.anyList(), Mockito.nullable(Language.class)))
+                    .thenAnswer(
+                            (Answer<String>) invocation -> {
+                                Object[] args = invocation.getArguments();
+                                List<LocaleItem> localeItems = (List<LocaleItem>) args[0];
+
+                                if (localeItems.isEmpty()) {
+                                    return LAST_NAME;
+                                } else if (localeItems.size() == 1) {
+                                    return FIRST_NAME;
+                                } else {
+                                    return null;
+                                }
+                            }
+                    );
+
+            assertDoesNotThrow(() -> JrgCmsDataLoader.getSpeakerName(Collections.emptyList(), List.of(new LocaleItem()), Language.ENGLISH));
+            localizationUtilsMockedStatic.verify(() -> LocalizationUtils.getString(Mockito.anyList(), Mockito.nullable(Language.class)),
+                    VerificationModeFactory.times(2));
+            jrgCmsDataLoaderMockedStatic.verify(() -> JrgCmsDataLoader.getSpeakerName(LAST_NAME, FIRST_NAME),
+                    VerificationModeFactory.times(1));
+            localizationUtilsMockedStatic.verifyNoMoreInteractions();
         }
     }
 

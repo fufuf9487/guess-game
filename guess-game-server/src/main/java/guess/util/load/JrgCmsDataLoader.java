@@ -287,8 +287,7 @@ public class JrgCmsDataLoader extends CmsDataLoader {
 
         if ((lastName != null) && !lastName.isEmpty()) {
             if (name != null) {
-                name += " ";
-                name += lastName;
+                name += (" " + lastName);
             } else {
                 name = lastName;
             }
