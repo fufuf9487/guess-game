@@ -5,16 +5,16 @@ import guess.domain.source.cms.jrgcms.speaker.JrgCmsParticipant;
 import java.util.List;
 
 public class JrgCmsActivity {
-    private String type;
+    private String id;
     private JrgCmsTalk data;
     private List<JrgCmsParticipant> participants;
 
-    public String getType() {
-        return type;
+    public String getId() {
+        return id;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public JrgCmsTalk getData() {

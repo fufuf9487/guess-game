@@ -415,19 +415,6 @@ public class ContentfulDataLoader extends CmsDataLoader {
                 Collections.emptyList());
     }
 
-    /**
-     * Creates event local date from zoned date time string.
-     *
-     * @param zonedDateTimeString zoned date time string
-     * @return event local date
-     */
-    static LocalDate createEventLocalDate(String zonedDateTimeString) {
-        return ZonedDateTime.ofInstant(
-                        ZonedDateTime.parse(zonedDateTimeString).toInstant(),
-                        ZoneId.of(DateTimeUtils.MOSCOW_TIME_ZONE))
-                .toLocalDate();
-    }
-
     @Override
     public Event getEvent(Conference conference, LocalDate startDate) {
         var fixedEvent = fixNonexistentEventError(conference, startDate);

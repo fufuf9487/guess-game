@@ -5,10 +5,14 @@ import guess.domain.Language;
 import guess.domain.source.*;
 import guess.domain.source.extract.ExtractPair;
 import guess.domain.source.extract.ExtractSet;
+import guess.util.DateTimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -285,5 +289,31 @@ public abstract class CmsDataLoader {
         } else {
             return new ArrayList<>();
         }
+    }
+
+    /**
+     * Creates event local date from zoned date time string.
+     *
+     * @param zonedDateTimeString zoned date time string
+     * @return event local date
+     */
+    static LocalDate createEventLocalDate(String zonedDateTimeString) {
+        return ZonedDateTime.ofInstant(
+                        ZonedDateTime.parse(zonedDateTimeString).toInstant(),
+                        ZoneId.of(DateTimeUtils.MOSCOW_TIME_ZONE))
+                .toLocalDate();
+    }
+
+    /**
+     * Creates event local time from zoned date time string.
+     *
+     * @param zonedDateTimeString zoned date time string
+     * @return event local time
+     */
+    static LocalTime createEventLocalTime(String zonedDateTimeString) {
+        return ZonedDateTime.ofInstant(
+                        ZonedDateTime.parse(zonedDateTimeString).toInstant(),
+                        ZoneId.of(DateTimeUtils.MOSCOW_TIME_ZONE))
+                .toLocalTime();
     }
 }

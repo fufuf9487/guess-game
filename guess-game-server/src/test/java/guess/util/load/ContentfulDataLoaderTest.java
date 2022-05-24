@@ -32,8 +32,6 @@ import guess.domain.source.cms.contentful.talk.fields.ContentfulTalkFields;
 import guess.domain.source.cms.contentful.talk.fields.ContentfulTalkFieldsCommon;
 import guess.domain.source.cms.contentful.talk.response.ContentfulTalkResponse;
 import guess.domain.source.cms.contentful.talk.response.ContentfulTalkResponseCommon;
-import guess.domain.source.extract.ExtractPair;
-import guess.domain.source.extract.ExtractSet;
 import guess.domain.source.image.UrlDates;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -582,24 +580,6 @@ class ContentfulDataLoaderTest {
             String expectedMapCoordinates = (expected.getPlace() != null) ? expected.getPlace().getMapCoordinates() : null;
             String actualMapCoordinates = (actual.getPlace() != null) ? actual.getPlace().getMapCoordinates() : null;
             assertEquals(expectedMapCoordinates, actualMapCoordinates);
-        }
-    }
-
-    @Nested
-    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    @DisplayName("createEventLocalDate method tests")
-    class CreateEventLocalDateTest {
-        private Stream<Arguments> data() {
-            return Stream.of(
-                    arguments("2020-01-01T00:00+03:00", LocalDate.of(2020, 1, 1)),
-                    arguments("2020-12-31T00:00+03:00", LocalDate.of(2020, 12, 31))
-            );
-        }
-
-        @ParameterizedTest
-        @MethodSource("data")
-        void createUtcZonedDateTime(String zonedDateTimeString, LocalDate expected) {
-            assertEquals(expected, ContentfulDataLoader.createEventLocalDate(zonedDateTimeString));
         }
     }
 

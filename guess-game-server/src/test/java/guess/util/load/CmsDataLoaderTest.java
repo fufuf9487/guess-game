@@ -16,6 +16,8 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.internal.verification.VerificationModeFactory;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -364,6 +366,42 @@ class CmsDataLoaderTest {
 
                 assertEquals(expected, CmsDataLoader.createCompanies(enName, ruName, companyId, checkEnTextExistence));
             }
+        }
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DisplayName("createEventLocalDate method tests")
+    class CreateEventLocalDateTest {
+        private Stream<Arguments> data() {
+            return Stream.of(
+                    arguments("2020-01-01T00:00+03:00", LocalDate.of(2020, 1, 1)),
+                    arguments("2020-12-31T00:00+03:00", LocalDate.of(2020, 12, 31))
+            );
+        }
+
+        @ParameterizedTest
+        @MethodSource("data")
+        void createEventLocalDate(String zonedDateTimeString, LocalDate expected) {
+            assertEquals(expected, ContentfulDataLoader.createEventLocalDate(zonedDateTimeString));
+        }
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DisplayName("createEventLocalTime method tests")
+    class CreateEventLocalTimeTest {
+        private Stream<Arguments> data() {
+            return Stream.of(
+                    arguments("2020-01-01T08:45+03:00", LocalTime.of(8, 45)),
+                    arguments("2020-12-31T10:00Z", LocalTime.of(13, 0))
+            );
+        }
+
+        @ParameterizedTest
+        @MethodSource("data")
+        void createEventLocalTime(String zonedDateTimeString, LocalTime expected) {
+            assertEquals(expected, ContentfulDataLoader.createEventLocalTime(zonedDateTimeString));
         }
     }
 }
