@@ -111,7 +111,7 @@ public class JrgCmsDataLoader extends CmsDataLoader {
         JrgCmsScheduleResponse response = getRestTemplate().getForObject(uri, JrgCmsScheduleResponse.class);
         Map<String, DayTrackTime> result = new HashMap<>();
 
-        for (JrgCmsDay day : response.getData().getDays()) {
+        for (JrgCmsDay day : Objects.requireNonNull(response).getData().getDays()) {
             for (JrgCmsTrack track : day.getTracks()) {
                 for (JrgCmsSlot slot : track.getSlots()) {
                     result.put(slot.getActivity().getId(), new DayTrackTime(

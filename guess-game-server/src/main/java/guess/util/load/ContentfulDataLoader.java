@@ -904,18 +904,16 @@ public class ContentfulDataLoader extends CmsDataLoader {
             return null;
         }
 
-        switch (locale) {
-            case ENGLISH_LOCALE:
-                return name
-                        .replaceAll("[\\s]*[.]*(Moscow){1}[\\s]*$", " Msc")
-                        .replaceAll("[\\s]*[.]*(Piter){1}[\\s]*$", " SPb");
-            case RUSSIAN_LOCALE:
-                return name
-                        .replaceAll("[\\s]*[.]*(Moscow){1}[\\s]*$", " Мск")
-                        .replaceAll("[\\s]*[.]*(Piter){1}[\\s]*$", " СПб");
-            default:
-                throw new IllegalArgumentException(String.format("Unknown locale: %s (add new locale, change method and rerun)", locale));
-        }
+        return switch (locale) {
+            case ENGLISH_LOCALE -> name
+                    .replaceAll("[\\s]*[.]*(Moscow)[\\s]*$", " Msc")
+                    .replaceAll("[\\s]*[.]*(Piter)[\\s]*$", " SPb");
+            case RUSSIAN_LOCALE -> name
+                    .replaceAll("[\\s]*[.]*(Moscow)[\\s]*$", " Мск")
+                    .replaceAll("[\\s]*[.]*(Piter)[\\s]*$", " СПб");
+            default ->
+                    throw new IllegalArgumentException(String.format("Unknown locale: %s (add new locale, change method and rerun)", locale));
+        };
     }
 
     /**
