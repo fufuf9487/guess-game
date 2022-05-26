@@ -1016,8 +1016,8 @@ class ContentfulDataLoaderTest {
 
             ContentfulDataLoader contentfulDataLoader = new ContentfulDataLoader();
 
-            assertDoesNotThrow(() -> contentfulDataLoader.getTalks(Conference.JPOINT, "code", true));
-            assertDoesNotThrow(() -> contentfulDataLoader.getTalks(Conference.JPOINT, "code", false));
+            assertDoesNotThrow(() -> contentfulDataLoader.getTalks(Conference.JPOINT, LocalDate.of(2022, 6, 14), "code", true));
+            assertDoesNotThrow(() -> contentfulDataLoader.getTalks(Conference.JPOINT, LocalDate.of(2022, 6, 14), "code", false));
         }
     }
 

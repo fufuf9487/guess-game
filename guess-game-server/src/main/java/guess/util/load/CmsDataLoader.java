@@ -54,11 +54,12 @@ public abstract class CmsDataLoader {
      * Gets talks
      *
      * @param conference      conference
+     * @param startDate       start date
      * @param conferenceCode  conference code
      * @param ignoreDemoStage ignore demo stage talks
      * @return talks
      */
-    abstract List<Talk> getTalks(Conference conference, String conferenceCode, boolean ignoreDemoStage);
+    abstract List<Talk> getTalks(Conference conference, LocalDate startDate, String conferenceCode, boolean ignoreDemoStage);
 
     /**
      * Gets name of image width parameter.

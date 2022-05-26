@@ -19,4 +19,12 @@ public class JrgContact {
     public void setValue(String value) {
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return "JrgContact{" +
+                "type='" + type + '\'' +
+                ", value='" + value + '\'' +
+                '}';
+    }
 }

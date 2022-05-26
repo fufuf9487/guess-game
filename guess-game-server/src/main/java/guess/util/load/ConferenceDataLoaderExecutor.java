@@ -252,7 +252,7 @@ public class ConferenceDataLoaderExecutor {
                 cmsEvent.getStartDate(), cmsEvent.getEndDate());
 
         // Read talks from CMS
-        List<Talk> cmsTalks = cmsDataLoader.getTalks(conference, conferenceCode, loadSettings.ignoreDemoStage());
+        List<Talk> cmsTalks = cmsDataLoader.getTalks(conference, startDate, conferenceCode, loadSettings.ignoreDemoStage());
         log.info("Talks (in CMS): {}", cmsTalks.size());
         cmsTalks.forEach(
                 t -> log.trace("Talk: nameEn: '{}', name: '{}'",
@@ -2135,7 +2135,10 @@ public class ConferenceDataLoaderExecutor {
         // 2022
 //        loadTalksSpeakersEvent(Conference.TECH_TRAIN, LocalDate.of(2022, 5, 14),
 //                LoadSettings.invalidTalksSet(Set.of("Открытие фестиваля TechTrain 2022 Spring", "Закрытие фестиваля TechTrain 2022 Spring")));
-//        loadTalksSpeakersEvent(Conference.MOBIUS, LocalDate.of(2022, 5, 25));
+//        loadTalksSpeakersEvent(Conference.MOBIUS, LocalDate.of(2022, 5, 25),
+//                LoadSettings.invalidTalksSet(Set.of("Открытие конференции Mobius 2022 Spring", "Хроники Мобиуса. Подводим итоги, но не заканчиваем")));
+//        loadTalksSpeakersEvent(Conference.MOBIUS, LocalDate.of(2022, 6, 22),
+//                LoadSettings.invalidTalksSet(Set.of("Открытие офлайн-части конференции Mobius 2022 Spring", "Закрытие конференции Mobius 2022 Spring")));
 //        loadTalksSpeakersEvent(Conference.HEISENBUG, LocalDate.of(2022, 5, 30));
 //        loadTalksSpeakersEvent(Conference.HYDRA, LocalDate.of(2022, 6, 2));
 //        loadTalksSpeakersEvent(Conference.CPP_RUSSIA, LocalDate.of(2022, 6, 6));

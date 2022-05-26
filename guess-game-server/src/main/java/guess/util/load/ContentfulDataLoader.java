@@ -679,7 +679,7 @@ public class ContentfulDataLoader extends CmsDataLoader {
     }
 
     @Override
-    public List<Talk> getTalks(Conference conference, String conferenceCode, boolean ignoreDemoStage) {
+    public List<Talk> getTalks(Conference conference, LocalDate startDate, String conferenceCode, boolean ignoreDemoStage) {
         var conferenceSpaceInfo = CONFERENCE_SPACE_INFO_MAP.get(conference);
 
         return getTalks(conferenceSpaceInfo, conferenceCode, ignoreDemoStage);

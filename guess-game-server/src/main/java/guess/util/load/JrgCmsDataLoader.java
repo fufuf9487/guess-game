@@ -90,16 +90,16 @@ public class JrgCmsDataLoader extends CmsDataLoader {
     }
 
     @Override
-    public List<Talk> getTalks(Conference conference, String conferenceCode, boolean ignoreDemoStage) {
+    public List<Talk> getTalks(Conference conference, LocalDate startDate, String conferenceCode, boolean ignoreDemoStage) {
         //TODO: implement
-        long eventId = 100130;
+        long eventId = Conference.TECH_TRAIN.equals(conference) ? 100130 : 100126;
 
-        Map<String, DayTrackTime> dayTrackTimeMap = getDayTrackTimeMap(eventId);
+        ScheduleInfo scheduleInfo = getScheduleInfo(eventId, startDate);
 
-        return getTalks(eventId, ignoreDemoStage, dayTrackTimeMap);
+        return getTalks(eventId, ignoreDemoStage, scheduleInfo);
     }
 
-    Map<String, DayTrackTime> getDayTrackTimeMap(long eventId) {
+    ScheduleInfo getScheduleInfo(long eventId, LocalDate startDate) {
         // https://core.jugru.team/api/v1/public/events/{eventId}/schedule
         var builder = UriComponentsBuilder
                 .fromUriString(SCHEDULE_BASE_URL);
@@ -109,12 +109,45 @@ public class JrgCmsDataLoader extends CmsDataLoader {
                 .encode()
                 .toUri();
         JrgCmsScheduleResponse response = getRestTemplate().getForObject(uri, JrgCmsScheduleResponse.class);
-        Map<String, DayTrackTime> result = new HashMap<>();
+        Map<String, DayTrackTime> currentDayTrackTimeMap = new HashMap<>();
+        Map<String, DayTrackTime> totalDayTrackTimeMap = new HashMap<>();
+        List<JrgCmsDay> sortedDays = Objects.requireNonNull(response).getData().getDays().stream()
+                .sorted(Comparator.comparing(d -> CmsDataLoader.createEventLocalDate(d.getDayStartsAt())))
+                .toList();
+        Map<LocalDate, Set<LocalDate>> dayDateMap = new HashMap<>();
+        LocalDate currentDate = null;
+        Set<LocalDate> currentDateSet = new HashSet<>();
 
-        for (JrgCmsDay day : Objects.requireNonNull(response).getData().getDays()) {
+        // Create day date map
+        for (JrgCmsDay day : sortedDays) {
+            LocalDate dayDate = CmsDataLoader.createEventLocalDate(day.getDayStartsAt());
+
+            if ((currentDate == null) || !currentDate.plusDays(1).equals(dayDate)) {
+                currentDateSet = new HashSet<>();
+            }
+
+            currentDate = dayDate;
+            currentDateSet.add(currentDate);
+            dayDateMap.put(currentDate, currentDateSet);
+        }
+
+        Set<LocalDate> startDateSet = Objects.requireNonNull(dayDateMap.get(startDate),
+                () -> String.format("Start date %s not found in conference dates", startDate));
+
+        // Fill DayTrackTime maps
+        for (JrgCmsDay day : sortedDays) {
+            LocalDate dayDate = CmsDataLoader.createEventLocalDate(day.getDayStartsAt());
+
             for (JrgCmsTrack track : day.getTracks()) {
                 for (JrgCmsSlot slot : track.getSlots()) {
-                    result.put(slot.getActivity().getId(), new DayTrackTime(
+                    if (startDateSet.contains(dayDate)) {
+                        currentDayTrackTimeMap.put(slot.getActivity().getId(), new DayTrackTime(
+                                day.getDayNumber(),
+                                track.getTrackNumber(),
+                                CmsDataLoader.createEventLocalTime(slot.getSlotStartTime())));
+                    }
+
+                    totalDayTrackTimeMap.put(slot.getActivity().getId(), new DayTrackTime(
                             day.getDayNumber(),
                             track.getTrackNumber(),
                             CmsDataLoader.createEventLocalTime(slot.getSlotStartTime())));
@@ -122,7 +155,7 @@ public class JrgCmsDataLoader extends CmsDataLoader {
             }
         }
 
-        return result;
+        return new ScheduleInfo(currentDayTrackTimeMap, totalDayTrackTimeMap);
     }
 
     /**
@@ -130,10 +163,10 @@ public class JrgCmsDataLoader extends CmsDataLoader {
      *
      * @param eventId         event identifier
      * @param ignoreDemoStage ignore demo stage talks
-     * @param dayTrackTimeMap event id/(day number, track number, start time)
+     * @param scheduleInfo    schedule information
      * @return talks
      */
-    List<Talk> getTalks(long eventId, boolean ignoreDemoStage, Map<String, DayTrackTime> dayTrackTimeMap) {
+    List<Talk> getTalks(long eventId, boolean ignoreDemoStage, ScheduleInfo scheduleInfo) {
         // https://speakers.jugru.org/api/v1/public/events/{eventId}/activities
         var builder = UriComponentsBuilder
                 .fromUriString(TALKS_BASE_URL);
@@ -151,9 +184,17 @@ public class JrgCmsDataLoader extends CmsDataLoader {
         Map<String, Speaker> speakerMap = getSpeakerMap(validJrgCmsActivities);
 
         return validJrgCmsActivities.stream()
-                .map(a -> JrgCmsDataLoader.createTalk(a, speakerMap, talkId, dayTrackTimeMap))
+                .filter(a -> isCurrentConferencePartTalk(a, scheduleInfo))
+                .map(a -> JrgCmsDataLoader.createTalk(a, speakerMap, talkId, scheduleInfo))
                 .sorted(Comparator.comparing(Talk::getTalkDay).thenComparing(Talk::getTrackTime).thenComparing(Talk::getTrack))
                 .toList();
+    }
+
+    static boolean isCurrentConferencePartTalk(JrgCmsActivity jrgCmsActivity, ScheduleInfo scheduleInfo) {
+        Objects.requireNonNull(scheduleInfo.getTotalDayTrackTimeMap().get(jrgCmsActivity.getId()),
+                () -> String.format("DayTrackTime not found for '%s' talk", jrgCmsActivity.getData().getTitle().get(ENGLISH_TEXT_KEY)));
+
+        return scheduleInfo.getCurrentDayTrackTimeMap().containsKey(jrgCmsActivity.getId());
     }
 
     @Override
@@ -170,7 +211,7 @@ public class JrgCmsDataLoader extends CmsDataLoader {
      */
     static boolean isValidTalk(JrgCmsActivity activity, boolean ignoreDemoStage) {
         return !ignoreDemoStage ||
-                ((activity.getData().getOptions().getDemoStage() == null) || !activity.getData().getOptions().getDemoStage());
+                ((activity.getData().getOptions() == null) || (activity.getData().getOptions().getDemoStage() == null) || !activity.getData().getOptions().getDemoStage());
     }
 
     /**
@@ -227,7 +268,8 @@ public class JrgCmsDataLoader extends CmsDataLoader {
         Map<String, JrgContact> contactMap = jrgCmsSpeaker.getContacts().stream()
                 .collect(Collectors.toMap(
                         JrgContact::getType,
-                        c -> c
+                        c -> c,
+                        (c1, c2) -> c1
                 ));
 
         return new Speaker(
@@ -255,14 +297,14 @@ public class JrgCmsDataLoader extends CmsDataLoader {
     /**
      * Creates talk from JUG Ru Group CMS information.
      *
-     * @param jrgCmsActivity  JUG Ru Group CMS activity
-     * @param speakerMap      speaker map
-     * @param talkId          atomic talk identifier
-     * @param dayTrackTimeMap event id/(day number, track number, start time)
+     * @param jrgCmsActivity JUG Ru Group CMS activity
+     * @param speakerMap     speaker map
+     * @param talkId         atomic talk identifier
+     * @param scheduleInfo   schedule information
      * @return talk
      */
     static Talk createTalk(JrgCmsActivity jrgCmsActivity, Map<String, Speaker> speakerMap, AtomicLong talkId,
-                           Map<String, DayTrackTime> dayTrackTimeMap) {
+                           ScheduleInfo scheduleInfo) {
         JrgCmsTalk jrgCmsTalk = jrgCmsActivity.getData();
         List<Speaker> speakers = jrgCmsActivity.getParticipants().stream()
                 .filter(JrgCmsDataLoader::isValidSpeaker)
@@ -273,8 +315,7 @@ public class JrgCmsDataLoader extends CmsDataLoader {
                             () -> String.format("Speaker id %s not found for '%s' talk", speakerId, jrgCmsTalk.getTitle().get(ENGLISH_TEXT_KEY)));
                 })
                 .toList();
-        DayTrackTime dayTrackTime = Objects.requireNonNull(dayTrackTimeMap.get(jrgCmsActivity.getId()),
-                () -> String.format("DayTrackTime not found for '%s' talk", jrgCmsTalk.getTitle().get(ENGLISH_TEXT_KEY)));
+        DayTrackTime dayTrackTime = scheduleInfo.getCurrentDayTrackTimeMap().get(jrgCmsActivity.getId());
 
         return new Talk(
                 new Descriptionable(
@@ -379,7 +420,7 @@ public class JrgCmsDataLoader extends CmsDataLoader {
      * @return presentation links
      */
     static List<String> extractPresentationLinks(JrgTalkPresentation presentation) {
-        if (presentation == null) {
+        if ((presentation == null) || (presentation.getFiles() == null)) {
             return new ArrayList<>();
         }
 

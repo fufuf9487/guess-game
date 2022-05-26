@@ -369,7 +369,7 @@ class ConferenceDataLoaderExecutorTest {
                 CmsDataLoader cmsDataLoader = Mockito.mock(CmsDataLoader.class);
                 Mockito.when(cmsDataLoader.getEvent(Mockito.any(Conference.class), Mockito.any(LocalDate.class)))
                         .thenReturn(contentfulEvent);
-                Mockito.when(cmsDataLoader.getTalks(Mockito.any(Conference.class), Mockito.anyString(), Mockito.anyBoolean()))
+                Mockito.when(cmsDataLoader.getTalks(Mockito.any(Conference.class), Mockito.any(LocalDate.class), Mockito.anyString(), Mockito.anyBoolean()))
                         .thenReturn(contentfulTalks);
                 cmsDataLoaderFactoryMockedStatic.when(() -> CmsDataLoaderFactory.createDataLoader(Mockito.any(LocalDate.class)))
                         .thenReturn(cmsDataLoader);
