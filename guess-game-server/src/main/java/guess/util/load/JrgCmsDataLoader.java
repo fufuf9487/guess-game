@@ -3,7 +3,9 @@ package guess.util.load;
 import guess.domain.Conference;
 import guess.domain.Language;
 import guess.domain.source.*;
-import guess.domain.source.cms.jrgcms.JrgPhoto;
+import guess.domain.source.cms.jrgcms.JrgCmsPhoto;
+import guess.domain.source.cms.jrgcms.event.JrgCmsConferenceSiteContent;
+import guess.domain.source.cms.jrgcms.event.JrgCmsConferenceSiteContentResponse;
 import guess.domain.source.cms.jrgcms.speaker.JrgCmsParticipant;
 import guess.domain.source.cms.jrgcms.speaker.JrgCmsSpeaker;
 import guess.domain.source.cms.jrgcms.speaker.JrgContact;
@@ -16,6 +18,10 @@ import guess.domain.source.image.UrlDates;
 import guess.util.LocalizationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDate;
@@ -24,24 +30,51 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
-import static guess.util.load.ContentfulDataLoader.getRestTemplate;
-
 /**
  * Data loader of JUG Ru Group CMS.
  */
 public class JrgCmsDataLoader extends CmsDataLoader {
     private static final Logger log = LoggerFactory.getLogger(JrgCmsDataLoader.class);
 
+    private static final String CONFERENCE_SITE_CONTENT_URL = "https://squidex.jugru.team/api/content/sites/conf-site-content";
     private static final String TALKS_BASE_URL = "https://speakers.jugru.org/api/v1/public/events/{eventId}/activities";
     private static final String SCHEDULE_BASE_URL = "https://core.jugru.team/api/v1/public/events/{eventId}/schedule";
+
+    private static final String FILTER_PARAM_NAME = "$filter";
     private static final String SPEAKER_ROLE = "SPEAKER";
     private static final String JAVA_CHAMPION_TITULUS = "Java Champion";
-
     private static final String TWITTER_CONTACT_TYPE = "twitter";
     private static final String GITHUB_CONTACT_TYPE = "github";
 
     private static final String ENGLISH_TEXT_KEY = "en";
     private static final String RUSSIAN_TEXT_KEY = "ru";
+
+    private static final EnumMap<Conference, String> CONFERENCE_EVENT_PROJECT_MAP = new EnumMap<Conference, String>(Conference.class);
+
+    private static final RestTemplate restTemplate;
+
+    static {
+        CONFERENCE_EVENT_PROJECT_MAP.put(Conference.CPP_RUSSIA, "CPP");
+        CONFERENCE_EVENT_PROJECT_MAP.put(Conference.DEV_OOPS, "DEVOOPS");
+        CONFERENCE_EVENT_PROJECT_MAP.put(Conference.DOT_NEXT, "DOTNEXT");
+        CONFERENCE_EVENT_PROJECT_MAP.put(Conference.HEISENBUG, "HEISENBUG");
+        CONFERENCE_EVENT_PROJECT_MAP.put(Conference.HOLY_JS, "HOLYJS");
+        CONFERENCE_EVENT_PROJECT_MAP.put(Conference.HYDRA, "HYDRA");
+        CONFERENCE_EVENT_PROJECT_MAP.put(Conference.JBREAK, "JBREAK");
+        CONFERENCE_EVENT_PROJECT_MAP.put(Conference.JOKER, "JOKER");
+        CONFERENCE_EVENT_PROJECT_MAP.put(Conference.JPOINT, "JPOINT");
+        CONFERENCE_EVENT_PROJECT_MAP.put(Conference.MOBIUS, "MOBIUS");
+        CONFERENCE_EVENT_PROJECT_MAP.put(Conference.TECH_TRAIN, "TT");
+        CONFERENCE_EVENT_PROJECT_MAP.put(Conference.SMART_DATA, "SMARTDATA");
+        CONFERENCE_EVENT_PROJECT_MAP.put(Conference.SPTDC, "SPTDC");
+        CONFERENCE_EVENT_PROJECT_MAP.put(Conference.VIDEO_TECH, "VIDEOTECH");
+
+        restTemplate = createRestTemplate();
+    }
+
+    static RestTemplate getRestTemplate() {
+        return restTemplate;
+    }
 
     @Override
     public Map<ContentfulDataLoader.ConferenceSpaceInfo, List<String>> getTags(String conferenceCodePrefix) {
@@ -91,19 +124,51 @@ public class JrgCmsDataLoader extends CmsDataLoader {
 
     @Override
     public List<Talk> getTalks(Conference conference, LocalDate startDate, String conferenceCode, boolean ignoreDemoStage) {
-        //TODO: implement
-        long eventId = Conference.TECH_TRAIN.equals(conference) ? 100130 : 100126;
-
+        long eventId = getEventId(conference, conferenceCode);
         ScheduleInfo scheduleInfo = getScheduleInfo(eventId, startDate);
 
         return getTalks(eventId, ignoreDemoStage, scheduleInfo);
+    }
+
+    long getEventId(Conference conference, String conferenceCode) {
+        // https://squidex.jugru.team/api/content/sites/conf-site-content?$filter=data/eventProject/iv eq '{eventProject}' and data/eventVersion/iv eq '{eventVersion}'
+        String eventProject = CONFERENCE_EVENT_PROJECT_MAP.get(conference);
+        var builder = UriComponentsBuilder
+                .fromUriString(CONFERENCE_SITE_CONTENT_URL)
+                .queryParam(FILTER_PARAM_NAME, String.format("data/eventProject/iv eq '%s' and data/eventVersion/iv eq '%s'", eventProject, conferenceCode));
+        var uri = builder
+                .build()
+                .encode()
+                .toUri();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(System.getProperty("token")); //TODO: change
+
+        JrgCmsConferenceSiteContentResponse response = getRestTemplate().exchange(
+                        uri,
+                        HttpMethod.GET,
+                        new HttpEntity<>(headers),
+                        JrgCmsConferenceSiteContentResponse.class)
+                .getBody();
+        List<JrgCmsConferenceSiteContent> items = Objects.requireNonNull(response).getItems();
+
+        if (items.isEmpty()) {
+            throw new IllegalStateException(String.format("No events found for conference %s and event version '%s' (change conference and/or conference code and rerun)",
+                    conference, conferenceCode));
+        }
+
+        if (items.size() > 1) {
+            throw new IllegalStateException(String.format("Too much events found for conference %s and event version '%s', events: %d (change conference and/or conference code and rerun)",
+                    conference, conferenceCode, items.size()));
+        }
+
+        return items.get(0).getData().getEventId().getIv();
     }
 
     ScheduleInfo getScheduleInfo(long eventId, LocalDate startDate) {
         // https://core.jugru.team/api/v1/public/events/{eventId}/schedule
         var builder = UriComponentsBuilder
                 .fromUriString(SCHEDULE_BASE_URL);
-
         var uri = builder
                 .buildAndExpand(eventId)
                 .encode()
@@ -170,7 +235,6 @@ public class JrgCmsDataLoader extends CmsDataLoader {
         // https://speakers.jugru.org/api/v1/public/events/{eventId}/activities
         var builder = UriComponentsBuilder
                 .fromUriString(TALKS_BASE_URL);
-
         var uri = builder
                 .buildAndExpand(eventId)
                 .encode()
@@ -324,9 +388,9 @@ public class JrgCmsDataLoader extends CmsDataLoader {
                         extractLocaleItems(jrgCmsTalk.getShortDescription()),
                         extractLocaleItems(jrgCmsTalk.getFullDescription())
                 ),
-                dayTrackTime.getDayNumber(),
-                dayTrackTime.getStartTime(),
-                dayTrackTime.getTrackNumber(),
+                dayTrackTime.dayNumber(),
+                dayTrackTime.startTime(),
+                dayTrackTime.trackNumber(),
                 extractLanguage(jrgCmsTalk.getLanguage()),
                 new Talk.TalkLinks(
                         extractPresentationLinks(jrgCmsTalk.getPresentation()),
@@ -436,7 +500,7 @@ public class JrgCmsDataLoader extends CmsDataLoader {
      * @return photo URL and dates
      */
     static UrlDates extractPhoto(JrgCmsSpeaker jrgCmsSpeaker) {
-        List<JrgPhoto> photos = jrgCmsSpeaker.getPhoto();
+        List<JrgCmsPhoto> photos = jrgCmsSpeaker.getPhoto();
         String speakerName = getSpeakerName(jrgCmsSpeaker.getLastName().get(ENGLISH_TEXT_KEY), jrgCmsSpeaker.getFirstName().get(ENGLISH_TEXT_KEY));
 
         if (photos == null) {
@@ -449,13 +513,13 @@ public class JrgCmsDataLoader extends CmsDataLoader {
             return new UrlDates(null, null, null);
         }
 
-        JrgPhoto jrgPhoto = photos.get(0);
+        JrgCmsPhoto jrgCmsPhoto = photos.get(0);
 
         if (photos.size() > 1) {
             log.warn("There are many photos ({}) for '{}' speaker", photos.size(), speakerName);
         }
 
-        return new UrlDates(jrgPhoto.getLinks().getContent(), jrgPhoto.getCreated(), jrgPhoto.getLastModified());
+        return new UrlDates(jrgCmsPhoto.getLinks().getContent(), jrgCmsPhoto.getCreated(), jrgCmsPhoto.getLastModified());
     }
 
     /**

@@ -28,13 +28,9 @@ import guess.domain.source.image.UrlDates;
 import guess.util.DateTimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.StringHttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -161,11 +157,7 @@ public class ContentfulDataLoader extends CmsDataLoader {
         EVENT_TYPE_NAME_CONFERENCE_MAP = CONFERENCE_EVENT_TYPE_NAME_MAP.entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
 
-        List<HttpMessageConverter<?>> converters = new ArrayList<>();
-        converters.add(new StringHttpMessageConverter(StandardCharsets.UTF_8));
-        converters.add(new MappingJackson2HttpMessageConverter());
-
-        restTemplate = new RestTemplate(converters);
+        restTemplate = createRestTemplate();
     }
 
     static RestTemplate getRestTemplate() {

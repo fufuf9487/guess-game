@@ -2,10 +2,10 @@ package guess.domain.source.cms.jrgcms;
 
 import java.time.ZonedDateTime;
 
-public class JrgPhoto {
+public class JrgCmsPhoto {
     private ZonedDateTime created;
     private ZonedDateTime lastModified;
-    private JrgLinks links;
+    private JrgCmsLinks links;
 
     public ZonedDateTime getCreated() {
         return created;
@@ -23,11 +23,11 @@ public class JrgPhoto {
         this.lastModified = lastModified;
     }
 
-    public JrgLinks getLinks() {
+    public JrgCmsLinks getLinks() {
         return links;
     }
 
-    public void setLinks(JrgLinks links) {
+    public void setLinks(JrgCmsLinks links) {
         this.links = links;
     }
 }

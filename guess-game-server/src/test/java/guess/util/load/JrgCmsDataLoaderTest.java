@@ -2,8 +2,8 @@ package guess.util.load;
 
 import guess.domain.Language;
 import guess.domain.source.LocaleItem;
-import guess.domain.source.cms.jrgcms.JrgLinks;
-import guess.domain.source.cms.jrgcms.JrgPhoto;
+import guess.domain.source.cms.jrgcms.JrgCmsLinks;
+import guess.domain.source.cms.jrgcms.JrgCmsPhoto;
 import guess.domain.source.cms.jrgcms.speaker.JrgCmsSpeaker;
 import guess.domain.source.cms.jrgcms.speaker.JrgContact;
 import guess.domain.source.cms.jrgcms.talk.JrgTalkPresentation;
@@ -162,17 +162,17 @@ class JrgCmsDataLoaderTest {
             final String CONTENT0 = "https://valid.com/fileName0.pdf";
             final String CONTENT1 = "https://valid.com/fileName1.pdf";
 
-            JrgLinks jrgLinks0 = new JrgLinks();
-            jrgLinks0.setContent(CONTENT0);
+            JrgCmsLinks jrgCmsLinks0 = new JrgCmsLinks();
+            jrgCmsLinks0.setContent(CONTENT0);
 
-            JrgLinks jrgLinks1 = new JrgLinks();
-            jrgLinks1.setContent(CONTENT1);
+            JrgCmsLinks jrgCmsLinks1 = new JrgCmsLinks();
+            jrgCmsLinks1.setContent(CONTENT1);
 
             JrgTalkPresentationFile jrgTalkPresentationFile0 = new JrgTalkPresentationFile();
-            jrgTalkPresentationFile0.setLinks(jrgLinks0);
+            jrgTalkPresentationFile0.setLinks(jrgCmsLinks0);
 
             JrgTalkPresentationFile jrgTalkPresentationFile1 = new JrgTalkPresentationFile();
-            jrgTalkPresentationFile1.setLinks(jrgLinks1);
+            jrgTalkPresentationFile1.setLinks(jrgCmsLinks1);
 
             JrgTalkPresentation jrgTalkPresentation0 = new JrgTalkPresentation();
             jrgTalkPresentation0.setFiles(List.of(jrgTalkPresentationFile0));
@@ -205,18 +205,18 @@ class JrgCmsDataLoaderTest {
             final ZonedDateTime DATE1 = ZonedDateTime.of(2022, 5, 20, 22, 0, 0, 0, ZoneId.of("UTC"));
             final ZonedDateTime DATE2 = ZonedDateTime.of(2022, 5, 20, 22, 30, 0, 0, ZoneId.of("UTC"));
 
-            JrgLinks jrgLinks0 = new JrgLinks();
-            jrgLinks0.setContent(CONTENT);
+            JrgCmsLinks jrgCmsLinks0 = new JrgCmsLinks();
+            jrgCmsLinks0.setContent(CONTENT);
 
-            JrgPhoto jrgPhoto0 = new JrgPhoto();
-            jrgPhoto0.setLinks(jrgLinks0);
-            jrgPhoto0.setCreated(DATE0);
-            jrgPhoto0.setLastModified(DATE1);
+            JrgCmsPhoto jrgCmsPhoto0 = new JrgCmsPhoto();
+            jrgCmsPhoto0.setLinks(jrgCmsLinks0);
+            jrgCmsPhoto0.setCreated(DATE0);
+            jrgCmsPhoto0.setLastModified(DATE1);
 
-            JrgPhoto jrgPhoto1 = new JrgPhoto();
-            jrgPhoto1.setLinks(jrgLinks0);
-            jrgPhoto1.setCreated(DATE0);
-            jrgPhoto1.setLastModified(DATE2);
+            JrgCmsPhoto jrgCmsPhoto1 = new JrgCmsPhoto();
+            jrgCmsPhoto1.setLinks(jrgCmsLinks0);
+            jrgCmsPhoto1.setCreated(DATE0);
+            jrgCmsPhoto1.setLastModified(DATE2);
 
             JrgCmsSpeaker jrgCmsSpeaker0 = new JrgCmsSpeaker();
             jrgCmsSpeaker0.setLastName(Collections.emptyMap());
@@ -230,12 +230,12 @@ class JrgCmsDataLoaderTest {
             JrgCmsSpeaker jrgCmsSpeaker2 = new JrgCmsSpeaker();
             jrgCmsSpeaker2.setLastName(Collections.emptyMap());
             jrgCmsSpeaker2.setFirstName(Collections.emptyMap());
-            jrgCmsSpeaker2.setPhoto(List.of(jrgPhoto0));
+            jrgCmsSpeaker2.setPhoto(List.of(jrgCmsPhoto0));
 
             JrgCmsSpeaker jrgCmsSpeaker3 = new JrgCmsSpeaker();
             jrgCmsSpeaker3.setLastName(Collections.emptyMap());
             jrgCmsSpeaker3.setFirstName(Collections.emptyMap());
-            jrgCmsSpeaker3.setPhoto(List.of(jrgPhoto0, jrgPhoto1));
+            jrgCmsSpeaker3.setPhoto(List.of(jrgCmsPhoto0, jrgCmsPhoto1));
 
             return Stream.of(
                     arguments(jrgCmsSpeaker0, EMPTY_URL_DATES),

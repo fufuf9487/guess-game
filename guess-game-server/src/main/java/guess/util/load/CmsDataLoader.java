@@ -8,7 +8,12 @@ import guess.domain.source.extract.ExtractSet;
 import guess.util.DateTimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -67,6 +72,14 @@ public abstract class CmsDataLoader {
      * @return name of image width parameter
      */
     abstract String getImageWidthParameterName();
+
+    static RestTemplate createRestTemplate() {
+        List<HttpMessageConverter<?>> converters = new ArrayList<>();
+        converters.add(new StringHttpMessageConverter(StandardCharsets.UTF_8));
+        converters.add(new MappingJackson2HttpMessageConverter());
+
+        return new RestTemplate(converters);
+    }
 
     /**
      * Extracts string, i.e. trims not null string.

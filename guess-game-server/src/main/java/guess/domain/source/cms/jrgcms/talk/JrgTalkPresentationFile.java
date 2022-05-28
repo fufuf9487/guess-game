@@ -1,15 +1,15 @@
 package guess.domain.source.cms.jrgcms.talk;
 
-import guess.domain.source.cms.jrgcms.JrgLinks;
+import guess.domain.source.cms.jrgcms.JrgCmsLinks;
 
 public class JrgTalkPresentationFile {
-    private JrgLinks links;
+    private JrgCmsLinks links;
 
-    public JrgLinks getLinks() {
+    public JrgCmsLinks getLinks() {
         return links;
     }
 
-    public void setLinks(JrgLinks links) {
+    public void setLinks(JrgCmsLinks links) {
         this.links = links;
     }
 }

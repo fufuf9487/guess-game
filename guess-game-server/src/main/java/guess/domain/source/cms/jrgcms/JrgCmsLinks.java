@@ -1,6 +1,6 @@
 package guess.domain.source.cms.jrgcms;
 
-public class JrgLinks {
+public class JrgCmsLinks {
     private String content;
 
     public String getContent() {

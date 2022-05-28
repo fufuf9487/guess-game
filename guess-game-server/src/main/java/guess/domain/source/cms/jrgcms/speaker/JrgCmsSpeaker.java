@@ -1,6 +1,6 @@
 package guess.domain.source.cms.jrgcms.speaker;
 
-import guess.domain.source.cms.jrgcms.JrgPhoto;
+import guess.domain.source.cms.jrgcms.JrgCmsPhoto;
 
 import java.util.List;
 import java.util.Map;
@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public class JrgCmsSpeaker {
     private String id;
-    private List<JrgPhoto> photo;
+    private List<JrgCmsPhoto> photo;
     private Map<String, String> firstName;
     private Map<String, String> lastName;
     private String titulus;
@@ -24,11 +24,11 @@ public class JrgCmsSpeaker {
         this.id = id;
     }
 
-    public List<JrgPhoto> getPhoto() {
+    public List<JrgCmsPhoto> getPhoto() {
         return photo;
     }
 
-    public void setPhoto(List<JrgPhoto> photo) {
+    public void setPhoto(List<JrgCmsPhoto> photo) {
         this.photo = photo;
     }
 
