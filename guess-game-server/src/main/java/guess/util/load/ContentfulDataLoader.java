@@ -408,7 +408,7 @@ public class ContentfulDataLoader extends CmsDataLoader {
     }
 
     @Override
-    public Event getEvent(Conference conference, LocalDate startDate) {
+    public Event getEvent(Conference conference, LocalDate startDate, String conferenceCode, Event eventTemplate) {
         var fixedEvent = fixNonexistentEventError(conference, startDate);
         if (fixedEvent != null) {
             return fixedEvent;

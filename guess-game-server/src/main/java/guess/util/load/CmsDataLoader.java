@@ -49,11 +49,13 @@ public abstract class CmsDataLoader {
     /**
      * Gets event.
      *
-     * @param conference conference
-     * @param startDate  start date
+     * @param conference     conference
+     * @param startDate      start date
+     * @param conferenceCode conference code
+     * @param eventTemplate  event template
      * @return event
      */
-    abstract Event getEvent(Conference conference, LocalDate startDate);
+    abstract Event getEvent(Conference conference, LocalDate startDate, String conferenceCode, Event eventTemplate);
 
     /**
      * Gets talks

@@ -623,16 +623,16 @@ class ContentfulDataLoaderTest {
                     Collections.emptyList());
 
             return Stream.of(
-                    arguments(Conference.DOT_NEXT, LocalDate.of(2016, 12, 7), Collections.emptyList(), null, event0),
-                    arguments(Conference.DOT_NEXT, LocalDate.of(2017, 12, 7), Collections.emptyList(), IllegalStateException.class, null),
-                    arguments(Conference.DOT_NEXT, LocalDate.of(2017, 12, 7), List.of(event0, event1), IllegalStateException.class, null),
-                    arguments(Conference.DOT_NEXT, LocalDate.of(2017, 12, 7), List.of(event0), null, event0)
+                    arguments(Conference.DOT_NEXT, LocalDate.of(2016, 12, 7), null, null, Collections.emptyList(), null, event0),
+                    arguments(Conference.DOT_NEXT, LocalDate.of(2017, 12, 7), null, null, Collections.emptyList(), IllegalStateException.class, null),
+                    arguments(Conference.DOT_NEXT, LocalDate.of(2017, 12, 7), null, null, List.of(event0, event1), IllegalStateException.class, null),
+                    arguments(Conference.DOT_NEXT, LocalDate.of(2017, 12, 7), null, null, List.of(event0), null, event0)
             );
         }
 
         @ParameterizedTest
         @MethodSource("data")
-        void getEvent(Conference conference, LocalDate startDate, List<Event> events, Class<? extends Throwable> expectedException, Event expectedEvent) {
+        void getEvent(Conference conference, LocalDate startDate, String conferenceCode, Event eventTemplate, List<Event> events, Class<? extends Throwable> expectedException, Event expectedEvent) {
             try (MockedStatic<ContentfulDataLoader> mockedStatic = Mockito.mockStatic(ContentfulDataLoader.class)) {
                 mockedStatic.when(() -> ContentfulDataLoader.getEvents(Mockito.anyString(), Mockito.any(LocalDate.class)))
                         .thenReturn(events);
@@ -669,14 +669,14 @@ class ContentfulDataLoaderTest {
                 ContentfulDataLoader contentfulDataLoader = new ContentfulDataLoader();
 
                 if (expectedException == null) {
-                    Event event = contentfulDataLoader.getEvent(conference, startDate);
+                    Event event = contentfulDataLoader.getEvent(conference, startDate, conferenceCode, eventTemplate);
 
                     assertEquals(expectedEvent, event);
                     assertEquals(expectedEvent.getName(), event.getName());
                     assertEquals(expectedEvent.getStartDate(), event.getStartDate());
                     assertEquals(expectedEvent.getEndDate(), event.getEndDate());
                 } else {
-                    assertThrows(expectedException, () -> contentfulDataLoader.getEvent(conference, startDate));
+                    assertThrows(expectedException, () -> contentfulDataLoader.getEvent(conference, startDate, conferenceCode, eventTemplate));
                 }
             }
         }

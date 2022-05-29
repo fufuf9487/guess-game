@@ -367,7 +367,7 @@ class ConferenceDataLoaderExecutorTest {
                  MockedStatic<ConferenceDataLoaderExecutor> conferenceDataLoaderExecutorMockedStatic = Mockito.mockStatic(ConferenceDataLoaderExecutor.class)) {
 
                 CmsDataLoader cmsDataLoader = Mockito.mock(CmsDataLoader.class);
-                Mockito.when(cmsDataLoader.getEvent(Mockito.any(Conference.class), Mockito.any(LocalDate.class)))
+                Mockito.when(cmsDataLoader.getEvent(Mockito.any(Conference.class), Mockito.any(LocalDate.class), Mockito.nullable(String.class), Mockito.nullable(Event.class)))
                         .thenReturn(contentfulEvent);
                 Mockito.when(cmsDataLoader.getTalks(Mockito.any(Conference.class), Mockito.any(LocalDate.class), Mockito.anyString(), Mockito.anyBoolean()))
                         .thenReturn(contentfulTalks);
@@ -474,24 +474,11 @@ class ConferenceDataLoaderExecutorTest {
             mockedStatic.when(() -> ConferenceDataLoaderExecutor.loadTalksSpeakersEvent(
                             Mockito.any(Conference.class), Mockito.any(LocalDate.class), Mockito.anyString()))
                     .thenCallRealMethod();
-            mockedStatic.when(() -> ConferenceDataLoaderExecutor.loadTalksSpeakersEvent(
-                            Mockito.any(Conference.class), Mockito.any(LocalDate.class)))
-                    .thenCallRealMethod();
-            mockedStatic.when(() -> ConferenceDataLoaderExecutor.loadTalksSpeakersEvent(
-                            Mockito.any(Conference.class), Mockito.any(LocalDate.class), Mockito.any(LoadSettings.class)))
-                    .thenCallRealMethod();
 
             assertDoesNotThrow(() -> ConferenceDataLoaderExecutor.loadTalksSpeakersEvent(
                     Conference.JPOINT,
                     LocalDate.of(2020, 6, 29),
                     "2020-jpoint"));
-            assertDoesNotThrow(() -> ConferenceDataLoaderExecutor.loadTalksSpeakersEvent(
-                    Conference.JPOINT,
-                    LocalDate.of(2020, 6, 29)));
-            assertDoesNotThrow(() -> ConferenceDataLoaderExecutor.loadTalksSpeakersEvent(
-                    Conference.JPOINT,
-                    LocalDate.of(2020, 6, 29),
-                    LoadSettings.defaultSettings()));
         }
     }
 

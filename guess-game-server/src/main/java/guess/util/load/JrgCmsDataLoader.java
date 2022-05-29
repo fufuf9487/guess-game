@@ -53,6 +53,8 @@ public class JrgCmsDataLoader extends CmsDataLoader {
 
     private static final RestTemplate restTemplate;
 
+    private Long eventId;
+
     static {
         CONFERENCE_EVENT_PROJECT_MAP.put(Conference.CPP_RUSSIA, "CPP");
         CONFERENCE_EVENT_PROJECT_MAP.put(Conference.DEV_OOPS, "DEVOOPS");
@@ -88,34 +90,30 @@ public class JrgCmsDataLoader extends CmsDataLoader {
     }
 
     @Override
-    public Event getEvent(Conference conference, LocalDate startDate) {
-        //TODO: implement
+    public Event getEvent(Conference conference, LocalDate startDate, String conferenceCode, Event eventTemplate) {
+        eventId = getEventId(conference, conferenceCode);
+        
+        //TODO: fix endDate
+        LocalDate endDate = startDate;
+
         return new Event(
                 new Nameable(
                         -1L,
-                        extractLocaleItems(
-                                "TechTrain 2022 Spring",
-                                null
-                        )
+                        eventTemplate.getName()
                 ),
                 null,
                 new Event.EventDates(
-                        LocalDate.of(2022, 5, 14),
-                        LocalDate.of(2022, 5, 14)
+                        startDate,
+                        endDate
                 ),
                 new Event.EventLinks(
-                        extractLocaleItems(
-                                "https://techtrain.ru/",
-                                null
-                        ),
-                        "https://www.youtube.com/channel/UCJoerW5eDOz5qu7I2CYi7xg"
+                        Collections.emptyList(),
+                        null
                 ),
                 new Place(
                         -1,
-                        extractLocaleItems(
-                                "Online",
-                                "Онлайн"),
-                        Collections.emptyList(),
+                        eventTemplate.getPlace().getCity(),
+                        eventTemplate.getPlace().getVenueAddress(),
                         null
                 ),
                 null,
@@ -124,7 +122,10 @@ public class JrgCmsDataLoader extends CmsDataLoader {
 
     @Override
     public List<Talk> getTalks(Conference conference, LocalDate startDate, String conferenceCode, boolean ignoreDemoStage) {
-        long eventId = getEventId(conference, conferenceCode);
+        if (eventId == null) {
+            eventId = getEventId(conference, conferenceCode);
+        }
+        
         Map<String, DayTrackTime> dayTrackTimeMap = getDayTrackTimeMap(eventId, startDate);
 
         return getTalks(eventId, ignoreDemoStage, dayTrackTimeMap);

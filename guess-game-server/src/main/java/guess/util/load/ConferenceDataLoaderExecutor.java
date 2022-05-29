@@ -24,6 +24,8 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static guess.util.load.CmsDataLoader.extractLocaleItems;
+
 /**
  * Conference data loader executor.
  */
@@ -245,7 +247,7 @@ public class ConferenceDataLoaderExecutor {
 
         // Read event from CMS
         var cmsDataLoader = CmsDataLoaderFactory.createDataLoader(startDate);
-        var cmsEvent = cmsDataLoader.getEvent(conference, startDate);
+        var cmsEvent = cmsDataLoader.getEvent(conference, startDate, conferenceCode, loadSettings.eventTemplate());
         log.info("Event (in CMS): nameEn: {}, nameRu: {}, startDate: {}, endDate: {}",
                 LocalizationUtils.getString(cmsEvent.getName(), Language.ENGLISH),
                 LocalizationUtils.getString(cmsEvent.getName(), Language.RUSSIAN),
@@ -388,35 +390,6 @@ public class ConferenceDataLoaderExecutor {
     static void loadTalksSpeakersEvent(Conference conference, LocalDate startDate, String conferenceCode)
             throws IOException, SpeakerDuplicatedException, NoSuchFieldException {
         loadTalksSpeakersEvent(conference, startDate, conferenceCode, LoadSettings.defaultSettings());
-    }
-
-    /**
-     * Loads talks, speakers, event information.
-     *
-     * @param conference conference
-     * @param startDate  start date
-     * @throws IOException                if resource files could not be opened
-     * @throws SpeakerDuplicatedException if speakers duplicated
-     * @throws NoSuchFieldException       if field name is invalid
-     */
-    static void loadTalksSpeakersEvent(Conference conference, LocalDate startDate)
-            throws IOException, SpeakerDuplicatedException, NoSuchFieldException {
-        loadTalksSpeakersEvent(conference, startDate, null, LoadSettings.defaultSettings());
-    }
-
-    /**
-     * Loads talks, speakers, event information.
-     *
-     * @param conference   conference
-     * @param startDate    start date
-     * @param loadSettings load settings
-     * @throws IOException                if resource files could not be opened
-     * @throws SpeakerDuplicatedException if speakers duplicated
-     * @throws NoSuchFieldException       if field name is invalid
-     */
-    static void loadTalksSpeakersEvent(Conference conference, LocalDate startDate, LoadSettings loadSettings)
-            throws IOException, SpeakerDuplicatedException, NoSuchFieldException {
-        loadTalksSpeakersEvent(conference, startDate, null, loadSettings);
     }
 
     /**
@@ -1639,7 +1612,7 @@ public class ConferenceDataLoaderExecutor {
                 LocalizationUtils.getString(place.getVenueAddress(), Language.RUSSIAN),
                 ruFixingVenueAddresses);
 
-        return CmsDataLoader.extractLocaleItems(enVenueAddress, ruVenueAddress, true);
+        return extractLocaleItems(enVenueAddress, ruVenueAddress, true);
     }
 
     /**
@@ -1892,6 +1865,40 @@ public class ConferenceDataLoaderExecutor {
         }
     }
 
+    /**
+     * Creates event template.
+     *
+     * @param enText         text in English
+     * @param ruText         text in Russian
+     * @param enCity         city in English
+     * @param enVenueAddress venue address in English
+     * @return event template
+     */
+    static Event createEventTemplate(String enText, String ruText, String enCity, String enVenueAddress) {
+        return new Event(
+                new Nameable(
+                        -1L,
+                        extractLocaleItems(enText, ruText)
+                ),
+                null,
+                new Event.EventDates(
+                        null,
+                        null
+                ),
+                new Event.EventLinks(
+                        Collections.emptyList(),
+                        null
+                ),
+                new Place(
+                        -1,
+                        extractLocaleItems(enCity, null),
+                        extractLocaleItems(enVenueAddress, null),
+                        null
+                ),
+                null,
+                Collections.emptyList());
+    }
+
     public static void main(String[] args) throws IOException, SpeakerDuplicatedException, NoSuchFieldException {
         // Uncomment one of lines and run
 
@@ -2134,11 +2141,17 @@ public class ConferenceDataLoaderExecutor {
 
         // 2022
 //        loadTalksSpeakersEvent(Conference.TECH_TRAIN, LocalDate.of(2022, 5, 14), "2022 Spring",
-//                LoadSettings.invalidTalksSet(Set.of("Открытие фестиваля TechTrain 2022 Spring", "Закрытие фестиваля TechTrain 2022 Spring")));
+//                LoadSettings.eventTemplateAndInvalidTalksSet(
+//                        createEventTemplate("TechTrain 2022 Spring", null, "Online", null),
+//                        Set.of("Открытие фестиваля TechTrain 2022 Spring", "Закрытие фестиваля TechTrain 2022 Spring")));
 //        loadTalksSpeakersEvent(Conference.MOBIUS, LocalDate.of(2022, 5, 25), "2022 Spring",
-//                LoadSettings.invalidTalksSet(Set.of("Открытие конференции Mobius 2022 Spring", "Хроники Мобиуса. Подводим итоги, но не заканчиваем")));
+//                LoadSettings.eventTemplateAndInvalidTalksSet(
+//                        createEventTemplate("Mobius 2022 Spring (online)", "Mobius 2022 Spring (онлайн)", "Online", null),
+//                        Set.of("Открытие конференции Mobius 2022 Spring", "Хроники Мобиуса. Подводим итоги, но не заканчиваем")));
 //        loadTalksSpeakersEvent(Conference.MOBIUS, LocalDate.of(2022, 6, 22), "2022 Spring",
-//                LoadSettings.invalidTalksSet(Set.of("Открытие офлайн-части конференции Mobius 2022 Spring", "Закрытие конференции Mobius 2022 Spring")));
+//                LoadSettings.eventTemplateAndInvalidTalksSet(
+//                        createEventTemplate("Mobius 2022 Spring (offline)", "Mobius 2022 Spring (офлайн)", "Saint Petersburg", "Pobedy Square 1, Hotel «Park Inn by Radisson Pulkovskaya»"),
+//                        Set.of("Открытие офлайн-части конференции Mobius 2022 Spring", "Закрытие конференции Mobius 2022 Spring")));
 //        loadTalksSpeakersEvent(Conference.HEISENBUG, LocalDate.of(2022, 5, 30), "2022 Spring");
 //        loadTalksSpeakersEvent(Conference.HEISENBUG, LocalDate.of(2022, 6, 21), "2022 Spring");
 //        loadTalksSpeakersEvent(Conference.HYDRA, LocalDate.of(2022, 6, 2), "2022");
