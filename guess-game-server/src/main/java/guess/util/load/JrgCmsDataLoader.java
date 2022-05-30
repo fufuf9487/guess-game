@@ -36,6 +36,9 @@ import java.util.stream.Collectors;
 public class JrgCmsDataLoader extends CmsDataLoader {
     private static final Logger log = LoggerFactory.getLogger(JrgCmsDataLoader.class);
 
+    private record ScheduleInfo(List<JrgCmsDay> sortedDays, Set<LocalDate> startDateSet) {
+    }
+
     private static final String CONFERENCE_SITE_CONTENT_URL = "https://squidex.jugru.team/api/content/sites/conf-site-content";
     private static final String TALKS_BASE_URL = "https://speakers.jugru.org/api/v1/public/events/{eventId}/activities";
     private static final String SCHEDULE_BASE_URL = "https://core.jugru.team/api/v1/public/events/{eventId}/schedule";
@@ -92,9 +95,7 @@ public class JrgCmsDataLoader extends CmsDataLoader {
     @Override
     public Event getEvent(Conference conference, LocalDate startDate, String conferenceCode, Event eventTemplate) {
         eventId = getEventId(conference, conferenceCode);
-        
-        //TODO: fix endDate
-        LocalDate endDate = startDate;
+        LocalDate endDate = getEventEndDate(eventId, startDate);
 
         return new Event(
                 new Nameable(
@@ -125,7 +126,7 @@ public class JrgCmsDataLoader extends CmsDataLoader {
         if (eventId == null) {
             eventId = getEventId(conference, conferenceCode);
         }
-        
+
         Map<String, DayTrackTime> dayTrackTimeMap = getDayTrackTimeMap(eventId, startDate);
 
         return getTalks(eventId, ignoreDemoStage, dayTrackTimeMap);
@@ -174,13 +175,13 @@ public class JrgCmsDataLoader extends CmsDataLoader {
     }
 
     /**
-     * Gets activity identifier/day number, track number, start time map.
+     * Gets schedule information.
      *
      * @param eventId   event identifier
      * @param startDate start date
-     * @return day, track, start time map
+     * @return schedule information
      */
-    Map<String, DayTrackTime> getDayTrackTimeMap(long eventId, LocalDate startDate) {
+    ScheduleInfo getScheduleInfo(long eventId, LocalDate startDate) {
         // https://core.jugru.team/api/v1/public/events/{eventId}/schedule
         var builder = UriComponentsBuilder
                 .fromUriString(SCHEDULE_BASE_URL);
@@ -189,7 +190,6 @@ public class JrgCmsDataLoader extends CmsDataLoader {
                 .encode()
                 .toUri();
         JrgCmsScheduleResponse response = getRestTemplate().getForObject(uri, JrgCmsScheduleResponse.class);
-        Map<String, DayTrackTime> currentDayTrackTimeMap = new HashMap<>();
         List<JrgCmsDay> sortedDays = Objects.requireNonNull(response).getData().getDays().stream()
                 .sorted(Comparator.comparing(d -> CmsDataLoader.createEventLocalDate(d.getDayStartsAt())))
                 .toList();
@@ -213,18 +213,46 @@ public class JrgCmsDataLoader extends CmsDataLoader {
         Set<LocalDate> startDateSet = Objects.requireNonNull(dayDateMap.get(startDate),
                 () -> String.format("Start date %s not found in conference dates", startDate));
 
+        return new ScheduleInfo(sortedDays, startDateSet);
+    }
+
+    /**
+     * Gets event end date.
+     *
+     * @param eventId   event identifier
+     * @param startDate start date
+     * @return event end date
+     */
+    LocalDate getEventEndDate(long eventId, LocalDate startDate) {
+        ScheduleInfo scheduleInfo = getScheduleInfo(eventId, startDate);
+
+        return Collections.max(scheduleInfo.startDateSet);
+    }
+
+    /**
+     * Gets activity identifier/day number, track number, start time map.
+     *
+     * @param eventId   event identifier
+     * @param startDate start date
+     * @return day, track, start time map
+     */
+    Map<String, DayTrackTime> getDayTrackTimeMap(long eventId, LocalDate startDate) {
+        ScheduleInfo scheduleInfo = getScheduleInfo(eventId, startDate);
+
         // Fill DayTrackTime maps
-        int dayNumber = 0;
-        for (JrgCmsDay day : sortedDays) {
+        long dayNumber = 0;
+        Map<String, DayTrackTime> currentDayTrackTimeMap = new HashMap<>();
+
+        for (JrgCmsDay day : scheduleInfo.sortedDays) {
             LocalDate dayDate = CmsDataLoader.createEventLocalDate(day.getDayStartsAt());
 
-            if (startDateSet.contains(dayDate)) {
+            if (scheduleInfo.startDateSet.contains(dayDate)) {
                 dayNumber++;
-                
+
                 for (JrgCmsTrack track : day.getTracks()) {
                     for (JrgCmsSlot slot : track.getSlots()) {
                         currentDayTrackTimeMap.put(slot.getActivity().getId(), new DayTrackTime(
-                                (long) dayNumber,
+                                dayNumber,
                                 track.getTrackNumber(),
                                 CmsDataLoader.createEventLocalTime(slot.getSlotStartTime())));
                     }
