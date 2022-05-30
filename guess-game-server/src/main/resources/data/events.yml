@@ -1215,8 +1215,8 @@ events:
     startDate: "2019-08-24"
     endDate: "2019-08-25"
     siteLink:
-      - {language: en, text: "https://techtrain.ru/en/"}
-      - {language: ru, text: "https://techtrain.ru/"}
+      - {language: en, text: "https://2019.techtrain.ru/en/"}
+      - {language: ru, text: "https://2019.techtrain.ru/"}
     youtubeLink: https://www.youtube.com/playlist?list=PLmJD_ICvgPy1_10seBA-6QSkkRXPsgeLR
     placeId: 2
     talkIds: [1317, 1318, 1319, 1320, 1321, 1322, 1323, 1324, 1325, 1326, 1327, 1328, 1329, 1330, 1331, 1332, 1333, 1334,
@@ -1227,8 +1227,8 @@ events:
     startDate: "2020-06-06"
     endDate: "2020-06-06"
     siteLink:
-      - {language: en, text: "https://techtrain.ru/en/"}
-      - {language: ru, text: "https://techtrain.ru/"}
+      - {language: en, text: "https://2020summer.techtrain.ru/en/"}
+      - {language: ru, text: "https://2020summer.techtrain.ru/"}
     youtubeLink: https://www.youtube.com/playlist?list=PLmJD_ICvgPy1PRJtciEtdjANJWUZjN8zb
     placeId: 24
     talkIds: [2374, 2375, 2376, 2377, 2386, 2378, 2379, 2380, 2384]
@@ -1238,7 +1238,7 @@ events:
     startDate: "2020-10-24"
     endDate: "2020-10-24"
     siteLink:
-      - {language: ru, text: "https://techtrain.ru/"}
+      - {language: en, text: "https://2020autumn.techtrain.ru/"}
     youtubeLink: https://www.youtube.com/playlist?list=PLmJD_ICvgPy3Gn-f5Qv36bGGY4GcrVrGo
     placeId: 24
     talkIds: [2598, 2599, 2600, 2601, 2602, 2603, 2604, 2605, 2606]
@@ -1248,7 +1248,7 @@ events:
     startDate: "2021-03-27"
     endDate: "2021-03-27"
     siteLink:
-      - {language: ru, text: "https://techtrain.ru/"}
+      - {language: en, text: "https://2021spring.techtrain.ru/"}
     youtubeLink: https://www.youtube.com/playlist?list=PLmJD_ICvgPy3OCnmvg7_Np_oROSikO0-4
     placeId: 24
     talkIds: [2912, 2913, 2914, 2916, 2918, 2915, 2919, 2917, 2920]
@@ -1258,7 +1258,7 @@ events:
     startDate: "2021-09-18"
     endDate: "2021-09-18"
     siteLink:
-      - {language: en, text: "https://techtrain.ru/"}
+      - {language: en, text: "https://2021autumn.techtrain.ru/"}
     youtubeLink: https://www.youtube.com/playlist?list=PLmJD_ICvgPy2B-NAFiwN0WuzIPgH-KPwg
     placeId: 24
     talkIds: [3159, 3160, 3161, 3162, 3163, 3164, 3165, 3166]
