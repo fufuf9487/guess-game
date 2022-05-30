@@ -218,7 +218,7 @@ public class ConferenceDataLoaderExecutor {
      */
     static void loadTalksSpeakersEvent(Conference conference, LocalDate startDate, String conferenceCode,
                                        LoadSettings loadSettings) throws IOException, SpeakerDuplicatedException, NoSuchFieldException {
-        log.info("{} {} {}", conference, startDate, (conferenceCode == null) ? "" : conferenceCode);
+        log.info("{} {} '{}'", conference, startDate, (conferenceCode == null) ? "" : conferenceCode);
 
         // Read event types, places, events, companies, speakers, talks from resource files
         var resourceSourceInformation = YamlUtils.readSourceInformation();

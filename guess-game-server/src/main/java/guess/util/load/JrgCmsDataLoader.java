@@ -214,14 +214,17 @@ public class JrgCmsDataLoader extends CmsDataLoader {
                 () -> String.format("Start date %s not found in conference dates", startDate));
 
         // Fill DayTrackTime maps
+        int dayNumber = 0;
         for (JrgCmsDay day : sortedDays) {
             LocalDate dayDate = CmsDataLoader.createEventLocalDate(day.getDayStartsAt());
 
-            for (JrgCmsTrack track : day.getTracks()) {
-                for (JrgCmsSlot slot : track.getSlots()) {
-                    if (startDateSet.contains(dayDate)) {
+            if (startDateSet.contains(dayDate)) {
+                dayNumber++;
+                
+                for (JrgCmsTrack track : day.getTracks()) {
+                    for (JrgCmsSlot slot : track.getSlots()) {
                         currentDayTrackTimeMap.put(slot.getActivity().getId(), new DayTrackTime(
-                                day.getDayNumber(),
+                                (long) dayNumber,
                                 track.getTrackNumber(),
                                 CmsDataLoader.createEventLocalTime(slot.getSlotStartTime())));
                     }
