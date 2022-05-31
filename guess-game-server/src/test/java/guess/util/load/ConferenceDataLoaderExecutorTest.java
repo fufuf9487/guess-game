@@ -443,7 +443,7 @@ class ConferenceDataLoaderExecutorTest {
                 conferenceDataLoaderExecutorMockedStatic.when(() -> ConferenceDataLoaderExecutor.fixVenueAddress(Mockito.any(Place.class)))
                         .thenReturn(Collections.emptyList());
                 conferenceDataLoaderExecutorMockedStatic.when(() -> ConferenceDataLoaderExecutor.findResourcePlace(
-                                Mockito.any(Place.class), Mockito.anyMap(), Mockito.anyMap()))
+                                Mockito.any(Place.class), Mockito.anyMap(), Mockito.anyMap(), Mockito.anyMap()))
                         .thenAnswer(
                                 (Answer<Place>) invocation -> {
                                     Object[] args = invocation.getArguments();
@@ -2763,28 +2763,34 @@ class ConferenceDataLoaderExecutorTest {
     class FindResourcePlaceTest {
         private final Place place0;
         private final Place place1;
+        private final Place place2;
 
         public FindResourcePlaceTest() {
             place0 = new Place();
             place0.setId(0);
 
             place1 = new Place();
-            place1.setId(1);
+            place1.setId(-1);
+
+            place2 = new Place();
+            place2.setId(-2);
         }
 
         private Stream<Arguments> data() {
             return Stream.of(
-                    arguments(place0, Collections.emptyMap(), Collections.emptyMap(), place0),
-                    arguments(place1, Collections.emptyMap(), Collections.emptyMap(), null)
+                    arguments(place0, Map.of(0L, place0), Collections.emptyMap(), Collections.emptyMap(), null, place0),
+                    arguments(place0, Collections.emptyMap(), Collections.emptyMap(), Collections.emptyMap(), NullPointerException.class, place0),
+                    arguments(place1, Collections.emptyMap(), Collections.emptyMap(), Collections.emptyMap(), null, place1),
+                    arguments(place2, Collections.emptyMap(), Collections.emptyMap(), Collections.emptyMap(), null, null)
             );
         }
 
         @ParameterizedTest
         @MethodSource("data")
-        void findResourcePlace(Place place, Map<CityVenueAddress, Place> resourceRuCityVenueAddressPlaces,
-                               Map<CityVenueAddress, Place> resourceEnCityVenueAddressPlaces, Place expected) {
+        void findResourcePlace(Place place, Map<Long, Place> resourceIdPlaces, Map<CityVenueAddress, Place> resourceRuCityVenueAddressPlaces,
+                               Map<CityVenueAddress, Place> resourceEnCityVenueAddressPlaces, Class<? extends Throwable> expectedException, Place expectedValue) {
             try (MockedStatic<ConferenceDataLoaderExecutor> mockedStatic = Mockito.mockStatic(ConferenceDataLoaderExecutor.class)) {
-                mockedStatic.when(() -> ConferenceDataLoaderExecutor.findResourcePlace(Mockito.any(Place.class), Mockito.anyMap(), Mockito.anyMap()))
+                mockedStatic.when(() -> ConferenceDataLoaderExecutor.findResourcePlace(Mockito.any(Place.class), Mockito.anyMap(), Mockito.anyMap(), Mockito.anyMap()))
                         .thenCallRealMethod();
                 mockedStatic.when(() -> ConferenceDataLoaderExecutor.findResourcePlaceByCityVenueAddress(Mockito.any(Place.class), Mockito.anyMap(), Mockito.any(Language.class)))
                         .thenAnswer(
@@ -2793,14 +2799,18 @@ class ConferenceDataLoaderExecutorTest {
                                     Place localPlace = (Place) args[0];
 
                                     if (localPlace != null) {
-                                        return (localPlace.getId() == 0) ? localPlace : null;
+                                        return (localPlace.getId() == -1) ? localPlace : null;
                                     } else {
                                         return null;
                                     }
                                 }
                         );
 
-                assertEquals(expected, ConferenceDataLoaderExecutor.findResourcePlace(place, resourceRuCityVenueAddressPlaces, resourceEnCityVenueAddressPlaces));
+                if (expectedException == null) {
+                    assertEquals(expectedValue, ConferenceDataLoaderExecutor.findResourcePlace(place, resourceIdPlaces, resourceRuCityVenueAddressPlaces, resourceEnCityVenueAddressPlaces));
+                } else {
+                    assertThrows(expectedException, () -> ConferenceDataLoaderExecutor.findResourcePlace(place, resourceIdPlaces, resourceRuCityVenueAddressPlaces, resourceEnCityVenueAddressPlaces));
+                }
             }
         }
     }

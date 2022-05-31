@@ -340,6 +340,11 @@ public class ConferenceDataLoaderExecutor {
                 lastTalksId);
 
         // Find place
+        Map<Long, Place> resourceIdPlaces = resourceSourceInformation.getPlaces().stream()
+                .collect(Collectors.toMap(
+                        Identifier::getId,
+                        p -> p
+                ));
         Map<CityVenueAddress, Place> resourceRuCityVenueAddressPlaces = resourceSourceInformation.getPlaces().stream()
                 .collect(Collectors.toMap(
                         p -> new CityVenueAddress(
@@ -356,7 +361,7 @@ public class ConferenceDataLoaderExecutor {
                 ));
         var cmsPlace = cmsEvent.getPlace();
         cmsPlace.setVenueAddress(fixVenueAddress(cmsPlace));
-        var resourcePlace = findResourcePlace(cmsPlace, resourceRuCityVenueAddressPlaces, resourceEnCityVenueAddressPlaces);
+        var resourcePlace = findResourcePlace(cmsPlace, resourceIdPlaces, resourceRuCityVenueAddressPlaces, resourceEnCityVenueAddressPlaces);
         var lastPlaceId = new AtomicLong(getLastId(resourceSourceInformation.getPlaces()));
         LoadResult<Place> placeLoadResult = getPlaceLoadResult(cmsPlace, resourcePlace, lastPlaceId);
 
@@ -1551,13 +1556,21 @@ public class ConferenceDataLoaderExecutor {
      * Finds resource place by pair of city, venue address.
      *
      * @param place                            place
+     * @param resourceIdPlaces                 map of identifier/place
      * @param resourceRuCityVenueAddressPlaces map of (city, venue address)/place in Russian
      * @param resourceEnCityVenueAddressPlaces map of (city, venue address)/place in English
      * @return resource place
      */
     static Place findResourcePlace(Place place,
+                                   Map<Long, Place> resourceIdPlaces,
                                    Map<CityVenueAddress, Place> resourceRuCityVenueAddressPlaces,
                                    Map<CityVenueAddress, Place> resourceEnCityVenueAddressPlaces) {
+        // Find in resource places by known identifier
+        if (place.getId() >= 0) {
+            return Objects.requireNonNull(resourceIdPlaces.get(place.getId()),
+                    () -> String.format("Place id %s not found", place.getId()));
+        }
+
         // Find in resource places by Russian (city, venue address) pair
         var resourcePlace = findResourcePlaceByCityVenueAddress(place, resourceRuCityVenueAddressPlaces, Language.RUSSIAN);
         if (resourcePlace != null) {
@@ -1868,13 +1881,12 @@ public class ConferenceDataLoaderExecutor {
     /**
      * Creates event template.
      *
-     * @param enText         text in English
-     * @param ruText         text in Russian
-     * @param enCity         city in English
-     * @param enVenueAddress venue address in English
+     * @param enText  text in English
+     * @param ruText  text in Russian
+     * @param placeId place identifier
      * @return event template
      */
-    static Event createEventTemplate(String enText, String ruText, String enCity, String enVenueAddress) {
+    static Event createEventTemplate(String enText, String ruText, long placeId) {
         return new Event(
                 new Nameable(
                         -1L,
@@ -1890,9 +1902,9 @@ public class ConferenceDataLoaderExecutor {
                         null
                 ),
                 new Place(
-                        -1,
-                        extractLocaleItems(enCity, null),
-                        extractLocaleItems(enVenueAddress, null),
+                        placeId,
+                        Collections.emptyList(),
+                        Collections.emptyList(),
                         null
                 ),
                 null,
@@ -2142,15 +2154,15 @@ public class ConferenceDataLoaderExecutor {
         // 2022
 //        loadTalksSpeakersEvent(Conference.TECH_TRAIN, LocalDate.of(2022, 5, 14), "2022 Spring",
 //                LoadSettings.eventTemplateAndInvalidTalksSet(
-//                        createEventTemplate("TechTrain 2022 Spring", null, "Online", null),
+//                        createEventTemplate("TechTrain 2022 Spring", null, 24),
 //                        Set.of("Открытие фестиваля TechTrain 2022 Spring", "Закрытие фестиваля TechTrain 2022 Spring")));
 //        loadTalksSpeakersEvent(Conference.MOBIUS, LocalDate.of(2022, 5, 25), "2022 Spring",
 //                LoadSettings.eventTemplateAndInvalidTalksSet(
-//                        createEventTemplate("Mobius 2022 Spring (online)", "Mobius 2022 Spring (онлайн)", "Online", null),
+//                        createEventTemplate("Mobius 2022 Spring (online)", "Mobius 2022 Spring (онлайн)", 24),
 //                        Set.of("Открытие конференции Mobius 2022 Spring", "Хроники Мобиуса. Подводим итоги, но не заканчиваем")));
 //        loadTalksSpeakersEvent(Conference.MOBIUS, LocalDate.of(2022, 6, 22), "2022 Spring",
 //                LoadSettings.eventTemplateAndInvalidTalksSet(
-//                        createEventTemplate("Mobius 2022 Spring (offline)", "Mobius 2022 Spring (офлайн)", "Saint Petersburg", "Pobedy Square 1, Hotel «Park Inn by Radisson Pulkovskaya»"),
+//                        createEventTemplate("Mobius 2022 Spring (offline)", "Mobius 2022 Spring (офлайн)", 4),
 //                        Set.of("Открытие офлайн-части конференции Mobius 2022 Spring", "Закрытие конференции Mobius 2022 Spring")));
 //        loadTalksSpeakersEvent(Conference.HEISENBUG, LocalDate.of(2022, 5, 30), "2022 Spring");
 //        loadTalksSpeakersEvent(Conference.HEISENBUG, LocalDate.of(2022, 6, 21), "2022 Spring");

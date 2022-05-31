@@ -112,9 +112,9 @@ public class JrgCmsDataLoader extends CmsDataLoader {
                         null
                 ),
                 new Place(
-                        -1,
-                        eventTemplate.getPlace().getCity(),
-                        eventTemplate.getPlace().getVenueAddress(),
+                        eventTemplate.getPlace().getId(),
+                        Collections.emptyList(),
+                        Collections.emptyList(),
                         null
                 ),
                 null,
