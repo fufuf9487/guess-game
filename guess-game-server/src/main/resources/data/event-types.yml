@@ -444,7 +444,7 @@ eventTypes:
             \ знаком вам по общению в сети, а также познакомиться и поговорить с мировыми экспертами, которых обычно можно\
             \ встретить на топовых IT-конференциях с дорогими билетами."
     siteLink:
-      - {language: en, text: "https://techtrain.ru//en/"}
+      - {language: en, text: "https://techtrain.ru/en/"}
       - {language: ru, text: "https://techtrain.ru/"}
     vkLink: https://vk.com/techtrain
     twitterLink: https://twitter.com/techtrainfest
