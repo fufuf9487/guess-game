@@ -1262,6 +1262,14 @@ events:
     youtubeLink: https://www.youtube.com/playlist?list=PLmJD_ICvgPy2B-NAFiwN0WuzIPgH-KPwg
     placeId: 24
     talkIds: [3159, 3160, 3161, 3162, 3163, 3164, 3165, 3166]
+  - eventTypeId: 12
+    name:
+      - {language: en, text: "TechTrain 2022 Spring"}
+    startDate: "2022-05-14"
+    endDate: "2022-05-14"
+    siteLink: []
+    placeId: 24
+    talkIds: [3655, 3656, 3657, 3658, 3659, 3660, 3661, 3662, 3663, 3664, 3665]
   # JUG.MSK
   - eventTypeId: 13
     name:

@@ -3468,20 +3468,21 @@ speakers:
     gitHub: cliffclick
   - id: 234
     photoFileName: 0234.jpg
-    photoUpdatedAt: 2021-08-20T15:16:00.102Z[UTC]
+    photoUpdatedAt: 2022-04-12T13:42:31Z[UTC]
     name:
       - {language: en, text: "Andrey Belyaev"}
       - {language: ru, text: "Андрей Беляев"}
     companyIds: [232]
     bio:
-      - {language: en, text: "Developer Advocate at Haulmont. He started working closely with Java in 2006. He worked in outsourcing\
-            \ for a long time, where he tried himself in almost all roles, except perhaps the designer. Was a developer, a\
-            \ team lead, a PM, an architect. He's currently working on the Jmix framework at Haulmont - doing RnD and representing\
-            \ the company at various events."}
-      - {language: ru, text: "Developer Advocate в компании Haulmont. С Java начал плотно работать с 2006 года. Долго рабо\
-            тал в аутсорсинге, где попробовал себя почти во всех ролях, кроме, пожалуй, дизайнера. Был разработчиком, тимт\
-            ехлидом, ПМом, архитектором. В настоящее время работает над фреймворком Jmix в компании Haulmont — делает RnD\
-            \ и представляет компанию на разных мероприятиях."}
+      - {language: en, text: "Developer Advocate at Haulmont. I've been working with Java since 2006. He worked in outsourcing\
+            \ for a long time, where he tried himself in almost all roles, except perhaps the designer. He's been a developer,\
+            \ a team-technician, a PM, an architect. He is currently working on the Jmix framework at Haulmont — doing RnD\
+            \ and representing the company at various events."}
+      - {language: ru, text: "<div class=\"PersonContent_personContent__text__LS5lM\">Developer Advocate в&nbsp;компании Haulmont.\
+            \ С&nbsp;Java начал плотно работать с&nbsp;2006&nbsp;года. Долго работал в&nbsp;аутсорсинге, где попробовал се\
+            бя почти во&nbsp;всех ролях, кроме, пожалуй, дизайнера. Был разработчиком, тимтехлидом, ПМ-ом, архитектором. В\
+            &nbsp;настоящее время работает над фреймворком Jmix в&nbsp;компании Haulmont&nbsp;&mdash; делает RnD и&nbsp;пр\
+            едставляет компанию на&nbsp;разных мероприятиях.</div>"}
     twitter: belyaev_andrey
     gitHub: belyaev-andrey
     habr: a_belyaev
@@ -3516,19 +3517,19 @@ speakers:
     gitHub: mpherlihy
   - id: 237
     photoFileName: 0237.jpg
-    photoUpdatedAt: 2020-10-09T13:18:05.073Z[UTC]
+    photoUpdatedAt: 2022-03-31T19:06:25Z[UTC]
     name:
       - {language: en, text: "Andrei Solntsev"}
       - {language: ru, text: "Андрей Солнцев"}
-    companyIds: [100]
+    companyIds: []
     bio:
-      - {language: en, text: "Software craftsman at Codeborne (Tallinn, Estonia). Aggressive fan of extreme programming, autotests,\
-            \ pair programming and clean code. Creator of Selenide — an open-source library for UI tests in Java. Organizer\
-            \ of devclub.eu. Frequent speaker at conferences: DevClub, Agile Saturday, XP Days Kiev, SeleniumCamp, Nordic\
-            \ Testing Days, TopConf, DevConFu, Devoxx."}
-      - {language: ru, text: "Андрей — разработчик в эстонской компании Codeborne. Автор фреймворка Selenide, организатор\
-            \ таллинского Devclub, частый докладчик на конференциях. Ярый приверженец экстремального программирования, авт\
-            оматических тестов, парного программирования и чистого кода."}
+      - {language: en, text: "<p>Software craftsman. Aggressive fan of extreme programming, autotests, pair programming and\
+            \ clean code. Creator of Selenide &mdash; an open-source library for UI tests in Java. Organizer of devclub.eu\
+            \ Frequent speaker at conferences: DevClub, Agile Saturday, XP Days Kiev, SeleniumCamp, Nordic Testing Days, TopConf,\
+            \ DevConFu, Devoxx.</p>"}
+      - {language: ru, text: "<p>Разработчик, автор фреймворка Selenide, организатор таллиннского Devclub, частый докладчи\
+            к на конференциях. Ярый приверженец экстремального программирования, автоматических тестов, парного программир\
+            ования и чистого кода.</p>"}
     twitter: asolntsev
     gitHub: asolntsev
     habr: asolntsev
@@ -4328,7 +4329,7 @@ speakers:
     gitHub: soulseekah
   - id: 295
     photoFileName: 0295.jpg
-    photoUpdatedAt: 2020-01-31T11:02:22.460Z[UTC]
+    photoUpdatedAt: 2022-04-12T12:25:51Z[UTC]
     name:
       - {language: en, text: "Roman Nevolin"}
       - {language: ru, text: "Роман Неволин"}
@@ -4337,9 +4338,9 @@ speakers:
       - {language: en, text: "The developer of the bioinformatics software with .NET, a chemical with Java, financial with\
             \ Haskell, and some other interesting stuff. Roman likes to dive into new areas and languages and then talk about\
             \ them at conferences and use them in production, if necessary."}
-      - {language: ru, text: "Разработчик приложений для биоинформатиков на .NET, для химиков на Java, для финансистов на\
-            \ Haskell, и множества других интересных вещей. Любит изучать новые области и языки, а потом рассказывать о ни\
-            х на конференциях и по необходимости использовать в продакшне."}
+      - {language: ru, text: "<p>Разработчик приложений для биоинформатиков на .NET, для химиков на&nbsp;Java, для финанси\
+            стов на&nbsp;Haskell, и&nbsp;множества других интересных вещей. Любит изучать новые области и&nbsp;языки, а&nbsp;п\
+            отом рассказывать о&nbsp;них на&nbsp;конференциях и&nbsp;по&nbsp;необходимости использовать в&nbsp;продакшне.</p>"}
     twitter: nevoroman
     gitHub: nevoroman
   - id: 296
@@ -17705,23 +17706,23 @@ speakers:
     habr: ARG89
   - id: 1247
     photoFileName: 1247.jpg
-    photoUpdatedAt: 2021-06-08T13:13:43.808Z[UTC]
+    photoUpdatedAt: 2022-03-31T19:06:41Z[UTC]
     name:
       - {language: en, text: "Pavel Filonov"}
       - {language: ru, text: "Павел Филонов"}
-    companyIds: [257]
+    companyIds: [901]
     bio:
       - language: en
-        text: "Pavel is engaged in online education in the field of C ++ and ML.\n\nAs a leader, he developed the Data Science\
-            \ team at Kaspersky, which provides functionality based on machine learning for the company's products and services.\n\
-            \nIn the role of Data Scientist, he participated in the development of Kaspersky MLAD and MDR AI Analyst.\n\n\
-            As a C ++ developer, he participated in the creation of MaxPatrol SIEM.\n\nFor many years Pavel has been teaching\
-            \ computer science disciplines at MSTU GA."
-      - language: ru
-        text: "Занимается онлайн образованием в области C++ и ML.\n\nВ роли руководителя развивал Data Science команду в Kaspersky,\
-            \ которая предоставляет для продуктов и сервисов компании функционал на основе машинного обучения.\n\nВ роли Data\
-            \ Scientist участвовал в разработке Kaspersky MLAD и MDR AI Analyst.\n\nВ роли разработчика C++ участвовал в с\
-            оздании MaxPatrol SIEM.\n\nВ течение многих лет преподает computer science дисциплины в МГТУ ГА."
+        text: "Pavel is engaged in online education in the field of C ++ and ML.\r\n\r\nAs a leader, he developed the Data\
+            \ Science team at Kaspersky, which provides functionality based on machine learning for the company's products\
+            \ and services.\r\n\r\nIn the role of Data Scientist, he participated in the development of Kaspersky MLAD and\
+            \ MDR AI Analyst.\r\n\r\nAs a C ++ developer, he participated in the creation of MaxPatrol SIEM.\r\n\r\nFor many\
+            \ years Pavel has been teaching computer science disciplines at MSTU GA."
+      - {language: ru, text: "<p>Занимается-онлайн образованием в&nbsp;области&nbsp;C++ и&nbsp;ML. В&nbsp;роли руководител\
+            я развивал Data Science команду в&nbsp;Kaspersky, которая предоставляет для продуктов и&nbsp;сервисов компании\
+            \ функционал на&nbsp;основе машинного обучения. В&nbsp;роли Data Scientist участвовал в&nbsp;разработке Kaspersky\
+            \ MLAD и&nbsp;MDR AI&nbsp;Analyst. В&nbsp;роли разработчика&nbsp;C++ участвовал в&nbsp;создании MaxPatrol SIEM.\
+            \ В&nbsp;течение многих лет преподает computer science дисциплины в&nbsp;МГТУ&nbsp;ГА.</p>"}
     twitter: filonovpv
     gitHub: sdukshis
   - id: 1248
@@ -18186,9 +18187,10 @@ speakers:
             \ хакатонов. Решает бизнес-задачи инструментами веб-разработки."}
   - id: 1288
     photoFileName: 1288.jpg
+    photoUpdatedAt: 2022-03-31T19:05:52Z[UTC]
     name:
       - {language: en, text: "Vitaliy Aksenov"}
-      - {language: ru, text: "Виталий Аксенов"}
+      - {language: ru, text: "Виталий Аксёнов"}
     companyIds: [279]
     bio:
       - language: en
@@ -18197,10 +18199,11 @@ speakers:
             \ of professor Dan Alistarh and received his PhD from Paris 7 Diderot and ITMO University under the guidance of\
             \ professor Petr Kuznetsov."
       - language: ru
-        text: "Виталий Аксенов — научный сотрудник университета ИТМО. Его исследования сосредоточены на практике и теории\
-            \ параллельных структур данных.\n\nДо ИТМО Виталий работал в IST Austria под руководством профессора Дэна Алис\
-            тарха и получил докторскую степень в парижском университете Париж VII имени Дени Дидро и университете ИТМО под\
-            \ руководством профессора Петра Кузнецова."
+        text: "<div class=\"PersonContent_personContent__text__LS5lM\">Работает доцентом в&nbsp;Университете ИТМО. Его исс\
+            ледование фокусируется на&nbsp;практике и&nbsp;теории конкурентных структур данных. До&nbsp;ИТМО работал постд\
+            оком в&nbsp;IST Austria под руководством профессора Дэна Алистарха и&nbsp;получил свою степень PhD&nbsp;в Пари\
+            ж VII и&nbsp;ИТМО под руководством профессора Петра Кузнецова.</div>\n<div class=\"PersonContent_personContent__talks__7yMyH\"\
+            >&nbsp;</div>"
     gitHub: Aksenov239
   - id: 1289
     photoFileName: 1289.jpg
@@ -19162,18 +19165,23 @@ speakers:
       - {language: ru, text: "Ведущий разработчик, лидер сообщества."}
   - id: 1364
     photoFileName: 1364.jpg
-    photoUpdatedAt: 2021-03-01T07:48:23.455Z[UTC]
+    photoUpdatedAt: 2022-04-12T11:36:26Z[UTC]
     name:
       - {language: en, text: "Anna Zharkova"}
       - {language: ru, text: "Анна Жаркова"}
     companyIds: [567]
     bio:
-      - language: en
-        text: "Мобильный разработчик с более 6 годами опыта коммерческой разработки. Занимается нативной разработкой iOS (Swift/Objective-c)\
-            \ и Android (Kotlin/Java), кросс-платформенной (KMP, Xamarin). Разрабатывает архитектуру мобильных приложений\
-            \ для обеих платформ, управляет командой направления. Ведет младших разработчиков (менторство).\r\nПреподавате\
-            ль на курсах \"iOS Advanced 2.0\" и \"iOS Базовый\" в Otus\r\nВ свободное время увлекается живописью, изучает\
-            \ китайский и немецкий языки."
+      - {language: en, text: "Mobile developer with over 7 years of commercial development experience. Kotlin GDE. She does\
+            \ native iOS (Swift/Objective-c) and Android (Kotlin/Java) development, cross-platform (KMP, Xamarin). She develops\
+            \ mobile application architecture for both platforms and manages the direction team. Leads junior developers (mentoring).\
+            \ Lecturer in \"iOS Advanced 2.0\" and \"iOS Basic\" courses at Otus. In her spare time, she enjoys painting and\
+            \ studying Chinese and German."}
+      - {language: ru, text: "<div class=\"PersonContent_personContent__text__LS5lM\">Мобильный разработчик с&nbsp;более 7&nbsp;г\
+            одами опыта коммерческой разработки. Kotlin GDE. Занимается нативной разработкой iOS (Swift/Objective-c) и&nbsp;Android\
+            \ (Kotlin/Java), кросс-платформенной (KMP, Xamarin). Разрабатывает архитектуру мобильных приложений для обеих\
+            \ платформ, управляет командой направления. Ведет младших разработчиков (менторство). Преподаватель на&nbsp;ку\
+            рсах &laquo;iOS Advanced&nbsp;2.0&raquo; и&nbsp;&laquo;iOS Базовый&raquo; в&nbsp;Otus. В&nbsp;свободное время\
+            \ увлекается живописью, изучает китайский и&nbsp;немецкий языки.</div>"}
     twitter: anioutkajarkova
     gitHub: anioutkazharkova
     habr: anioutka
@@ -28866,24 +28874,23 @@ speakers:
     gitHub: itsvetkov
   - id: 2021
     photoFileName: 2021.jpg
-    photoUpdatedAt: 2021-09-30T15:03:39.352Z[UTC]
+    photoUpdatedAt: 2022-04-12T10:58:19Z[UTC]
     name:
       - {language: en, text: "Igor Sheko"}
       - {language: ru, text: "Игорь Шеко"}
     companyIds: [883]
     bio:
-      - language: en
-        text: "Lead frontend developer at Voximplant. Before that he was the co-founder and technical director of the Appatbox\
-            \ web development studio and the Rocketcallback callback service. \nHe develops WebSDK at Voximplant, participates\
-            \ in social projects for the charity foundation «Takie dela» and takes care of a small colony of plastic two-headed\
-            \ dinosaurs. \nAs part of the development teams, nominated for several Digital Storytelling awards in 2017 (Visa\
-            \ pour l'image, Great Eight, Press Photo Digital Storytelling Contest)."
-      - language: ru
-        text: "Lead фронтенд-разработчик в компании Voximplant. До этого был сооснователем и техническим директором студии\
-            \ веб-разработки Appatbox и сервиса обратных звонков Rocketcallback. \nРазрабатывает WebSDK в Voximplant, учас\
-            твует в социальных проектах для благотворительного фонда «Такие дела» и заботится о небольшой колонии пластико\
-            вых двухголовых динозавров. \nВ составе команд разработки номинирован на несколько премий за Digital Storytelling\
-            \ в 2017 году (Visa pour l'image, Great Eight, Press Photo Digital Storytelling Contest)."
+      - {language: en, text: "Lead frontend developer at Voximplant. Before that, he was the co-founder and technical director\
+            \ of the Appatbox web development studio and the Rocketcallback callback service. He develops WebSDK at Voximplant,\
+            \ participates in social projects for the charity foundation «Takie dela» and takes care of a small colony of\
+            \ plastic two-headed dinosaurs. As part of the development teams, nominated for several Digital Storytelling awards\
+            \ in 2017 (Visa pour l'image, Great Eight, Press Photo Digital Storytelling Contest)."}
+      - {language: ru, text: "<p>Lead фронтенд-разработчик в&nbsp;Voximplant. Был сооснователем и&nbsp;техническим директо\
+            ром студии веб-разработки Appatbox и&nbsp;сервиса обратных звонков Rocketcallback. Разрабатывает WebSDK в&nbsp;Voximplant,\
+            \ участвует в&nbsp;социальных проектах для благотворительного фонда &laquo;Такие дела&raquo; и&nbsp;заботится\
+            \ о&nbsp;небольшой колонии пластиковых двухголовых динозавров. В&nbsp;составе команд разработки номинирован на\
+            &nbsp;несколько премий за&nbsp;Digital Storytelling в&nbsp;2017 году (Visa pour l&rsquo;image, Great Eight, Press\
+            \ Photo Digital Storytelling Contest).</p>"}
     gitHub: irbisadm
     habr: irbisadm
   - id: 2022
@@ -29134,3 +29141,47 @@ speakers:
       - {language: ru, text: "Работал над тулами для jvm в Sun Microsystems и Oracle."}
     twitter: EgorEars
     gitHub: gorrus
+  - id: 2042
+    photoFileName: 2042.jpg
+    photoUpdatedAt: 2022-04-18T06:17:03Z[UTC]
+    name:
+      - {language: en, text: "Artem Kuzvesov"}
+      - {language: ru, text: "Артём Кузвесов"}
+    companyIds: [902]
+    bio:
+      - language: en
+        text: "Owner of YetiCrab, a company specializing in outsourced web and mobile application development. Former developer\
+            \ with more than a decade of experience.\r\nWinner of the 2020 international hackathon. His team developed an\
+            \ interactive map module for the Moscow metro in 48 hours and was the best among more than 250 teams all over\
+            \ the world.\r\nSpeaker of industry business conferences:\r\n- DUMP (2017, 2019).\r\n- Frontdays (2017).\r\n-\
+            \ SECON (2019).\r\n- RIT (2017).\r\n- System (2021).\r\n- IT PEOPLE (2021)."
+      - language: ru
+        text: "<div class=\"PersonContent_personContent__text__LS5lM\">\n<p>Владелец компании YetiCrab, специализирующейся\
+            \ на&nbsp;аутсорс-разработке веб-сервисов и&nbsp;мобильных приложений. В&nbsp;прошлом разработчик с&nbsp;более\
+            \ чем десятилетним опытом.<br />Победитель международного хакатона 2020. Его команда за&nbsp;48&nbsp;часов раз\
+            работала модуль интерактивной карты для московского метро и&nbsp;стала лучшей среди более чем 250 команд-участ\
+            ников со&nbsp;всего мира.<br />Спикер отраслевых бизнес-конференций:<br />&mdash;&nbsp;DUMP (2017, 2019).<br />&mdash;&nbsp;Frontdays\
+            \ (2017).<br />&mdash;&nbsp;SECON (2019).<br />&mdash;&nbsp;РИТ (2017).<br />&mdash;&nbsp;Система (2021).<br />&mdash;\
+            \ IT PEOPLE (2021).</p>\n</div>"
+    twitter: ArtKuz
+    gitHub: ArtKuz
+    habr: ArtKuz
+  - id: 2043
+    photoFileName: 2043.jpg
+    photoUpdatedAt: 2022-05-11T07:47:08Z[UTC]
+    name:
+      - {language: en, text: "Eugenia Sukhodolskaya"}
+      - {language: ru, text: "Евгения Суходольская"}
+    companyIds: [689]
+    bio:
+      - {language: en, text: "Evgeniya is a Data Evangelist at Toloka, a global data labeling platform serving around 2,000\
+            \ large and small businesses worldwide. She’s worked as an analyst-developer, a machine learning engineer, a solution\
+            \ architect, and a business analyst. She’s spent two years working in crowdsourcing. Evgeniya’s educational background\
+            \ is in Artificial Intelligence &amp; Data Engineering, and she’s currently getting her master’s degree at The\
+            \ Technical University of Munich."}
+      - {language: ru, text: "Евгения — евангелист данных в Яндекс.Толока, глобальной платформе разметки данных, обслужива\
+            ющей около 2000 крупных и малых предприятий по всему миру. Работала аналитиком-разработчиком, инженером машинн\
+            ого обучения, архитектором решений и бизнес-аналитика. Два года работала в сфере краудсорсинга.Получила образо\
+            вание в области искусственного интеллекта и инженерии данных. Сейчас получает степень магистра в Техническом у\
+            ниверситете Мюнхена."}
+    twitter: SkaaEvgenia

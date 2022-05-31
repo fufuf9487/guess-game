@@ -920,12 +920,15 @@ companies:
   - id: 257
     name:
       - {language: en, text: "Independent Consultant"}
+      - {language: ru, text: "Независимый консультант"}
   - id: 258
     name:
       - {language: en, text: "Independent Developer"}
+      - {language: ru, text: "Независимый разработчик"}
   - id: 259
     name:
       - {language: en, text: "Independent Trainer"}
+      - {language: ru, text: "Независимый тренер"}
   - id: 260
     name:
       - {language: en, text: Indie}
@@ -3282,3 +3285,11 @@ companies:
     name:
       - {language: en, text: Ordina}
     siteLink: https://www.ordina.nl
+  - id: 901
+    name:
+      - {language: en, text: "Independent Expert"}
+      - {language: ru, text: "Независимый эксперт"}
+  - id: 902
+    name:
+      - {language: en, text: YetiCrab}
+    siteLink: https://yeticrab.org
