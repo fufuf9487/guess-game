@@ -104,12 +104,12 @@ class ContentfulDataLoaderTest {
             mockedStatic.when(ContentfulDataLoader::getRestTemplate)
                     .thenReturn(restTemplateMock);
 
-            Map<ContentfulDataLoader.ConferenceSpaceInfo, List<String>> expected = Map.of(
-                    ContentfulDataLoader.ConferenceSpaceInfo.COMMON_SPACE_INFO, List.of(CODE1, CODE2, CODE3, CODE4),
-                    ContentfulDataLoader.ConferenceSpaceInfo.HOLY_JS_SPACE_INFO, List.of(CODE1, CODE2, CODE3, CODE4),
-                    ContentfulDataLoader.ConferenceSpaceInfo.DOT_NEXT_SPACE_INFO, List.of(CODE1, CODE2, CODE3, CODE4),
-                    ContentfulDataLoader.ConferenceSpaceInfo.HEISENBUG_SPACE_INFO, List.of(CODE1, CODE2, CODE3, CODE4),
-                    ContentfulDataLoader.ConferenceSpaceInfo.MOBIUS_SPACE_INFO, List.of(CODE1, CODE2, CODE3, CODE4));
+            Map<String, List<String>> expected = Map.of(
+                    ContentfulDataLoader.ConferenceSpaceInfo.COMMON_SPACE_INFO.toString(), List.of(CODE1, CODE2, CODE3, CODE4),
+                    ContentfulDataLoader.ConferenceSpaceInfo.HOLY_JS_SPACE_INFO.toString(), List.of(CODE1, CODE2, CODE3, CODE4),
+                    ContentfulDataLoader.ConferenceSpaceInfo.DOT_NEXT_SPACE_INFO.toString(), List.of(CODE1, CODE2, CODE3, CODE4),
+                    ContentfulDataLoader.ConferenceSpaceInfo.HEISENBUG_SPACE_INFO.toString(), List.of(CODE1, CODE2, CODE3, CODE4),
+                    ContentfulDataLoader.ConferenceSpaceInfo.MOBIUS_SPACE_INFO.toString(), List.of(CODE1, CODE2, CODE3, CODE4));
 
             ContentfulDataLoader contentfulDataLoader = Mockito.mock(ContentfulDataLoader.class);
             Mockito.when(contentfulDataLoader.getTags(Mockito.nullable(String.class)))
