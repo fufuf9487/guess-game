@@ -858,6 +858,21 @@ public class ConferenceDataLoaderExecutor {
     }
 
     /**
+     * Fills locale items attribute value.
+     *
+     * @param resourceSupplier resource supplier
+     * @param targetSupplier   target supplier
+     * @param targetConsumer   target consumer
+     */
+    static void fillLocaleItemsAttributeValue(Supplier<List<LocaleItem>> resourceSupplier, Supplier<List<LocaleItem>> targetSupplier,
+                                              Consumer<List<LocaleItem>> targetConsumer) {
+        if ((resourceSupplier.get() != null) && !resourceSupplier.get().isEmpty() &&
+                ((targetSupplier.get() == null) || targetSupplier.get().isEmpty())) {
+            targetConsumer.accept(resourceSupplier.get());
+        }
+    }
+
+    /**
      * Fills speaker updated datetime.
      *
      * @param targetSpeaker   target speaker
@@ -1023,6 +1038,8 @@ public class ConferenceDataLoaderExecutor {
         if (resourceEvent == null) {
             eventToAppend = event;
         } else {
+            fillLocaleItemsAttributeValue(resourceEvent::getSiteLink, event::getSiteLink, event::setSiteLink);
+            fillStringAttributeValue(resourceEvent::getYoutubeLink, event::getYoutubeLink, event::setYoutubeLink);
             fillEventTimeZone(event, resourceEvent);
 
             if (needUpdate(resourceEvent, event)) {
