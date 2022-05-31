@@ -165,8 +165,8 @@ public class ContentfulDataLoader extends CmsDataLoader {
     }
 
     @Override
-    public Map<ConferenceSpaceInfo, List<String>> getTags(String conferenceCodePrefix) {
-        Map<ConferenceSpaceInfo, List<String>> spaceTagsMap = new LinkedHashMap<>();
+    public Map<String, List<String>> getTags(String conferenceCodePrefix) {
+        Map<String, List<String>> spaceTagsMap = new LinkedHashMap<>();
 
         for (ConferenceSpaceInfo conferenceSpaceInfo : ConferenceSpaceInfo.values()) {
             // https://cdn.contentful.com/spaces/{spaceId}/entries?access_token={accessToken}&content_type=talks&select=fields.conferences&limit=1000&fields.conferences[match]={conferenceCode}
@@ -196,7 +196,7 @@ public class ContentfulDataLoader extends CmsDataLoader {
                     .sorted()
                     .toList();
 
-            spaceTagsMap.put(conferenceSpaceInfo, tags);
+            spaceTagsMap.put(conferenceSpaceInfo.toString(), tags);
         }
 
         return spaceTagsMap;

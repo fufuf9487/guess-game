@@ -38,15 +38,15 @@ public class ConferenceDataLoaderExecutor {
     }
 
     /**
-     * Loads space tags.
+     * Loads tags.
      *
      * @param cmsType              CMS Type
      * @param conferenceCodePrefix conference code prefix
      */
-    static void loadSpaceTags(CmsType cmsType, String conferenceCodePrefix) {
+    static void loadTags(CmsType cmsType, String conferenceCodePrefix) {
         CmsDataLoader cmsDataLoader = CmsDataLoaderFactory.createDataLoader(cmsType);
         cmsDataLoader.getTags(conferenceCodePrefix)
-                .forEach((s, t) -> log.info("Space: {}, tags: {}", s, String.join(",", t)));
+                .forEach((s, t) -> log.info("Entity: {}, tags: {}", s, t.stream().collect(Collectors.joining(", ", "'", "'"))));
     }
 
     /**
@@ -1932,9 +1932,9 @@ public class ConferenceDataLoaderExecutor {
         // Uncomment one of lines and run
 
         // Load space tags
-//        loadSpaceTags(CmsType.CONTENTFUL, "2020");
-//        loadSpaceTags(CmsType.CONTENTFUL, "2021");
-//        loadSpaceTags(CmsType.CONTENTFUL, "2022");
+//        loadTags(CmsType.CONTENTFUL, "2020");
+//        loadTags(CmsType.CONTENTFUL, "2021");
+//        loadTags(CmsType.JUGRUGROUP_CMS, "2022");
 
         // Load event types
 //        loadEventTypes(CmsType.CONTENTFUL);

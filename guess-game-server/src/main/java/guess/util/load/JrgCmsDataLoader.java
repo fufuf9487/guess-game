@@ -44,6 +44,7 @@ public class JrgCmsDataLoader extends CmsDataLoader {
     private static final String SCHEDULE_BASE_URL = "https://core.jugru.team/api/v1/public/events/{eventId}/schedule";
 
     private static final String FILTER_PARAM_NAME = "$filter";
+    private static final String ORDERBY_PARAM_NAME = "$orderby";
     private static final String SPEAKER_ROLE = "SPEAKER";
     private static final String JAVA_CHAMPION_TITULUS = "Java Champion";
     private static final String TWITTER_CONTACT_TYPE = "twitter";
@@ -82,8 +83,41 @@ public class JrgCmsDataLoader extends CmsDataLoader {
     }
 
     @Override
-    public Map<ContentfulDataLoader.ConferenceSpaceInfo, List<String>> getTags(String conferenceCodePrefix) {
-        throw new UnsupportedOperationException();
+    public Map<String, List<String>> getTags(String conferenceCodePrefix) {
+        // https://squidex.jugru.team/api/content/sites/conf-site-content?$filter=startswith(data/eventVersion/iv, '{conferenceCode}')&$orderby=data/eventProject/iv
+        var builder = UriComponentsBuilder
+                .fromUriString(CONFERENCE_SITE_CONTENT_URL)
+                .queryParam(FILTER_PARAM_NAME, String.format("startswith(data/eventVersion/iv, '%s')", conferenceCodePrefix))
+                .queryParam(ORDERBY_PARAM_NAME, "data/eventProject/iv");
+        var uri = builder
+                .build()
+                .encode()
+                .toUri();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(System.getProperty("token")); //TODO: change
+
+        JrgCmsConferenceSiteContentResponse response = getRestTemplate().exchange(
+                        uri,
+                        HttpMethod.GET,
+                        new HttpEntity<>(headers),
+                        JrgCmsConferenceSiteContentResponse.class)
+                .getBody();
+        Map<String, List<String>> tags = Objects.requireNonNull(response).getItems().stream()
+                .map(JrgCmsConferenceSiteContent::getData)
+                .collect(Collectors.groupingBy(
+                                e -> e.getEventProject().getIv(),
+                                Collectors.mapping(
+                                        e -> e.getEventVersion().getIv(),
+                                        Collectors.toList()
+                                )
+                        )
+                );
+
+        return tags.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
     }
 
     @Override

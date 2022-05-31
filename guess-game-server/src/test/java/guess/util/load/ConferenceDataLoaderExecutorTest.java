@@ -47,13 +47,13 @@ class ConferenceDataLoaderExecutorTest {
             CmsDataLoader cmsDataLoader = Mockito.mock(CmsDataLoader.class);
             Mockito.when(cmsDataLoader.getTags(Mockito.anyString()))
                     .thenReturn(Map.of(
-                            ContentfulDataLoader.ConferenceSpaceInfo.COMMON_SPACE_INFO,
+                            ContentfulDataLoader.ConferenceSpaceInfo.COMMON_SPACE_INFO.toString(),
                             List.of(CODE1, CODE2, CODE3, CODE4)));
 
             mockedStatic.when(() -> CmsDataLoaderFactory.createDataLoader(Mockito.any(CmsType.class)))
                     .thenReturn(cmsDataLoader);
 
-            assertDoesNotThrow(() -> ConferenceDataLoaderExecutor.loadSpaceTags(CmsType.CONTENTFUL, null));
+            assertDoesNotThrow(() -> ConferenceDataLoaderExecutor.loadTags(CmsType.CONTENTFUL, null));
         }
     }
 

@@ -37,7 +37,7 @@ public abstract class CmsDataLoader {
      * @param conferenceCodePrefix conference code prefix
      * @return tags
      */
-    abstract Map<ContentfulDataLoader.ConferenceSpaceInfo, List<String>> getTags(String conferenceCodePrefix);
+    abstract Map<String, List<String>> getTags(String conferenceCodePrefix);
 
     /**
      * Gets event types.
