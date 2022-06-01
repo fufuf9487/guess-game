@@ -11364,18 +11364,18 @@ speakers:
     twitter: terrakok
   - id: 784
     photoFileName: 0784.jpg
-    photoUpdatedAt: 2021-10-01T10:02:31.283Z[UTC]
+    photoUpdatedAt: 2022-03-31T19:03:56Z[UTC]
     name:
       - {language: en, text: "Kirill Rozov"}
       - {language: ru, text: "Кирилл Розов"}
-    companyIds: [506]
+    companyIds: [674]
     bio:
-      - {language: en, text: "Android developer with 9 years of experience. He left his career in development and became a\
-            \ blogger, and also work as Tech PR in Surf, helping to grow the personal brand of the employees from the company.\
-            \ Author of \"Android Broadcast\" Telegram and YouTube channel. Android & Kotlin Google Developer Expert."}
-      - {language: ru, text: "Android разработчик с 9 годами опытам за плечами. Оставил карьеру в разработке и стал блогер\
-            ом, а также занимается тех. пиаром в Surf, прокачивая личный бренд ребят из компании. Автор Telegram и YouTube\
-            \ канала \"Android Broadcast\". Google Developer Expert по Android и Kotlin."}
+      - {language: en, text: "<p>Android enthusiast and Kotlin fan. More than 10 years in Android development. Loves to share\
+            \ knowledge and improve Android development in general. Runs his own Telegram and YouTube channels <em>Android\
+            \ Broadcast</em>, dedicated to Android development. Lives in Grodno, Belarus.</p>"}
+      - {language: ru, text: "<p>Android-энтузиаст и фанат Kotlin. Больше 10 лет в Android-разработке. Любит делиться знан\
+            иями и улучшать Android-разработку в целом. Ведет свой Telegram и YouTube-канал <em>Android Broadcast</em>, по\
+            священные Android-разработке. Живет в Гродно, Беларусь.</p>"}
     twitter: kirill_rozov
     gitHub: kirich1409
     habr: kirich1409
@@ -12452,21 +12452,18 @@ speakers:
     gitHub: kikoso
   - id: 858
     photoFileName: 0858.jpg
-    photoUpdatedAt: 2020-10-12T09:38:27.774Z[UTC]
+    photoUpdatedAt: 2022-05-27T08:45:20Z[UTC]
     name:
       - {language: en, text: "Eugene Saturov"}
       - {language: ru, text: "Евгений Сатуров"}
     companyIds: [506]
     bio:
-      - {language: en, text: "Originally an Android developer, but a year ago switched his career to Flutter and never regretted\
-            \ it. He was inspired to stay on the dark side of cross-platform technologies so much that he founded Flutter\
-            \ Dev Podcast (the only Russian podcast about Flutter). All the day painting widgets, moving slivers, filling\
-            \ scaffolds, and doing other things. Also, Evgeny is a member of the program committee of the largest mobile conference\
-            \ in Russia — Mobius and GDG Voronezh lead, active speaker."}
-      - {language: ru, text: "Провёл 4,5 года в Android-разработке, но год назад радикально поменял свою карьеру и впервые\
-            \ соприкоснулся с кроссплатформой. Вдохновился пребыванием на тёмной стороне настолько, что основал Flutter Dev\
-            \ Podcast и с тех пор является его бессменным ведущим. Крашит виджеты, двигает сливеры, заполняет скаффолды и\
-            \ делает другие вещи. PC Mobius member, GDG Voronezh lead и активный спикер."}
+      - {language: en, text: "<p>Head of Flutter at Surf, founder and host of the Flutter Dev Podcast, active speaker. More\
+            \ than Flutter, loves nothing more than assembling and customizing teams that, wielding all the power of the framework,\
+            \ create outstanding products for businesses and developers.</p>"}
+      - {language: ru, text: "<p>Head of Flutter в Surf, основатель и ведущий Flutter Dev Podcast, активный спикер. Больше\
+            \ чем Flutter, любит только собирать и настраивать команды, которые, владея всей мощью фреймворка, создают выд\
+            ающиеся продукты для бизнеса и разработчиков.</p>"}
     twitter: saturovv
   - id: 859
     photoFileName: 0859.jpg
@@ -15158,6 +15155,7 @@ speakers:
             ит разбираться во внутренностях Android и почитать исходники."}
   - id: 1062
     photoFileName: 1062.jpg
+    photoUpdatedAt: 2022-03-31T19:03:43Z[UTC]
     name:
       - {language: en, text: "Gennady Evstratov"}
       - {language: ru, text: "Геннадий Евстратов"}
@@ -22300,7 +22298,7 @@ speakers:
             \ кодогенерации и автоматизации."
   - id: 1576
     photoFileName: 1576.jpg
-    photoUpdatedAt: 2021-03-11T07:39:35.340Z[UTC]
+    photoUpdatedAt: 2022-05-19T09:00:05Z[UTC]
     name:
       - {language: en, text: "Denis Zagayevskiy"}
       - {language: ru, text: "Денис Загаевский"}
@@ -22308,8 +22306,8 @@ speakers:
     bio:
       - {language: en, text: "Senior Android Developer at Yandex. Denis has been working as an Android developer for the last\
             \ 10 years. Now he makes Yandex.Maps."}
-      - {language: ru, text: "Senior Android Developer в Яндексе. Занимается Android-разработкой последние 10 лет, из них\
-            \ 5 делает Яндекс.Карты."}
+      - {language: ru, text: "Senior Android Developer в Яндексе. Занимается Android-разработкой последние 11 лет, из них\
+            \ 6 делает Яндекс.Карты."}
   - id: 1577
     photoFileName: 1577.jpg
     photoUpdatedAt: 2021-03-10T09:24:07.830Z[UTC]
@@ -28308,19 +28306,22 @@ speakers:
     habr: ermolnik
   - id: 1986
     photoFileName: 1986.jpg
-    photoUpdatedAt: 2021-11-08T08:08:50.966Z[UTC]
+    photoUpdatedAt: 2022-05-25T13:34:44Z[UTC]
     name:
       - {language: en, text: "Roman Aymaletdinov"}
       - {language: ru, text: "Роман Аймалетдинов"}
-    companyIds: [770]
+    companyIds: [909]
     bio:
       - language: en
-        text: "He works in the Citimobile client application development team. Mainly deals with product tasks. Before Citimobile\
-            \ worked at EPAM, started his career working for SiriusXM. \r\nMore than four years in mobile development."
+        text: "<p>Roman develops for Android at inDriver. Before inDriver he worked at Citimobile, before that at EPAM, and\
+            \ started his career working outstaff at SiriusXM in an automotive project.</p>\n<p>Roman has been in Android\
+            \ development for almost five years. Worked mostly on product tasks, but in the last year the focus has shifted\
+            \ to infrastructure tasks.</p>"
       - language: ru
-        text: "Работает в команде разработки клиентского приложения Ситимобил. В основном занимается продуктовыми задачами\
-            . До Ситимобила работал в  EPAM, начал карьеру, работая на SiriusXM. \r\nБолее четырех лет в мобильной разрабо\
-            тке."
+        text: "<p>Разрабатывает под Android в компании inDriver. До inDriver работал в Ситимобил, до этого в EPAM, а начин\
+            ал карьеру, работая outstaff на SiriusXM в automotive-проекте.</p>\n<p>В Android-разработке почти пять лет. В\
+            \ основном работал над продуктовыми задачами, но в последний год фокус сместился на инфраструктурные задачи.</p>"
+    twitter: Evleaps
     gitHub: Evleaps
     habr: Evleaps
   - id: 1987
@@ -29396,7 +29397,7 @@ speakers:
     gitHub: Toxa2033
   - id: 2059
     photoFileName: 2059.jpg
-    photoUpdatedAt: 2022-05-05T08:37:16Z[UTC]
+    photoUpdatedAt: 2022-05-30T14:31:50Z[UTC]
     name:
       - {language: en, text: "Timur Gasymov"}
       - {language: ru, text: "Тимур Гасымов"}
@@ -29404,7 +29405,8 @@ speakers:
     bio:
       - {language: en, text: "<p>Seven years of experience in Android development. One year of developing for iOS. Five years\
             \ of life with WebView.</p>"}
-      - {language: ru, text: "<p>Семь лет опыта разработки под Android. Год разработки под iOS. Пять лет жизни с WebView.</p>"}
+      - {language: ru, text: "<span style=\"color: rgb(35, 35, 35);\">Семь лет опыта разработки под Android. Год разработк\
+            и под iOS. Пять лет жизни с WebView. Android техлид.</span>"}
   - id: 2060
     photoFileName: 2060.jpg
     photoUpdatedAt: 2022-04-30T13:34:57Z[UTC]
@@ -29808,3 +29810,70 @@ speakers:
             \ teamlead iOS-разработки.&nbsp;</p>\n<p>В студенчестве работал в АО НИИИТ, программируя на С++ и Qt. Разрабат\
             ывал как серверные, так и клиентские части программных продуктов. Занимался шифрованием данных, разрабатывая к\
             риптоконтейнеры. Писал драйвера под OC Windows.</p>"
+  - id: 2087
+    photoFileName: 2087.jpg
+    photoUpdatedAt: 2022-05-23T14:56:47Z[UTC]
+    name:
+      - {language: en, text: "Aleksey Mikhailov"}
+      - {language: ru, text: "Алексей Михайлов"}
+    companyIds: [908]
+    bio:
+      - {language: en, text: "IceRock Development CTO. Android, iOS and Kotlin Multiplatform Mobile developer. Maintainer\
+            \ of MOKO libraries,  kmm.icerock.dev website with knowledge base and Kotlin Multiplatform Mobile training course.\
+            \ Founder of \"Kotlin Multiplatform Mobile Russia\" in Telegram. The author of the soProject modification for\
+            \ S.T.A.L.K.E.R."}
+      - {language: ru, text: "<p>Технический директор IceRock Development, разработчик под Android, iOS и Kotlin Multiplatform\
+            \ Mobile, мейнтейнер MOKO-библиотек и сайта kmm.icerock.dev с базой знаний и курсом обучения Kotlin Multiplatform\
+            \ Mobile. Основатель <em>Kotlin Multiplatform Mobile Russia</em> в Telegram. Автор модификации soProject для S.T.A.L.K.E.R.</p>"}
+    twitter: alex009ru
+    gitHub: Alex009
+  - id: 2088
+    photoFileName: 2088.jpg
+    photoUpdatedAt: 2022-05-26T09:17:49Z[UTC]
+    name:
+      - {language: en, text: "Timur Shafigullin"}
+      - {language: ru, text: "Тимур Шафигуллин"}
+    companyIds: [234]
+    bio:
+      - {language: en, text: "<p>iOS developer in the Core (platform) team at hh.ru. He does all sorts of things that help\
+            \ product teams make product features for company apps faster and more convenient.</p>"}
+      - {language: ru, text: "<p>iOS-разработчик в Core (платформенной) команде hh.ru. Занимается разными вещами, которые\
+            \ помогают продуктовым командам быстрее и удобнее делать продуктовые фичи для приложений компании.</p>"}
+    twitter: timbaev
+    gitHub: timbaev
+    habr: Timbaev
+  - id: 2089
+    photoFileName: 2089.jpg
+    photoUpdatedAt: 2022-05-27T08:46:29Z[UTC]
+    name:
+      - {language: en, text: "Dmitry Shevchenko"}
+      - {language: ru, text: "Дмитрий Шевченко"}
+    companyIds: [506]
+    bio:
+      - language: en
+        text: "<p>Flutter developer at Surf \U0001f3c4</p>\n<p>Dmitry came to Flutter from the world of web technologies,\
+            \ about 4 years of full-stack application development for the oil and gas industry, in particular the design and\
+            \ refactoring of field maps. Designer at heart. Likes things to look nice both in the interface and in the code.\
+            \ Dances breakdancing, shoots videos, learns to build teams.</p>"
+      - language: ru
+        text: "<p>Flutter-разработчик из компании Surf \U0001f3c4&zwj;♂️</p>\n<p>Пришел во Flutter из мира веб-технологий\
+            , около 4 лет занимался фуллстек-разработкой приложения для нефтегазовой отрасли, в частности проектированием\
+            \ и рефакторингом карты месторождений. В душе дизайнер. Любит, когда всё выглядит красиво и в интерфейсе, и в\
+            \ коде. Танцует брейк, снимает видосы, учится строить команды.</p>"
+  - id: 2090
+    photoFileName: 2090.jpg
+    photoUpdatedAt: 2022-05-09T12:20:24Z[UTC]
+    name:
+      - {language: en, text: "Rustam Kendzhaev"}
+      - {language: ru, text: "Рустам Кенджаев"}
+    companyIds: [689]
+    bio:
+      - language: en
+        text: "<p>Develops iOS apps for 7 years.</p>\n<p>During this time he overcame the path from an idea to a fully functional\
+            \ application in the AppStore for several times.</p>\n<p>Since 2019, he has been leading many product and infrastructure\
+            \ projects in Yandex Market. Currently responsible for mobile development of the checkout process in applications\
+            \ for iOS and Android.</p>"
+      - language: ru
+        text: "<p>Разрабатывает под iOS 7 лет. За это время несколько раз прошел путь от идеи до полностью работоспособног\
+            о приложения в AppStore.</p>\n<p>С 2019 года лидил множество продуктовых и инфраструктурных проектов в Яндекс\
+            .Маркете. В настоящий момент отвечает за мобильную разработку процесса покупки в приложениях под iOS и Android.</p>"

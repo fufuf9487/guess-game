@@ -2185,7 +2185,7 @@ public class ConferenceDataLoaderExecutor {
 //                                "Хроники Мобиуса. Подводим итоги, но не заканчиваем")));
 //        loadTalksSpeakersEvent(Conference.MOBIUS, LocalDate.of(2022, 6, 22), "2022 Spring",
 //                LoadSettings.eventTemplateAndInvalidTalksSet(
-//                        createEventTemplate("Mobius 2022 Spring (Offline)", null", 4),
+//                        createEventTemplate("Mobius 2022 Spring (Offline)", null, 4),
 //                        Set.of("Открытие офлайн-части конференции Mobius 2022 Spring", "Закрытие конференции Mobius 2022 Spring")));
 //        loadTalksSpeakersEvent(Conference.HEISENBUG, LocalDate.of(2022, 5, 30), "2022 Spring");
 //        loadTalksSpeakersEvent(Conference.HEISENBUG, LocalDate.of(2022, 6, 21), "2022 Spring");

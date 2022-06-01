@@ -3315,3 +3315,11 @@ companies:
       - {language: en, text: "Credit Bank of Moscow"}
       - {language: ru, text: "Московский кредитный банк"}
     siteLink: https://mkb.ru
+  - id: 908
+    name:
+      - {language: en, text: "IceRock Development"}
+    siteLink: https://icerockdev.com
+  - id: 909
+    name:
+      - {language: en, text: InDriver}
+    siteLink: https://indriver.com
