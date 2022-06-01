@@ -1494,6 +1494,99 @@ class ConferenceDataLoaderExecutorTest {
 
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DisplayName("fillLocaleItemsAttributeValue method tests")
+    class FillLocaleItemsAttributeValueTest {
+        private Speaker createSpeaker(List<LocaleItem> name) {
+            Speaker speaker = new Speaker();
+            speaker.setName(name);
+
+            return speaker;
+        }
+
+        private Stream<Arguments> data() {
+            final List<LocaleItem> EMPTY_SPEAKER_NAME = Collections.emptyList();
+            final List<LocaleItem> RESOURCE_SPEAKER_NAME = List.of(new LocaleItem(Language.ENGLISH.getCode(), "resourceSpeakerName"));
+            final List<LocaleItem> TARGET_SPEAKER_NAME = List.of(new LocaleItem(Language.ENGLISH.getCode(), "targetSpeakerName"));
+
+            Speaker targetSpeaker0 = createSpeaker(null);
+            Supplier<List<LocaleItem>> targetSupplier0 = targetSpeaker0::getName;
+            Consumer<List<LocaleItem>> targetConsumer0 = targetSpeaker0::setName;
+            Speaker resourceSpeaker0 = createSpeaker(null);
+            Supplier<List<LocaleItem>> resourceSupplier0 = resourceSpeaker0::getName;
+
+            Speaker targetSpeaker1 = createSpeaker(EMPTY_SPEAKER_NAME);
+            Supplier<List<LocaleItem>> targetSupplier1 = targetSpeaker1::getName;
+            Consumer<List<LocaleItem>> targetConsumer1 = targetSpeaker1::setName;
+            Speaker resourceSpeaker1 = createSpeaker(null);
+            Supplier<List<LocaleItem>> resourceSupplier1 = resourceSpeaker1::getName;
+
+            Speaker targetSpeaker2 = createSpeaker(TARGET_SPEAKER_NAME);
+            Supplier<List<LocaleItem>> targetSupplier2 = targetSpeaker2::getName;
+            Consumer<List<LocaleItem>> targetConsumer2 = targetSpeaker2::setName;
+            Speaker resourceSpeaker2 = createSpeaker(null);
+            Supplier<List<LocaleItem>> resourceSupplier2 = resourceSpeaker2::getName;
+
+            Speaker targetSpeaker3 = createSpeaker(null);
+            Supplier<List<LocaleItem>> targetSupplier3 = targetSpeaker3::getName;
+            Consumer<List<LocaleItem>> targetConsumer3 = targetSpeaker3::setName;
+            Speaker resourceSpeaker3 = createSpeaker(EMPTY_SPEAKER_NAME);
+            Supplier<List<LocaleItem>> resourceSupplier3 = resourceSpeaker3::getName;
+
+            Speaker targetSpeaker4 = createSpeaker(EMPTY_SPEAKER_NAME);
+            Supplier<List<LocaleItem>> targetSupplier4 = targetSpeaker4::getName;
+            Consumer<List<LocaleItem>> targetConsumer4 = targetSpeaker4::setName;
+            Speaker resourceSpeaker4 = createSpeaker(EMPTY_SPEAKER_NAME);
+            Supplier<List<LocaleItem>> resourceSupplier4 = resourceSpeaker4::getName;
+
+            Speaker targetSpeaker5 = createSpeaker(TARGET_SPEAKER_NAME);
+            Supplier<List<LocaleItem>> targetSupplier5 = targetSpeaker5::getName;
+            Consumer<List<LocaleItem>> targetConsumer5 = targetSpeaker5::setName;
+            Speaker resourceSpeaker5 = createSpeaker(EMPTY_SPEAKER_NAME);
+            Supplier<List<LocaleItem>> resourceSupplier5 = resourceSpeaker5::getName;
+
+            Speaker targetSpeaker6 = createSpeaker(null);
+            Supplier<List<LocaleItem>> targetSupplier6 = targetSpeaker6::getName;
+            Consumer<List<LocaleItem>> targetConsumer6 = targetSpeaker6::setName;
+            Speaker resourceSpeaker6 = createSpeaker(RESOURCE_SPEAKER_NAME);
+            Supplier<List<LocaleItem>> resourceSupplier6 = resourceSpeaker6::getName;
+
+            Speaker targetSpeaker7 = createSpeaker(EMPTY_SPEAKER_NAME);
+            Supplier<List<LocaleItem>> targetSupplier7 = targetSpeaker7::getName;
+            Consumer<List<LocaleItem>> targetConsumer7 = targetSpeaker7::setName;
+            Speaker resourceSpeaker7 = createSpeaker(RESOURCE_SPEAKER_NAME);
+            Supplier<List<LocaleItem>> resourceSupplier7 = resourceSpeaker7::getName;
+
+            Speaker targetSpeaker8 = createSpeaker(TARGET_SPEAKER_NAME);
+            Supplier<List<LocaleItem>> targetSupplier8 = targetSpeaker8::getName;
+            Consumer<List<LocaleItem>> targetConsumer8 = targetSpeaker8::setName;
+            Speaker resourceSpeaker8 = createSpeaker(RESOURCE_SPEAKER_NAME);
+            Supplier<List<LocaleItem>> resourceSupplier8 = resourceSpeaker8::getName;
+
+            return Stream.of(
+                    arguments(resourceSupplier0, targetSupplier0, targetConsumer0, null),
+                    arguments(resourceSupplier1, targetSupplier1, targetConsumer1, EMPTY_SPEAKER_NAME),
+                    arguments(resourceSupplier2, targetSupplier2, targetConsumer2, TARGET_SPEAKER_NAME),
+                    arguments(resourceSupplier3, targetSupplier3, targetConsumer3, null),
+                    arguments(resourceSupplier4, targetSupplier4, targetConsumer4, EMPTY_SPEAKER_NAME),
+                    arguments(resourceSupplier5, targetSupplier5, targetConsumer5, TARGET_SPEAKER_NAME),
+                    arguments(resourceSupplier6, targetSupplier6, targetConsumer6, RESOURCE_SPEAKER_NAME),
+                    arguments(resourceSupplier7, targetSupplier7, targetConsumer7, RESOURCE_SPEAKER_NAME),
+                    arguments(resourceSupplier8, targetSupplier8, targetConsumer8, TARGET_SPEAKER_NAME)
+            );
+        }
+
+        @ParameterizedTest
+        @MethodSource("data")
+        void fillLocaleItemsAttributeValue(Supplier<List<LocaleItem>> resourceSupplier, Supplier<List<LocaleItem>> targetSupplier, Consumer<List<LocaleItem>> targetConsumer,
+                                           List<LocaleItem> expected) {
+            ConferenceDataLoaderExecutor.fillLocaleItemsAttributeValue(resourceSupplier, targetSupplier, targetConsumer);
+
+            assertEquals(expected, targetSupplier.get());
+        }
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     @DisplayName("fillUpdatedAt method tests")
     class FillUpdatedAtTest {
         private Speaker createSpeaker(ZonedDateTime photoUpdatedAt) {
@@ -3710,6 +3803,19 @@ class ConferenceDataLoaderExecutorTest {
         void equals(List<String> a, List<String> b, boolean expected) {
             assertEquals(expected, ConferenceDataLoaderExecutor.equals(a, b));
         }
+    }
+
+    @Test
+    void createEventTemplate() {
+        final String EN_TEXT = "Text";
+        final String RU_TEXT = "Текст";
+        final long PLACE_ID = 42;
+
+        Event actual = ConferenceDataLoaderExecutor.createEventTemplate(EN_TEXT, RU_TEXT, PLACE_ID);
+
+        assertEquals(EN_TEXT, LocalizationUtils.getString(actual.getName(), Language.ENGLISH));
+        assertEquals(RU_TEXT, LocalizationUtils.getString(actual.getName(), Language.RUSSIAN));
+        assertEquals(PLACE_ID, actual.getPlace().getId());
     }
 
     @Test
