@@ -410,6 +410,7 @@ public class ConferenceDataLoaderExecutor {
         } else {
             List<Talk> fixedTalks = talks.stream()
                     .filter(t -> !invalidTalksSet.contains(LocalizationUtils.getString(t.getName(), Language.RUSSIAN)))
+                    .filter(t -> !invalidTalksSet.contains(LocalizationUtils.getString(t.getName(), Language.ENGLISH)))
                     .toList();
 
             log.info("Fixed talks (in CMS): {}", fixedTalks.size());
@@ -2175,11 +2176,16 @@ public class ConferenceDataLoaderExecutor {
 //                        Set.of("Открытие фестиваля TechTrain 2022 Spring", "Закрытие фестиваля TechTrain 2022 Spring")));
 //        loadTalksSpeakersEvent(Conference.MOBIUS, LocalDate.of(2022, 5, 25), "2022 Spring",
 //                LoadSettings.eventTemplateAndInvalidTalksSet(
-//                        createEventTemplate("Mobius 2022 Spring (online)", "Mobius 2022 Spring (онлайн)", 24),
-//                        Set.of("Открытие конференции Mobius 2022 Spring", "Хроники Мобиуса. Подводим итоги, но не заканчиваем")));
+//                        createEventTemplate("Mobius 2022 Spring (Online)", null, 24),
+//                        Set.of("Открытие конференции Mobius 2022 Spring",
+//                                "The Mobius Chronicles. How to maintain a working relationship in the IT world, where everyone is at a short leg",
+//                                "Хроники Мобиуса. Викторина Mobius 2022 Spring",
+//                                "Хроники Мобиуса. Истории с технических собеседований: от смеха до слёз",
+//                                "Хроники Мобиуса. Декларативный UI: куда мы катимся",
+//                                "Хроники Мобиуса. Подводим итоги, но не заканчиваем")));
 //        loadTalksSpeakersEvent(Conference.MOBIUS, LocalDate.of(2022, 6, 22), "2022 Spring",
 //                LoadSettings.eventTemplateAndInvalidTalksSet(
-//                        createEventTemplate("Mobius 2022 Spring (offline)", "Mobius 2022 Spring (офлайн)", 4),
+//                        createEventTemplate("Mobius 2022 Spring (Offline)", null", 4),
 //                        Set.of("Открытие офлайн-части конференции Mobius 2022 Spring", "Закрытие конференции Mobius 2022 Spring")));
 //        loadTalksSpeakersEvent(Conference.HEISENBUG, LocalDate.of(2022, 5, 30), "2022 Spring");
 //        loadTalksSpeakersEvent(Conference.HEISENBUG, LocalDate.of(2022, 6, 21), "2022 Spring");

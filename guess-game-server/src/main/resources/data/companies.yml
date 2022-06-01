@@ -3293,3 +3293,25 @@ companies:
     name:
       - {language: en, text: YetiCrab}
     siteLink: https://yeticrab.org
+  - id: 903
+    name:
+      - {language: en, text: ex-Tutu.ru}
+      - {language: ru, text: ex-Туту.ру}
+  - id: 904
+    name:
+      - {language: en, text: "Garage Eight"}
+    siteLink: https://garage-eight.com
+  - id: 905
+    name:
+      - {language: en, text: Rabota.ru}
+      - {language: ru, text: Работа.ру}
+    siteLink: https://www.rabota.ru
+  - id: 906
+    name:
+      - {language: en, text: "Mad Brains"}
+    siteLink: https://madbrains.ru
+  - id: 907
+    name:
+      - {language: en, text: "Credit Bank of Moscow"}
+      - {language: ru, text: "Московский кредитный банк"}
+    siteLink: https://mkb.ru

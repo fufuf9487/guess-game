@@ -462,8 +462,12 @@ companySynonyms:
         Яндекс.Такси,
         Yandex.Toloka,
         Яндекс.Толока,
+        "Yandex (Auto.ru)",
+        "Яндекс (Авто.ру)",
         "Kinopoisk (Yandex)",
-        "Кинопоиск (Яндекс)"
+        "Кинопоиск (Яндекс)",
+        Zen,
+        Дзен
     ]
   - name: "ZeptoLab LLC"
     synonyms: [
