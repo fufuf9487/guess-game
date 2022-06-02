@@ -31,6 +31,8 @@ import java.util.regex.Pattern;
 public abstract class CmsDataLoader {
     private static final Logger log = LoggerFactory.getLogger(CmsDataLoader.class);
 
+    static final long JUG_RU_GROUP_ORGANIZER_ID = 0L;
+
     /**
      * Gets tags by conference code prefix.
      *

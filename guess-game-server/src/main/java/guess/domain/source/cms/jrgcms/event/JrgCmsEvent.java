@@ -2,10 +2,13 @@ package guess.domain.source.cms.jrgcms.event;
 
 import guess.domain.source.cms.jrgcms.JrgCmsObject;
 
+import java.util.Map;
+
 public class JrgCmsEvent {
     private JrgCmsObject<Long> eventId;
     private JrgCmsObject<String> eventProject;
     private JrgCmsObject<String> eventVersion;
+    private Map<String, JrgCmsAboutPage> aboutPage;
 
     public JrgCmsObject<Long> getEventId() {
         return eventId;
@@ -29,5 +32,13 @@ public class JrgCmsEvent {
 
     public void setEventVersion(JrgCmsObject<String> eventVersion) {
         this.eventVersion = eventVersion;
+    }
+
+    public Map<String, JrgCmsAboutPage> getAboutPage() {
+        return aboutPage;
+    }
+
+    public void setAboutPage(Map<String, JrgCmsAboutPage> aboutPage) {
+        this.aboutPage = aboutPage;
     }
 }

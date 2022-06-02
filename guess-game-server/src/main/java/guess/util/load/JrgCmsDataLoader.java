@@ -6,6 +6,7 @@ import guess.domain.source.*;
 import guess.domain.source.cms.jrgcms.JrgCmsPhoto;
 import guess.domain.source.cms.jrgcms.event.JrgCmsConferenceSiteContent;
 import guess.domain.source.cms.jrgcms.event.JrgCmsConferenceSiteContentResponse;
+import guess.domain.source.cms.jrgcms.event.JrgCmsEvent;
 import guess.domain.source.cms.jrgcms.speaker.JrgCmsParticipant;
 import guess.domain.source.cms.jrgcms.speaker.JrgCmsSpeaker;
 import guess.domain.source.cms.jrgcms.speaker.JrgContact;
@@ -122,8 +123,99 @@ public class JrgCmsDataLoader extends CmsDataLoader {
 
     @Override
     public List<EventType> getEventTypes() {
-        //TODO: implement
-        return Collections.emptyList();
+        // https://squidex.jugru.team/api/content/sites/conf-site-content?$filter=data/eventProject/iv in ('MOBIUS', 'CPP')&$orderby=data/eventProject/iv
+        var eventVersions = Arrays.stream(Conference.values())
+                .map(CONFERENCE_EVENT_PROJECT_MAP::get)
+                .filter(Objects::nonNull)
+                .map(s -> "'" + s + "'")
+                .collect(Collectors.joining(","));
+        var builder = UriComponentsBuilder
+                .fromUriString(CONFERENCE_SITE_CONTENT_URL)
+                .queryParam(FILTER_PARAM_NAME, String.format("data/eventProject/iv in (%s)", eventVersions))
+                .queryParam(ORDERBY_PARAM_NAME, "data/eventProject/iv");
+        var uri = builder
+                .build()
+                .encode()
+                .toUri();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(System.getProperty("token")); //TODO: change
+
+        JrgCmsConferenceSiteContentResponse response = getRestTemplate().exchange(
+                        uri,
+                        HttpMethod.GET,
+                        new HttpEntity<>(headers),
+                        JrgCmsConferenceSiteContentResponse.class)
+                .getBody();
+        Map<String, List<JrgCmsEvent>> eventMap = Objects.requireNonNull(response).getItems().stream()
+                .map(JrgCmsConferenceSiteContent::getData)
+                .collect(Collectors.groupingBy(
+                                e -> e.getEventProject().getIv(),
+                                Collectors.mapping(
+                                        e -> e,
+                                        Collectors.toList()
+                                )
+                        )
+                );
+        List<EventType> eventTypes = new ArrayList<>();
+        var id = new AtomicLong(-1);
+
+        for (Conference conference : Conference.values()) {
+            String eventProject = CONFERENCE_EVENT_PROJECT_MAP.get(conference);
+            List<JrgCmsEvent> jrgCmsEvents = eventMap.get(eventProject);
+
+            if ((jrgCmsEvents != null) && !jrgCmsEvents.isEmpty()) {
+                JrgCmsEvent jrgCmsEvent = jrgCmsEvents.stream().max((e1, e2) -> {
+                            String eventVersion1 = e1.getEventVersion().getIv();
+                            String eventVersion2 = e2.getEventVersion().getIv();
+
+                            return eventVersion1.compareTo(eventVersion2);
+                        })
+                        .get();
+
+                eventTypes.add(createEventType(jrgCmsEvent, id, conference));
+            }
+        }
+
+        return eventTypes;
+    }
+
+    /**
+     * Creates event type.
+     *
+     * @param et         CMS event type
+     * @param id         identifier
+     * @param conference conference
+     * @return event type
+     */
+    static EventType createEventType(JrgCmsEvent et, AtomicLong id, Conference conference) {
+        return new EventType(
+                new Descriptionable(
+                        id.getAndDecrement(),
+                        null,
+                        null,
+                        extractLocaleItems(
+                                extractString(et.getAboutPage().get(ENGLISH_TEXT_KEY).getMain()),
+                                extractString(et.getAboutPage().get(RUSSIAN_TEXT_KEY).getMain()))
+                ),
+                conference,
+                null,
+                new EventType.EventTypeLinks(
+                        null,
+                        null,
+                        null,
+                        new EventType.EventTypeSocialLinks(
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
+                        )
+                ),
+                Collections.emptyList(),
+                new Organizer(JUG_RU_GROUP_ORGANIZER_ID, Collections.emptyList()),
+                new EventType.EventTypeAttributes(false, null)
+        );
     }
 
     @Override

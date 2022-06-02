@@ -46,7 +46,9 @@ public class ConferenceDataLoaderExecutor {
     static void loadTags(CmsType cmsType, String conferenceCodePrefix) {
         CmsDataLoader cmsDataLoader = CmsDataLoaderFactory.createDataLoader(cmsType);
         cmsDataLoader.getTags(conferenceCodePrefix)
-                .forEach((s, t) -> log.info("Entity: {}, tags: {}", s, t.stream().collect(Collectors.joining(", ", "'", "'"))));
+                .forEach((s, t) -> log.info("Entity: {}, tags: {}", s, t.stream()
+                        .map(a -> "'" + a + "'")
+                        .collect(Collectors.joining(", "))));
     }
 
     /**
@@ -1939,6 +1941,7 @@ public class ConferenceDataLoaderExecutor {
 
         // Load event types
 //        loadEventTypes(CmsType.CONTENTFUL);
+//        loadEventTypes(CmsType.JUGRUGROUP_CMS);
 
         // Check video links
 //        checkVideoLinks();

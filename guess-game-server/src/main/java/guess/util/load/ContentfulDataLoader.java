@@ -70,8 +70,6 @@ public class ContentfulDataLoader extends CmsDataLoader {
     static final String ENTRY_LINK_TYPE = "Entry";
     static final String ASSET_LINK_TYPE = "Asset";
 
-    static final long JUG_RU_GROUP_ORGANIZER_ID = 0L;
-
     public enum ConferenceSpaceInfo {
         // Joker, JPoint, JBreak, TechTrain, C++ Russia, Hydra, SPTDC, DevOops, SmartData
         COMMON_SPACE_INFO("oxjq45e8ilak", "fdc0ca21c8c39ac5a33e1e20880cae6836ae837af73c2cfc822650483ee388fe",
@@ -249,6 +247,13 @@ public class ContentfulDataLoader extends CmsDataLoader {
                 .toList();
     }
 
+    /**
+     * Creates event type.
+     *
+     * @param et Contentful event type
+     * @param id identifier
+     * @return event type
+     */
     static EventType createEventType(ContentfulEventType et, AtomicLong id) {
         Map<String, String> vkLink = et.getFields().getVkLink();
         Map<String, String> twLink = et.getFields().getTwLink();
