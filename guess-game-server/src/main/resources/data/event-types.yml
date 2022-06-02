@@ -345,7 +345,7 @@ eventTypes:
     name:
       - {language: en, text: Mobius}
     shortDescription:
-      - {language: en, text: "Conference for professional mobile developers"}
+      - {language: en, text: "Conference for mobile developers"}
       - {language: ru, text: "Конференция для мобильных разработчиков"}
     longDescription:
       - language: en
@@ -367,6 +367,23 @@ eventTypes:
     facebookLink: https://www.facebook.com/mobiusconf/
     youtubeLink: https://www.youtube.com/c/MobiusConf
     telegramLink: https://t.me/mobiusconf
+    habrLink: https://habr.com/ru/company/jugru
+    timeZone: Europe/Moscow
+  - id: 10
+    conference: SPTDC
+    logoFileName: sptdc.jpg
+    organizerId: 0
+    name:
+      - {language: en, text: SPTDC}
+    shortDescription:
+      - language: en
+        text: "Summer school on practice and theory of distributed computing"
+    longDescription:
+      - {language: en, text: "The school offers courses on a wide range of practical and theoretical aspects of distributed\
+            \ systems given by renowned experts in the field."}
+    siteLink:
+      - {language: en, text: "https://sptdc.ru/"}
+    youtubeLink: https://www.youtube.com/channel/UCYoIFJ96Kn_Ziayw8av-IAA
     habrLink: https://habr.com/ru/company/jugru
     timeZone: Europe/Moscow
   - id: 11
@@ -393,23 +410,6 @@ eventTypes:
     facebookLink: https://www.facebook.com/smartdataconf
     youtubeLink: https://www.youtube.com/channel/UCfCOJWNC_ipu34-LVvPUeCg
     telegramLink: https://t.me/smartdataconf
-    habrLink: https://habr.com/ru/company/jugru
-    timeZone: Europe/Moscow
-  - id: 10
-    conference: SPTDC
-    logoFileName: sptdc.jpg
-    organizerId: 0
-    name:
-      - {language: en, text: SPTDC}
-    shortDescription:
-      - language: en
-        text: "The summer school on practice and theory of distributed computing"
-    longDescription:
-      - {language: en, text: "The school offers courses on a wide range of practical and theoretical aspects of distributed\
-            \ systems given by renowned experts in the field."}
-    siteLink:
-      - {language: en, text: "https://sptdc.ru/"}
-    youtubeLink: https://www.youtube.com/channel/UCYoIFJ96Kn_Ziayw8av-IAA
     habrLink: https://habr.com/ru/company/jugru
     timeZone: Europe/Moscow
   - id: 12
