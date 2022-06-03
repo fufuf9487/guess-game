@@ -1404,8 +1404,8 @@ class ConferenceDataLoaderExecutorTest {
 
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    @DisplayName("fillSpeakerJavaChampion method tests")
-    class FillSpeakerJavaChampionTest {
+    @DisplayName("fillBooleanAttributeValue method tests")
+    class FillBooleanAttributeValueTest {
         private Speaker createSpeaker(boolean javaChampion) {
             Speaker speaker = new Speaker();
             speaker.setJavaChampion(javaChampion);
@@ -1413,22 +1413,50 @@ class ConferenceDataLoaderExecutorTest {
             return speaker;
         }
 
+        Speaker resourceSpeaker0 = createSpeaker(false);
+        Supplier<Boolean> resourceSupplier0 = resourceSpeaker0::isJavaChampion;
+
+        Speaker targetSpeaker0 = createSpeaker(false);
+        Supplier<Boolean> targetSupplier0 = targetSpeaker0::isJavaChampion;
+        Consumer<Boolean> targetConsumer0 = targetSpeaker0::setJavaChampion;
+
+        Speaker resourceSpeaker1 = createSpeaker(true);
+        Supplier<Boolean> resourceSupplier1 = resourceSpeaker1::isJavaChampion;
+
+        Speaker targetSpeaker1 = createSpeaker(false);
+        Supplier<Boolean> targetSupplier1 = targetSpeaker1::isJavaChampion;
+        Consumer<Boolean> targetConsumer1 = targetSpeaker1::setJavaChampion;
+
+        Speaker resourceSpeaker2 = createSpeaker(false);
+        Supplier<Boolean> resourceSupplier2 = resourceSpeaker2::isJavaChampion;
+
+        Speaker targetSpeaker2 = createSpeaker(true);
+        Supplier<Boolean> targetSupplier2 = targetSpeaker2::isJavaChampion;
+        Consumer<Boolean> targetConsumer2 = targetSpeaker2::setJavaChampion;
+
+        Speaker resourceSpeaker3 = createSpeaker(true);
+        Supplier<Boolean> resourceSupplier3 = resourceSpeaker3::isJavaChampion;
+
+        Speaker targetSpeaker3 = createSpeaker(true);
+        Supplier<Boolean> targetSupplier3 = targetSpeaker3::isJavaChampion;
+        Consumer<Boolean> targetConsumer3 = targetSpeaker3::setJavaChampion;
+
         private Stream<Arguments> data() {
             return Stream.of(
-                    arguments(createSpeaker(false), createSpeaker(false), false),
-                    arguments(createSpeaker(true), createSpeaker(false), true),
-                    arguments(createSpeaker(false), createSpeaker(true), true),
-                    arguments(createSpeaker(true), createSpeaker(true), true)
+                    arguments(resourceSupplier0, targetSupplier0, targetConsumer0, false),
+                    arguments(resourceSupplier1, targetSupplier1, targetConsumer1, true),
+                    arguments(resourceSupplier2, targetSupplier2, targetConsumer2, true),
+                    arguments(resourceSupplier3, targetSupplier3, targetConsumer3, true)
             );
         }
 
         @ParameterizedTest
         @MethodSource("data")
-        void fillSpeakerJavaChampion(Speaker targetSpeaker, Speaker resourceSpeaker,
-                                     boolean expected) {
-            ConferenceDataLoaderExecutor.fillSpeakerJavaChampion(targetSpeaker, resourceSpeaker);
+        void fillBooleanAttributeValue(Supplier<Boolean> resourceSupplier, Supplier<Boolean> targetSupplier, Consumer<Boolean> targetConsumer,
+                                       boolean expected) {
+            ConferenceDataLoaderExecutor.fillBooleanAttributeValue(resourceSupplier, targetSupplier, targetConsumer);
 
-            assertEquals(expected, targetSpeaker.isJavaChampion());
+            assertEquals(expected, targetSupplier.get());
         }
     }
 
@@ -3269,6 +3297,25 @@ class ConferenceDataLoaderExecutorTest {
             eventType16.setHabrLink("habrLink0");
             eventType16.setOrganizer(organizer0);
 
+            EventType eventType17 = new EventType();
+            eventType17.setId(0);
+            eventType17.setConference(Conference.JPOINT);
+            eventType17.setLogoFileName("logoFileName0");
+            eventType17.setName(List.of(new LocaleItem("en", "name0")));
+            eventType17.setShortDescription(List.of(new LocaleItem("en", "shortDescription0")));
+            eventType17.setLongDescription(List.of(new LocaleItem("en", "longDescription0")));
+            eventType17.setSiteLink(List.of(new LocaleItem("en", "siteLink0")));
+            eventType17.setVkLink("vkLink0");
+            eventType17.setTwitterLink("twitterLink0");
+            eventType17.setFacebookLink("facebookLink0");
+            eventType17.setYoutubeLink("youtubeLink0");
+            eventType17.setTelegramLink("telegramLink0");
+            eventType17.setSpeakerdeckLink("speakerdeckLink0");
+            eventType17.setHabrLink("habrLink0");
+            eventType17.setOrganizer(organizer0);
+            eventType17.setTimeZone("Europe/Moscow");
+            eventType17.setInactive(true);
+
             return Stream.of(
                     arguments(eventType0, eventType0, false),
                     arguments(eventType0, eventType1, true),
@@ -3286,7 +3333,8 @@ class ConferenceDataLoaderExecutorTest {
                     arguments(eventType0, eventType13, true),
                     arguments(eventType0, eventType14, true),
                     arguments(eventType0, eventType15, true),
-                    arguments(eventType0, eventType16, true)
+                    arguments(eventType0, eventType16, true),
+                    arguments(eventType0, eventType17, true)
             );
         }
 

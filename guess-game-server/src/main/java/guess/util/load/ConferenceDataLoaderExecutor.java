@@ -160,9 +160,17 @@ public class ConferenceDataLoaderExecutor {
                         et.setShortDescription(resourceEventType.getShortDescription());
                         et.setLogoFileName(resourceEventType.getLogoFileName());
 
+                        fillLocaleItemsAttributeValue(resourceEventType::getName, et::getName, et::setName);
+                        fillLocaleItemsAttributeValue(resourceEventType::getSiteLink, et::getSiteLink, et::setSiteLink);
+                        fillStringAttributeValue(resourceEventType::getVkLink, et::getVkLink, et::setVkLink);
+                        fillStringAttributeValue(resourceEventType::getTwitterLink, et::getTwitterLink, et::setTwitterLink);
+                        fillStringAttributeValue(resourceEventType::getFacebookLink, et::getFacebookLink, et::setFacebookLink);
+                        fillStringAttributeValue(resourceEventType::getYoutubeLink, et::getYoutubeLink, et::setYoutubeLink);
+                        fillStringAttributeValue(resourceEventType::getTelegramLink, et::getTelegramLink, et::setTelegramLink);
                         fillStringAttributeValue(resourceEventType::getSpeakerdeckLink, et::getSpeakerdeckLink, et::setSpeakerdeckLink);
                         fillStringAttributeValue(resourceEventType::getHabrLink, et::getHabrLink, et::setHabrLink);
                         fillStringAttributeValue(resourceEventType::getTimeZone, et::getTimeZone, et::setTimeZone);
+                        fillBooleanAttributeValue(resourceEventType::isInactive, et::isInactive, et::setInactive);
 
                         if (needUpdate(resourceEventType, et)) {
                             // Event type need to update
@@ -780,7 +788,7 @@ public class ConferenceDataLoaderExecutor {
                 fillStringAttributeValue(resourceSpeaker::getTwitter, speaker::getTwitter, speaker::setTwitter);
                 fillStringAttributeValue(resourceSpeaker::getGitHub, speaker::getGitHub, speaker::setGitHub);
                 fillStringAttributeValue(resourceSpeaker::getHabr, speaker::getHabr, speaker::setHabr);
-                fillSpeakerJavaChampion(speaker, resourceSpeaker);
+                fillBooleanAttributeValue(resourceSpeaker::isJavaChampion, speaker::isJavaChampion, resourceSpeaker::setJavaChampion);
                 fillSpeakerMvp(speaker, resourceSpeaker);
 
                 // Update speaker photo
@@ -824,14 +832,15 @@ public class ConferenceDataLoaderExecutor {
     }
 
     /**
-     * Fills speaker Java Champion.
+     * Fills boolean attribute value.
      *
-     * @param targetSpeaker   target speaker
-     * @param resourceSpeaker resource speaker
+     * @param resourceSupplier resource supplier
+     * @param targetSupplier   target supplier
+     * @param targetConsumer   target consumer
      */
-    static void fillSpeakerJavaChampion(Speaker targetSpeaker, Speaker resourceSpeaker) {
-        if (resourceSpeaker.isJavaChampion() && !targetSpeaker.isJavaChampion()) {
-            targetSpeaker.setJavaChampion(true);
+    static void fillBooleanAttributeValue(Supplier<Boolean> resourceSupplier, Supplier<Boolean> targetSupplier, Consumer<Boolean> targetConsumer) {
+        if (Boolean.TRUE.equals(resourceSupplier.get()) && !Boolean.TRUE.equals(targetSupplier.get())) {
+            targetConsumer.accept(true);
         }
     }
 
@@ -1773,7 +1782,8 @@ public class ConferenceDataLoaderExecutor {
                 equals(a.getSpeakerdeckLink(), b.getSpeakerdeckLink()) &&
                 equals(a.getHabrLink(), b.getHabrLink()) &&
                 equals(a.getOrganizer(), b.getOrganizer()) &&
-                equals(a.getTimeZone(), b.getTimeZone()));
+                equals(a.getTimeZone(), b.getTimeZone()) &&
+                equals(a.isInactive(), b.isInactive()));
     }
 
     /**

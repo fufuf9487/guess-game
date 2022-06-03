@@ -6,24 +6,15 @@ eventTypes:
     name:
       - {language: en, text: "C++ Russia"}
     shortDescription:
-      - language: en
-        text: "Conference for C++ developers"
-      - language: ru
-        text: "Конференция для C++-разработчиков"
+      - {language: en, text: "Conference for C++ developers"}
+      - {language: ru, text: "Конференция для C++-разработчиков"}
     longDescription:
-      - language: en
-        text: "C++ Russia is a two-day conference with several tracks of in-depth technical talks devoted to C++: concurrency,\
-            \ performance, architecture and infrastructure solutions — all you need to make your code more concise and productive.\n\
-            \nThe speakers of the conference are experienced engineers engaged in writing high-performance, scalable and fault-tolerant\
-            \ code as well as functional programming, metaprogramming, concurrency, parallelism, asynchronism and many others."
-      - language: ru
-        text: "С++ Russia — это два дня и несколько треков хардкорных технических докладов, посвященных C++: concurrency,\
-            \ производительность, архитектура и инфраструктурные решения — всё для того, чтобы ваш код выглядел лучше и де\
-            лал больше. \n\nСпикеры конференции — матерые инженеры с многолетним опытом программирования, занимающиеся нап\
-            исанием высокопроизводительного, масштабируемого и отказоустойчивого кода, а также функциональным программиров\
-            анием, метапрограммированием, многопоточностью, параллелизмом, асинхронностью и многим другим.\n\nАтмосфера ко\
-            нференции суровая и одновременно ламповая. Она способствует органичному переплетению инженерного опыта и стрем\
-            лений научиться чему-то новому."
+      - {language: en, text: "C++ Russia is a conference with several tracks of in-depth technical talks devoted to C++: concurrency,\
+            \ performance, architecture and infrastructure solutions — all you need to make your code more concise and productive.\
+            \ The conference for C++ developers from C++ developers!"}
+      - {language: ru, text: "Конференция С++ Russia — хардкорные технические доклады, посвященные C++: concurrency, произ\
+            водительность, архитектура и инфраструктурные решения — всё для того, чтобы ваш код выглядел лучше и делал бол\
+            ьше. Конференция для С++ разработчиков от С++ разработчиков!"}
     siteLink:
       - {language: en, text: "https://cppconf.ru/en/"}
       - {language: ru, text: "https://cppconf.ru/"}
@@ -41,35 +32,25 @@ eventTypes:
     name:
       - {language: en, text: DevOops}
     shortDescription:
-      - language: en
-        text: "DevOps conference"
-      - language: ru
-        text: "Конференция, посвящённая инженерным DevOps-решениям"
+      - {language: en, text: "DevOps conference"}
+      - {language: ru, text: "Конференция, посвящённая инженерным DevOps-решениям"}
     longDescription:
       - language: en
-        text: "DevOops is a conference devoted to DevOps solutions. It is about developers' pain, complex scenarios in production,\
-            \ modern tools and the culture that allows you to release often, fix issues reliably and be right at home in the\
-            \ development and operations.\n\nKey topics: \n- CloudNative (Helm, Kubernetes, Istio, service mesh);\n- Cloud\
-            \ technologies (AWS, Azure, Heroku, Serverless, etc.);\n- Observability, Audit and Monitoring (Prometheus, OkMeter,\
-            \ DataDog, BPF, Dynatrace, XRebel, Glimpse, Zipkin, \n- OpenTrace, etc.);\n- CI/CD (Jenkins, TeamCity, Bamboo,\
-            \ Kubernetes Operators, CD Foundation, Spinnaker);\n- Configuration Management (Puppet, Chef, Ansible, Salt, Terraform);\n\
-            - Security (Vault, IDS, IPS, etc.);\n- CNI, Infrastructure and Networking Management (Traefik, Calico, Cilium,\
-            \ etc.);\n- Storages (Persistent Volumes, databases, Kafka, etc.);\n- Technical debt and compexity management\
-            \  (legacy migration, DevOps for mainframes);\n- Zero Downtime, self-healing and antifragility;\n- Business cases\
-            \ of DevOps transformation of large projects: wins and fails;\n- Specific features of operations for different\
-            \ tech platforms."
+        text: "The conference is about processes and culture, SRE and Cloud Native and, of\
+            \ course, this conference is absolutely __not for DevOps engineers__!\n\nThe program consists of talks divided\
+            \ into 3 main topics: \n\n- __DevOps:__ processes and culture that motivates to follow processes, upload high-quality\
+            \ code to production and reduce development costs. Technical debt, complexity management, the experience of DevOps\
+            \ implementing on large projects;\n- __SRE:__ immortal Kubernetes, Terraform, On-call Tools, Observability, Security,\
+            \ Zero Downtime infrastructure, monitoring;\n- __Cloud Native:__ cloud technologies, Cloud Native, CI/CD in clouds,\
+            \ best practices of cloud architecture."
       - language: ru
-        text: "DevOops — конференция, посвященная инженерным DevOps-решениям, а значит, она о болях разработчиков, о сложн\
-            ых сценариях на продакшне, о современных инструментах и о культуре, позволяющей релизить чаще, фиксить надежне\
-            й и уверенно плыть по бурным волнам современной разработки и эксплуатации.\n\nКлючевые темы:\n- CloudNative (Helm,\
-            \ Kubernetes, Istio, service mesh);\n- Облачные технологии (AWS, Azure, Heroku, Serverless и другие);\n- Observability,\
-            \ мониторинг и аудит приложений (Prometheus, OkMeter, DataDog, BPF, Dynatrace, XRebel, Glimpse, Zipkin, OpenTrace\
-            \ и другие);\n- CI/CD (Jenkins, TeamCity, Bamboo, Kubernetes Operators, CD Foundation, Spinnaker);\n- Configuration\
-            \ Management (Puppet, Chef, Ansible, Salt, Terraform);\n- Security (Vault, IDS, IPS и другие);\n- CNI, Infrastructure\
-            \ and Networking Management (Traefik, Calico, Cilium и другие);\n- Хранилища (Persistent Volumes, базы данных\
-            , Kafka и др.);\n- Технический долг и управление сложностью (миграция с legacy, DevOps для mainframes);\n- Zero\
-            \ Downtime, self-healing и антихрупкость;\n- Разбор полётов на примерах крупных проектов, внедряющих DevOps: у\
-            спешных и провальных;\n- Специфика operations для разных технологических платформ."
+        text: "Это конференция про процессы и культуру, про SRE и Cloud Native, и конечно ж\
+            е — это конференция совершенно __не для DevOps-инженеров__!\n\nПрограмма состоит из трёх главных блоков:\n\n-\
+            \ __DevOps:__ непосредственно про процессы и культуру, которая мотивирует следовать процессам, выкатывать каче\
+            ственный код в продакшн и сокращать затраты на разработку. Технический долг, управление сложностью, опыт внедр\
+            ения DevOps на больших проектах; \n- __SRE:__ бессмертный Kubernetes, Terraform, On-call Tools, Observability,\
+            \ Security, Zero Downtime инфраструктура, мониторинг и, конечно, подкапотный хардкор;\n- __Cloud Native:__ обл\
+            ачные технологии, Cloud Native, CI/CD в облаках, best practices в облачной архитектуре."
     siteLink:
       - {language: en, text: "https://devoops.ru//en/"}
       - {language: ru, text: "https://devoops.ru/"}
@@ -87,25 +68,25 @@ eventTypes:
     name:
       - {language: en, text: DotNext}
     shortDescription:
-      - language: en
-        text: "Conference for .NET developers"
-      - language: ru
-        text: "Конференция для .NET-разработчиков"
+      - {language: en, text: "Conference for .NET developers"}
+      - {language: ru, text: "Конференция для .NET-разработчиков"}
     longDescription:
       - language: en
-        text: "DotNext is the largest conference for .NET developers in Russia. It's two days, over 1000 attendees, and three\
-            \ dozens of talks held by the world's leading experts, such as:\n- Jeffrey Richter (Microsoft);\n- Andrey Akinshin\
-            \ (JetBrains);\n- Jon Skeet (Google);\n- Mark Seeman (blog.ploeh.dk);\n- Hadi Hariri (JetBrains);\n- Dino Esposito\
-            \ (author of more than 20 books).\n\nThe conference talks are devoted to:\n- the present and the future of .NET\
-            \ platform;\n- performance optimization;\n- .NET platform inner workings;\n- architecture and design patterns;\n\
-            - .NET challenging problems and best practices."
+        text: "DotNext is a biannual event where .NET developers gather to:\n\n* exchange fresh knowledge and ideas;\n* share\
+            \ the solutions of non-trivial problems;\n* discuss what's new in the industry and what is worth paying attention\
+            \ to;\n* chat, debate and find like-minded people;\n* just have a good time.\n\nIn DotNext program there are lots\
+            \ of hardcore talks on low-level oprimizations and inevident mechanisms of .NET. Besides that — talks on architecture,\
+            \ languages, security, best practices and many other things relevant for .NET today.\n\nAmong well-known experts\
+            \ who have performed at DotNext are Andrey Akinshin, Dmitry Soshnikov, Egor Bogatov, Scott Hanselman, Jon Skeet,\
+            \ Jeffrey Richter."
       - language: ru
-        text: "DotNext — крупнейшая в России конференция для .NET-разработчиков. DotNext — это 2 дня, 3 десятка докладов о\
-            т экспертов мирового уровня и более 1000 участников. \n\nСреди докладчиков — ведущие отраслевые эксперты из Ро\
-            ссии, Европы и США:\n- Jeffrey Richter (Microsoft);\n- Андрей Акиньшин (JetBrains);\n- Jon Skeet (Google);\n-\
-            \ Mark Seeman (blog.ploeh.dk);\n- Hadi Hariri (JetBrains);\n- Dino Esposito (автор более 20 книг).\n\nОсновные\
-            \ темы конференции:\n- настоящее и будущее платформы .NET;\n- оптимизация производительности;\n- внутреннее ус\
-            тройство платформы;\n- архитектура и паттерны проектирования;\n- нетривиальные задачи и best practices."
+        text: "DotNext — это площадка, где раз в полгода .NET-разработчики собираются, чтобы:\n\n* обменяться свежими знан\
+            иями и идеями;\n* поделиться решениями нетривиальных задач;\n* обсудить, что нового в индустрии и на что стоит\
+            \ обратить внимание;\n* пообщаться, подискутировать, найти единомышленников;\n* просто приятно провести время\
+            .\n\nВ программе DotNext всегда много хардкорных материалов про низкоуровневые оптимизации и неочевидные механ\
+            ики .NET. А кроме них — доклады об архитектуре, языках, безопасности, best practices и многом другом, чем живе\
+            т .NET сегодня.\nСреди известных экспертов, которые выступали на DotNext — Андрей Акиньшин, Дмитрий Сошников,\
+            \ Егор Богатов, Scott Hanselman, Jon Skeet, Jeffrey Richter."
     siteLink:
       - {language: en, text: "https://dotnext.ru/en/"}
       - {language: ru, text: "https://dotnext.ru/"}
@@ -123,28 +104,29 @@ eventTypes:
     name:
       - {language: en, text: Heisenbug}
     shortDescription:
-      - language: en
-        text: "Software testing conference"
-      - language: ru
-        text: "Большая техническая конференция по тестированию"
+      - {language: en, text: "Software testing conference"}
+      - {language: ru, text: "Большая техническая конференция по тестированию"}
     longDescription:
       - language: en
-        text: "Heisenbug is a large technical conference that brings together more than 900 professionals in the field of\
-            \ quality assurance.These professionals are testers, programmers developing tests for their code, engineers in\
-            \ automated and load testing, and team leads willing to improve testing efficiency in their projects.\n\nAll speakers\
-            \ talk about the most important, practical and hardcore things on software testing:\n- Test automation;\n- Tools\
-            \ and environment for manual and automated testing;\n- Testing of distributed systems;\n- Testing of mobile applications;\n\
-            - Static code analysis and its tools;\n- Load testing, performance testing, benchmarking;\n- Testing of compilers,\
-            \ nuclear power plants, etc.\n\nOur focus is on technological aspect of testing, and if you are not that familiar\
-            \ with it yet, it's a valid reason to attend the conference."
+        text: "Heisenbug conference brings together professionals in the field of quality assurance. These professionals are\
+            \ testers, programmers developing tests for their code, engineers in automated and load testing, and team leads\
+            \ willing to improve testing efficiency in their projects. \n\nAll speakers talk about the most important, practical\
+            \ and hardcore things on software testing:\n- Automation testing;\n- Manual testing;\n- Load testing, performance\
+            \ testing, benchmarking;\n- Testing of distributed systems;\n- Testing of mobile applications;\n- UX, Security,\
+            \ A/B testing;\n- Code analysis and its tools;\n- Tools and testing environment;\n- Test frameworks best practices;\n\
+            - Testing of compilers, nuclear power plants, and so on.\n\nOur focus is on technological aspect of testing, and\
+            \ if you are not that familiar with it yet, it's a valid reason to attend the conference. We guarantee that there's\
+            \ no Agile, Scrum and team management stuff."
       - language: ru
-        text: "Heisenbug — большая техническая конференция, которая собирает под одной крышей более 900 специалистов в обл\
-            асти тестирования. Это тестировщики, программисты, специалисты по тестированию, менеджеры команд.\n\nГоворим о\
-            \ самом важном — практическом и хардкорном тестировании на реальных проектах:\n- Автоматизация тестирования;\n\
-            - Инструменты и окружение для ручного и автоматизированного тестирования;\n- Тестирование распределённых систе\
-            м;\n- Тестирование мобильных приложений;\n- Статический анализ кода и инструменты анализа;\n- Нагрузочное тест\
-            ирование, performance-тестирование, бенчмаркинг;\n- Тестирование компиляторов, АЭС и т.д.\n\nКонференция ориен\
-            тирована на технологическую сторону тестирования, и, если вы в ней пока новичок, это лишний повод её посетить."
+        text: "Heisenbug — большая техническая конференция, которая собирает вместе специалистов в области тестирования. Э\
+            то и тестировщики, и программисты, разрабатывающие тесты для своего кода, и специалисты по автоматическому и н\
+            агрузочному тестированию, и менеджеры команд, которые думают о том, чтобы повысить эффективность тестирования\
+            \ в своих проектах. \n\nГоворим о самом важном — практическом и хардкорном тестировании на реальных проектах:\n\
+            - Автоматизация тестирования;\n- Инструменты и окружение для ручного и автоматизированного тестирования;\n- Те\
+            стирование распределённых систем;\n- Тестирование мобильных приложений;\n- UX, Security;\n- Нагрузочное тестир\
+            ование, performance-тестирование, бенчмаркинг;\n- AI в тестировании;\n\nМы ориентированы на технологическую ст\
+            орону тестирования, и, если вы в ней пока новичок, это лишний повод нас посетить. Никаких тест-кейсов, правил\
+            \ заведения багов и управления командами — только технологии, только хардкор!"
     siteLink:
       - {language: en, text: "https://heisenbug.ru/en/"}
       - {language: ru, text: "https://heisenbug.ru/"}
@@ -162,25 +144,14 @@ eventTypes:
     name:
       - {language: en, text: HolyJS}
     shortDescription:
-      - language: en
-        text: "Conference for JavaScript developers"
-      - language: ru
-        text: "Большая конференция для JavaScript-разработчиков"
+      - {language: en, text: "Conference for JavaScript developers"}
+      - {language: ru, text: "Большая конференция для JavaScript-разработчиков"}
     longDescription:
-      - language: en
-        text: "HolyJS is the only major conference in Russia devoted to JavaScript world. Technical talks picked out exactly\
-            \ for the professional audience of Senior / Middle JS developers.\n\nWithin the program there are only technical\
-            \ talks without anything about processes, methodologies, management of people in startups. Speaking more specifically,\
-            \ it's all about development, optimization and architecture of JavaScript projects, work with data and the distributed\
-            \ calculations, and even programming of microcontrollers on JS!\n\nThe conference gathers over 1000 attendees\
-            \ that come to discuss the present and future of JavaScript community with the world's leading experts and watch\
-            \ dozens of frontend talks and much more, dwelling on both backend and desktop."
-      - language: ru
-        text: "HolyJS — HolyJS – международная конференция для JavaScript-разработчиков.\n\nHolyJS собирает под одной крыш\
-            ей более 1000 JavaScript-разработчиков, готовых обсуждать новости стремительно развивающейся экосистемы, свежи\
-            е инструменты, фреймворки, паттерны и сотни изменений с экспертами со всего мира.\n\nHolyJS – это несколько де\
-            сятков докладов о технологиях от фронтенда до бэкенда, от облачных технологий до десктоп-приложений, возможнос\
-            ть пообщаться с теми, кто создаёт мир JavaScript и поучаствовать в кулуарных беседах, где и рождается будущее."
+      - {language: en, text: "We bring together JS developers to discuss the present and future of JavaScript community with\
+            \ the world's leading experts and watch dozens of frontend talks and much more. We dwell on both backend and desktop."}
+      - {language: ru, text: "На HolyJS JS-разработчики собираются вместе, чтобы обсудить новости стремительно развивающей\
+            ся экосистемы, свежие инструменты, фреймворки, паттерны и сотни изменений с экспертами со всего мира и услышат\
+            ь несколько десятков докладов о фронтенде и не только. Говорим и о бэкенде, и о десктопе."}
     siteLink:
       - {language: en, text: "https://holyjs.ru/en/"}
       - {language: ru, text: "https://holyjs.ru/"}
@@ -198,10 +169,8 @@ eventTypes:
     name:
       - {language: en, text: Hydra}
     shortDescription:
-      - language: en
-        text: "Distributed computing conference"
-      - language: ru
-        text: "Конференция по параллельным и распределенным системам"
+      - {language: en, text: "Distributed computing conference"}
+      - {language: ru, text: "Конференция по параллельным и распределенным системам"}
     longDescription:
       - language: en
         text: "Hydra conference focuses on distributed systems and computing. The conference program includes talks held by\
@@ -239,19 +208,21 @@ eventTypes:
     name:
       - {language: en, text: JBreak}
     shortDescription:
-      - language: en
-        text: "Java Conference in Siberia"
-      - language: ru
-        text: "Java‑конференция в Сибири"
+      - {language: en, text: "Java Conference in Siberia"}
+      - {language: ru, text: "Java‑конференция в Сибири"}
     longDescription:
-      - {language: en, text: "JBreak is the only Siberian Java-conference. It was held in 2016 for the first time and gathered\
-            \ together more than 300 experienced Senior / Middle developers and team leads. The main feature of JBreak is\
-            \ pure technical hardcore. Key topics : (/are) performance, concurrency, testing, distributed systems and high\
-            \ loads in the Java world, as well as the future of the platform."}
-      - {language: ru, text: "JBreak — крупнейшая региональная Java-конференция в России, впервые состоялась в 2016 году и\
-            \ собрала более 300 опытных Senior/Regular-разработчиков и тимлидов. Главная особенность JBreak — дистиллирова\
-            нный технический хардкор. Основные темы конференции: производительность, concurrency, тестирование, распределе\
-            нные системы и высокие нагрузки в мире Java, а также будущее платформы."}
+      - language: en
+        text: "JBreak is the only Siberian Java conference for experienced developers. The conference was the third JBreak,\
+            \ which gathered more than 400 developers. JBreak attracts the best Java experts as well as speakers from all\
+            \ around the world (Europe, USA, Israel).\n\nAll talks were dedicated to popular issues and Java technologies:\
+            \ performance, concurrency, testing, distributed and highload systems in the Java world, as well as the future\
+            \ of the platform."
+      - language: ru
+        text: "JBreak — единственная сибирская технологическая Java-конференция для опытных разработчиков. 4 марта 2018 со\
+            стоялся третий JBreak, который собрал под своей крышей более 400 разработчиков. Конференция не только объедини\
+            ла Java-экспертов со всей России, но и привлекла спикеров со всего мира (Европа, США, Израиль).\n\nВсе доклады\
+            \ были посвящены только востребованным Java-технологиям и проблемам: производительность, concurrency, тестиров\
+            ание, распределённые системы и высокие нагрузки в мире Java, а также будущее платформы."
     siteLink:
       - {language: en, text: "https://2018.jbreak.ru//en/"}
       - {language: ru, text: "https://2018.jbreak.ru/"}
@@ -262,45 +233,6 @@ eventTypes:
     telegramLink: https://telegram.me/jbreak
     habrLink: https://habr.com/ru/company/jugru
     inactive: true
-    timeZone: Europe/Moscow
-  - id: 8
-    conference: JOKER
-    logoFileName: jokerconf.jpg
-    organizerId: 0
-    name:
-      - {language: en, text: Joker}
-    shortDescription:
-      - {language: en, text: "The largest Java conference in Russia"}
-      - {language: ru, text: "Международная Java-конференция для опытных разработчиков"}
-    longDescription:
-      - language: en
-        text: "Joker (St. Petersburg) is a deeply technical Java conference for experienced Senior / Regular developers and\
-            \ teamleads.\n\nJoker passes within two days and guarantees you a lot of strong and technically complex reports\
-            \ which you will be able to discuss with 1000 colleagues-participants of the conference. In addition, traditionally\
-            \ on Joker you can find something interesting for the joy: for example, in 2015 we had a museum of retro computers,\
-            \ where participants could work for the legendary Apple Lisa or other vintage gadgets.\n\nThe conference is aimed\
-            \ at participants with deep background in Java. Strong and technically complex talks guarantee high quality of\
-            \ the audience. A wide coverage of the target audience and high professional level of the participants will be\
-            \ provided with rich organizational experience, careful selection of talks and after all with the direction of\
-            \ the program on specific practical things."
-      - language: ru
-        text: "Joker (Санкт-Петербург) — глубоко техническая Java-конференция для опытных Senior/Regular-разработчиков и т\
-            имлидов.\n\nJoker проходит в течение двух дней и гарантирует вам много сильных и технически сложных докладов,\
-            \ которые вы сможете обсудить с 1000 коллегами-участниками конференции. Кроме того, традиционно на Joker вы см\
-            ожете найти что-то интересное и для души: в 2015 году у нас был музей ретро-компьютеров, где участники могли п\
-            оработать за легендарным Apple Lisa и другими винтажными гаджетами.\n\nКонференция ориентируется на участников\
-            , которые хорошо разбираются в Java. Сильные и технически сложные доклады гарантируют высокое качество аудитор\
-            ии. Широкий охват целевой аудитории и высокий профессиональный уровень участников будут обеспечены богатым орг\
-            анизаторским опытом, тщательным отбором докладов, направлением конференции на обучение конкретным вещам."
-    siteLink:
-      - {language: en, text: "https://jokerconf.com/en/"}
-      - {language: ru, text: "https://jokerconf.com/"}
-    vkLink: https://vk.com/jokerconf
-    twitterLink: https://twitter.com/jugru
-    facebookLink: https://www.facebook.com/jokerconf
-    youtubeLink: https://www.youtube.com/user/JUGRuVideo
-    telegramLink: https://t.me/jokerconf
-    habrLink: https://habr.com/ru/company/jugru
     timeZone: Europe/Moscow
   - id: 7
     conference: JPOINT
@@ -313,21 +245,16 @@ eventTypes:
       - {language: ru, text: "Международная Java-конференция для опытных разработчиков"}
     longDescription:
       - language: en
-        text: "JPoint (Moscow) is hardcore technical Java-conference only for experienced Java-developers and only about R&D.\n\
-            \nEvery year the conference last for 2 days and gathers more than 1000 participants. In general the program holds\
-            \ 45 talks in 4 tracks.\n\nKey topics: performance, concurrency, testing, distributed systems and high loads in\
-            \ the Java world, as well as the future of the platform.\n\nAmong speakers you will find: Aleksey Shipilev, Charles\
-            \ Nutter, Sergey Kuksenko and Vladimir Ivanov, Evgeniy Borisov, Andrey Breslav, Arun Gupta, Barukh Sadogursky,\
-            \ as well as representatives of Oracle, JetBrains, Red Hat, Epam, IBM, SAP, Mail.ru Group, Sberbank-Technologies,\
-            \ Deutsche Bank, Luxoft and many others."
+        text: "JPoint is a large international Java conference for experienced Java developers.\n\nJPoint grows, becomes even\
+            \ more exciting and hardcore every year. The conference brings together more than 1000 participants.\n\nAll JPoint\
+            \ talks are devoted to Java technical issues and solutions. The main topics of the conference cover productivity,\
+            \ concurrency, testing, tooling, distributed systems and high loads in the Java world, as well as the future of\
+            \ the platform."
       - language: ru
-        text: "JPoint (Москва) — международная Java-конференция для опытных Java-разработчиков. С каждым годом конференция\
-            \ растёт, становится ещё больше, интереснее и хардкорнее, собирая на площадке более двух тысяч участников.\n\n\
-            Все доклады конференции только про востребованные в Java технологии. Основные темы JPoint: производительность\
-            , concurrency, тестирование, распределённые системы и высокие нагрузки в мире Java, а также будущее платформы\
-            .\n\nСреди выступающих: Алексей Шипилёв, Сергей Куксенко и Владимир Иванов (Oracle), Евгений Борисов, Барух Са\
-            догурский, а также представители компаний JetBrains, Одноклассники, Сбербанк, Deutsche Bank, Luxoft и многих д\
-            ругих."
+        text: "JPoint — международная Java-конференция для опытных Java-разработчиков.\n\nС каждым годом конференция растё\
+            т, становится ещё больше, интереснее и хардкорнее, собирая более тысячи участников.\n\nВсе доклады конференции\
+            \ только про востребованные в Java технологии. Основные темы JPoint: производительность, concurrency, тестиров\
+            ание, инструменты, распределённые системы и высокие нагрузки в мире Java, а также будущее платформы."
     siteLink:
       - {language: en, text: "https://jpoint.ru/en/"}
       - {language: ru, text: "https://jpoint.ru/"}
@@ -336,6 +263,34 @@ eventTypes:
     facebookLink: https://www.facebook.com/jpointconf/
     youtubeLink: https://www.youtube.com/user/JUGRuVideo
     telegramLink: https://telegram.me/jpointconf
+    habrLink: https://habr.com/ru/company/jugru
+    timeZone: Europe/Moscow
+  - id: 8
+    conference: JOKER
+    logoFileName: jokerconf.jpg
+    organizerId: 0
+    name:
+      - {language: en, text: Joker}
+    shortDescription:
+      - {language: en, text: "The largest Java conference in Russia"}
+      - {language: ru, text: "Международная Java-конференция для опытных разработчиков"}
+    longDescription:
+      - language: en
+        text: "Joker is a large international Java conference for Senior Java developers.\n\nAll talks are devoted to Java\
+            \ technical issues and solutions. Main topics of the conference are performance, concurrency, testing, distributed\
+            \ systems and high loads in Java world, as well as the future of the platform."
+      - language: ru
+        text: "Joker — техническая Java-конференция для опытных разработчиков и тимлидов. Несколько десятков докладов, вор\
+            кшопов и дискуссий обо всем, что происходит в мире Java сегодня.\n\nОсновные темы: производительность, concurrency,\
+            \ тестирование, распределенные системы и высокие нагрузки в мире Java, а также будущее платформы."
+    siteLink:
+      - {language: en, text: "https://jokerconf.com/en/"}
+      - {language: ru, text: "https://jokerconf.com/"}
+    vkLink: https://vk.com/jokerconf
+    twitterLink: https://twitter.com/jugru
+    facebookLink: https://www.facebook.com/jokerconf
+    youtubeLink: https://www.youtube.com/user/JUGRuVideo
+    telegramLink: https://t.me/jokerconf
     habrLink: https://habr.com/ru/company/jugru
     timeZone: Europe/Moscow
   - id: 9
@@ -349,16 +304,20 @@ eventTypes:
       - {language: ru, text: "Конференция для мобильных разработчиков"}
     longDescription:
       - language: en
-        text: "Mobius is a conference for mobile apps developers, which takes place in Moscow and St. Petersburg, gathering\
-            \ more than 500 attendees each time.\n\nThe audience of the conference consists of Middle and Senior developers,\
-            \ team leads, and project managers.\n\nMobius program includes engineering talks for Android and iOS developers\
-            \ covering the following topics:\n- Large-scale architecture;\n- Performance;\n- Security;\n- ML in Mobile;\n\
-            - Functional and reactive programming;\n- Kotlin, Swift, Flutter."
+        text: "Mobius is a technical conference for mobile developers.\n\nNo marketing, management and documentation retelling,\
+            \ only tech talks held by the experts:\n\n- Platforms (iOS / Android) and languages (Swift / Kotlin / Flutter\
+            \ / Java) under the hood;\n- Software Craftsmanship (different practices and approaches in application development\
+            \ and frameworks);\n- Architecture (architectural patterns, legacy, and technical debt, refactoring);\n- Product\
+            \ quality (performance, UI/UX patterns, security);\n- Mobile development trends (SPM, open source solutions, and\
+            \ best practices);\n- Infrastructure (build systems, CI/CD, Trunk-Based Development, Continuous testing, and Monorepo)."
       - language: ru
-        text: "Mobius – это конференция для разработчиков мобильных приложений, которая регулярно проходит в Москве и Пете\
-            рбурге и собирает более 500 участников. \n\nАудитория конференции: Middle и Senior-разработчики, тимлиды и рук\
-            оводители проектов.\n\nГлавные темы докладов Mobius:\n- Large-scale architecture;\n- Performance;\n- Security;\n\
-            - ML in Mobile;\n- Functional and reactive programming;\n- Kotlin, Swift, Flutter."
+        text: "Mobius — это техническая конференция для команд мобильной разработки, в которой регулярно участвуют более 600\
+            \ человек.\n\nВ программе никакого маркетинга, менеджмента и пересказов документации, только технологии и толь\
+            ко из первых рук:\n\n- Работа платформ (iOS / Android) и языков программирования (Swift / Kotlin / Flutter / Java)\
+            \ под капотом;\n- Software Craftsmanship (подходы и практики в разработке мобильных приложений и работе с фрей\
+            мворками);\n- Архитектура (архитектурные паттерны, legacy и рефакторинг, модуляризация);\n- Качество продукта\
+            \ (производительность, UI/UX, безопасность);\n- Тренды в мобильной разработке (SPM, open source-решения и лучш\
+            ие практики);\n- Инфраструктура (системы сборки, CI/CD, Trunk-Based Development, Continuous testing и Monorepo)."
     siteLink:
       - {language: en, text: "https://mobiusconf.com/en/"}
       - {language: ru, text: "https://mobiusconf.com"}
@@ -376,11 +335,20 @@ eventTypes:
     name:
       - {language: en, text: SPTDC}
     shortDescription:
-      - language: en
-        text: "Summer school on practice and theory of distributed computing"
+      - {language: en, text: "Summer school on practice and theory of distributed computing"}
     longDescription:
-      - {language: en, text: "The school offers courses on a wide range of practical and theoretical aspects of distributed\
-            \ systems given by renowned experts in the field."}
+      - language: en
+        text: "Computing nowadays is inherently distributed. Be it a mainstream multi-core machine, a computing cluster,\
+            \ or a large-scale distributed service, a modern computing system involves multiple processes that concurrently\
+            \ perform independent computations and communicate to synchronize their activities. Understanding distributed\
+            \ computations is therefore essential to be competitive in computing, be it in the academia or in industry.\n\n\
+            The school offers courses on a range of practical and theoretical aspects of distributed systems given by renowned\
+            \ experts in the field. This year the program will include, but is not restricted to, the following topics:\n\n\
+            - Persistent concurrent computing;\n- Cryptographic tools for distributed systems;\n- Formal methods for verifying\
+            \ consensus protocols;\n- Consistency in large-scale systems;\n- Distributed machine learning.\n\nAll talks are\
+            \ given in English.\n\nThe school is open to anyone interested in theoretical and practical aspects of distributed\
+            \ computing. There are no special prerequisites, though the attendees are expected to have certain maturity in\
+            \ math and programming."
     siteLink:
       - {language: en, text: "https://sptdc.ru/"}
     youtubeLink: https://www.youtube.com/channel/UCYoIFJ96Kn_Ziayw8av-IAA
@@ -393,15 +361,21 @@ eventTypes:
     name:
       - {language: en, text: SmartData}
     shortDescription:
-      - language: en
-        text: "Data Engineering conference"
-      - language: ru
-        text: "Конференция по Data Engineering"
+      - {language: en, text: "Data Engineering conference"}
+      - {language: ru, text: "Конференция по Data Engineering"}
     longDescription:
-      - {language: en, text: "SmartData is a technical conference for those involved with the world of machine learning, analysis\
-            \ and data processing."}
-      - {language: ru, text: "SmartData — техническая конференция для тех, кто погружен в мир машинного обучения, анализа\
-            \ и обработки данных."}
+      - language: en
+        text: "SmartData is a technical conference for data engineers. Here the creators of popular tools, widely known\
+            \ experts and simply great experts talk about solving difficult tasks, team experience, industry news and other\
+            \ things of data engineering.\n\nMost popular topics of the talks:\n\n- Streaming: Flink, Kafka, Spark etc.;\n\
+            - DBMS and storages for big data;\n- DWH architecture;\n- Data governance;\n- ETL building;\n- Orchestration and\
+            \ MLOps;\n- Cloud solutions."
+      - language: ru
+        text: "SmartData — это техническая конференция для дата-инженеров. На ней создатели популярных инструментов, в\
+            семирно известные эксперты и просто крутые специалисты рассказывают о решении сложных рабочих задач, опыте ком\
+            анд, новинках индустрии и многих других вещах из сферы дата-инжиниринга.\n\nТемы, которым чаще всего посвящены\
+            \ доклады конференции:\n\n- Стриминг: Flink, Kafka, Spark и др;\n- СУБД и хранилища для больших данных;\n- Арх\
+            итектура DWH;\n- Data governance;\n- Технологии построения ETL;\n- Оркестрация и MLOps;\n- Cloud solutions."
     siteLink:
       - {language: en, text: "https://smartdataconf.ru//en/"}
       - {language: ru, text: "https://smartdataconf.ru/"}
@@ -419,30 +393,15 @@ eventTypes:
     name:
       - {language: en, text: TechTrain}
     shortDescription:
-      - language: en
-        text: "IT festival"
-      - language: ru
-        text: "IT - Фестиваль"
+      - {language: en, text: "IT festival"}
+      - {language: ru, text: "IT - Фестиваль"}
     longDescription:
-      - language: en
-        text: "TechTrain is a big festival for developers, engineers and those interested in IT. The festival brings together\
-            \ everyone who loves software development as much as we do.\n\nWhether you are totally into OOP or functionality,\
-            \ performance or development speed — at TechTrain you will find like-minded people, interesting projects and technological\
-            \ innovations (VR and AR, new architectures and gadgets, and who knows what else).\n\nTechTrain includes talks\
-            \ held by IT experts, large expo with company and community booths: meet everyone from startups to bank enterprises,\
-            \ from hardware engineers to JS developers. \n\nIT festival is an opportunity to learn about cutting-edge technologies,\
-            \ exchange experience with colleagues, meet in person those you know virtually and talk to world class experts\
-            \ who are usually available at the top IT conferences only."
-      - language: ru
-        text: "TechTrain – большой фестиваль для разработчиков, инженеров и им сочувствующих. Фестиваль, который в одном м\
-            есте собирает всех, кто любит разработку ПО так же, как мы. \n\nНеважно, есть у вас виртуальная машина или нет\
-            , топите вы за ООП или за функциональщину, за перформанс или за скорость разработки – на TechTrain вы найдете\
-            \ единомышленников, интересные проекты и технологические новинки (VR и AR, новые архитектуры и гаджеты, да кто\
-            \ знает, что еще).\n\nTechTrain — это доклады от IT-экспертов и большая выставка со стендами компаний и сообще\
-            ств: от стартапов до банковского энтерпрайза, от хардкорных железячников до модных JS-разработчиков. \n\nЭто в\
-            озможность увидеть срез современной IT-реальности, обменяться опытом с коллегами, развиртуалиться с теми, кто\
-            \ знаком вам по общению в сети, а также познакомиться и поговорить с мировыми экспертами, которых обычно можно\
-            \ встретить на топовых IT-конференциях с дорогими билетами."
+      - {language: en, text: "TechTrain is a free one-day online festival gathering everyone involved into software deveopment\
+            \ industry. We've collected talks about different tech stacks and problems that IT specialists deal with. We hope\
+            \ you will enjoy it."}
+      - {language: ru, text: "TechTrain — однодневный бесплатный онлайн-фестиваль, объединяющий всех, кто связан с индустр\
+            ией разработки программного обеспечения. Мы собрали для вас доклады про различные технологические стеки и проб\
+            лемы, с которыми сталкиваются в работе IT-специалисты. Надеемся, что вам понравится."}
     siteLink:
       - {language: en, text: "https://techtrain.ru/en/"}
       - {language: ru, text: "https://techtrain.ru/"}
@@ -534,23 +493,21 @@ eventTypes:
     name:
       - {language: en, text: VideoTech}
     shortDescription:
-      - language: en
-        text: "Video and streaming technologies conference"
-      - language: ru
-        text: "Конференция по технологиям видео и стриминга"
+      - {language: en, text: "Video and streaming technologies conference"}
+      - {language: ru, text: "Конференция по технологиям видео и стриминга"}
     longDescription:
       - language: en
-        text: "VideoTech is an tech conference dedicated to matters of video streaming. At the conference, specialists in\
-            \ technologies for streaming share their knowledge and experience with colleagues from all over the world. The\
-            \ conference's mission is to create a professional community for developers and engineers working on streaming\
-            \ platforms, players, content delivery and other aspects of this field.\n\nKey topics:\n- WebRTC;\n- Video delivery;\n- \
-            Audio and video codecs;\n- Devices and players;\n- Storage and packaging;\n- Video quality;\n- Monitoring;\n- ML/AI."
+        text: "VideoTech is a tech conference dedicated to matters of video and internet streaming. The conference's mission\
+            \ is to create a professional community for developers and engineers working on video calls, streaming platforms,\
+            \ players, video storage and distribution infrastructures, content delivery, and other aspects of this field.\n\
+            \nKey topics:\n- WebRTC;\n- Video distribution infrastructure;\n- Audio and video codecs;\n- Devices and players;\n\
+            - Storage and packaging;\n- Video quality;\n- Monitoring;\n- ML/AI."
       - language: ru
-        text: "VideoTech — это техническая конференция, посвященная вопросам потоковой передачи видео. На ней специалисты\
-            \ по технологиям из области стриминга делятся знаниями и опытом с коллегами. Миссия конференции — сформировать\
-            \ профессиональное сообщество разработчиков и инженеров, работающих над стриминговыми платформами, плеерами, д\
-            оставкой контента и другими аспектами этой сферы.\n\nОсновные темы конференции:\n- WebRTC;\n- Раздача видео;\n- Ко\
-            деки аудио и видео;\n- Устройства и плееры;\n- Хранение и упаковка;\n- Качество видео;\n- Мониторинг;\n- ML/AI."
+        text: "VideoTech — это техническая конференция, посвященная вопросам видео и стриминга в интернете. Миссия кон\
+            ференции — сформировать профессиональное сообщество разработчиков и инженеров, работающих над видеозвонками, с\
+            триминговыми платформами, плеерами, инфраструктурами хранения и раздачи видео, доставкой контента и другими ас\
+            пектами этой сферы.\n\nОсновные темы конференции:\n\n- WebRTC;\n- Инфраструктура раздачи видео;\n- Кодеки ауди\
+            о и видео;\n- Устройства и плееры;\n- Хранение и упаковка;\n- Качество видео;\n- Мониторинг;\n- ML/AI."
     siteLink:
       - {language: en, text: "https://vtconf.com/en/"}
       - {language: ru, text: "https://vtconf.com/"}
