@@ -7,6 +7,7 @@ import guess.domain.source.cms.jrgcms.JrgCmsPhoto;
 import guess.domain.source.cms.jrgcms.event.JrgCmsConferenceSiteContent;
 import guess.domain.source.cms.jrgcms.event.JrgCmsConferenceSiteContentResponse;
 import guess.domain.source.cms.jrgcms.event.JrgCmsEvent;
+import guess.domain.source.cms.jrgcms.event.JrgCmsEventComparator;
 import guess.domain.source.cms.jrgcms.speaker.JrgCmsParticipant;
 import guess.domain.source.cms.jrgcms.speaker.JrgCmsSpeaker;
 import guess.domain.source.cms.jrgcms.speaker.JrgContact;
@@ -55,6 +56,7 @@ public class JrgCmsDataLoader extends CmsDataLoader {
     private static final String RUSSIAN_TEXT_KEY = "ru";
 
     private static final EnumMap<Conference, String> CONFERENCE_EVENT_PROJECT_MAP = new EnumMap<>(Conference.class);
+    private static final Map<String, Conference> EVENT_PROJECT_CONFERENCE_MAP;
 
     private static final RestTemplate restTemplate;
 
@@ -75,6 +77,9 @@ public class JrgCmsDataLoader extends CmsDataLoader {
         CONFERENCE_EVENT_PROJECT_MAP.put(Conference.SMART_DATA, "SMARTDATA");
         CONFERENCE_EVENT_PROJECT_MAP.put(Conference.SPTDC, "SPTDC");
         CONFERENCE_EVENT_PROJECT_MAP.put(Conference.VIDEO_TECH, "VIDEOTECH");
+
+        EVENT_PROJECT_CONFERENCE_MAP = CONFERENCE_EVENT_PROJECT_MAP.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
 
         restTemplate = createRestTemplate();
     }
@@ -124,8 +129,7 @@ public class JrgCmsDataLoader extends CmsDataLoader {
     @Override
     public List<EventType> getEventTypes() {
         // https://squidex.jugru.team/api/content/sites/conf-site-content?$filter=data/eventProject/iv in ('MOBIUS', 'CPP')&$orderby=data/eventProject/iv
-        var eventVersions = Arrays.stream(Conference.values())
-                .map(CONFERENCE_EVENT_PROJECT_MAP::get)
+        var eventVersions = CONFERENCE_EVENT_PROJECT_MAP.values().stream()
                 .filter(Objects::nonNull)
                 .map(s -> "'" + s + "'")
                 .collect(Collectors.joining(","));
@@ -147,7 +151,7 @@ public class JrgCmsDataLoader extends CmsDataLoader {
                         new HttpEntity<>(headers),
                         JrgCmsConferenceSiteContentResponse.class)
                 .getBody();
-        Map<String, List<JrgCmsEvent>> eventMap = Objects.requireNonNull(response).getItems().stream()
+        Map<String, List<JrgCmsEvent>> eventProjectEventsMap = Objects.requireNonNull(response).getItems().stream()
                 .map(JrgCmsConferenceSiteContent::getData)
                 .collect(Collectors.groupingBy(
                                 e -> e.getEventProject().getIv(),
@@ -157,27 +161,18 @@ public class JrgCmsDataLoader extends CmsDataLoader {
                                 )
                         )
                 );
-        List<EventType> eventTypes = new ArrayList<>();
+        Map<Conference, JrgCmsEvent> eventProjectEventMap = eventProjectEventsMap.entrySet().stream()
+                .collect(Collectors.toMap(
+                        e -> EVENT_PROJECT_CONFERENCE_MAP.get(e.getKey()),
+                        e -> e.getValue().stream()
+                                .max(new JrgCmsEventComparator())
+                                .orElseThrow()
+                ));
         var id = new AtomicLong(-1);
 
-        for (Conference conference : Conference.values()) {
-            String eventProject = CONFERENCE_EVENT_PROJECT_MAP.get(conference);
-            List<JrgCmsEvent> jrgCmsEvents = eventMap.get(eventProject);
-
-            if ((jrgCmsEvents != null) && !jrgCmsEvents.isEmpty()) {
-                JrgCmsEvent jrgCmsEvent = jrgCmsEvents.stream().max((e1, e2) -> {
-                            String eventVersion1 = e1.getEventVersion().getIv();
-                            String eventVersion2 = e2.getEventVersion().getIv();
-
-                            return eventVersion1.compareTo(eventVersion2);
-                        })
-                        .get();
-
-                eventTypes.add(createEventType(jrgCmsEvent, id, conference));
-            }
-        }
-
-        return eventTypes;
+        return eventProjectEventMap.entrySet().stream()
+                .map(e -> createEventType(e.getValue(), id, e.getKey()))
+                .toList();
     }
 
     /**

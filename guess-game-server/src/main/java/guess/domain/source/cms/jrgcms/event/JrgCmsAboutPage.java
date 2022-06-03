@@ -1,7 +1,5 @@
 package guess.domain.source.cms.jrgcms.event;
 
-import java.util.Map;
-
 public class JrgCmsAboutPage {
     private String main;
 
