@@ -26,6 +26,7 @@ import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -1414,31 +1415,31 @@ class ConferenceDataLoaderExecutorTest {
         }
 
         Speaker resourceSpeaker0 = createSpeaker(false);
-        Supplier<Boolean> resourceSupplier0 = resourceSpeaker0::isJavaChampion;
+        BooleanSupplier resourceSupplier0 = resourceSpeaker0::isJavaChampion;
 
         Speaker targetSpeaker0 = createSpeaker(false);
-        Supplier<Boolean> targetSupplier0 = targetSpeaker0::isJavaChampion;
+        BooleanSupplier targetSupplier0 = targetSpeaker0::isJavaChampion;
         Consumer<Boolean> targetConsumer0 = targetSpeaker0::setJavaChampion;
 
         Speaker resourceSpeaker1 = createSpeaker(true);
-        Supplier<Boolean> resourceSupplier1 = resourceSpeaker1::isJavaChampion;
+        BooleanSupplier resourceSupplier1 = resourceSpeaker1::isJavaChampion;
 
         Speaker targetSpeaker1 = createSpeaker(false);
-        Supplier<Boolean> targetSupplier1 = targetSpeaker1::isJavaChampion;
+        BooleanSupplier targetSupplier1 = targetSpeaker1::isJavaChampion;
         Consumer<Boolean> targetConsumer1 = targetSpeaker1::setJavaChampion;
 
         Speaker resourceSpeaker2 = createSpeaker(false);
-        Supplier<Boolean> resourceSupplier2 = resourceSpeaker2::isJavaChampion;
+        BooleanSupplier resourceSupplier2 = resourceSpeaker2::isJavaChampion;
 
         Speaker targetSpeaker2 = createSpeaker(true);
-        Supplier<Boolean> targetSupplier2 = targetSpeaker2::isJavaChampion;
+        BooleanSupplier targetSupplier2 = targetSpeaker2::isJavaChampion;
         Consumer<Boolean> targetConsumer2 = targetSpeaker2::setJavaChampion;
 
         Speaker resourceSpeaker3 = createSpeaker(true);
-        Supplier<Boolean> resourceSupplier3 = resourceSpeaker3::isJavaChampion;
+        BooleanSupplier resourceSupplier3 = resourceSpeaker3::isJavaChampion;
 
         Speaker targetSpeaker3 = createSpeaker(true);
-        Supplier<Boolean> targetSupplier3 = targetSpeaker3::isJavaChampion;
+        BooleanSupplier targetSupplier3 = targetSpeaker3::isJavaChampion;
         Consumer<Boolean> targetConsumer3 = targetSpeaker3::setJavaChampion;
 
         private Stream<Arguments> data() {
@@ -1452,11 +1453,11 @@ class ConferenceDataLoaderExecutorTest {
 
         @ParameterizedTest
         @MethodSource("data")
-        void fillBooleanAttributeValue(Supplier<Boolean> resourceSupplier, Supplier<Boolean> targetSupplier, Consumer<Boolean> targetConsumer,
+        void fillBooleanAttributeValue(BooleanSupplier resourceSupplier, BooleanSupplier targetSupplier, Consumer<Boolean> targetConsumer,
                                        boolean expected) {
             ConferenceDataLoaderExecutor.fillBooleanAttributeValue(resourceSupplier, targetSupplier, targetConsumer);
 
-            assertEquals(expected, targetSupplier.get());
+            assertEquals(expected, targetSupplier.getAsBoolean());
         }
     }
 

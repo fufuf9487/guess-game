@@ -20,6 +20,7 @@ import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -838,8 +839,8 @@ public class ConferenceDataLoaderExecutor {
      * @param targetSupplier   target supplier
      * @param targetConsumer   target consumer
      */
-    static void fillBooleanAttributeValue(Supplier<Boolean> resourceSupplier, Supplier<Boolean> targetSupplier, Consumer<Boolean> targetConsumer) {
-        if (Boolean.TRUE.equals(resourceSupplier.get()) && !Boolean.TRUE.equals(targetSupplier.get())) {
+    static void fillBooleanAttributeValue(BooleanSupplier resourceSupplier, BooleanSupplier targetSupplier, Consumer<Boolean> targetConsumer) {
+        if (Boolean.TRUE.equals(resourceSupplier.getAsBoolean()) && !Boolean.TRUE.equals(targetSupplier.getAsBoolean())) {
             targetConsumer.accept(true);
         }
     }
