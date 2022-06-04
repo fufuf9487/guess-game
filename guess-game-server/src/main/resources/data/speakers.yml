@@ -463,11 +463,11 @@ speakers:
     javaChampion: true
   - id: 25
     photoFileName: 0025.jpg
-    photoUpdatedAt: 2019-02-27T09:06:06.853Z[UTC]
+    photoUpdatedAt: 2022-03-31T19:04:29Z[UTC]
     name:
       - {language: en, text: "Vladimir Sitnikov"}
       - {language: ru, text: "Владимир Ситников"}
-    companyIds: [357]
+    companyIds: []
     bio:
       - {language: en, text: "Vladimir has been working on performance and scalability of NetCracker platform (a software\
             \ used by telecom operators for automatization of network management processes and network equipment) for ten\
@@ -8089,24 +8089,19 @@ speakers:
             ь и писать код, так и вручную проверять функционал и охотиться за особо заковыристыми багами."}
   - id: 554
     photoFileName: 0554.jpg
-    photoUpdatedAt: 2020-10-09T13:22:56.315Z[UTC]
+    photoUpdatedAt: 2022-05-26T15:31:07Z[UTC]
     name:
       - {language: en, text: "Artem Eroshenko"}
       - {language: ru, text: "Артём Ерошенко"}
-    companyIds: [425]
+    companyIds: []
     bio:
-      - language: en
-        text: "The jack of all trades in the world of testing. In 10 years in the industry he managed to do, it seems, everything:\
-            \ \n-  done test automation;\n-  created the Allure Framework, dozens of plugins and integrations with popular\
-            \ tools (Selenium, HtmlElements, Allure, Jenkins);\n-  launch startup Qameta Software with the Allure TestOps\
-            \ test management platform;\n-  consult with about a hundred testing teams;\n-  to make the concept of TestOps\
-            \ itself a funny one;\n-  give presentations at conferences and dozens of meetups."
-      - language: ru
-        text: "Мастер на все руки из мира тестирования. За 10 лет в индустрии успел сделать, кажется, вообще все: \n-  поз\
-            аниматься автоматизацией тестирования;\n-  создать Allure Framework, десятки плагинов и интеграций с популярны\
-            ми тулами (Selenium, HtmlElements, Allure, Jenkins);\n-  запустить стартап Qameta Software с платформой управл\
-            ения тестированием Allure TestOps;\n-  проконсультировать около сотни команд тестировщиков;\n-  забаззвордить\
-            \ само понятие TestOps;\n-  выступить с докладами на конференциях и десятках митапов."
+      - {language: en, text: "<p>Artem works in web app testing automation for more than 8 years. He has worked in different\
+            \ teams and occupied different positions up to the head of automation testing group. Artem has a vast experience\
+            \ with popular tools (Selenium, HtmlElements, Allure, Jenkins). He codes mostly in Java and Groovy.</p>"}
+      - {language: ru, text: "Более 8 лет занимается автоматизацией тестирования веб-приложений. За это время работал в ра\
+            зных командах и в разных ролях: автоматизатор тестирования, менеджер команды разработки инструментов тестирова\
+            ния, руководитель группы автоматизации тестирования. Артем имеет большой опыт работы с популярными инструмента\
+            ми (Selenium, HtmlElements, Allure, Jenkins). Программирует в основном на Java, Groovy."}
     twitter: eroshenkoam
     gitHub: eroshenkoam
     habr: eroshenkoam
@@ -8894,21 +8889,19 @@ speakers:
             ких стартапах. В данный момент занимает позицию QA-лида в компании Zeptolab."}
   - id: 609
     photoFileName: 0609.jpg
-    photoUpdatedAt: 2021-03-09T15:26:21.040Z[UTC]
+    photoUpdatedAt: 2022-03-31T19:04:54Z[UTC]
     name:
       - {language: en, text: "Dmitry Tuchs"}
       - {language: ru, text: "Дмитрий Тучс"}
-    companyIds: [420]
+    companyIds: [161]
     bio:
       - language: en
-        text: "Dmitry has been working in IT for about 12 years so far. Started in analytics, switched to running projects\
-            \ as a project manager, currently he\nhe is a mentor, develops, and automates on Java. \n\nA lead QA engineer\
-            \ at PropellerAds high-performance core team.\n\nDmitry truly believes that simple tests could be written for\
-            \ complex systems."
+        text: "<p>13 years in IT. Head of QA in Dodo Engineering.</p>\n<p>Background: analytics, project management. Mentor,\
+            \ writes and automates in Java. Believes that \"simple\" tests can be written for as complex systems as you want.</p>"
       - language: ru
-        text: "В IT около 10 лет. Начинал в аналитике, управлял проектами, в настоящее время менторит, пишет и автоматизир\
-            ует на Java.\n\nLead QA в high-performance-ядре AdTech компании PropellerAds.\n\nВерит в то, что «простые» тес\
-            ты могут быть написаны для сколь угодно сложных систем."
+        text: "<p>13 лет в IT. Head of QA в Додо Инжиниринг.</p>\n<p>Бэкграунд: аналитика, управление проектами. Ментор, п\
+            ишет и автоматизирует на Java. Верит в то, что &laquo;простые&raquo; тесты могут быть написаны для сколь угодн\
+            о сложных систем.</p>"
     gitHub: dtuchs
   - id: 610
     photoFileName: 0610.jpg
@@ -9014,18 +9007,20 @@ speakers:
     twitter: i_vino
   - id: 617
     photoFileName: 0617.jpg
+    photoUpdatedAt: 2022-03-31T19:04:29Z[UTC]
     name:
       - {language: en, text: "Nikita Makarov"}
       - {language: ru, text: "Никита Макаров"}
-    companyIds: [653]
+    companyIds: [674]
     bio:
-      - {language: en, text: "Experienced in outsourcing and product companies, was into built-in OS automatization based\
-            \ on Linux, complex VPN-solutions for business, software and hardware complexes. Since January 2012, is a group\
-            \ lead of testing automatization at Odnoklassniki."}
+      - {language: en, text: "Nikita was working in outsourcing and product companies on automation of embedded Linux-based\
+            \ OS, comprehensive VPN solutions for business, software and hardware complexes. From January 2012 to 2019, he\
+            \ worked as a head of testing automation at Odnoklassniki. Currently he leads the test automation team at Tinkoff."}
       - {language: ru, text: "Работал в аутсорсинге и продуктовых компаниях. Занимался автоматизацией встраиваемых операци\
-            онных систем на базе Linux, комплексных VPN-решений для бизнеса, программно-аппаратных комплексов. С января 2012\
-            \ года является руководителем группы автоматизации тестирования в проекте Одноклассники."}
-    twitter: papaminos
+            онных систем на базе Linux, комплексных VPN-решений для бизнеса, программно-аппаратных комплексов. С 2012 по 2019\
+            \ года работал руководителем группы автоматизации тестирования в проекте «Одноклассники». Сейчас руководит авт\
+            оматизацией тестирования в группе компаний «Тинькофф»."}
+    twitter: PapaMinos
     habr: PapaMinos
   - id: 618
     photoFileName: 0618.jpg
@@ -15566,17 +15561,17 @@ speakers:
     gitHub: viclovsky
   - id: 1093
     photoFileName: 1093.jpg
-    photoUpdatedAt: 2020-02-03T12:01:21.771Z[UTC]
+    photoUpdatedAt: 2022-03-31T19:04:41Z[UTC]
     name:
       - {language: en, text: "Ivan Krutov"}
       - {language: ru, text: "Иван Крутов"}
     companyIds: [15]
     bio:
       - {language: en, text: "10+ years of Java and Golang development experience. Workes with distributed and fault-tolerant\
-            \ software testing infrastructure for more than 6 years. Maintains a big Selenium cluster with more than 5000\
+            \ software testing infrastructure for more than 8 years. Maintains a big Selenium cluster with more than 5000\
             \ browsers running in parallel."}
       - {language: ru, text: "Больше 10 лет разрабатывает на Java и Golang. Работает с распределенной отказоустойчивой инф\
-            раструктурой тестирования больше 6 лет. Обеспечивает бесперебойную работу Selenium-кластера из более чем 5000\
+            раструктурой тестирования больше 8 лет. Обеспечивает бесперебойную работу Selenium-кластера из более чем 5000\
             \ параллельно работающих браузеров."}
   - id: 1094
     photoFileName: 1094.jpg
@@ -16969,10 +16964,21 @@ speakers:
     twitter: ignatkn
   - id: 1193
     photoFileName: 1193.jpg
+    photoUpdatedAt: 2022-04-25T14:03:46Z[UTC]
     name:
       - {language: en, text: "Alexander Filatov"}
       - {language: ru, text: "Александр Филатов"}
     companyIds: [242]
+    bio:
+      - language: en
+        text: "Alexander is working for the Excelsior@Huawei team in the Novosibirsk research center. His field of academic\
+            \ research is automatic memory management. At Huawei, he is working on highly optimized concurrency data structures\
+            \ used to implement scalable allocation and synchronization routines in managed runtimes.\n\n(see hydraconf description)"
+      - language: ru
+        text: "<p>Александр работает в команде Excelsior@Huawei Новосибирского исследовательского центра компании Huawei.</p>\n\
+            <p>Как исследователь, он старается внести свой вклад в такую почетную и сложную исследовательскую область как\
+            \ автоматическое управление памятью.</p>\n<p>Как инженер, работает над производительностью многопоточных струк\
+            тур данных, используемых в управляемых средах для синхронизации, выделения памяти, сборки мусора.</p>"
   - id: 1194
     photoFileName: 1194.jpg
     name:
@@ -19002,27 +19008,18 @@ speakers:
             \ новых специалистов в нагрузку."
   - id: 1351
     photoFileName: 1351.jpg
+    photoUpdatedAt: 2022-03-31T19:04:37Z[UTC]
     name:
       - {language: en, text: "Daria Manuhina"}
       - {language: ru, text: "Дарья Манухина"}
-    companyIds: [629]
+    companyIds: [915]
     bio:
-      - {language: en, text: "The first time Daria faced software testing was during her research. In 2010 she became Ph.D.\
-            \ Her research allows for improving tester’s skills every day. After that, she started a career as Sharepoint\
-            \ specialist but continued research at Moscow Bauman State Technical University. One time she decided to change\
-            \ her life, to change mindset and she found out the amazing world of software testing. Here she faced a lot of\
-            \ problems. Daria started the way from an understanding of the objectives, structure, approaches of testing, based\
-            \ on the structural and risk-oriented approach. She's passionate about testing, investigation of new approaches.\
-            \ She tries through continuous improvement of the testing process improve not only the products but also the process\
-            \ of its development. Now she's Product Owner, so testing as early as possible: she's testing ideas!"}
-      - {language: ru, text: "Впервые столкнулась с тестированием в аспирантуре, когда занималась мат. моделированием физи\
-            ческих процессов. Защитив кандидатскую, продолжила исследовательскую работу в МГТУ им. Баумана, а также начала\
-            \ более плотно работать в IТ сфере как Sharepoint-специалист. Позже открыла для себя удивительный мир тестиров\
-            ания. Придя в эту отрасль, столкнулась со множеством проблем. Свой путь Дарья начала с понимания целей, структ\
-            уры, подходов к тестированию, основываясь на структурном и рискоориентированном подходах. Пройдя путь от рядов\
-            ого тестировщика до QA Lead, старается через непрерывное улучшение процесса тестирования улучшать не только ра\
-            зрабатываемый продукт, но и сам процесс его создания. Сейчас работает PO и теперь тестирует как можно раньше:\
-            \ тестирует идеи."}
+      - {language: en, text: "<p>She has been working in IT for about 10 years, more than 7 years in testing, received her\
+            \ degree (Ph.D. in physics) from Bauman Moscow State Technical University. Now works as a CPO at a medtech startup\
+            \ Celsus, where she tests as early as possible: ideas and hypotheses.</p>"}
+      - {language: ru, text: "<p>В ИТ работает около 10 лет, более 7 лет в тестировании, получила ученую степень (кандидат\
+            \ физмат наук) в МГТУ им Н. Э. Баумана. Сейчас работает CPO в медтех стартапе &laquo;Цельс&raquo;, где тестиру\
+            ет как можно раньше: идеи и гипотезы.</p>"}
     twitter: ManukhinaDarya
   - id: 1352
     photoFileName: 1352.jpg
@@ -30325,3 +30322,30 @@ speakers:
       - language: ru
         text: "<p>Развивает инфраструктуру и инструменты для НТ в Ozon.</p>\n<p>Делал инструменты для нагрузочного тестиро\
             вания в Яндексе. Автор публичного сервиса Overload.</p>"
+  - id: 2120
+    photoFileName: 2120.jpg
+    photoUpdatedAt: 2022-05-31T16:30:42Z[UTC]
+    name:
+      - {language: en, text: "Marat Sattarov"}
+      - {language: ru, text: "Марат Саттаров"}
+    companyIds: [674]
+    bio:
+      - {language: en, text: "<p>Backend QA Team Lead of replenishment and accrual projects at Tinkoff. Responsible for quality\
+            \ at every stage of product life. Develops quality assurance and automation processes on projects, and improves\
+            \ the life of the QA team.</p>"}
+      - {language: ru, text: "<p>Backend QA Team Lead проектов пополнений и начислений в Тинькофф. Отвечает за качество на\
+            \ каждом этапе жизни продукта. Развивает процессы обеспечения качества и автоматизацию на проектах, а также за\
+            нимается улучшением жизни QA-команды.</p>"}
+  - id: 2121
+    photoFileName: 2121.jpg
+    photoUpdatedAt: 2022-05-31T16:30:17Z[UTC]
+    name:
+      - {language: en, text: "Denis Sibirtsev"}
+      - {language: ru, text: "Денис Сибирцев"}
+    companyIds: [674]
+    bio:
+      - {language: en, text: "<p>Test leader on Tinkoff self-service network development project (ATMs). Develops testing\
+            \ at the intersection of software and hardware, introduces shift-left testing and gets rid of anti-patterns.</p>"}
+      - {language: ru, text: "<p>Лид тестирования на проекте разработки сети самообслуживания в Тинькофф (банкоматы). Разв\
+            ивает тестирование на стыке ПО и железа, внедряет shift-left testing и избавляет от антипаттернов.</p>"}
+    habr: DenisSibra

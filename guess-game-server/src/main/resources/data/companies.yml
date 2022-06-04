@@ -3343,3 +3343,8 @@ companies:
     name:
       - {language: en, text: TravelX}
     siteLink: https://travelx.ai
+  - id: 915
+    name:
+      - {language: en, text: Celsus.ai}
+      - {language: ru, text: Цельс}
+    siteLink: https://celsus.ai
