@@ -439,8 +439,8 @@ events:
     startDate: "2019-12-05"
     endDate: "2019-12-06"
     siteLink:
-      - {language: en, text: "https://heisenbug-moscow.ru/en/"}
-      - {language: ru, text: "https://heisenbug-moscow.ru/"}
+      - {language: en, text: "https://2019.heisenbug-moscow.ru/en/"}
+      - {language: ru, text: "https://2019.heisenbug-moscow.ru/"}
     youtubeLink: https://www.youtube.com/playlist?list=PLsVTVVvrKX9tyVb79MeUZAox5OTInS1wE
     placeId: 9
     talkIds: [199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220,
@@ -452,8 +452,8 @@ events:
     startDate: "2020-06-15"
     endDate: "2020-06-18"
     siteLink:
-      - {language: en, text: "https://heisenbug-piter.ru/en/"}
-      - {language: ru, text: "https://heisenbug-piter.ru/"}
+      - {language: en, text: "https://2020.heisenbug-piter.ru/en/"}
+      - {language: ru, text: "https://2020.heisenbug-piter.ru"}
     youtubeLink: https://www.youtube.com/playlist?list=PLsVTVVvrKX9tzwh6Y1-D1-_Bg1PTjOvsQ
     placeId: 24
     talkIds: [1379, 1382, 1383, 1385, 2423, 2449, 2424, 2432, 2450, 1381, 2223, 1384, 1392, 1754, 1840, 1399, 1841, 2451,
@@ -466,7 +466,8 @@ events:
     startDate: "2020-11-04"
     endDate: "2020-11-07"
     siteLink:
-      - {language: ru, text: "https://heisenbug-moscow.ru/"}
+      - {language: en, text: "https://2020.heisenbug-moscow.ru/en/"}
+      - {language: ru, text: "https://2020.heisenbug-moscow.ru/"}
     youtubeLink: https://www.youtube.com/playlist?list=PLsVTVVvrKX9tBV0_LSkAoSZge3C8qb0ec
     placeId: 24
     talkIds: [2595, 2575, 2615, 2616, 2618, 2619, 2620, 2579, 2609, 2610, 2607, 2581, 2617, 2583, 2621, 2622, 2608, 2588,
@@ -498,6 +499,15 @@ events:
     talkIds: [3167, 3168, 3169, 3216, 3170, 3217, 3171, 3172, 3173, 3174, 3175, 3218, 3176, 3177, 3178, 3179, 3180, 3181,
               3182, 3183, 3184, 3185, 3186, 3187, 3188, 3189, 3190, 3191, 3192, 3193, 3194, 3195, 3196, 3197, 3198, 3199, 3200,
               3201, 3202, 3203, 3204, 3205, 3206, 3211, 3207, 3208, 3209, 3210, 3219, 3212, 3213, 3214, 3215, 3221]
+  - eventTypeId: 3
+    name:
+      - {language: en, text: "Heisenbug 2022 Spring (Online)"}
+    startDate: "2022-05-30"
+    endDate: "2022-06-01"
+    siteLink: []
+    placeId: 24
+    talkIds: [3710, 3711, 3712, 3713, 3714, 3715, 3716, 3717, 3718, 3719, 3720, 3721, 3722, 3723, 3724, 3725, 3726, 3727,
+              3728, 3729, 3730, 3731, 3732, 3733, 3734, 3735, 3736, 3737, 3738, 3739, 3740]
   # HolyJS
   - eventTypeId: 4
     name:

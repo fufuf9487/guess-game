@@ -61,6 +61,10 @@ companySynonyms:
     synonyms: [
         "Chronicle Software Ltd"
     ]
+  - name: "Cisco Systems"
+    synonyms: [
+        Cisco
+    ]
   - name: Computas
     synonyms: [
         Сomputas,
@@ -193,6 +197,11 @@ companySynonyms:
         "SKB Contur",
         "СКБ Контур"
     ]
+  - name: KURS
+    synonyms: [
+      KURS-IT,
+      КУРС-ИТ
+    ]
   - name: LightSource
     synonyms: [
         Lightsource.ai
@@ -220,6 +229,13 @@ companySynonyms:
   - name: "Kt. Academy"
     synonyms: [
         Kt.Academy
+    ]
+  - name: Lanit
+    synonyms: [
+        Lanit-Tercom,
+        Ланит-Терком,
+        "LANIT Expertise",
+        "ЛАНИТ Экспертиза"
     ]
   - name: "Last Week in AWS"
     synonyms: [
@@ -286,6 +302,10 @@ companySynonyms:
   - name: "Performance Lab"
     synonyms: [
         performance-lab.ru
+    ]
+  - name: PVS-Studio
+    synonyms: [
+      "PVS-Studio LLC"
     ]
   - name: SouJava
     synonyms: [
@@ -467,7 +487,9 @@ companySynonyms:
         "Kinopoisk (Yandex)",
         "Кинопоиск (Яндекс)",
         Zen,
-        Дзен
+        Дзен,
+        Kinopoisk,
+        Кинопоиск
     ]
   - name: "ZeptoLab LLC"
     synonyms: [

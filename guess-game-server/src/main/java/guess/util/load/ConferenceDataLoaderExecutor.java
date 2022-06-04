@@ -2201,7 +2201,10 @@ public class ConferenceDataLoaderExecutor {
 //                LoadSettings.eventTemplateAndInvalidTalksSet(
 //                        createEventTemplate("Mobius 2022 Spring (Offline)", null, 4),
 //                        Set.of("Открытие офлайн-части конференции Mobius 2022 Spring", "Закрытие конференции Mobius 2022 Spring")));
-//        loadTalksSpeakersEvent(Conference.HEISENBUG, LocalDate.of(2022, 5, 30), "2022 Spring");
+        loadTalksSpeakersEvent(Conference.HEISENBUG, LocalDate.of(2022, 5, 30), "2022 Spring",
+                LoadSettings.eventTemplateAndInvalidTalksSet(
+                        createEventTemplate("Heisenbug 2022 Spring (Online)", null, 24),
+                        Set.of("Heisenbug: что было и что будет", "Подведем итоги онлайн-части Heisenbug 2022 Spring")));
 //        loadTalksSpeakersEvent(Conference.HEISENBUG, LocalDate.of(2022, 6, 21), "2022 Spring");
 //        loadTalksSpeakersEvent(Conference.HYDRA, LocalDate.of(2022, 6, 2), "2022");
 //        loadTalksSpeakersEvent(Conference.HYDRA, LocalDate.of(2022, 6, 26), "2022");

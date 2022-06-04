@@ -2306,7 +2306,7 @@ companies:
     name:
       - {language: en, text: KURS}
       - {language: ru, text: КУРС}
-    siteLink: https://corchestra.ru
+    siteLink: http://www.curs.ru
   - id: 635
     name:
       - {language: en, text: "Kaspersky Lab"}
@@ -2314,9 +2314,9 @@ companies:
     siteLink: https://www.kaspersky.com
   - id: 636
     name:
-      - {language: en, text: Lanit-Tercom}
-      - {language: ru, text: Ланит-Терком}
-    siteLink: https://www.lanit-tercom.ru
+      - {language: en, text: Lanit}
+      - {language: ru, text: ЛАНИТ}
+    siteLink: https://www.lanit.ru
   - id: 638
     name:
       - {language: en, text: Liptsoft}
@@ -3323,3 +3323,23 @@ companies:
     name:
       - {language: en, text: InDriver}
     siteLink: https://indriver.com
+  - id: 910
+    name:
+      - {language: en, text: RSTQB}
+    siteLink: https://www.rstqb.org
+  - id: 911
+    name:
+      - {language: en, text: "X5 Group"}
+    siteLink: https://www.x5.ru
+  - id: 912
+    name:
+      - {language: en, text: Wallarm}
+    siteLink: https://www.wallarm.com
+  - id: 913
+    name:
+      - {language: en, text: JettyCloud}
+    siteLink: https://www.jettycloud.com
+  - id: 914
+    name:
+      - {language: en, text: TravelX}
+    siteLink: https://travelx.ai
