@@ -789,7 +789,7 @@ public class ConferenceDataLoaderExecutor {
                 fillStringAttributeValue(resourceSpeaker::getTwitter, speaker::getTwitter, speaker::setTwitter);
                 fillStringAttributeValue(resourceSpeaker::getGitHub, speaker::getGitHub, speaker::setGitHub);
                 fillStringAttributeValue(resourceSpeaker::getHabr, speaker::getHabr, speaker::setHabr);
-                fillBooleanAttributeValue(resourceSpeaker::isJavaChampion, speaker::isJavaChampion, resourceSpeaker::setJavaChampion);
+                fillBooleanAttributeValue(resourceSpeaker::isJavaChampion, speaker::isJavaChampion, speaker::setJavaChampion);
                 fillSpeakerMvp(speaker, resourceSpeaker);
 
                 // Update speaker photo
