@@ -88,6 +88,16 @@ public class JrgCmsDataLoader extends CmsDataLoader {
         return restTemplate;
     }
 
+    String getTokenFromCache() {
+        //TODO: implement
+        return null;
+    }
+    
+    String getToken() {
+        //TODO: implement
+        return null;
+    }
+
     @Override
     public Map<String, List<String>> getTags(String conferenceCodePrefix) {
         // https://squidex.jugru.team/api/content/sites/conf-site-content?$filter=startswith(data/eventVersion/iv, '{conferenceCode}')&$orderby=data/eventProject/iv
