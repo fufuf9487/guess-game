@@ -4,6 +4,7 @@ import guess.domain.Conference;
 import guess.domain.Language;
 import guess.domain.source.*;
 import guess.domain.source.cms.jrgcms.JrgCmsPhoto;
+import guess.domain.source.cms.jrgcms.JrgCmsTokenResponse;
 import guess.domain.source.cms.jrgcms.event.JrgCmsConferenceSiteContent;
 import guess.domain.source.cms.jrgcms.event.JrgCmsConferenceSiteContentResponse;
 import guess.domain.source.cms.jrgcms.event.JrgCmsEvent;
@@ -18,14 +19,20 @@ import guess.domain.source.cms.jrgcms.talk.JrgTalkPresentation;
 import guess.domain.source.cms.jrgcms.talk.schedule.*;
 import guess.domain.source.image.UrlDates;
 import guess.util.LocalizationUtils;
+import guess.util.yaml.YamlUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
@@ -60,6 +67,9 @@ public class JrgCmsDataLoader extends CmsDataLoader {
 
     private static final RestTemplate restTemplate;
 
+    private static final String optionsDirectoryName = String.format("%s/%s", System.getProperty("user.home"), ".guess-game");
+    private static final String TOKEN_FILENAME = "token.yml";
+
     private Long eventId;
 
     static {
@@ -88,11 +98,43 @@ public class JrgCmsDataLoader extends CmsDataLoader {
         return restTemplate;
     }
 
-    String getTokenFromCache() {
-        //TODO: implement
-        return null;
+    static String getOptionsDirectoryName() {
+        return optionsDirectoryName;
     }
-    
+
+    /**
+     * Stores token in cache.
+     *
+     * @param jrgCmsTokenResponse token response
+     * @throws IOException          if saving error occurs
+     * @throws NoSuchFieldException if field name is invalid
+     */
+    static void storeTokenInCache(JrgCmsTokenResponse jrgCmsTokenResponse) throws IOException, NoSuchFieldException {
+        YamlUtils.save(jrgCmsTokenResponse, getOptionsDirectoryName(), TOKEN_FILENAME);
+    }
+
+    /**
+     * Gets token from cache.
+     *
+     * @return token
+     * @throws IOException if resource files could not be opened
+     */
+    static String getTokenFromCache() throws IOException {
+        var resolver = new PathMatchingResourcePatternResolver();
+        var tokenResponseResource = resolver.getResource(String.format("file:%s/%s", getOptionsDirectoryName(), TOKEN_FILENAME));
+        var tokenResponseYaml = new Yaml(new Constructor(JrgCmsTokenResponse.class));
+
+        try {
+            var jrgCmsTokenResponse = (JrgCmsTokenResponse) tokenResponseYaml.load(tokenResponseResource.getInputStream());
+
+            return Objects.requireNonNull(jrgCmsTokenResponse, "Token response is empty").getAccessToken();
+        } catch (FileNotFoundException e) {
+            log.warn("Token response file {} not found", TOKEN_FILENAME);
+
+            return null;
+        }
+    }
+
     String getToken() {
         //TODO: implement
         return null;

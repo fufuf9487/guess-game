@@ -29,7 +29,7 @@ public class YamlUtils {
     private static final Logger log = LoggerFactory.getLogger(YamlUtils.class);
 
     private static final String DATA_DIRECTORY_NAME = "data";
-    static final String OUTPUT_DIRECTORY_NAME = "output";
+    public static final String OUTPUT_DIRECTORY_NAME = "output";
 
     private YamlUtils() {
     }
@@ -361,15 +361,16 @@ public class YamlUtils {
     }
 
     /**
-     * Saves items to file.
+     * Saves entity to file.
      *
-     * @param items    items
-     * @param filename filename
-     * @throws IOException          if deletion error occurs
+     * @param entity        entity
+     * @param directoryName directory name
+     * @param filename      filename
+     * @throws IOException          if saving error occurs
      * @throws NoSuchFieldException if field name is invalid
      */
-    public static <T> void save(T items, String filename) throws IOException, NoSuchFieldException {
-        var file = new File(String.format("%s/%s", OUTPUT_DIRECTORY_NAME, filename));
+    public static <T> void save(T entity, String directoryName, String filename) throws IOException, NoSuchFieldException {
+        var file = new File(String.format("%s/%s", directoryName, filename));
         FileUtils.checkAndCreateDirectory(file.getParentFile());
 
         try (var writer = new FileWriter(file)) {
@@ -401,15 +402,27 @@ public class YamlUtils {
                             List.of("language", "text"))
             );
             var representer = new CustomRepresenter(propertyMatchers);
-            representer.addClassTag(items.getClass(), Tag.MAP);
+            representer.addClassTag(entity.getClass(), Tag.MAP);
 
-            var eventTypesYaml = new CustomYaml(
-                    new Constructor(items.getClass()),
+            var itemsYaml = new CustomYaml(
+                    new Constructor(entity.getClass()),
                     representer,
                     options);
-            eventTypesYaml.dump(items, writer);
+            itemsYaml.dump(entity, writer);
         }
 
         log.info("File '{}' saved", file.getAbsolutePath());
+    }
+
+    /**
+     * Saves entity to file.
+     *
+     * @param entity   entity
+     * @param filename filename
+     * @throws IOException          if saving error occurs
+     * @throws NoSuchFieldException if field name is invalid
+     */
+    public static <T> void save(T entity, String filename) throws IOException, NoSuchFieldException {
+        save(entity, OUTPUT_DIRECTORY_NAME, filename);
     }
 }

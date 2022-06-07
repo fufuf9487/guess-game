@@ -4,16 +4,15 @@ import guess.domain.Language;
 import guess.domain.source.LocaleItem;
 import guess.domain.source.cms.jrgcms.JrgCmsLinks;
 import guess.domain.source.cms.jrgcms.JrgCmsPhoto;
+import guess.domain.source.cms.jrgcms.JrgCmsTokenResponse;
 import guess.domain.source.cms.jrgcms.speaker.JrgCmsSpeaker;
 import guess.domain.source.cms.jrgcms.speaker.JrgContact;
 import guess.domain.source.cms.jrgcms.talk.JrgTalkPresentation;
 import guess.domain.source.cms.jrgcms.talk.JrgTalkPresentationFile;
 import guess.domain.source.image.UrlDates;
 import guess.util.LocalizationUtils;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import guess.util.yaml.YamlUtils;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -22,6 +21,7 @@ import org.mockito.Mockito;
 import org.mockito.internal.verification.VerificationModeFactory;
 import org.mockito.stubbing.Answer;
 
+import java.io.IOException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Collections;
@@ -31,12 +31,48 @@ import java.util.Map;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 @DisplayName("JrgCmsDataLoader class tests")
 class JrgCmsDataLoaderTest {
+    @BeforeEach
+    void setUp() throws IOException {
+        YamlUtils.clearOutputDirectory();
+    }
+
+    @AfterEach
+    void tearDown() throws IOException {
+        YamlUtils.clearOutputDirectory();
+    }
+
+    @Test
+    void getTokenFromCacheAndStoreTokenInCache() throws IOException {
+        try (MockedStatic<JrgCmsDataLoader> mockedStatic = Mockito.mockStatic(JrgCmsDataLoader.class)) {
+            mockedStatic.when(JrgCmsDataLoader::getOptionsDirectoryName)
+                    .thenReturn(YamlUtils.OUTPUT_DIRECTORY_NAME);
+            mockedStatic.when(() -> JrgCmsDataLoader.storeTokenInCache(Mockito.any(JrgCmsTokenResponse.class)))
+                    .thenCallRealMethod();
+            mockedStatic.when(JrgCmsDataLoader::getTokenFromCache)
+                    .thenCallRealMethod();
+
+            final String ACCESS_TOKEN = "ACCESS_TOKEN";
+
+            String token = JrgCmsDataLoader.getTokenFromCache();
+
+            assertNull(token);
+
+            JrgCmsTokenResponse jrgCmsTokenResponse = new JrgCmsTokenResponse();
+            jrgCmsTokenResponse.setAccessToken(ACCESS_TOKEN);
+            jrgCmsTokenResponse.setTokenType("Bearer");
+            jrgCmsTokenResponse.setExpiresIn(2591999L);
+            jrgCmsTokenResponse.setScope("squidex-api");
+
+            assertDoesNotThrow(() -> JrgCmsDataLoader.storeTokenInCache(jrgCmsTokenResponse));
+            assertEquals(ACCESS_TOKEN, JrgCmsDataLoader.getTokenFromCache());
+        }
+    }
+
     @Test
     void getImageWidthParameterName() {
         assertEquals("width", new JrgCmsDataLoader().getImageWidthParameterName());

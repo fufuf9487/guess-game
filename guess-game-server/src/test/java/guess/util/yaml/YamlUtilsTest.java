@@ -497,6 +497,7 @@ class YamlUtilsTest {
 
     @Test
     void save() {
-        assertDoesNotThrow(() -> YamlUtils.save(new EventTypeList(Collections.emptyList()), "event-types.yml"));
+        assertDoesNotThrow(() -> YamlUtils.save(new EventTypeList(Collections.emptyList()), YamlUtils.OUTPUT_DIRECTORY_NAME, "event-types.yml"));
+        assertDoesNotThrow(() -> YamlUtils.save(new EventTypeList(Collections.emptyList()), "events.yml"));
     }
 }
