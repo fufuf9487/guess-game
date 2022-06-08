@@ -26,6 +26,10 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.yaml.snakeyaml.Yaml;
@@ -36,6 +40,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
@@ -48,12 +53,20 @@ public class JrgCmsDataLoader extends CmsDataLoader {
     private record ScheduleInfo(List<JrgCmsDay> sortedDays, Set<LocalDate> startDateSet) {
     }
 
+    private static final String REQUEST_TOKEN_URL = "https://squidex.jugru.team/identity-server/connect/token";
     private static final String CONFERENCE_SITE_CONTENT_URL = "https://squidex.jugru.team/api/content/sites/conf-site-content";
     private static final String TALKS_BASE_URL = "https://speakers.jugru.org/api/v1/public/events/{eventId}/activities";
     private static final String SCHEDULE_BASE_URL = "https://core.jugru.team/api/v1/public/events/{eventId}/schedule";
 
+    private static final String GRANT_TYPE_PARAM_NAME = "grant_type";
+    private static final String GRANT_TYPE_PARAM_VALUE = "client_credentials";
+    private static final String CLIENT_ID_PARAM_NAME = "client_id";
+    private static final String CLIENT_SECRET_PARAM_NAME = "client_secret";
+    private static final String SCOPE_PARAM_NAME = "scope";
+    private static final String SCOPE_PARAM_VALUE = "squidex-api";
     private static final String FILTER_PARAM_NAME = "$filter";
     private static final String ORDERBY_PARAM_NAME = "$orderby";
+
     private static final String SPEAKER_ROLE = "SPEAKER";
     private static final String JAVA_CHAMPION_TITULUS = "Java Champion";
     private static final String TWITTER_CONTACT_TYPE = "twitter";
@@ -67,7 +80,7 @@ public class JrgCmsDataLoader extends CmsDataLoader {
 
     private static final RestTemplate restTemplate;
 
-    private static final String optionsDirectoryName = String.format("%s/%s", System.getProperty("user.home"), ".guess-game");
+    private static final String OPTIONS_DIRECTORY_NAME = String.format("%s/%s", System.getProperty("user.home"), ".guess-game");
     private static final String TOKEN_FILENAME = "token.yml";
 
     private Long eventId;
@@ -99,7 +112,7 @@ public class JrgCmsDataLoader extends CmsDataLoader {
     }
 
     static String getOptionsDirectoryName() {
-        return optionsDirectoryName;
+        return OPTIONS_DIRECTORY_NAME;
     }
 
     /**
@@ -114,20 +127,18 @@ public class JrgCmsDataLoader extends CmsDataLoader {
     }
 
     /**
-     * Gets token from cache.
+     * Gets token response from cache.
      *
-     * @return token
+     * @return token response
      * @throws IOException if resource files could not be opened
      */
-    static String getTokenFromCache() throws IOException {
+    static JrgCmsTokenResponse getTokenFromCache() throws IOException {
         var resolver = new PathMatchingResourcePatternResolver();
         var tokenResponseResource = resolver.getResource(String.format("file:%s/%s", getOptionsDirectoryName(), TOKEN_FILENAME));
         var tokenResponseYaml = new Yaml(new Constructor(JrgCmsTokenResponse.class));
 
         try {
-            var jrgCmsTokenResponse = (JrgCmsTokenResponse) tokenResponseYaml.load(tokenResponseResource.getInputStream());
-
-            return Objects.requireNonNull(jrgCmsTokenResponse, "Token response is empty").getAccessToken();
+            return tokenResponseYaml.load(tokenResponseResource.getInputStream());
         } catch (FileNotFoundException e) {
             log.warn("Token response file {} not found", TOKEN_FILENAME);
 
@@ -135,96 +146,171 @@ public class JrgCmsDataLoader extends CmsDataLoader {
         }
     }
 
-    String getToken() {
-        //TODO: implement
-        return null;
-    }
+    /**
+     * Gets token.
+     *
+     * @return token response
+     */
+    static JrgCmsTokenResponse getToken() {
+        String clientId = System.getProperty("clientId");
+        String clientSecret = System.getProperty("clientSecret");
 
-    @Override
-    public Map<String, List<String>> getTags(String conferenceCodePrefix) {
-        // https://squidex.jugru.team/api/content/sites/conf-site-content?$filter=startswith(data/eventVersion/iv, '{conferenceCode}')&$orderby=data/eventProject/iv
+        if ((clientId == null) || (clientSecret == null)) {
+            throw new IllegalArgumentException(String.format(
+                    "Client identifier and/or secret is/are null (clientId: %s, clientSecret: %s)",
+                    clientId, clientSecret));
+        }
+
+        // https://squidex.jugru.team/identity-server/connect/token
         var builder = UriComponentsBuilder
-                .fromUriString(CONFERENCE_SITE_CONTENT_URL)
-                .queryParam(FILTER_PARAM_NAME, String.format("startswith(data/eventVersion/iv, '%s')", conferenceCodePrefix))
-                .queryParam(ORDERBY_PARAM_NAME, "data/eventProject/iv");
+                .fromUriString(REQUEST_TOKEN_URL);
         var uri = builder
                 .build()
                 .encode()
                 .toUri();
 
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add(GRANT_TYPE_PARAM_NAME, GRANT_TYPE_PARAM_VALUE);
+        body.add(CLIENT_ID_PARAM_NAME, clientId);
+        body.add(CLIENT_SECRET_PARAM_NAME, clientSecret);
+        body.add(SCOPE_PARAM_NAME, SCOPE_PARAM_VALUE);
+
         HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(System.getProperty("token")); //TODO: change
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-        JrgCmsConferenceSiteContentResponse response = getRestTemplate().exchange(
+        return getRestTemplate().exchange(
                         uri,
-                        HttpMethod.GET,
-                        new HttpEntity<>(headers),
-                        JrgCmsConferenceSiteContentResponse.class)
+                        HttpMethod.POST,
+                        new HttpEntity<>(body, headers),
+                        JrgCmsTokenResponse.class)
                 .getBody();
-        Map<String, List<String>> tags = Objects.requireNonNull(response).getItems().stream()
-                .map(JrgCmsConferenceSiteContent::getData)
-                .collect(Collectors.groupingBy(
-                                e -> e.getEventProject().getIv(),
-                                Collectors.mapping(
-                                        e -> e.getEventVersion().getIv(),
-                                        Collectors.toList()
-                                )
-                        )
-                );
+    }
 
-        return tags.entrySet().stream()
-                .sorted(Map.Entry.comparingByKey())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
-                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+    /**
+     * Makes request.
+     *
+     * @param requestFunction request function
+     * @param <T>             result type
+     * @return request result
+     * @throws IOException          if resource files could not be opened or if saving error occurs
+     * @throws NoSuchFieldException if field name is invalid
+     */
+    static <T> T makeRequest(Function<String, T> requestFunction) throws IOException, NoSuchFieldException {
+        JrgCmsTokenResponse tokenResponse = getTokenFromCache();
+
+        if ((tokenResponse == null) || (tokenResponse.getAccessToken() == null)) {
+            tokenResponse = getToken();
+
+            storeTokenInCache(tokenResponse);
+        }
+
+        try {
+            return requestFunction.apply(tokenResponse.getAccessToken());
+        } catch (HttpClientErrorException.Unauthorized e) {
+            // Request the token again
+            tokenResponse = getToken();
+
+            storeTokenInCache(tokenResponse);
+
+            // Try the request again
+            try {
+                return requestFunction.apply(tokenResponse.getAccessToken());
+            } catch (HttpClientErrorException.Unauthorized e2) {
+                log.error("You can still have a 401 here, but this very likely not an expired token then");
+                throw e2;
+            }
+        }
     }
 
     @Override
-    public List<EventType> getEventTypes() {
-        // https://squidex.jugru.team/api/content/sites/conf-site-content?$filter=data/eventProject/iv in ('MOBIUS', 'CPP')&$orderby=data/eventProject/iv
-        var eventVersions = CONFERENCE_EVENT_PROJECT_MAP.values().stream()
-                .filter(Objects::nonNull)
-                .map(s -> "'" + s + "'")
-                .collect(Collectors.joining(","));
-        var builder = UriComponentsBuilder
-                .fromUriString(CONFERENCE_SITE_CONTENT_URL)
-                .queryParam(FILTER_PARAM_NAME, String.format("data/eventProject/iv in (%s)", eventVersions))
-                .queryParam(ORDERBY_PARAM_NAME, "data/eventProject/iv");
-        var uri = builder
-                .build()
-                .encode()
-                .toUri();
+    public Map<String, List<String>> getTags(String conferenceCodePrefix) throws IOException, NoSuchFieldException {
+        return makeRequest((Function<String, Map<String, List<String>>>) token -> {
+            // https://squidex.jugru.team/api/content/sites/conf-site-content?$filter=startswith(data/eventVersion/iv, '{conferenceCode}')&$orderby=data/eventProject/iv
+            var builder = UriComponentsBuilder
+                    .fromUriString(CONFERENCE_SITE_CONTENT_URL)
+                    .queryParam(FILTER_PARAM_NAME, String.format("startswith(data/eventVersion/iv, '%s')", conferenceCodePrefix))
+                    .queryParam(ORDERBY_PARAM_NAME, "data/eventProject/iv");
+            var uri = builder
+                    .build()
+                    .encode()
+                    .toUri();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(System.getProperty("token")); //TODO: change
+            HttpHeaders headers = new HttpHeaders();
+            headers.setBearerAuth(token);
 
-        JrgCmsConferenceSiteContentResponse response = getRestTemplate().exchange(
-                        uri,
-                        HttpMethod.GET,
-                        new HttpEntity<>(headers),
-                        JrgCmsConferenceSiteContentResponse.class)
-                .getBody();
-        Map<String, List<JrgCmsEvent>> eventProjectEventsMap = Objects.requireNonNull(response).getItems().stream()
-                .map(JrgCmsConferenceSiteContent::getData)
-                .collect(Collectors.groupingBy(
-                                e -> e.getEventProject().getIv(),
-                                Collectors.mapping(
-                                        e -> e,
-                                        Collectors.toList()
-                                )
-                        )
-                );
-        Map<Conference, JrgCmsEvent> eventProjectEventMap = eventProjectEventsMap.entrySet().stream()
-                .collect(Collectors.toMap(
-                        e -> EVENT_PROJECT_CONFERENCE_MAP.get(e.getKey()),
-                        e -> e.getValue().stream()
-                                .max(new JrgCmsEventComparator())
-                                .orElseThrow()
-                ));
-        var id = new AtomicLong(-1);
+            JrgCmsConferenceSiteContentResponse response = getRestTemplate().exchange(
+                            uri,
+                            HttpMethod.GET,
+                            new HttpEntity<>(headers),
+                            JrgCmsConferenceSiteContentResponse.class)
+                    .getBody();
+            Map<String, List<String>> tags = Objects.requireNonNull(response).getItems().stream()
+                    .map(JrgCmsConferenceSiteContent::getData)
+                    .collect(Collectors.groupingBy(
+                                    e -> e.getEventProject().getIv(),
+                                    Collectors.mapping(
+                                            e -> e.getEventVersion().getIv(),
+                                            Collectors.toList()
+                                    )
+                            )
+                    );
 
-        return eventProjectEventMap.entrySet().stream()
-                .map(e -> createEventType(e.getValue(), id, e.getKey()))
-                .toList();
+            return tags.entrySet().stream()
+                    .sorted(Map.Entry.comparingByKey())
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                            (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+        });
+    }
+
+    @Override
+    public List<EventType> getEventTypes() throws IOException, NoSuchFieldException {
+        return makeRequest(token -> {
+            // https://squidex.jugru.team/api/content/sites/conf-site-content?$filter=data/eventProject/iv in ('MOBIUS', 'CPP')&$orderby=data/eventProject/iv
+            var eventVersions = CONFERENCE_EVENT_PROJECT_MAP.values().stream()
+                    .filter(Objects::nonNull)
+                    .map(s -> "'" + s + "'")
+                    .collect(Collectors.joining(","));
+            var builder = UriComponentsBuilder
+                    .fromUriString(CONFERENCE_SITE_CONTENT_URL)
+                    .queryParam(FILTER_PARAM_NAME, String.format("data/eventProject/iv in (%s)", eventVersions))
+                    .queryParam(ORDERBY_PARAM_NAME, "data/eventProject/iv");
+            var uri = builder
+                    .build()
+                    .encode()
+                    .toUri();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setBearerAuth(token);
+
+            JrgCmsConferenceSiteContentResponse response = getRestTemplate().exchange(
+                            uri,
+                            HttpMethod.GET,
+                            new HttpEntity<>(headers),
+                            JrgCmsConferenceSiteContentResponse.class)
+                    .getBody();
+            Map<String, List<JrgCmsEvent>> eventProjectEventsMap = Objects.requireNonNull(response).getItems().stream()
+                    .map(JrgCmsConferenceSiteContent::getData)
+                    .collect(Collectors.groupingBy(
+                                    e -> e.getEventProject().getIv(),
+                                    Collectors.mapping(
+                                            e -> e,
+                                            Collectors.toList()
+                                    )
+                            )
+                    );
+            Map<Conference, JrgCmsEvent> eventProjectEventMap = eventProjectEventsMap.entrySet().stream()
+                    .collect(Collectors.toMap(
+                            e -> EVENT_PROJECT_CONFERENCE_MAP.get(e.getKey()),
+                            e -> e.getValue().stream()
+                                    .max(new JrgCmsEventComparator())
+                                    .orElseThrow()
+                    ));
+            var id = new AtomicLong(-1);
+
+            return eventProjectEventMap.entrySet().stream()
+                    .map(e -> createEventType(e.getValue(), id, e.getKey()))
+                    .toList();
+        });
     }
 
     /**
@@ -266,7 +352,7 @@ public class JrgCmsDataLoader extends CmsDataLoader {
     }
 
     @Override
-    public Event getEvent(Conference conference, LocalDate startDate, String conferenceCode, Event eventTemplate) {
+    public Event getEvent(Conference conference, LocalDate startDate, String conferenceCode, Event eventTemplate) throws IOException, NoSuchFieldException {
         eventId = getEventId(conference, conferenceCode);
         LocalDate endDate = getEventEndDate(eventId, startDate);
 
@@ -295,7 +381,7 @@ public class JrgCmsDataLoader extends CmsDataLoader {
     }
 
     @Override
-    public List<Talk> getTalks(Conference conference, LocalDate startDate, String conferenceCode, boolean ignoreDemoStage) {
+    public List<Talk> getTalks(Conference conference, LocalDate startDate, String conferenceCode, boolean ignoreDemoStage) throws IOException, NoSuchFieldException {
         if (eventId == null) {
             eventId = getEventId(conference, conferenceCode);
         }
@@ -312,39 +398,41 @@ public class JrgCmsDataLoader extends CmsDataLoader {
      * @param conferenceCode conference code
      * @return event identifier
      */
-    long getEventId(Conference conference, String conferenceCode) {
-        // https://squidex.jugru.team/api/content/sites/conf-site-content?$filter=data/eventProject/iv eq '{eventProject}' and data/eventVersion/iv eq '{eventVersion}'
-        String eventProject = CONFERENCE_EVENT_PROJECT_MAP.get(conference);
-        var builder = UriComponentsBuilder
-                .fromUriString(CONFERENCE_SITE_CONTENT_URL)
-                .queryParam(FILTER_PARAM_NAME, String.format("data/eventProject/iv eq '%s' and data/eventVersion/iv eq '%s'", eventProject, conferenceCode));
-        var uri = builder
-                .build()
-                .encode()
-                .toUri();
+    long getEventId(Conference conference, String conferenceCode) throws IOException, NoSuchFieldException {
+        return makeRequest(token -> {
+            // https://squidex.jugru.team/api/content/sites/conf-site-content?$filter=data/eventProject/iv eq '{eventProject}' and data/eventVersion/iv eq '{eventVersion}'
+            String eventProject = CONFERENCE_EVENT_PROJECT_MAP.get(conference);
+            var builder = UriComponentsBuilder
+                    .fromUriString(CONFERENCE_SITE_CONTENT_URL)
+                    .queryParam(FILTER_PARAM_NAME, String.format("data/eventProject/iv eq '%s' and data/eventVersion/iv eq '%s'", eventProject, conferenceCode));
+            var uri = builder
+                    .build()
+                    .encode()
+                    .toUri();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(System.getProperty("token")); //TODO: change
+            HttpHeaders headers = new HttpHeaders();
+            headers.setBearerAuth(token);
 
-        JrgCmsConferenceSiteContentResponse response = getRestTemplate().exchange(
-                        uri,
-                        HttpMethod.GET,
-                        new HttpEntity<>(headers),
-                        JrgCmsConferenceSiteContentResponse.class)
-                .getBody();
-        List<JrgCmsConferenceSiteContent> items = Objects.requireNonNull(response).getItems();
+            JrgCmsConferenceSiteContentResponse response = getRestTemplate().exchange(
+                            uri,
+                            HttpMethod.GET,
+                            new HttpEntity<>(headers),
+                            JrgCmsConferenceSiteContentResponse.class)
+                    .getBody();
+            List<JrgCmsConferenceSiteContent> items = Objects.requireNonNull(response).getItems();
 
-        if (items.isEmpty()) {
-            throw new IllegalStateException(String.format("No events found for conference %s and event version '%s' (change conference and/or conference code and rerun)",
-                    conference, conferenceCode));
-        }
+            if (items.isEmpty()) {
+                throw new IllegalStateException(String.format("No events found for conference %s and event version '%s' (change conference and/or conference code and rerun)",
+                        conference, conferenceCode));
+            }
 
-        if (items.size() > 1) {
-            throw new IllegalStateException(String.format("Too much events found for conference %s and event version '%s', events: %d (change conference and/or conference code and rerun)",
-                    conference, conferenceCode, items.size()));
-        }
+            if (items.size() > 1) {
+                throw new IllegalStateException(String.format("Too much events found for conference %s and event version '%s', events: %d (change conference and/or conference code and rerun)",
+                        conference, conferenceCode, items.size()));
+            }
 
-        return items.get(0).getData().getEventId().getIv();
+            return items.get(0).getData().getEventId().getIv();
+        });
     }
 
     /**

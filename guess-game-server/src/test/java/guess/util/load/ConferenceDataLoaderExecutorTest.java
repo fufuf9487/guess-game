@@ -38,7 +38,7 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 @DisplayName("ConferenceDataLoaderExecutor class tests")
 class ConferenceDataLoaderExecutorTest {
     @Test
-    void loadSpaceTags() {
+    void loadSpaceTags() throws IOException, NoSuchFieldException {
         try (MockedStatic<CmsDataLoaderFactory> mockedStatic = Mockito.mockStatic(CmsDataLoaderFactory.class)) {
             final String CODE1 = "code1";
             final String CODE2 = "code2";
@@ -59,7 +59,7 @@ class ConferenceDataLoaderExecutorTest {
     }
 
     @Test
-    void loadEventTypes() {
+    void loadEventTypes() throws IOException, NoSuchFieldException {
         try (MockedStatic<YamlUtils> yamlUtilsMockedStatic = Mockito.mockStatic(YamlUtils.class);
              MockedStatic<CmsDataLoaderFactory> cmsDataLoaderFactoryMockedStatic = Mockito.mockStatic(CmsDataLoaderFactory.class);
              MockedStatic<ConferenceDataLoaderExecutor> conferenceDataLoaderMockedStatic = Mockito.mockStatic(ConferenceDataLoaderExecutor.class)) {
@@ -361,7 +361,7 @@ class ConferenceDataLoaderExecutorTest {
         void loadTalksSpeakersEvent(Conference conference, LocalDate startDate, String conferenceCode,
                                     LoadSettings loadSettings, SourceInformation sourceInformation, Event contentfulEvent,
                                     List<Talk> contentfulTalks, List<Speaker> talkSpeakers, List<Company> speakerCompanies,
-                                    Map<String, Company> resourceLowerNameCompanyMap) {
+                                    Map<String, Company> resourceLowerNameCompanyMap) throws IOException, NoSuchFieldException {
             try (MockedStatic<CmsDataLoaderFactory> cmsDataLoaderFactoryMockedStatic = Mockito.mockStatic(CmsDataLoaderFactory.class);
                  MockedStatic<YamlUtils> yamlUtilsMockedStatic = Mockito.mockStatic(YamlUtils.class);
                  MockedStatic<LocalizationUtils> localizationUtilsMockedStatic = Mockito.mockStatic(LocalizationUtils.class);

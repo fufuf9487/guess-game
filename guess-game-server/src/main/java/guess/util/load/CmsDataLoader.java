@@ -8,11 +8,13 @@ import guess.domain.source.extract.ExtractSet;
 import guess.util.DateTimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -39,14 +41,14 @@ public abstract class CmsDataLoader {
      * @param conferenceCodePrefix conference code prefix
      * @return tags
      */
-    abstract Map<String, List<String>> getTags(String conferenceCodePrefix);
+    abstract Map<String, List<String>> getTags(String conferenceCodePrefix) throws IOException, NoSuchFieldException;
 
     /**
      * Gets event types.
      *
      * @return event types
      */
-    abstract List<EventType> getEventTypes();
+    abstract List<EventType> getEventTypes() throws IOException, NoSuchFieldException;
 
     /**
      * Gets event.
@@ -57,7 +59,7 @@ public abstract class CmsDataLoader {
      * @param eventTemplate  event template
      * @return event
      */
-    abstract Event getEvent(Conference conference, LocalDate startDate, String conferenceCode, Event eventTemplate);
+    abstract Event getEvent(Conference conference, LocalDate startDate, String conferenceCode, Event eventTemplate) throws IOException, NoSuchFieldException;
 
     /**
      * Gets talks
@@ -68,7 +70,7 @@ public abstract class CmsDataLoader {
      * @param ignoreDemoStage ignore demo stage talks
      * @return talks
      */
-    abstract List<Talk> getTalks(Conference conference, LocalDate startDate, String conferenceCode, boolean ignoreDemoStage);
+    abstract List<Talk> getTalks(Conference conference, LocalDate startDate, String conferenceCode, boolean ignoreDemoStage) throws IOException, NoSuchFieldException;
 
     /**
      * Gets name of image width parameter.
@@ -80,7 +82,13 @@ public abstract class CmsDataLoader {
     static RestTemplate createRestTemplate() {
         List<HttpMessageConverter<?>> converters = new ArrayList<>();
         converters.add(new StringHttpMessageConverter(StandardCharsets.UTF_8));
-        converters.add(new MappingJackson2HttpMessageConverter());
+
+        MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
+        List<MediaType> supportedMediaTypes = new ArrayList<>(mappingJackson2HttpMessageConverter.getSupportedMediaTypes());
+        supportedMediaTypes.add(MediaType.APPLICATION_FORM_URLENCODED);
+        mappingJackson2HttpMessageConverter.setSupportedMediaTypes(supportedMediaTypes);
+
+        converters.add(mappingJackson2HttpMessageConverter);
 
         return new RestTemplate(converters);
     }

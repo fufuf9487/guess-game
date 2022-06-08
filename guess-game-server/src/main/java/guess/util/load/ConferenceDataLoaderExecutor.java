@@ -44,7 +44,7 @@ public class ConferenceDataLoaderExecutor {
      * @param cmsType              CMS Type
      * @param conferenceCodePrefix conference code prefix
      */
-    static void loadTags(CmsType cmsType, String conferenceCodePrefix) {
+    static void loadTags(CmsType cmsType, String conferenceCodePrefix) throws IOException, NoSuchFieldException {
         CmsDataLoader cmsDataLoader = CmsDataLoaderFactory.createDataLoader(cmsType);
         cmsDataLoader.getTags(conferenceCodePrefix)
                 .forEach((s, t) -> log.info("Entity: {}, tags: {}", s, t.stream()

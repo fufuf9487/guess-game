@@ -58,18 +58,19 @@ class JrgCmsDataLoaderTest {
 
             final String ACCESS_TOKEN = "ACCESS_TOKEN";
 
-            String token = JrgCmsDataLoader.getTokenFromCache();
+            JrgCmsTokenResponse tokenResponse = JrgCmsDataLoader.getTokenFromCache();
 
-            assertNull(token);
+            assertNull(tokenResponse);
 
             JrgCmsTokenResponse jrgCmsTokenResponse = new JrgCmsTokenResponse();
             jrgCmsTokenResponse.setAccessToken(ACCESS_TOKEN);
-            jrgCmsTokenResponse.setTokenType("Bearer");
-            jrgCmsTokenResponse.setExpiresIn(2591999L);
-            jrgCmsTokenResponse.setScope("squidex-api");
 
             assertDoesNotThrow(() -> JrgCmsDataLoader.storeTokenInCache(jrgCmsTokenResponse));
-            assertEquals(ACCESS_TOKEN, JrgCmsDataLoader.getTokenFromCache());
+
+            tokenResponse = JrgCmsDataLoader.getTokenFromCache();
+            
+            assertNotNull(tokenResponse);
+            assertEquals(ACCESS_TOKEN, tokenResponse.getAccessToken());
         }
     }
 
