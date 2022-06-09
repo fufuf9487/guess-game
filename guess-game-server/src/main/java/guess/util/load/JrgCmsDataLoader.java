@@ -178,12 +178,14 @@ public class JrgCmsDataLoader extends CmsDataLoader {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-        return getRestTemplate().exchange(
+        JrgCmsTokenResponse tokenResponse = getRestTemplate().exchange(
                         uri,
                         HttpMethod.POST,
                         new HttpEntity<>(body, headers),
                         JrgCmsTokenResponse.class)
                 .getBody();
+
+        return Objects.requireNonNull(tokenResponse);
     }
 
     /**
