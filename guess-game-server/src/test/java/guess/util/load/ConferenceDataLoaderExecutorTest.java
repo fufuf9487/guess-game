@@ -46,7 +46,7 @@ class ConferenceDataLoaderExecutorTest {
             final String CODE4 = "code4";
 
             CmsDataLoader cmsDataLoader = Mockito.mock(CmsDataLoader.class);
-            Mockito.when(cmsDataLoader.getTags(Mockito.anyString()))
+            Mockito.when(cmsDataLoader.getTags(Mockito.nullable(String.class)))
                     .thenReturn(Map.of(
                             ContentfulDataLoader.ConferenceSpaceInfo.COMMON_SPACE_INFO.toString(),
                             List.of(CODE1, CODE2, CODE3, CODE4)));
@@ -496,9 +496,16 @@ class ConferenceDataLoaderExecutorTest {
             talk1.setId(1);
             talk1.setName(List.of(new LocaleItem("en", "Name1")));
 
+            Talk talk2 = new Talk();
+            talk2.setId(2);
+            talk2.setName(List.of(new LocaleItem("en", "Name2"), new LocaleItem("ru", "Имя2")));
+
             return Stream.of(
-                    arguments(List.of(talk0, talk1), Collections.emptySet(), List.of(talk0, talk1)),
-                    arguments(List.of(talk0, talk1), Set.of("Name0"), List.of(talk1))
+                    arguments(List.of(talk0, talk1, talk2), Collections.emptySet(), List.of(talk0, talk1, talk2)),
+                    arguments(List.of(talk0, talk1, talk2), Set.of("Name0"), List.of(talk1, talk2)),
+                    arguments(List.of(talk0, talk1, talk2), Set.of("Имя2"), List.of(talk0, talk1)),
+                    arguments(List.of(talk0, talk1, talk2), Set.of("Name0", "Имя2"), List.of(talk1)),
+                    arguments(List.of(talk0, talk1, talk2), Set.of("Name0", "Name1", "Имя2"), List.of())
             );
         }
 
@@ -512,8 +519,23 @@ class ConferenceDataLoaderExecutorTest {
                                 (Answer<String>) invocation -> {
                                     Object[] args = invocation.getArguments();
                                     List<LocaleItem> localeItems = (List<LocaleItem>) args[0];
-
-                                    return ((localeItems != null) && !localeItems.isEmpty()) ? localeItems.get(0).getText() : null;
+                                    Language language = (Language) args[1];
+                                    
+                                    if ((localeItems != null) && !localeItems.isEmpty()) {
+                                        if (Language.ENGLISH.equals(language)) {
+                                            return localeItems.get(0).getText();
+                                        } else if (Language.RUSSIAN.equals(language)) {
+                                            if (localeItems.size() > 1) {
+                                                return localeItems.get(1).getText();
+                                            } else {
+                                                return localeItems.get(0).getText();
+                                            }
+                                        } else {
+                                            return null;
+                                        }
+                                    } else {
+                                        return null;
+                                    }
                                 }
                         );
 
