@@ -502,6 +502,7 @@ class ConferenceDataLoaderExecutorTest {
 
             return Stream.of(
                     arguments(List.of(talk0, talk1, talk2), Collections.emptySet(), List.of(talk0, talk1, talk2)),
+                    arguments(List.of(talk0, talk1, talk2), Set.of("Unknown"), List.of(talk0, talk1, talk2)),
                     arguments(List.of(talk0, talk1, talk2), Set.of("Name0"), List.of(talk1, talk2)),
                     arguments(List.of(talk0, talk1, talk2), Set.of("Имя2"), List.of(talk0, talk1)),
                     arguments(List.of(talk0, talk1, talk2), Set.of("Name0", "Имя2"), List.of(talk1)),
