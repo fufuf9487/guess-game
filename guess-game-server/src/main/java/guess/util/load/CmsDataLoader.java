@@ -8,7 +8,7 @@ import guess.domain.source.extract.ExtractSet;
 import guess.util.DateTimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.MediaType;
+import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -82,13 +82,8 @@ public abstract class CmsDataLoader {
     static RestTemplate createRestTemplate() {
         List<HttpMessageConverter<?>> converters = new ArrayList<>();
         converters.add(new StringHttpMessageConverter(StandardCharsets.UTF_8));
-
-        MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
-        List<MediaType> supportedMediaTypes = new ArrayList<>(mappingJackson2HttpMessageConverter.getSupportedMediaTypes());
-        supportedMediaTypes.add(MediaType.APPLICATION_FORM_URLENCODED);
-        mappingJackson2HttpMessageConverter.setSupportedMediaTypes(supportedMediaTypes);
-
-        converters.add(mappingJackson2HttpMessageConverter);
+        converters.add(new MappingJackson2HttpMessageConverter());
+        converters.add(new FormHttpMessageConverter());
 
         return new RestTemplate(converters);
     }
