@@ -214,6 +214,14 @@ public class YamlUtils {
             Objects.requireNonNull(place,
                     () -> String.format("Place id %d not found for event %s", event.getPlaceId(), event));
             event.setPlace(place);
+            
+            for (EventDays eventDays : event.getDays()) {
+                // Find place by id
+                place = places.get(eventDays.getPlaceId());
+                Objects.requireNonNull(place,
+                        () -> String.format("Place id %d not found for event days %s", eventDays.getPlaceId(), eventDays));
+                eventDays.setPlace(place);
+            }
         }
     }
 

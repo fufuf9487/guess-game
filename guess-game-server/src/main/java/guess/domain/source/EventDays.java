@@ -1,6 +1,7 @@
 package guess.domain.source;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * Event days.
@@ -53,5 +54,28 @@ public class EventDays {
 
     public void setPlaceId(long placeId) {
         this.placeId = placeId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof EventDays)) return false;
+        EventDays eventDays = (EventDays) o;
+        return Objects.equals(getStartDate(), eventDays.getStartDate()) && Objects.equals(getEndDate(), eventDays.getEndDate()) && Objects.equals(getPlace(), eventDays.getPlace());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getStartDate(), getEndDate(), getPlace());
+    }
+
+    @Override
+    public String toString() {
+        return "EventDays{" +
+                "startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", placeId=" + placeId +
+                ", place=" + place +
+                '}';
     }
 }

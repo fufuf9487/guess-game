@@ -4,9 +4,9 @@ import guess.domain.source.Event;
 import guess.domain.source.Speaker;
 import guess.domain.source.Talk;
 import guess.dto.company.CompanyBriefDto;
-import guess.dto.event.EventBriefDto;
 import guess.dto.event.EventDetailsDto;
 import guess.dto.event.EventHomeInfoDto;
+import guess.dto.event.EventPartBriefDto;
 import guess.dto.event.EventSuperBriefDto;
 import guess.dto.speaker.SpeakerBriefDto;
 import guess.dto.talk.TalkBriefDto;
@@ -39,17 +39,15 @@ public class EventController {
     }
 
     @GetMapping("/events")
-    public List<EventBriefDto> getEvents(@RequestParam boolean conferences, @RequestParam boolean meetups,
-                                         @RequestParam(required = false) Long organizerId,
-                                         @RequestParam(required = false) Long eventTypeId, HttpSession httpSession) {
+    public List<EventPartBriefDto> getEvents(@RequestParam boolean conferences, @RequestParam boolean meetups,
+                                             @RequestParam(required = false) Long organizerId,
+                                             @RequestParam(required = false) Long eventTypeId, HttpSession httpSession) {
         List<Event> events = eventService.getEvents(conferences, meetups, organizerId, eventTypeId);
         var language = localeService.getLanguage(httpSession);
 
-        List<Event> sortedEvents = events.stream()
-                .sorted(Comparator.comparing(Event::getStartDate).reversed())
+        return EventPartBriefDto.convertToBriefDto(events, language).stream()
+                .sorted(Comparator.comparing(EventPartBriefDto::getStartDate).reversed())
                 .toList();
-
-        return EventBriefDto.convertToBriefDto(sortedEvents, language);
     }
 
     @GetMapping("/default-event")
