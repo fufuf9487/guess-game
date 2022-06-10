@@ -22,6 +22,7 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -67,20 +68,40 @@ class EventControllerTest {
         eventType0.setId(0);
         eventType0.setOrganizer(organizer0);
 
+        Place place0 = new Place();
+        place0.setId(0);
+        place0.setCity(Collections.emptyList());
+        place0.setVenueAddress(Collections.emptyList());
+
         Event event0 = new Event();
         event0.setId(0);
+        event0.setDays(List.of(new EventDays(
+                LocalDate.of(2020, 10, 30),
+                LocalDate.of(2020, 10, 30),
+                place0
+        )));
         event0.setStartDate(LocalDate.of(2020, 10, 30));
         event0.setEndDate(LocalDate.of(2020, 10, 30));
         event0.setEventType(eventType0);
 
         Event event1 = new Event();
         event1.setId(1);
+        event1.setDays(List.of(new EventDays(
+                LocalDate.of(2020, 10, 29),
+                LocalDate.of(2020, 10, 29),
+                place0
+        )));
         event1.setStartDate(LocalDate.of(2020, 10, 29));
         event1.setEndDate(LocalDate.of(2020, 10, 29));
         event1.setEventType(eventType0);
 
         Event event2 = new Event();
         event2.setId(2);
+        event2.setDays(List.of(new EventDays(
+                LocalDate.of(2020, 10, 31),
+                LocalDate.of(2020, 10, 31),
+                place0
+        )));
         event2.setStartDate(LocalDate.of(2020, 10, 31));
         event2.setEndDate(LocalDate.of(2020, 10, 31));
         event2.setEventType(eventType0);
