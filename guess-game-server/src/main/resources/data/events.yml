@@ -579,25 +579,16 @@ events:
         3201, 3202, 3203, 3204, 3205, 3206, 3211, 3207, 3208, 3209, 3210, 3219, 3212, 3213, 3214, 3215, 3221]
   - eventTypeId: 3
     name:
-      - {language: en, text: "Heisenbug 2022 Spring (Online)"}
+      - {language: en, text: "Heisenbug 2022 Spring"}
     days:
       - {startDate: "2022-05-30", endDate: "2022-06-01", placeId: 24}
+      - {startDate: "2022-06-21", endDate: "2022-06-21", placeId: 4}
     startDate: "2022-05-30"
     endDate: "2022-06-01"
     siteLink: []
     placeId: 24
     talkIds: [3710, 3711, 3712, 3713, 3714, 3715, 3716, 3717, 3718, 3719, 3720, 3721, 3722, 3723, 3724, 3725, 3726, 3727,
-        3728, 3729, 3730, 3731, 3732, 3733, 3734, 3735, 3736, 3737, 3738, 3739, 3740]
-  - eventTypeId: 3
-    name:
-      - {language: en, text: "Heisenbug 2022 Spring (Offline)"}
-    days:
-      - {startDate: "2022-06-21", endDate: "2022-06-21", placeId: 4}
-    startDate: "2022-06-21"
-    endDate: "2022-06-21"
-    siteLink: []
-    placeId: 4
-    talkIds: [3741, 3742, 3743, 3744, 3745, 3746]
+        3728, 3729, 3730, 3731, 3732, 3733, 3734, 3735, 3736, 3737, 3738, 3739, 3740, 3741, 3742, 3743, 3744, 3745, 3746]
   # HolyJS
   - eventTypeId: 4
     name:
