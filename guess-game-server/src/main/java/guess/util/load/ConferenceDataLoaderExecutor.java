@@ -420,8 +420,8 @@ public class ConferenceDataLoaderExecutor {
             return talks;
         } else {
             List<Talk> fixedTalks = talks.stream()
-                    .filter(t -> !invalidTalksSet.contains(LocalizationUtils.getString(t.getName(), Language.RUSSIAN)))
                     .filter(t -> !invalidTalksSet.contains(LocalizationUtils.getString(t.getName(), Language.ENGLISH)))
+                    .filter(t -> !invalidTalksSet.contains(LocalizationUtils.getString(t.getName(), Language.RUSSIAN)))
                     .toList();
 
             log.info("Fixed talks (in CMS): {}", fixedTalks.size());
