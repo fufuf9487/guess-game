@@ -248,14 +248,31 @@ class YamlUtilsTest {
     @DisplayName("linkEventsToPlaces method tests")
     class LinkEventsToPlacesTest {
         private Stream<Arguments> data() {
+            Place place0 = new Place();
+            place0.setId(0);
+
+            Place place1 = new Place();
+            place1.setId(1);
+
+            EventDays eventDays0 = new EventDays(
+                    null,
+                    null,
+                    place0
+            );
+
+            EventDays eventDays1 = new EventDays(
+                    null,
+                    null,
+                    place1
+            );
+
             Event event0 = new Event();
+            event0.setDays(List.of(eventDays0));
             event0.setPlaceId(0);
 
             Event event1 = new Event();
+            event1.setDays(List.of(eventDays1));
             event1.setPlaceId(1);
-
-            Place place0 = new Place();
-            place0.setId(0);
 
             return Stream.of(
                     arguments(Collections.emptyMap(), List.of(event0), NullPointerException.class),
