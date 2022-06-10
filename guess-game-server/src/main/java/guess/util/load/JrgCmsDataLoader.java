@@ -364,6 +364,13 @@ public class JrgCmsDataLoader extends CmsDataLoader {
                         eventTemplate.getName()
                 ),
                 null,
+                List.of(                //TODO: change
+                        new EventDays(
+                                startDate,
+                                endDate,
+                                eventTemplate.getDays().get(0).getPlace()
+                        )
+                ),
                 new Event.EventDates(
                         startDate,
                         endDate

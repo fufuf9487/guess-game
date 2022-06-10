@@ -93,6 +93,7 @@ class QuestionServiceImplTest {
                                 Collections.emptyList()
                         ),
                         eventType,
+                        Collections.emptyList(),
                         new Event.EventDates(
                                 null,
                                 null

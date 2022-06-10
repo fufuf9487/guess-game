@@ -389,6 +389,21 @@ public class ContentfulDataLoader extends CmsDataLoader {
                                 extractEventName(nameRu, RUSSIAN_LOCALE))
                 ),
                 null,
+                List.of(
+                        new EventDays(
+                                eventStartDate,
+                                eventEndDate,
+                                new Place(
+                                        -1,
+                                        extractLocaleItems(
+                                                extractCity(eventCityLink, cityMap, entryErrorSet, ENGLISH_LOCALE, nameEn),
+                                                extractCity(eventCityLink, cityMap, entryErrorSet, RUSSIAN_LOCALE, nameEn)),
+                                        extractLocaleItems(
+                                                extractLocaleValue(venueAddress, ENGLISH_LOCALE),
+                                                extractLocaleValue(venueAddress, RUSSIAN_LOCALE)),
+                                        (addressLink != null) ? getFirstMapValue(addressLink) : null)
+                        )
+                ),
                 new Event.EventDates(
                         eventStartDate,
                         eventEndDate
@@ -966,6 +981,21 @@ public class ContentfulDataLoader extends CmsDataLoader {
                                     "DotNext 2016 Хельсинки")
                     ),
                     null,
+                    List.of(
+                            new EventDays(
+                                    LocalDate.of(2016, 12, 7),
+                                    LocalDate.of(2016, 12, 7),
+                                    new Place(
+                                            15,
+                                            extractLocaleItems(
+                                                    "Helsinki",
+                                                    "Хельсинки"),
+                                            extractLocaleItems(
+                                                    "Microsoft Talo, Keilalahdentie 2-4, 02150 Espoo",
+                                                    null),
+                                            "60.1704769, 24.8279349")
+                            )
+                    ),
                     new Event.EventDates(
                             LocalDate.of(2016, 12, 7),
                             LocalDate.of(2016, 12, 7)

@@ -12,19 +12,21 @@ public class Event extends Nameable {
     public record EventDates(LocalDate startDate, LocalDate endDate) {
     }
 
+    //TODO: delete
     public record EventLinks(List<LocaleItem> siteLink, String youtubeLink) {
     }
 
     private long eventTypeId;
     private EventType eventType;
 
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private List<EventDays> days;
+    private LocalDate startDate;    //TODO: delete
+    private LocalDate endDate;      //TODO: delete
     private List<LocaleItem> siteLink;
     private String youtubeLink;
 
     private long placeId;
-    private Place place;
+    private Place place;            //TODO: delete
 
     private String timeZone;
     private ZoneId timeZoneId;
@@ -35,11 +37,12 @@ public class Event extends Nameable {
     public Event() {
     }
 
-    public Event(Nameable nameable, EventType eventType, EventDates dates, EventLinks links, Place place, String timeZone,
+    public Event(Nameable nameable, EventType eventType, List<EventDays> days, EventDates dates, EventLinks links, Place place, String timeZone,
                  List<Talk> talks) {
         super(nameable.getId(), nameable.getName());
 
         this.eventType = eventType;
+        this.days = days;
         this.startDate = dates.startDate;
         this.endDate = dates.endDate;
         this.siteLink = links.siteLink;
@@ -71,6 +74,14 @@ public class Event extends Nameable {
 
     public void setEventType(EventType eventType) {
         this.eventType = eventType;
+    }
+
+    public List<EventDays> getDays() {
+        return days;
+    }
+
+    public void setDays(List<EventDays> days) {
+        this.days = days;
     }
 
     public LocalDate getStartDate() {

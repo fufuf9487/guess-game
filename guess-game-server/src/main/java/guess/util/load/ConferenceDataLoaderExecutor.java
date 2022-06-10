@@ -1912,18 +1912,23 @@ public class ConferenceDataLoaderExecutor {
     /**
      * Creates event template.
      *
-     * @param enText  text in English
-     * @param ruText  text in Russian
-     * @param placeId place identifier
+     * @param enText   text in English
+     * @param ruText   text in Russian
+     * @param placeIds place identifiers
      * @return event template
      */
-    static Event createEventTemplate(String enText, String ruText, long placeId) {
+    static Event createEventTemplate(String enText, String ruText, List<Long> placeIds) {
+        List<EventDays> days = placeIds.stream()
+                .map(id -> new EventDays(null, null, new Place(id, Collections.emptyList(), Collections.emptyList(), null)))
+                .toList();
+
         return new Event(
                 new Nameable(
                         -1L,
                         extractLocaleItems(enText, ruText)
                 ),
                 null,
+                days,
                 new Event.EventDates(
                         null,
                         null
@@ -1933,7 +1938,7 @@ public class ConferenceDataLoaderExecutor {
                         null
                 ),
                 new Place(
-                        placeId,
+                        placeIds.get(0),
                         Collections.emptyList(),
                         Collections.emptyList(),
                         null
@@ -2186,11 +2191,11 @@ public class ConferenceDataLoaderExecutor {
         // 2022
 //        loadTalksSpeakersEvent(Conference.TECH_TRAIN, LocalDate.of(2022, 5, 14), "2022 Spring",
 //                LoadSettings.eventTemplateAndInvalidTalksSet(
-//                        createEventTemplate("TechTrain 2022 Spring", null, 24),
+//                        createEventTemplate("TechTrain 2022 Spring", null, List.of(24)),
 //                        Set.of("Открытие фестиваля TechTrain 2022 Spring", "Закрытие фестиваля TechTrain 2022 Spring")));
 //        loadTalksSpeakersEvent(Conference.MOBIUS, LocalDate.of(2022, 5, 25), "2022 Spring",
 //                LoadSettings.eventTemplateAndInvalidTalksSet(
-//                        createEventTemplate("Mobius 2022 Spring (Online)", null, 24),
+//                        createEventTemplate("Mobius 2022 Spring (Online)", null, List.of(24)),
 //                        Set.of("Открытие конференции Mobius 2022 Spring",
 //                                "The Mobius Chronicles. How to maintain a working relationship in the IT world, where everyone is at a short leg",
 //                                "Хроники Мобиуса. Викторина Mobius 2022 Spring",
@@ -2199,15 +2204,15 @@ public class ConferenceDataLoaderExecutor {
 //                                "Хроники Мобиуса. Подводим итоги, но не заканчиваем")));
 //        loadTalksSpeakersEvent(Conference.MOBIUS, LocalDate.of(2022, 6, 22), "2022 Spring",
 //                LoadSettings.eventTemplateAndInvalidTalksSet(
-//                        createEventTemplate("Mobius 2022 Spring (Offline)", null, 4),
+//                        createEventTemplate("Mobius 2022 Spring (Offline)", null, List.of(4)),
 //                        Set.of("Открытие офлайн-части конференции Mobius 2022 Spring", "Закрытие конференции Mobius 2022 Spring")));
 //        loadTalksSpeakersEvent(Conference.HEISENBUG, LocalDate.of(2022, 5, 30), "2022 Spring",
 //                LoadSettings.eventTemplateAndInvalidTalksSet(
-//                        createEventTemplate("Heisenbug 2022 Spring (Online)", null, 24),
+//                        createEventTemplate("Heisenbug 2022 Spring (Online)", null, List.of(24)),
 //                        Set.of("Heisenbug: что было и что будет", "Подведем итоги онлайн-части Heisenbug 2022 Spring")));
 //        loadTalksSpeakersEvent(Conference.HEISENBUG, LocalDate.of(2022, 6, 21), "2022 Spring",
 //                LoadSettings.eventTemplateAndInvalidTalksSet(
-//                        createEventTemplate("Heisenbug 2022 Spring (Offline)", null, 4),
+//                        createEventTemplate("Heisenbug 2022 Spring (Offline)", null, List.of(4)),
 //                        Set.of("Открытие офлайн-части конференции Heisenbug 2022 Spring", "Закрытие конференции Heisenbug 2022 Spring")));
 //        loadTalksSpeakersEvent(Conference.HYDRA, LocalDate.of(2022, 6, 2), "2022");
 //        loadTalksSpeakersEvent(Conference.HYDRA, LocalDate.of(2022, 6, 26), "2022");

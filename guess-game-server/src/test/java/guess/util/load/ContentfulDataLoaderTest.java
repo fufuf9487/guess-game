@@ -596,6 +596,13 @@ class ContentfulDataLoaderTest {
                                     new LocaleItem(Language.RUSSIAN.getCode(), "Наименование события0"))
                     ),
                     null,
+                    List.of(
+                            new EventDays(
+                                    LocalDate.of(2016, 12, 7),
+                                    LocalDate.of(2016, 12, 7),
+                                    new Place()
+                            )
+                    ),
                     new Event.EventDates(
                             LocalDate.of(2016, 12, 7),
                             LocalDate.of(2016, 12, 7)
@@ -613,6 +620,13 @@ class ContentfulDataLoaderTest {
                                     new LocaleItem(Language.RUSSIAN.getCode(), "Наименование события1"))
                     ),
                     null,
+                    List.of(
+                            new EventDays(
+                                    LocalDate.of(2017, 12, 7),
+                                    LocalDate.of(2017, 12, 7),
+                                    new Place()
+                            )
+                    ),
                     new Event.EventDates(
                             LocalDate.of(2017, 12, 7),
                             LocalDate.of(2017, 12, 7)
@@ -652,6 +666,13 @@ class ContentfulDataLoaderTest {
                                                                 new LocaleItem("ru", "Наименование события0"))
                                                 ),
                                                 null,
+                                                List.of(
+                                                        new EventDays(
+                                                                LocalDate.of(2016, 12, 7),
+                                                                LocalDate.of(2016, 12, 7),
+                                                                new Place()
+                                                        )
+                                                ),
                                                 new Event.EventDates(
                                                         LocalDate.of(2016, 12, 7),
                                                         LocalDate.of(2016, 12, 7)
@@ -1576,6 +1597,20 @@ class ContentfulDataLoaderTest {
                                             new LocaleItem("ru", "DotNext 2016 Хельсинки"))
                             ),
                             null,
+                            List.of(
+                                    new EventDays(
+                                            LocalDate.of(2016, 12, 7),
+                                            LocalDate.of(2016, 12, 7),
+                                            new Place(
+                                                    15,
+                                                    List.of(
+                                                            new LocaleItem("en", "Helsinki"),
+                                                            new LocaleItem("ru", "Хельсинки")),
+                                                    List.of(
+                                                            new LocaleItem("en", "Microsoft Talo, Keilalahdentie 2-4, 02150 Espoo")),
+                                                    "60.1704769, 24.8279349")
+                                    )
+                            ),
                             new Event.EventDates(
                                     LocalDate.of(2016, 12, 7),
                                     LocalDate.of(2016, 12, 7)

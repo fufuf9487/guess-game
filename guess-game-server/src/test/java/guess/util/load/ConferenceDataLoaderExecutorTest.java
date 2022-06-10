@@ -3883,7 +3883,7 @@ class ConferenceDataLoaderExecutorTest {
         final String RU_TEXT = "Текст";
         final long PLACE_ID = 42;
 
-        Event actual = ConferenceDataLoaderExecutor.createEventTemplate(EN_TEXT, RU_TEXT, PLACE_ID);
+        Event actual = ConferenceDataLoaderExecutor.createEventTemplate(EN_TEXT, RU_TEXT, List.of(PLACE_ID));
 
         assertEquals(EN_TEXT, LocalizationUtils.getString(actual.getName(), Language.ENGLISH));
         assertEquals(RU_TEXT, LocalizationUtils.getString(actual.getName(), Language.RUSSIAN));
