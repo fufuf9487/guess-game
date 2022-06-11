@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Event } from '../models/event/event.model';
+import { EventPart } from '../models/event/event-part.model';
 import { EventType } from '../models/event-type/event-type.model';
 import { EventDetails } from '../models/event/event-details.model';
 import { Organizer } from '../models/organizer/organizer.model';
@@ -29,6 +30,26 @@ export class EventService {
     }
 
     return this.http.get<Event[]>(`${this.baseUrl}/events`, {params: params})
+      .pipe(
+        catchError((response: Response) => {
+          this.messageService.reportMessage(response);
+          throw response;
+        })
+      );
+  }
+
+  getEventParts(isConferences: boolean, isMeetups: boolean, organizer: Organizer, eventType: EventType): Observable<EventPart[]> {
+    let params = new HttpParams()
+      .set('conferences', isConferences.toString())
+      .set('meetups', isMeetups.toString());
+    if (organizer) {
+      params = params.set('organizerId', organizer.id.toString());
+    }
+    if (eventType) {
+      params = params.set('eventTypeId', eventType.id.toString());
+    }
+
+    return this.http.get<EventPart[]>(`${this.baseUrl}/event-parts`, {params: params})
       .pipe(
         catchError((response: Response) => {
           this.messageService.reportMessage(response);

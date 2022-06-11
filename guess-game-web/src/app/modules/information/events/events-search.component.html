@@ -49,7 +49,7 @@
     </div>
 
     <div *ngIf="isEventsListVisible()" class="m-2">
-      <p-table [value]="events" [resizableColumns]="true" [autoLayout]="true"
+      <p-table [value]="eventParts" [resizableColumns]="true" [autoLayout]="true"
                [rows]="15" [rowsPerPageOptions]="[5,10,15,25,50]" [paginator]="true"
                [showCurrentPageReport]="true" [alwaysShowPaginator]="false"
                currentPageReportTemplate="{{'common.table.paginator.currentPageReportTemplate' | translate}}"
@@ -84,20 +84,20 @@
             </th>
           </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-event let-i = "rowIndex">
+        <ng-template pTemplate="body" let-eventPart let-i = "rowIndex">
           <tr>
             <td class="text-center">{{i + 1}}</td>
             <td>
-              <a [routerLink]="['/information', 'events', 'event', event.id]" class="text-dark">
-                <img src="{{eventsImageDirectory}}/{{event.eventTypeLogoFileName}}" class="img-event-type-logo-table" alt="logo"/>
-                <span class="ms-2">{{event.name}}</span>
+              <a [routerLink]="['/information', 'events', 'event', eventPart.id]" class="text-dark">
+                <img src="{{eventsImageDirectory}}/{{eventPart.eventTypeLogoFileName}}" class="img-event-type-logo-table" alt="logo"/>
+                <span class="ms-2">{{eventPart.name}}</span>
               </a>
             </td>
-            <td class="text-center">{{event.startDate | date:"shortDate":undefined:translateService.currentLang}}</td>
-            <td class="text-center">{{event.endDate | date:"shortDate":undefined:translateService.currentLang}}</td>
-            <td class="text-center">{{event.duration | number:'1.0-0':translateService.currentLang}}</td>
-            <td>{{event.placeCity}}</td>
-            <td>{{event.placeVenueAddress}}</td>
+            <td class="text-center">{{eventPart.startDate | date:"shortDate":undefined:translateService.currentLang}}</td>
+            <td class="text-center">{{eventPart.endDate | date:"shortDate":undefined:translateService.currentLang}}</td>
+            <td class="text-center">{{eventPart.duration | number:'1.0-0':translateService.currentLang}}</td>
+            <td>{{eventPart.placeCity}}</td>
+            <td>{{eventPart.placeVenueAddress}}</td>
           </tr>
         </ng-template>
       </p-table>

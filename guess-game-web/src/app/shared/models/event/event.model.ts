@@ -1,27 +1,15 @@
-export class Event {
+import { AbstractEvent } from './abstract-event.model';
+import { EventDays } from './event-days.model';
+
+export class Event extends AbstractEvent {
   constructor(
-    public id?: number,
-    public eventTypeId?: number,
-    public organizerId?: number,
-    public name?: string,
-    public startDate?: Date,
-    public endDate?: Date,
-    public siteLink?: string,
-    public youtubeLink?: string,
-    public placeCity?: string,
-    public placeVenueAddress?: string,
-    public mapCoordinates?: string,
-    public eventTypeLogoFileName?: string,
-    public duration?: number,
-    public displayName?: string,
-    public displayPlace?: string,
-    public vkLink?: string,
-    public twitterLink?: string,
-    public facebookLink?: string,
-    public telegramLink?: string,
-    public speakerdeckLink?: string,
-    public habrLink?: string,
-    public description?: string
+    public days?: EventDays[],
+    public startDate?: Date,            // TODO: delete
+    public endDate?: Date,              // TODO: delete
+    public placeCity?: string,          // TODO: delete
+    public placeVenueAddress?: string,  // TODO: delete
+    public mapCoordinates?: string      // TODO: delete
   ) {
+    super();
   }
 }
