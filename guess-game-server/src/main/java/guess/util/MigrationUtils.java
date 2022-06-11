@@ -14,11 +14,9 @@ public class MigrationUtils {
         var resourceSourceInformation = YamlUtils.readSourceInformation();
         List<Event> events = resourceSourceInformation.getEvents();
         
-        events.forEach(e -> {
-            e.setDays(List.of(
-                    new EventDays(e.getStartDate(), e.getEndDate(), e.getPlace())
-            ));
-        });
+        events.forEach(e -> e.setDays(List.of(
+                new EventDays(e.getStartDate(), e.getEndDate(), e.getPlace())
+        )));
 
         YamlUtils.save(new EventList(events), "events-to-update.yml");
     }

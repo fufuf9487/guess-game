@@ -1,12 +1,13 @@
 package guess.domain.source;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
 /**
  * Event days.
  */
-public class EventDays {
+public class EventDays implements Serializable {
     private LocalDate startDate;
     private LocalDate endDate;
 
