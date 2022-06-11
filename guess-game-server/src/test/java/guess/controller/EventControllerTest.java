@@ -136,9 +136,21 @@ class EventControllerTest {
             eventType0.setId(0);
             eventType0.setOrganizer(organizer0);
 
+            EventDays eventDays0 = new EventDays(
+                    null,
+                    null,
+                    new Place(
+                            0,
+                            Collections.emptyList(),
+                            Collections.emptyList(),
+                            null
+                    )
+            );
+
             Event event0 = new Event();
             event0.setId(0);
             event0.setEventType(eventType0);
+            event0.setDays(List.of(eventDays0));
 
             return Stream.of(
                     arguments(new Object[]{null}),
@@ -222,9 +234,21 @@ class EventControllerTest {
             eventType0.setId(0);
             eventType0.setOrganizer(organizer0);
 
+            EventDays eventDays0 = new EventDays(
+                    null,
+                    null,
+                    new Place(
+                            0,
+                            Collections.emptyList(),
+                            Collections.emptyList(),
+                            null
+                    )
+            );
+
             Event event0 = new Event();
             event0.setId(0);
             event0.setEventType(eventType0);
+            event0.setDays(List.of(eventDays0));
 
             return Stream.of(
                     arguments(new Object[]{null}),
@@ -295,12 +319,24 @@ class EventControllerTest {
         eventType0.setId(0);
         eventType0.setOrganizer(organizer0);
 
+        EventDays eventDays0 = new EventDays(
+                null,
+                null,
+                new Place(
+                        0,
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        null
+                )
+        );
+
         Event event0 = new Event();
         event0.setId(0);
         event0.setStartDate(LocalDate.of(2020, 10, 30));
         event0.setEndDate(LocalDate.of(2020, 10, 30));
         event0.setTalks(List.of(talk0, talk1));
         event0.setEventType(eventType0);
+        event0.setDays(List.of(eventDays0));
 
         given(eventService.getEventById(0)).willReturn(event0);
         given(localeService.getLanguage(httpSession)).willReturn(Language.ENGLISH);

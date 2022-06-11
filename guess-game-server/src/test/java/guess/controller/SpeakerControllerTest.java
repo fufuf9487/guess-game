@@ -23,6 +23,7 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -188,10 +189,22 @@ class SpeakerControllerTest {
         eventType.setId(0);
         eventType.setOrganizer(organizer);
 
+        EventDays eventDays = new EventDays(
+                null,
+                null,
+                new Place(
+                        0,
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        null
+                )
+        );
+
         Event event = new Event();
         event.setId(0);
         event.setStartDate(LocalDate.of(2020, 10, 30));
         event.setEventType(eventType);
+        event.setDays(List.of(eventDays));
 
         Talk talk0 = new Talk();
         talk0.setId(0);

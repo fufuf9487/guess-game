@@ -17,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -77,8 +78,22 @@ class TalkControllerTest {
         eventType0.setEvents(List.of(event0));
         eventType1.setEvents(List.of(event1));
 
+        EventDays eventDays0 = new EventDays(
+                null,
+                null,
+                new Place(
+                        0,
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        null
+                )
+        );
+
         event0.setTalks(List.of(talk0));
         event1.setTalks(List.of(talk1));
+
+        event0.setDays(List.of(eventDays0));
+        event1.setDays(List.of(eventDays0));
 
         given(talkService.getTalks(0L, 1L, "Talk", "Speaker")).willReturn(List.of(talk1, talk0));
         given(eventService.getEventByTalk(talk0)).willReturn(event0);
