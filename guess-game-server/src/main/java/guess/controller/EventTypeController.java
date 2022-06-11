@@ -2,7 +2,7 @@ package guess.controller;
 
 import guess.domain.Language;
 import guess.domain.source.EventType;
-import guess.dto.event.EventBriefDto;
+import guess.dto.event.EventPartBriefDto;
 import guess.dto.eventtype.EventTypeBriefDto;
 import guess.dto.eventtype.EventTypeDetailsDto;
 import guess.dto.eventtype.EventTypeSuperBriefDto;
@@ -66,8 +66,8 @@ public class EventTypeController {
         var language = localeService.getLanguage(httpSession);
         var eventTypeDetailsDto = EventTypeDetailsDto.convertToDto(eventType, eventType.getEvents(), language);
 
-        List<EventBriefDto> sortedEvents = eventTypeDetailsDto.events().stream()
-                .sorted(Comparator.comparing(EventBriefDto::getStartDate).reversed())
+        List<EventPartBriefDto> sortedEvents = eventTypeDetailsDto.eventParts().stream()
+                .sorted(Comparator.comparing(EventPartBriefDto::getStartDate).reversed())
                 .toList();
 
         return new EventTypeDetailsDto(eventTypeDetailsDto.eventType(), sortedEvents);

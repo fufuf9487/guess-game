@@ -48,7 +48,7 @@
       {{'events.noEventsFoundText' | translate}}
     </div>
 
-    <div *ngIf="isEventsListVisible()" class="m-2">
+    <div *ngIf="isEventPartsListVisible()" class="m-2">
       <p-table [value]="eventParts" [resizableColumns]="true" [autoLayout]="true"
                [rows]="15" [rowsPerPageOptions]="[5,10,15,25,50]" [paginator]="true"
                [showCurrentPageReport]="true" [alwaysShowPaginator]="false"

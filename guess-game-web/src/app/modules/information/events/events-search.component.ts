@@ -141,7 +141,7 @@ export class EventsSearchComponent implements OnInit {
     return (this.eventParts && (this.eventParts.length === 0));
   }
 
-  isEventsListVisible() {
+  isEventPartsListVisible() {
     return (this.eventParts && (this.eventParts.length > 0));
   }
 }

@@ -53,9 +53,7 @@ public class EventPartSuperBriefDto {
         return endDate;
     }
 
-    public static EventPartSuperBriefDto convertToSuperBriefDto(Event event, int partNumber, Language language) {
-        EventDays eventDays = event.getDays().get(partNumber);
-
+    public static EventPartSuperBriefDto convertToSuperBriefDto(Event event, EventDays eventDays, Language language) {
         return new EventPartSuperBriefDto(
                 event.getId(),
                 event.getEventType().getId(),
@@ -69,8 +67,8 @@ public class EventPartSuperBriefDto {
         List<EventPartSuperBriefDto> eventPartSuperBriefDtos = new ArrayList<>();
 
         for (Event event : events) {
-            for (int i = 0; i < event.getDays().size(); i++) {
-                eventPartSuperBriefDtos.add(convertToSuperBriefDto(event, i, language));
+            for (EventDays eventDays : event.getDays()) {
+                eventPartSuperBriefDtos.add(convertToSuperBriefDto(event, eventDays, language));
             }
         }
 

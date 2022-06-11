@@ -2,6 +2,7 @@ package guess.dto.event;
 
 import guess.domain.Language;
 import guess.domain.source.Event;
+import guess.domain.source.EventDays;
 import guess.util.LocalizationUtils;
 
 import java.time.temporal.ChronoUnit;
@@ -43,9 +44,8 @@ public class EventPartBriefDto extends EventPartSuperBriefDto {
         return eventTypeLogoFileName;
     }
 
-    public static EventPartBriefDto convertToBriefDto(EventPartSuperBriefDto eventPartSuperBriefDto, Event event, int partNumber, Language language) {
+    public static EventPartBriefDto convertToBriefDto(EventPartSuperBriefDto eventPartSuperBriefDto, Event event, EventDays eventDays, Language language) {
         long duration = (ChronoUnit.DAYS.between(eventPartSuperBriefDto.getStartDate(), eventPartSuperBriefDto.getEndDate()) + 1);
-        var eventDays = event.getDays().get(partNumber);
         var place = eventDays.getPlace();
         String placeCity = (place != null) ? LocalizationUtils.getString(place.getCity(), language) : null;
         String placeVenueAddress = (place != null) ? LocalizationUtils.getString(place.getVenueAddress(), language) : null;
@@ -59,16 +59,16 @@ public class EventPartBriefDto extends EventPartSuperBriefDto {
                 logoFileName);
     }
 
-    public static EventPartBriefDto convertToBriefDto(Event event, int partNumber, Language language) {
-        return convertToBriefDto(convertToSuperBriefDto(event, partNumber, language), event, partNumber, language);
+    public static EventPartBriefDto convertToBriefDto(Event event, EventDays eventDays, Language language) {
+        return convertToBriefDto(convertToSuperBriefDto(event, eventDays, language), event, eventDays, language);
     }
 
     public static List<EventPartBriefDto> convertToBriefDto(List<Event> events, Language language) {
         List<EventPartBriefDto> eventPartBriefDtos = new ArrayList<>();
 
         for (Event event : events) {
-            for (int i = 0; i < event.getDays().size(); i++) {
-                eventPartBriefDtos.add(convertToBriefDto(event, i, language));
+            for (EventDays eventDays : event.getDays()) {
+                eventPartBriefDtos.add(convertToBriefDto(event, eventDays, language));
             }
         }
 
