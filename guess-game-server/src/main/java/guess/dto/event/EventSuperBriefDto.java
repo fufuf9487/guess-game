@@ -15,14 +15,16 @@ public class EventSuperBriefDto {
     private final long eventTypeId;
     private final long organizerId;
     private final String name;
-    private final LocalDate startDate;
-    private final LocalDate endDate;
+    private final List<EventDaysDto> days;
+    private final LocalDate startDate;  //TODO: delete
+    private final LocalDate endDate;    //TODO: delete
 
-    public EventSuperBriefDto(long id, long eventTypeId, long organizerId, String name, LocalDate startDate, LocalDate endDate) {
+    public EventSuperBriefDto(long id, long eventTypeId, long organizerId, String name, List<EventDaysDto> days, LocalDate startDate, LocalDate endDate) {
         this.id = id;
         this.eventTypeId = eventTypeId;
         this.organizerId = organizerId;
         this.name = name;
+        this.days = days;
         this.startDate = startDate;
         this.endDate = endDate;
     }
@@ -43,6 +45,10 @@ public class EventSuperBriefDto {
         return name;
     }
 
+    public List<EventDaysDto> getDays() {
+        return days;
+    }
+
     public LocalDate getStartDate() {
         return startDate;
     }
@@ -57,6 +63,7 @@ public class EventSuperBriefDto {
                 event.getEventType().getId(),
                 event.getEventType().getOrganizer().getId(),
                 LocalizationUtils.getString(event.getName(), language),
+                EventDaysDto.convertToDto(event.getDays(), language),
                 event.getStartDate(),
                 event.getEndDate());
     }

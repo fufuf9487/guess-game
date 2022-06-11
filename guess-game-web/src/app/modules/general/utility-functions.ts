@@ -1,6 +1,7 @@
 import { formatDate } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 import { Event } from '../../shared/models/event/event.model';
+import { EventDays } from '../../shared/models/event/event-days.model';
 import { EventType } from '../../shared/models/event-type/event-type.model';
 import { Talk } from '../../shared/models/talk/talk.model';
 import { Speaker } from '../../shared/models/speaker/speaker.model';
@@ -65,10 +66,20 @@ export function findEventById(id: number, events: Event[]): Event {
   return null;
 }
 
+export function isEventDaysStartDateVisible(eventDays: EventDays): boolean {
+  return !!eventDays.startDate;
+}
+
+// TODO: delete
 export function isEventStartDateVisible(event: Event): boolean {
   return !!event.startDate;
 }
 
+export function isEventDaysEndDateVisible(eventDays: EventDays): boolean {
+  return (eventDays.startDate && eventDays.endDate && (eventDays.startDate !== eventDays.endDate));
+}
+
+// TODO: delete
 export function isEventEndDateVisible(event: Event): boolean {
   return (event.startDate && event.endDate && (event.startDate !== event.endDate));
 }
@@ -77,10 +88,38 @@ export function isEventDateParenthesesVisible(event: Event): boolean {
   return (isEventStartDateVisible(event) || isEventEndDateVisible(event));
 }
 
+export function isEventDaysHyphenVisible(eventDays: EventDays): boolean {
+  return (isEventDaysStartDateVisible(eventDays) && isEventDaysEndDateVisible(eventDays));
+}
+
+// TODO: delete
 export function isEventHyphenVisible(event: Event): boolean {
   return (isEventStartDateVisible(event) && isEventEndDateVisible(event));
 }
 
+export function getEventDaysDates(eventDays: EventDays, translateService: TranslateService): string {
+  const isEventDaysStartDateVisibleFlag = isEventDaysStartDateVisible(eventDays);
+  const isEventDaysHyphenVisibleFlag = isEventDaysHyphenVisible(eventDays);
+  const isEventDaysEndDateVisibleFlag = isEventDaysEndDateVisible(eventDays);
+
+  let result = '';
+
+  if (isEventDaysStartDateVisibleFlag) {
+    result += formatDate(eventDays.startDate, 'shortDate', translateService.currentLang, undefined);
+  }
+
+  if (isEventDaysHyphenVisibleFlag) {
+    result += ' – ';
+  }
+
+  if (isEventDaysEndDateVisibleFlag) {
+    result += formatDate(eventDays.endDate, 'shortDate', translateService.currentLang, undefined);
+  }
+
+  return result;
+}
+
+// TODO: delete
 export function getEventDates(event: Event, translateService: TranslateService): string {
   const isEventStartDateVisibleFlag = isEventStartDateVisible(event);
   const isEventHyphenVisibleFlag = isEventHyphenVisible(event);
@@ -104,18 +143,23 @@ export function getEventDates(event: Event, translateService: TranslateService):
 }
 
 export function getEventDisplayName(event: Event, translateService: TranslateService): string {
-  const isEventDateParenthesesVisibleFlag = isEventDateParenthesesVisible(event);
-
   let displayName = event.name;
 
-  if (isEventDateParenthesesVisibleFlag) {
-    displayName += ' (';
+  const eventDates: string[] = [];
+
+  if (event.days) {
+    event.days.map(ed => {
+        const eventDaysDates = getEventDaysDates(ed, translateService);
+
+        if ((eventDaysDates) && (eventDaysDates.length > 0)) {
+          eventDates.push(eventDaysDates);
+        }
+      }
+    );
   }
 
-  displayName += getEventDates(event, translateService);
-
-  if (isEventDateParenthesesVisibleFlag) {
-    displayName += ')';
+  if (eventDates.length > 0) {
+    displayName += ` (${eventDates.join(', ')})`;
   }
 
   return displayName;

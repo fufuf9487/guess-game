@@ -19,7 +19,8 @@ public class EventBriefDto extends EventSuperBriefDto {
     public EventBriefDto(EventSuperBriefDto eventSuperBriefDto, long duration, String placeCity, String placeVenueAddress,
                          String eventTypeLogoFileName) {
         super(eventSuperBriefDto.getId(), eventSuperBriefDto.getEventTypeId(), eventSuperBriefDto.getOrganizerId(),
-                eventSuperBriefDto.getName(), eventSuperBriefDto.getStartDate(), eventSuperBriefDto.getEndDate());
+                eventSuperBriefDto.getName(), eventSuperBriefDto.getDays(), eventSuperBriefDto.getStartDate(),
+                eventSuperBriefDto.getEndDate());
         this.duration = duration;
         this.placeCity = placeCity;
         this.placeVenueAddress = placeVenueAddress;

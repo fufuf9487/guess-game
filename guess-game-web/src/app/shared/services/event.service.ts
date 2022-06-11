@@ -18,7 +18,7 @@ export class EventService {
   constructor(private http: HttpClient, private messageService: MessageService) {
   }
 
-  getEvents(isConferences: boolean, isMeetups: boolean, organizer: Organizer, eventType: EventType): Observable<Event[]> {
+  getEventHttpParams(isConferences: boolean, isMeetups: boolean, organizer: Organizer, eventType: EventType): HttpParams {
     let params = new HttpParams()
       .set('conferences', isConferences.toString())
       .set('meetups', isMeetups.toString());
@@ -28,6 +28,12 @@ export class EventService {
     if (eventType) {
       params = params.set('eventTypeId', eventType.id.toString());
     }
+
+    return params;
+  }
+
+  getEvents(isConferences: boolean, isMeetups: boolean, organizer: Organizer, eventType: EventType): Observable<Event[]> {
+    const params = this.getEventHttpParams(isConferences, isMeetups, organizer, eventType);
 
     return this.http.get<Event[]>(`${this.baseUrl}/events`, {params: params})
       .pipe(
@@ -39,15 +45,7 @@ export class EventService {
   }
 
   getEventParts(isConferences: boolean, isMeetups: boolean, organizer: Organizer, eventType: EventType): Observable<EventPart[]> {
-    let params = new HttpParams()
-      .set('conferences', isConferences.toString())
-      .set('meetups', isMeetups.toString());
-    if (organizer) {
-      params = params.set('organizerId', organizer.id.toString());
-    }
-    if (eventType) {
-      params = params.set('eventTypeId', eventType.id.toString());
-    }
+    const params = this.getEventHttpParams(isConferences, isMeetups, organizer, eventType);
 
     return this.http.get<EventPart[]>(`${this.baseUrl}/event-parts`, {params: params})
       .pipe(
