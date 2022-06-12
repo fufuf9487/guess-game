@@ -4,9 +4,7 @@ import guess.dao.EventDao;
 import guess.dao.EventTypeDao;
 import guess.domain.auxiliary.EventDateMinTrackTime;
 import guess.domain.auxiliary.EventMinTrackTimeEndDayTime;
-import guess.domain.source.Event;
-import guess.domain.source.EventPart;
-import guess.domain.source.Talk;
+import guess.domain.source.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -65,9 +63,22 @@ public class EventServiceImpl implements EventService {
                 .toList();
     }
 
-    public EventPart getDefaultEventPart(boolean isConferences, boolean isMeetups, LocalDateTime dateTime) {
+    EventPart getDefaultEventPart(boolean isConferences, boolean isMeetups, LocalDateTime dateTime) {
         //TODO: implement
-        return null;
+        return getEventPartFromEvent(getDefaultEvent(isConferences, isMeetups, dateTime), dateTime);
+    }
+
+    EventPart getEventPartFromEvent(Event event, LocalDateTime dateTime) {
+        if (event == null) {
+            return null;
+        } else {
+            if (event.getDays() == null) {
+                return null;
+            } else {
+                //TODO: implement
+                return null;
+            }
+        }
     }
 
     //TODO: delete
@@ -209,5 +220,36 @@ public class EventServiceImpl implements EventService {
     @Override
     public Event getEventByTalk(Talk talk) {
         return eventDao.getEventByTalk(talk);
+    }
+
+    @Override
+    public List<EventPart> createEventParts(Event event) {
+        return event.getDays().stream()
+                .map(d -> new EventPart(
+                        new Nameable(
+                                event.getId(),
+                                event.getName()
+                        ),
+                        event.getEventType(),
+                        new EventPart.EventDates(
+                                d.getStartDate(),
+                                d.getEndDate()
+                        ),
+                        new AbstractEvent.EventLinks(
+                                event.getSiteLink(),
+                                event.getYoutubeLink()
+                        ),
+                        d.getPlace(),
+                        event.getTimeZone(),
+                        event.getTalks()
+                ))
+                .toList();
+    }
+
+    @Override
+    public List<EventPart> createEventParts(List<Event> events) {
+        return events.stream()
+                .flatMap(e -> createEventParts(e).stream())
+                .toList();
     }
 }

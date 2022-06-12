@@ -59,10 +59,12 @@ public class EventPartBriefDto extends EventPartSuperBriefDto {
                 logoFileName);
     }
 
+    //TODO: delete
     public static EventPartBriefDto convertToBriefDto(Event event, EventDays eventDays, Language language) {
         return convertToBriefDto(convertToSuperBriefDto(event, eventDays, language), event, eventDays, language);
     }
 
+    //TODO: delete
     public static List<EventPartBriefDto> convertToBriefDto(List<Event> events, Language language) {
         List<EventPartBriefDto> eventPartBriefDtos = new ArrayList<>();
 
@@ -74,4 +76,13 @@ public class EventPartBriefDto extends EventPartSuperBriefDto {
 
         return eventPartBriefDtos;
     }
+
+//    public static EventPartBriefDto convertToBriefDto(EventPart eventPart, Language language) {
+//        return convertToBriefDto(convertToSuperBriefDto(eventPart, language), eventPart, language);
+//    }
+
+//    public static List<EventPartBriefDto> convertToBriefDto(List<EventPart> eventParts, Language language) {
+//        return eventParts.stream()
+//                .map(ep -> convertToBriefDto(ep, language));        
+//    }
 }
