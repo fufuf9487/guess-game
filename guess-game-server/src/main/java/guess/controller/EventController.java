@@ -77,14 +77,6 @@ public class EventController {
         return (defaultEvent != null) ? EventHomeInfoDto.convertToDto(defaultEvent, language) : null;
     }
 
-    @GetMapping("/default-conference")
-    public EventSuperBriefDto getDefaultConference(HttpSession httpSession) {
-        var defaultEvent = eventService.getDefaultEvent(true, false);
-        var language = localeService.getLanguage(httpSession);
-
-        return (defaultEvent != null) ? EventSuperBriefDto.convertToSuperBriefDto(defaultEvent, language) : null;
-    }
-
     @GetMapping("/event/{id}")
     public EventDetailsDto getEvent(@PathVariable long id, HttpSession httpSession) {
         var event = eventService.getEventById(id);

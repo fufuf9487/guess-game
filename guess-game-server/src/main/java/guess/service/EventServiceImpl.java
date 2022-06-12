@@ -5,6 +5,7 @@ import guess.dao.EventTypeDao;
 import guess.domain.auxiliary.EventDateMinTrackTime;
 import guess.domain.auxiliary.EventMinTrackTimeEndDayTime;
 import guess.domain.source.Event;
+import guess.domain.source.EventPart;
 import guess.domain.source.Talk;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,6 +49,12 @@ public class EventServiceImpl implements EventService {
         return getDefaultEvent(isConferences, isMeetups, LocalDateTime.now(ZoneId.of("UTC")));
     }
 
+    @Override
+    public EventPart getDefaultEventPart(boolean isConferences, boolean isMeetups) {
+        return getDefaultEventPart(isConferences, isMeetups, LocalDateTime.now(ZoneId.of("UTC")));
+    }
+
+    //TODO: delete
     List<Event> getEventsFromDateTime(boolean isConferences, boolean isMeetups, LocalDateTime dateTime) {
         // Find current and future events
         List<Event> eventsFromDate = eventDao.getEventsFromDateTime(dateTime);
@@ -58,6 +65,12 @@ public class EventServiceImpl implements EventService {
                 .toList();
     }
 
+    public EventPart getDefaultEventPart(boolean isConferences, boolean isMeetups, LocalDateTime dateTime) {
+        //TODO: implement
+        return null;
+    }
+
+    //TODO: delete
     Event getDefaultEvent(boolean isConferences, boolean isMeetups, LocalDateTime dateTime) {
         // Find current and future conferences
         List<Event> conferencesFromDate = getEventsFromDateTime(isConferences, isMeetups, dateTime);

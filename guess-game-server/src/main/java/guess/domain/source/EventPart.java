@@ -1,46 +1,33 @@
 package guess.domain.source;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Event.
+ * Event part.
  */
-public class Event extends AbstractEvent {
-    //TODO: delete
+public class EventPart extends AbstractEvent {
     public record EventDates(LocalDate startDate, LocalDate endDate) {
     }
 
-    private List<EventDays> days;
-    private LocalDate startDate;    //TODO: delete
-    private LocalDate endDate;      //TODO: delete
+    private LocalDate startDate;
+    private LocalDate endDate;
 
-    private long placeId;           //TODO: delete
-    private Place place;            //TODO: delete
+    private long placeId;
+    private Place place;
 
-    public Event() {
+    public EventPart() {
     }
 
-    public Event(Nameable nameable, EventType eventType, List<EventDays> days, EventDates dates, EventLinks links, Place place,
-                 String timeZone, List<Talk> talks) {
+    public EventPart(Nameable nameable, EventType eventType, EventDates dates, EventLinks links, Place place,
+                     String timeZone, List<Talk> talks) {
         super(nameable, eventType, links, timeZone, talks);
 
-        this.days = days;
-        this.startDate = dates.startDate;   //TODO: delete
-        this.endDate = dates.endDate;       //TODO: delete
+        this.startDate = dates.startDate;
+        this.endDate = dates.endDate;
 
-        this.place = place;                 //TODO: delete
-        this.placeId = place.getId();       //TODO: delete
-    }
-
-    public List<EventDays> getDays() {
-        return days;
-    }
-
-    public void setDays(List<EventDays> days) {
-        this.days = days;
+        this.place = place;
+        this.placeId = place.getId();
     }
 
     public LocalDate getStartDate() {
@@ -87,7 +74,7 @@ public class Event extends AbstractEvent {
 
     @Override
     public String toString() {
-        return "Event{" +
+        return "EventPart{" +
                 "id=" + getId() +
                 ", eventType=" + getEventType() +
                 ", name=" + getName() +
