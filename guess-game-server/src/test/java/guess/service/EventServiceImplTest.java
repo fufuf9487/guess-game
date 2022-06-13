@@ -5,10 +5,7 @@ import guess.dao.EventTypeDao;
 import guess.domain.Conference;
 import guess.domain.auxiliary.EventDateMinTrackTime;
 import guess.domain.auxiliary.EventMinTrackTimeEndDayTime;
-import guess.domain.source.Event;
-import guess.domain.source.EventType;
-import guess.domain.source.Organizer;
-import guess.domain.source.Talk;
+import guess.domain.source.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -144,6 +141,16 @@ class EventServiceImplTest {
         event0 = new Event();
         event0.setId(0);
         event0.setEventType(eventType0);
+        event0.setDays(List.of(new EventDays(
+                EVENT_START_DATE0,
+                EVENT_END_DATE0,
+                new Place(
+                        0,
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        null
+                )
+        )));
         event0.setStartDate(EVENT_START_DATE0);
         event0.setEndDate(EVENT_END_DATE0);
         event0.setTalks(List.of(talk0));
@@ -151,6 +158,16 @@ class EventServiceImplTest {
         event1 = new Event();
         event1.setId(1);
         event1.setEventType(eventType1);
+        event1.setDays(List.of(new EventDays(
+                EVENT_START_DATE1,
+                EVENT_END_DATE1,
+                new Place(
+                        0,
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        null
+                )
+        )));
         event1.setStartDate(EVENT_START_DATE1);
         event1.setEndDate(EVENT_END_DATE1);
         event1.setTalks(List.of(talk1));
@@ -158,6 +175,16 @@ class EventServiceImplTest {
         event2 = new Event();
         event2.setId(2);
         event2.setEventType(eventType2);
+        event2.setDays(List.of(new EventDays(
+                EVENT_START_DATE2,
+                EVENT_END_DATE2,
+                new Place(
+                        0,
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        null
+                )
+        )));
         event2.setStartDate(EVENT_START_DATE2);
         event2.setEndDate(EVENT_END_DATE2);
         event2.setTalks(List.of(talk2));
@@ -165,23 +192,63 @@ class EventServiceImplTest {
         event3 = new Event();
         event3.setId(3);
         event3.setEventType(eventType3);
+        event3.setDays(List.of(new EventDays(
+                null,
+                null,
+                new Place(
+                        0,
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        null
+                )
+        )));
         event3.setTalks(List.of(talk2));
 
         event4 = new Event();
         event4.setId(4);
         event4.setEventType(eventType4);
+        event4.setDays(List.of(new EventDays(
+                EVENT_START_DATE4,
+                null,
+                new Place(
+                        0,
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        null
+                )
+        )));
         event4.setStartDate(EVENT_START_DATE4);
         event4.setTalks(List.of(talk2));
 
         event5 = new Event();
         event5.setId(5);
         event5.setEventType(eventType5);
+        event5.setDays(List.of(new EventDays(
+                null,
+                EVENT_END_DATE5,
+                new Place(
+                        0,
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        null
+                )
+        )));
         event5.setEndDate(EVENT_END_DATE5);
         event5.setTalks(List.of(talk2));
 
         event6 = new Event();
         event6.setId(6);
         event6.setEventType(eventType6);
+        event6.setDays(List.of(new EventDays(
+                EVENT_START_DATE6,
+                EVENT_END_DATE6,
+                new Place(
+                        0,
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        null
+                )
+        )));
         event6.setStartDate(EVENT_START_DATE6);
         event6.setEndDate(EVENT_END_DATE6);
         event6.setTalks(List.of(talk2));
