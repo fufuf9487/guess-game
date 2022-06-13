@@ -71,12 +71,12 @@ public class EventController {
         return (defaultEvent != null) ? EventSuperBriefDto.convertToSuperBriefDto(defaultEvent, language) : null;
     }
 
-    @GetMapping("/default-event-home-info")
-    public EventHomeInfoDto getDefaultEventHomeInfo(HttpSession httpSession) {
-        var defaultEvent = eventService.getDefaultEvent(true, true);
+    @GetMapping("/default-event-part-home-info")
+    public EventPartHomeInfoDto getDefaultEventPartHomeInfo(HttpSession httpSession) {
+        var defaultEventPart = eventService.getDefaultEventPart(true, true);
         var language = localeService.getLanguage(httpSession);
 
-        return (defaultEvent != null) ? EventHomeInfoDto.convertToDto(defaultEvent, language) : null;
+        return (defaultEventPart != null) ? EventPartHomeInfoDto.convertToDto(defaultEventPart, language) : null;
     }
 
     @GetMapping("/event/{id}")

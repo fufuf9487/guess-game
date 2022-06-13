@@ -85,7 +85,7 @@ public class SourceDaoImpl implements SourceDao {
         return sourceInformation.getEvents().stream()
                 .filter(e -> {
                     var zonedEndDateTime = ZonedDateTime.of(
-                            e.getEndDate(),
+                            e.getLastEndDate(),
                             LocalTime.of(0, 0, 0),
                             e.getFinalTimeZoneId());
                     ZonedDateTime zonedNextDayEndDateTime = zonedEndDateTime.plus(1, ChronoUnit.DAYS);

@@ -1,8 +1,6 @@
 package guess.domain.source;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -83,6 +81,14 @@ public class Event extends AbstractEvent {
     @Override
     public int hashCode() {
         return super.hashCode();
+    }
+
+    public LocalDate getLastEndDate() {
+        if ((days != null) && !days.isEmpty()) {
+            return days.get(days.size() - 1).getEndDate();
+        } else {
+            return null;
+        }
     }
 
     @Override

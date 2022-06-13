@@ -66,8 +66,8 @@ export class EventService {
       );
   }
 
-  getDefaultEventHomeInfo(): Observable<Event> {
-    return this.http.get<Event>(`${this.baseUrl}/default-event-home-info`)
+  getDefaultEventPartHomeInfo(): Observable<EventPart> {
+    return this.http.get<EventPart>(`${this.baseUrl}/default-event-part-home-info`)
       .pipe(
         catchError((response: Response) => {
           this.messageService.reportMessage(response);
