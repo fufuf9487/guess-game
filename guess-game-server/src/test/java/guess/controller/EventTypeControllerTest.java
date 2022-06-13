@@ -2,6 +2,7 @@ package guess.controller;
 
 import guess.domain.Language;
 import guess.domain.source.*;
+import guess.service.EventService;
 import guess.service.EventTypeService;
 import guess.service.LocaleService;
 import org.junit.jupiter.api.DisplayName;
@@ -36,6 +37,9 @@ class EventTypeControllerTest {
 
     @MockBean
     private EventTypeService eventTypeService;
+
+    @MockBean
+    private EventService eventService;
 
     @MockBean
     private LocaleService localeService;
@@ -172,8 +176,21 @@ class EventTypeControllerTest {
 
         event0.setDays(List.of(eventDays0));
         event1.setDays(List.of(eventDays1));
+        
+        EventPart eventPart0 = new EventPart();
+        eventPart0.setId(0);
+        eventPart0.setEventType(eventType);
+        eventPart0.setStartDate(LocalDate.of(2020, 10, 29));
+        eventPart0.setEndDate(LocalDate.of(2020, 10, 29));
+
+        EventPart eventPart1 = new EventPart();
+        eventPart1.setId(1);
+        eventPart1.setEventType(eventType);
+        eventPart1.setStartDate(LocalDate.of(2020, 10, 30));
+        eventPart1.setEndDate(LocalDate.of(2020, 10, 30));
 
         given(eventTypeService.getEventTypeById(0)).willReturn(eventType);
+        given(eventService.convertEventsToEventParts(Mockito.anyList())).willReturn(List.of(eventPart0, eventPart1));
         given(localeService.getLanguage(httpSession)).willReturn(Language.ENGLISH);
 
         mvc.perform(get("/api/event-type/event-type/0")
