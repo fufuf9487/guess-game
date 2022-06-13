@@ -1,12 +1,10 @@
 package guess.dto.event;
 
 import guess.domain.Language;
-import guess.domain.source.Event;
-import guess.domain.source.EventDays;
+import guess.domain.source.EventPart;
 import guess.util.LocalizationUtils;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -53,25 +51,19 @@ public class EventPartSuperBriefDto {
         return endDate;
     }
 
-    public static EventPartSuperBriefDto convertToSuperBriefDto(Event event, EventDays eventDays, Language language) {
+    public static EventPartSuperBriefDto convertToSuperBriefDto(EventPart eventPart, Language language) {
         return new EventPartSuperBriefDto(
-                event.getId(),
-                event.getEventType().getId(),
-                event.getEventType().getOrganizer().getId(),
-                LocalizationUtils.getString(event.getName(), language),
-                eventDays.getStartDate(),
-                eventDays.getEndDate());
+                eventPart.getId(),
+                eventPart.getEventType().getId(),
+                eventPart.getEventType().getOrganizer().getId(),
+                LocalizationUtils.getString(eventPart.getName(), language),
+                eventPart.getStartDate(),
+                eventPart.getEndDate());
     }
 
-    public static List<EventPartSuperBriefDto> convertToSuperBriefDto(List<Event> events, Language language) {
-        List<EventPartSuperBriefDto> eventPartSuperBriefDtos = new ArrayList<>();
-
-        for (Event event : events) {
-            for (EventDays eventDays : event.getDays()) {
-                eventPartSuperBriefDtos.add(convertToSuperBriefDto(event, eventDays, language));
-            }
-        }
-
-        return eventPartSuperBriefDtos;
+    public static List<EventPartSuperBriefDto> convertToSuperBriefDto(List<EventPart> eventParts, Language language) {
+        return eventParts.stream()
+                .map(ep -> convertToSuperBriefDto(ep, language))
+                .toList();
     }
 }

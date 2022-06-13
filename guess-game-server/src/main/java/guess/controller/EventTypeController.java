@@ -6,6 +6,7 @@ import guess.dto.event.EventPartBriefDto;
 import guess.dto.eventtype.EventTypeBriefDto;
 import guess.dto.eventtype.EventTypeDetailsDto;
 import guess.dto.eventtype.EventTypeSuperBriefDto;
+import guess.service.EventService;
 import guess.service.EventTypeService;
 import guess.service.LocaleService;
 import guess.util.LocalizationUtils;
@@ -23,11 +24,13 @@ import java.util.List;
 @RequestMapping("/api/event-type")
 public class EventTypeController {
     private final EventTypeService eventTypeService;
+    private final EventService eventService;
     private final LocaleService localeService;
 
     @Autowired
-    public EventTypeController(EventTypeService eventTypeService, LocaleService localeService) {
+    public EventTypeController(EventTypeService eventTypeService, EventService eventService, LocaleService localeService) {
         this.eventTypeService = eventTypeService;
+        this.eventService = eventService;
         this.localeService = localeService;
     }
 
@@ -63,8 +66,9 @@ public class EventTypeController {
     @GetMapping("/event-type/{id}")
     public EventTypeDetailsDto getEventType(@PathVariable long id, HttpSession httpSession) {
         var eventType = eventTypeService.getEventTypeById(id);
+        var eventParts = eventService.convertEventsToEventParts(eventType.getEvents());
         var language = localeService.getLanguage(httpSession);
-        var eventTypeDetailsDto = EventTypeDetailsDto.convertToDto(eventType, eventType.getEvents(), language);
+        var eventTypeDetailsDto = EventTypeDetailsDto.convertToDto(eventType, eventParts, language);
 
         List<EventPartBriefDto> sortedEvents = eventTypeDetailsDto.eventParts().stream()
                 .sorted(Comparator.comparing(EventPartBriefDto::getStartDate).reversed())

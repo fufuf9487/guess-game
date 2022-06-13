@@ -21,7 +21,7 @@ public interface EventService {
 
     Event getEventByTalk(Talk talk);
 
-    List<EventPart> createEventParts(Event event);
+    List<EventPart> convertEventToEventParts(Event event);
 
-    List<EventPart> createEventParts(List<Event> events);
+    List<EventPart> convertEventsToEventParts(List<Event> events);
 }

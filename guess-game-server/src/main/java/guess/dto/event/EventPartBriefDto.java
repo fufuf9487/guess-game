@@ -1,12 +1,10 @@
 package guess.dto.event;
 
 import guess.domain.Language;
-import guess.domain.source.Event;
-import guess.domain.source.EventDays;
+import guess.domain.source.EventPart;
 import guess.util.LocalizationUtils;
 
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,12 +42,12 @@ public class EventPartBriefDto extends EventPartSuperBriefDto {
         return eventTypeLogoFileName;
     }
 
-    public static EventPartBriefDto convertToBriefDto(EventPartSuperBriefDto eventPartSuperBriefDto, Event event, EventDays eventDays, Language language) {
+    public static EventPartBriefDto convertToBriefDto(EventPartSuperBriefDto eventPartSuperBriefDto, EventPart eventPart, Language language) {
         long duration = (ChronoUnit.DAYS.between(eventPartSuperBriefDto.getStartDate(), eventPartSuperBriefDto.getEndDate()) + 1);
-        var place = eventDays.getPlace();
+        var place = eventPart.getPlace();
         String placeCity = (place != null) ? LocalizationUtils.getString(place.getCity(), language) : null;
         String placeVenueAddress = (place != null) ? LocalizationUtils.getString(place.getVenueAddress(), language) : null;
-        String logoFileName = (event.getEventType() != null) ? event.getEventType().getLogoFileName() : null;
+        String logoFileName = (eventPart.getEventType() != null) ? eventPart.getEventType().getLogoFileName() : null;
 
         return new EventPartBriefDto(
                 eventPartSuperBriefDto,
@@ -59,30 +57,13 @@ public class EventPartBriefDto extends EventPartSuperBriefDto {
                 logoFileName);
     }
 
-    //TODO: delete
-    public static EventPartBriefDto convertToBriefDto(Event event, EventDays eventDays, Language language) {
-        return convertToBriefDto(convertToSuperBriefDto(event, eventDays, language), event, eventDays, language);
+    public static EventPartBriefDto convertToBriefDto(EventPart eventPart, Language language) {
+        return convertToBriefDto(convertToSuperBriefDto(eventPart, language), eventPart, language);
     }
 
-    //TODO: delete
-    public static List<EventPartBriefDto> convertToBriefDto(List<Event> events, Language language) {
-        List<EventPartBriefDto> eventPartBriefDtos = new ArrayList<>();
-
-        for (Event event : events) {
-            for (EventDays eventDays : event.getDays()) {
-                eventPartBriefDtos.add(convertToBriefDto(event, eventDays, language));
-            }
-        }
-
-        return eventPartBriefDtos;
+    public static List<EventPartBriefDto> convertToBriefDto(List<EventPart> eventParts, Language language) {
+        return eventParts.stream()
+                .map(ep -> convertToBriefDto(ep, language))
+                .toList();
     }
-
-//    public static EventPartBriefDto convertToBriefDto(EventPart eventPart, Language language) {
-//        return convertToBriefDto(convertToSuperBriefDto(eventPart, language), eventPart, language);
-//    }
-
-//    public static List<EventPartBriefDto> convertToBriefDto(List<EventPart> eventParts, Language language) {
-//        return eventParts.stream()
-//                .map(ep -> convertToBriefDto(ep, language));        
-//    }
 }

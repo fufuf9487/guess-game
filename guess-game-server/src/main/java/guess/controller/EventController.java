@@ -1,6 +1,7 @@
 package guess.controller;
 
 import guess.domain.source.Event;
+import guess.domain.source.EventPart;
 import guess.domain.source.Speaker;
 import guess.domain.source.Talk;
 import guess.dto.company.CompanyBriefDto;
@@ -54,9 +55,10 @@ public class EventController {
                                                  @RequestParam(required = false) Long organizerId,
                                                  @RequestParam(required = false) Long eventTypeId, HttpSession httpSession) {
         List<Event> events = eventService.getEvents(conferences, meetups, organizerId, eventTypeId);
+        List<EventPart> eventParts = eventService.convertEventsToEventParts(events);
         var language = localeService.getLanguage(httpSession);
 
-        return EventPartBriefDto.convertToBriefDto(events, language).stream()
+        return EventPartBriefDto.convertToBriefDto(eventParts, language).stream()
                 .sorted(Comparator.comparing(EventPartBriefDto::getStartDate).reversed())
                 .toList();
     }

@@ -223,7 +223,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventPart> createEventParts(Event event) {
+    public List<EventPart> convertEventToEventParts(Event event) {
         return event.getDays().stream()
                 .map(d -> new EventPart(
                         new Nameable(
@@ -247,9 +247,9 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventPart> createEventParts(List<Event> events) {
+    public List<EventPart> convertEventsToEventParts(List<Event> events) {
         return events.stream()
-                .flatMap(e -> createEventParts(e).stream())
+                .flatMap(e -> convertEventToEventParts(e).stream())
                 .toList();
     }
 }
