@@ -23,10 +23,10 @@ public abstract class AbstractEvent extends Nameable {
     private List<Long> talkIds;
     private List<Talk> talks = new ArrayList<>();
 
-    public AbstractEvent() {
+    protected AbstractEvent() {
     }
 
-    public AbstractEvent(Nameable nameable, EventType eventType, EventLinks links, String timeZone, List<Talk> talks) {
+    protected AbstractEvent(Nameable nameable, EventType eventType, EventLinks links, String timeZone, List<Talk> talks) {
         super(nameable.getId(), nameable.getName());
 
         this.eventType = eventType;
