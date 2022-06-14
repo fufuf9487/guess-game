@@ -55,12 +55,57 @@ class OlapDaoImplTest {
         Place place0 = new Place(0, List.of(new LocaleItem(Language.ENGLISH.getCode(), "City0")), Collections.emptyList(), null);
         Place place1 = new Place(1, List.of(new LocaleItem(Language.ENGLISH.getCode(), "City1")), Collections.emptyList(), null);
 
+        EventDays eventDays0 = new EventDays(
+                LocalDate.of(2020, 9, 5),
+                LocalDate.of(2020, 9, 6),
+                new Place(
+                        0,
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        null
+                )
+        );
+
+        EventDays eventDays1 = new EventDays(
+                LocalDate.of(2021, 10, 7),
+                LocalDate.of(2021, 10, 9),
+                new Place(
+                        0,
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        null
+                )
+        );
+
+        EventDays eventDays2 = new EventDays(
+                LocalDate.of(2021, 5, 1),
+                LocalDate.of(2021, 5, 2),
+                new Place(
+                        0,
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        null
+                )
+        );
+
+        EventDays eventDays3 = new EventDays(
+                LocalDate.of(2021, 6, 10),
+                LocalDate.of(2021, 6, 12),
+                new Place(
+                        0,
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        null
+                )
+        );
+
         event0 = new Event();
         event0.setId(0);
         event0.setEventTypeId(eventType0.getId());
         event0.setEventType(eventType0);
         eventType0.setEvents(List.of(event0));
         event0.setPlace(place0);
+        event0.setDays(List.of(eventDays0));
         event0.setStartDate(LocalDate.of(2020, 9, 5));
         event0.setEndDate(LocalDate.of(2020, 9, 6));
 
@@ -70,6 +115,7 @@ class OlapDaoImplTest {
         event1.setEventType(eventType1);
         eventType1.setEvents(List.of(event1));
         event1.setPlace(place1);
+        event1.setDays(List.of(eventDays1));
         event1.setStartDate(LocalDate.of(2021, 10, 7));
         event1.setEndDate(LocalDate.of(2021, 10, 9));
 
@@ -79,12 +125,14 @@ class OlapDaoImplTest {
         event2.setEventType(eventType2);
         eventType2.setEvents(List.of(event2));
         event2.setPlace(place1);
+        event2.setDays(List.of(eventDays2));
         event2.setStartDate(LocalDate.of(2021, 5, 1));
         event2.setEndDate(LocalDate.of(2021, 5, 2));
 
         Event event3 = new Event();
         event3.setId(3);
         event3.setPlace(place1);
+        event3.setDays(List.of(eventDays3));
         event3.setStartDate(LocalDate.of(2021, 6, 10));
         event3.setEndDate(LocalDate.of(2021, 6, 12));
 

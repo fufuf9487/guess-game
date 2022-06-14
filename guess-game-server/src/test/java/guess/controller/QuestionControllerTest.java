@@ -89,7 +89,18 @@ class QuestionControllerTest {
         eventType0.setOrganizer(organizer0);
 
         EventDays eventDays0 = new EventDays(
+                LocalDate.of(2020, 10, 29),
                 null,
+                new Place(
+                        0,
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        null
+                )
+        );
+
+        EventDays eventDays1 = new EventDays(
+                LocalDate.of(2020, 10, 30),
                 null,
                 new Place(
                         0,
@@ -109,7 +120,7 @@ class QuestionControllerTest {
         event1.setId(1);
         event1.setStartDate(LocalDate.of(2020, 10, 30));
         event1.setEventType(eventType0);
-        event1.setDays(List.of(eventDays0));
+        event1.setDays(List.of(eventDays1));
 
         given(questionService.getEvents(List.of(0L, 1L))).willReturn(List.of(event0, event1));
         given(localeService.getLanguage(httpSession)).willReturn(Language.ENGLISH);
