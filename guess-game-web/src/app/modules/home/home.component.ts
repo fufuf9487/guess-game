@@ -4,7 +4,7 @@ import { EventPart } from '../../shared/models/event/event-part.model';
 import { HomeState } from '../../shared/models/home-state.model';
 import { EventService } from '../../shared/services/event.service';
 import { LocaleService } from '../../shared/services/locale.service';
-import { getEventDaysDates } from '../general/utility-functions';
+import { getEventDates } from '../general/utility-functions';
 
 @Component({
   selector: 'app-home',
@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit {
       this.eventService.getDefaultEventPartHomeInfo()
         .subscribe(data => {
           this.eventPart = data;
-          this.eventDates = (this.eventPart) ? getEventDaysDates(this.eventPart.startDate, this.eventPart.endDate, this.translateService) : null;
+          this.eventDates = (this.eventPart) ? getEventDates(this.eventPart.startDate, this.eventPart.endDate, this.translateService) : null;
           this.homeState = (this.eventPart) ? HomeState.DefaultStateFoundState : HomeState.DefaultStateNotFoundState;
         });
     }

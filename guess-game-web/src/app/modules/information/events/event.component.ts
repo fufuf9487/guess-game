@@ -5,7 +5,7 @@ import { EventDays } from '../../../shared/models/event/event-days.model';
 import { EventDetails } from '../../../shared/models/event/event-details.model';
 import { EventService } from '../../../shared/services/event.service';
 import {
-  getEventDaysDates,
+  getEventDates,
   getEventDisplayName,
   getSpeakersWithCompaniesString,
   getTalksWithSpeakersString
@@ -120,6 +120,6 @@ export class EventComponent implements OnInit {
   }
 
   getEventDays(eventDays: EventDays): string {
-    return getEventDaysDates(eventDays.startDate, eventDays.endDate, this.translateService);
+    return getEventDates(eventDays.startDate, eventDays.endDate, this.translateService);
   }
 }

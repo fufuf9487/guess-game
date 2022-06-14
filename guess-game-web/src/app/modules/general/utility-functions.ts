@@ -65,34 +65,34 @@ export function findEventById(id: number, events: Event[]): Event {
   return null;
 }
 
-export function isEventDaysStartDateVisible(startDate: Date): boolean {
+export function isEventStartDateVisible(startDate: Date): boolean {
   return !!startDate;
 }
 
-export function isEventDaysEndDateVisible(startDate: Date, endDate: Date): boolean {
+export function isEventEndDateVisible(startDate: Date, endDate: Date): boolean {
   return (startDate && endDate && (startDate !== endDate));
 }
 
-export function isEventDaysHyphenVisible(startDate: Date, endDate: Date): boolean {
-  return (isEventDaysStartDateVisible(startDate) && isEventDaysEndDateVisible(startDate, endDate));
+export function isEventHyphenVisible(startDate: Date, endDate: Date): boolean {
+  return (isEventStartDateVisible(startDate) && isEventEndDateVisible(startDate, endDate));
 }
 
-export function getEventDaysDates(startDate: Date, endDate: Date, translateService: TranslateService): string {
-  const isEventDaysStartDateVisibleFlag = isEventDaysStartDateVisible(startDate);
-  const isEventDaysHyphenVisibleFlag = isEventDaysHyphenVisible(startDate, endDate);
-  const isEventDaysEndDateVisibleFlag = isEventDaysEndDateVisible(startDate, endDate);
+export function getEventDates(startDate: Date, endDate: Date, translateService: TranslateService): string {
+  const isEventStartDateVisibleFlag = isEventStartDateVisible(startDate);
+  const isEventHyphenVisibleFlag = isEventHyphenVisible(startDate, endDate);
+  const isEventEndDateVisibleFlag = isEventEndDateVisible(startDate, endDate);
 
   let result = '';
 
-  if (isEventDaysStartDateVisibleFlag) {
+  if (isEventStartDateVisibleFlag) {
     result += formatDate(startDate, 'shortDate', translateService.currentLang, undefined);
   }
 
-  if (isEventDaysHyphenVisibleFlag) {
+  if (isEventHyphenVisibleFlag) {
     result += ' – ';
   }
 
-  if (isEventDaysEndDateVisibleFlag) {
+  if (isEventEndDateVisibleFlag) {
     result += formatDate(endDate, 'shortDate', translateService.currentLang, undefined);
   }
 
@@ -106,7 +106,7 @@ export function getEventDisplayName(event: Event, translateService: TranslateSer
 
   if (event.days) {
     event.days.map(ed => {
-        const eventDaysDates = getEventDaysDates(ed.startDate, ed.endDate, translateService);
+        const eventDaysDates = getEventDates(ed.startDate, ed.endDate, translateService);
 
         if ((eventDaysDates) && (eventDaysDates.length > 0)) {
           eventDates.push(eventDaysDates);
