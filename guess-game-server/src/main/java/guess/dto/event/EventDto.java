@@ -21,16 +21,13 @@ public class EventDto extends EventBriefDto {
     }
 
     private final EventDtoLinks links;
-    private final String mapCoordinates;
     private final String description;
 
     public EventDto(EventSuperBriefDto eventSuperBriefDto, EventBriefDto eventBriefDto, EventDtoLinks links,
-                    String mapCoordinates, String description) {
-        super(eventSuperBriefDto, eventBriefDto.getDuration(), eventBriefDto.getPlaceCity(), eventBriefDto.getPlaceVenueAddress(),
-                eventBriefDto.getEventTypeLogoFileName());
+                    String description) {
+        super(eventSuperBriefDto, eventBriefDto.getEventTypeLogoFileName());
 
         this.links = links;
-        this.mapCoordinates = mapCoordinates;
         this.description = description;
     }
 
@@ -40,10 +37,6 @@ public class EventDto extends EventBriefDto {
 
     public String getYoutubeLink() {
         return links.youtubeLink;
-    }
-
-    public String getMapCoordinates() {
-        return mapCoordinates;
     }
 
     public String getVkLink() {
@@ -76,8 +69,6 @@ public class EventDto extends EventBriefDto {
 
     public static EventDto convertToDto(Event event, Function<Event, EventType> eventEventTypeFunction, Language language) {
         var eventSuperBriefDto = convertToSuperBriefDto(event, language);
-        var place = event.getPlace();
-        String mapCoordinates = (place != null) ? place.getMapCoordinates() : null;
         var eventSiteLink = LocalizationUtils.getString(event.getSiteLink(), language);
         String eventYoutubeLink = event.getYoutubeLink();
 
@@ -94,7 +85,7 @@ public class EventDto extends EventBriefDto {
 
         return new EventDto(
                 eventSuperBriefDto,
-                convertToBriefDto(eventSuperBriefDto, event, language),
+                convertToBriefDto(eventSuperBriefDto, event),
                 new EventDtoLinks(
                         ((eventSiteLink != null) && !eventSiteLink.isEmpty()) ? eventSiteLink : eventTypeSiteLink,
                         ((eventYoutubeLink != null) && !eventYoutubeLink.isEmpty()) ? eventYoutubeLink : eventTypeYoutubeLink,
@@ -107,7 +98,6 @@ public class EventDto extends EventBriefDto {
                                 eventTypeHabrLink
                         )
                 ),
-                mapCoordinates,
                 description);
     }
 

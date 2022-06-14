@@ -7,7 +7,6 @@ export abstract class AbstractEvent {
     public siteLink?: string,
     public youtubeLink?: string,
     public eventTypeLogoFileName?: string,
-    public duration?: number,
     public displayName?: string,
     public vkLink?: string,
     public twitterLink?: string,
