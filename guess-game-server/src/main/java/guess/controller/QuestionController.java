@@ -57,11 +57,11 @@ public class QuestionController {
         List<Event> events = questionService.getEvents(eventTypeIds);
         var language = localeService.getLanguage(httpSession);
 
-        List<Event> sportedEvents = events.stream()
-                .sorted(Comparator.comparing(Event::getStartDate).reversed())
+        List<Event> sortedEvents = events.stream()
+                .sorted(Comparator.comparing(Event::getFirstStartDate).reversed())
                 .toList();
 
-        return EventSuperBriefDto.convertToSuperBriefDto(sportedEvents, language);
+        return EventSuperBriefDto.convertToSuperBriefDto(sortedEvents, language);
     }
 
     @GetMapping("/quantities")

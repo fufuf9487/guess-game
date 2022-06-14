@@ -106,7 +106,7 @@ public class OlapDaoImpl implements OlapDao {
         // Year dimension values
         IntSummaryStatistics summaryStatistics = eventTypeDao.getEventTypes().stream()
                 .flatMap(et -> et.getEvents().stream())
-                .map(e -> e.getStartDate().getYear())
+                .map(e -> e.getFirstStartDate().getYear())
                 .mapToInt(y -> y)
                 .summaryStatistics();
         Set<Integer> years = IntStream.rangeClosed(summaryStatistics.getMin(), summaryStatistics.getMax())
@@ -140,7 +140,7 @@ public class OlapDaoImpl implements OlapDao {
 
             for (Event event : eventType.getEvents()) {
                 // Year dimension
-                YearDimension yearDimension = new YearDimension(event.getStartDate().getYear());
+                YearDimension yearDimension = new YearDimension(event.getFirstStartDate().getYear());
 
                 // City dimension
                 CityDimension cityDimension = new CityDimension(cityMap.get(event.getPlace().getCity()));

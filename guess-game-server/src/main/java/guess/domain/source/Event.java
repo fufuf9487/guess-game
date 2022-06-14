@@ -83,6 +83,14 @@ public class Event extends AbstractEvent {
         return super.hashCode();
     }
 
+    public LocalDate getFirstStartDate() {
+        if ((days != null) && !days.isEmpty()) {
+            return days.get(0).getStartDate();
+        } else {
+            return null;
+        }
+    }
+
     public LocalDate getLastEndDate() {
         if ((days != null) && !days.isEmpty()) {
             return days.get(days.size() - 1).getEndDate();

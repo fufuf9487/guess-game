@@ -44,7 +44,7 @@ public class EventController {
         var language = localeService.getLanguage(httpSession);
 
         List<Event> sortedEvents = events.stream()
-                .sorted(Comparator.comparing(Event::getStartDate).reversed())
+                .sorted(Comparator.comparing(Event::getFirstStartDate).reversed())
                 .toList();
 
         return EventBriefDto.convertToBriefDto(sortedEvents, language);
