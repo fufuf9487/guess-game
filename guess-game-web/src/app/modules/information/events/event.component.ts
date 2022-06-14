@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { EventDays } from '../../../shared/models/event/event-days.model';
 import { EventDetails } from '../../../shared/models/event/event-details.model';
-import { Event } from '../../../shared/models/event/event.model';
 import { EventService } from '../../../shared/services/event.service';
 import {
+  getEventDaysDates,
   getEventDisplayName,
   getSpeakersWithCompaniesString,
   getTalksWithSpeakersString
@@ -65,7 +66,6 @@ export class EventComponent implements OnInit {
   getEventDetailsWithFilledAttributes(eventDetails: EventDetails): EventDetails {
     if (eventDetails?.event) {
       eventDetails.event.displayName = getEventDisplayName(eventDetails.event, this.translateService);
-      eventDetails.event.displayPlace = this.getDisplayPlace(eventDetails.event);
     }
 
     if (eventDetails?.speakers) {
@@ -79,8 +79,12 @@ export class EventComponent implements OnInit {
     return eventDetails;
   }
 
-  isDisplayPlaceVisible() {
-    return ((this.eventDetails.event?.displayPlace) && (this.eventDetails.event.displayPlace.length > 0));
+  isDisplayPlacesVisible() {
+    return ((this.eventDetails.event?.days) && (this.eventDetails.event.days.length > 0));
+  }
+
+  isEventDaysVisible() {
+    return ((this.eventDetails.event?.days) && (this.eventDetails.event.days.length > 1));
   }
 
   isEventLinksVisible() {
@@ -97,21 +101,25 @@ export class EventComponent implements OnInit {
     return ((this.eventDetails.talks) && (this.eventDetails.talks.length > 0));
   }
 
-  getDisplayPlace(event: Event): string {
+  getDisplayPlace(eventDays: EventDays): string {
     let place = '';
 
-    if (event?.placeCity && (event.placeCity.length > 0)) {
-      place += event?.placeCity;
+    if (eventDays?.placeCity && (eventDays.placeCity.length > 0)) {
+      place += eventDays?.placeCity;
     }
 
-    if (place && (place.length > 0) && event?.placeVenueAddress && (event.placeVenueAddress.length > 0)) {
+    if (place && (place.length > 0) && eventDays?.placeVenueAddress && (eventDays.placeVenueAddress.length > 0)) {
       place += ', ';
     }
 
-    if (event?.placeVenueAddress && (event.placeVenueAddress.length > 0)) {
-      place += event?.placeVenueAddress;
+    if (eventDays?.placeVenueAddress && (eventDays.placeVenueAddress.length > 0)) {
+      place += eventDays?.placeVenueAddress;
     }
 
     return place;
+  }
+
+  getEventDays(eventDays: EventDays): string {
+    return getEventDaysDates(eventDays.startDate, eventDays.endDate, this.translateService);
   }
 }
