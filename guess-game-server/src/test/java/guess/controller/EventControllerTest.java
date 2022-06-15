@@ -265,8 +265,8 @@ class EventControllerTest {
         eventType0.setOrganizer(organizer0);
 
         EventDays eventDays0 = new EventDays(
-                null,
-                null,
+                LocalDate.of(2020, 10, 30),
+                LocalDate.of(2020, 10, 30),
                 new Place(
                         0,
                         Collections.emptyList(),

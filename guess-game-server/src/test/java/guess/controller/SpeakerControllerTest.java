@@ -190,8 +190,8 @@ class SpeakerControllerTest {
         eventType.setOrganizer(organizer);
 
         EventDays eventDays = new EventDays(
-                null,
-                null,
+                LocalDate.of(2020, 10, 30),
+                LocalDate.of(2020, 10, 31),
                 new Place(
                         0,
                         Collections.emptyList(),

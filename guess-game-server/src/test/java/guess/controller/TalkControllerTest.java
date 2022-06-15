@@ -17,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
@@ -79,8 +80,8 @@ class TalkControllerTest {
         eventType1.setEvents(List.of(event1));
 
         EventDays eventDays0 = new EventDays(
-                null,
-                null,
+                LocalDate.of(2020, 10, 30),
+                LocalDate.of(2020, 10, 31),
                 new Place(
                         0,
                         Collections.emptyList(),
@@ -103,12 +104,12 @@ class TalkControllerTest {
         given(localeService.getLanguage(httpSession)).willReturn(Language.ENGLISH);
 
         mvc.perform(get("/api/talk/talks")
-                .contentType(MediaType.APPLICATION_JSON)
-                .param("eventTypeId", "0")
-                .param("eventId", "1")
-                .param("talkName", "Talk")
-                .param("speakerName", "Speaker")
-                .session(httpSession))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("eventTypeId", "0")
+                        .param("eventId", "1")
+                        .param("talkName", "Talk")
+                        .param("speakerName", "Speaker")
+                        .session(httpSession))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].id", is(0)))
@@ -121,16 +122,40 @@ class TalkControllerTest {
     void getTalk() throws Exception {
         MockHttpSession httpSession = new MockHttpSession();
 
+        Organizer organizer = new Organizer();
+        organizer.setId(0);
+
+        EventType eventType = new EventType();
+        eventType.setId(0);
+        eventType.setOrganizer(organizer);
+
+        EventDays eventDays = new EventDays(
+                LocalDate.of(2020, 10, 30),
+                LocalDate.of(2020, 10, 31),
+                new Place(
+                        0,
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        null
+                )
+        );
+
+        Event event = new Event();
+        event.setId(0);
+        event.setEventType(eventType);
+        event.setDays(List.of(eventDays));
+
         Talk talk = new Talk();
         talk.setId(0);
         talk.setName(List.of(new LocaleItem(Language.ENGLISH.getCode(), "Name")));
 
         given(talkService.getTalkById(0)).willReturn(talk);
         given(localeService.getLanguage(httpSession)).willReturn(Language.ENGLISH);
+        given(eventService.getEventByTalk(talk)).willReturn(event);
 
         mvc.perform(get("/api/talk/talk/0")
-                .contentType(MediaType.APPLICATION_JSON)
-                .session(httpSession))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .session(httpSession))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.talk.id", is(0)))
                 .andExpect(jsonPath("$.talk.name", is("Name")));
