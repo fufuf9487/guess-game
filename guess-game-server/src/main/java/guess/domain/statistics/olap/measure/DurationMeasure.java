@@ -2,7 +2,6 @@ package guess.domain.statistics.olap.measure;
 
 import guess.domain.source.Event;
 
-import java.time.temporal.ChronoUnit;
 import java.util.Set;
 
 /**
@@ -16,8 +15,7 @@ public class DurationMeasure extends Measure<Event> {
     @Override
     public long calculateValue() {
         return entities.stream()
-                .flatMap(e -> e.getDays().stream())
-                .mapToLong(ed -> ChronoUnit.DAYS.between(ed.getStartDate(), ed.getEndDate()) + 1)
+                .mapToLong(Event::getDuration)
                 .sum();
     }
 }

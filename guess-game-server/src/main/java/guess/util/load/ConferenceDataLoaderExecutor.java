@@ -244,7 +244,7 @@ public class ConferenceDataLoaderExecutor {
 
         var resourceEvent = resourceOptionalEventType
                 .flatMap(et -> et.getEvents().stream()
-                        .filter(e -> e.getStartDate().equals(startDate))
+                        .filter(e -> e.getFirstStartDate().equals(startDate))
                         .findFirst())
                 .orElse(null);
         if (resourceEvent == null) {
@@ -253,7 +253,7 @@ public class ConferenceDataLoaderExecutor {
             log.info("Event (in resource files): nameEn: {}, nameRu: {}, startDate: {}, endDate: {}",
                     LocalizationUtils.getString(resourceEvent.getName(), Language.ENGLISH),
                     LocalizationUtils.getString(resourceEvent.getName(), Language.RUSSIAN),
-                    resourceEvent.getStartDate(), resourceEvent.getEndDate());
+                    resourceEvent.getFirstStartDate(), resourceEvent.getLastEndDate());
         }
 
         // Read event from CMS
@@ -262,7 +262,7 @@ public class ConferenceDataLoaderExecutor {
         log.info("Event (in CMS): nameEn: {}, nameRu: {}, startDate: {}, endDate: {}",
                 LocalizationUtils.getString(cmsEvent.getName(), Language.ENGLISH),
                 LocalizationUtils.getString(cmsEvent.getName(), Language.RUSSIAN),
-                cmsEvent.getStartDate(), cmsEvent.getEndDate());
+                cmsEvent.getFirstStartDate(), cmsEvent.getLastEndDate());
 
         // Read talks from CMS
         List<Talk> cmsTalks = cmsDataLoader.getTalks(conference, startDate, conferenceCode, loadSettings.ignoreDemoStage());
@@ -1688,7 +1688,7 @@ public class ConferenceDataLoaderExecutor {
         var resourceSourceInformation = YamlUtils.readSourceInformation();
         List<Event> events = resourceSourceInformation.getEvents().stream()
                 .filter(e -> e.getEventType().isEventTypeConference())
-                .sorted(Comparator.comparing(Event::getStartDate))
+                .sorted(Comparator.comparing(Event::getFirstStartDate))
                 .toList();
 
         events.forEach(event -> {
@@ -1855,11 +1855,9 @@ public class ConferenceDataLoaderExecutor {
     public static boolean needUpdate(Event a, Event b) {
         return !((a.getEventTypeId() == b.getEventTypeId()) &&
                 equals(a.getName(), b.getName()) &&
-                a.getStartDate().equals(b.getStartDate()) &&
-                a.getEndDate().equals(b.getEndDate()) &&
+                equals(a.getDays(), b.getDays()) &&
                 equals(a.getSiteLink(), b.getSiteLink()) &&
                 equals(a.getYoutubeLink(), b.getYoutubeLink()) &&
-                (a.getPlaceId() == b.getPlaceId()) &&
                 equals(a.getTalkIds(), b.getTalkIds()) &&
                 equals(a.getTimeZone(), b.getTimeZone()));
     }

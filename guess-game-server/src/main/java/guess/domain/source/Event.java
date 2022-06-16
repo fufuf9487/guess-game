@@ -1,6 +1,7 @@
 package guess.domain.source;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 /**
@@ -97,6 +98,12 @@ public class Event extends AbstractEvent {
         } else {
             return null;
         }
+    }
+
+    public long getDuration() {
+        return days.stream()
+                .mapToLong(ed -> ChronoUnit.DAYS.between(ed.getStartDate(), ed.getEndDate()) + 1)
+                .sum();
     }
 
     @Override

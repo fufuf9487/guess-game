@@ -521,7 +521,7 @@ class ConferenceDataLoaderExecutorTest {
                                     Object[] args = invocation.getArguments();
                                     List<LocaleItem> localeItems = (List<LocaleItem>) args[0];
                                     Language language = (Language) args[1];
-                                    
+
                                     if ((localeItems != null) && !localeItems.isEmpty()) {
                                         if (Language.ENGLISH.equals(language)) {
                                             return localeItems.get(0).getText();
@@ -3714,14 +3714,33 @@ class ConferenceDataLoaderExecutorTest {
     @DisplayName("needUpdate method tests (Event)")
     class NeedUpdateEventTest {
         private Stream<Arguments> data() {
+            final List<EventDays> VALID_EVENT_DAYS = List.of(new EventDays(
+                    LocalDate.of(2020, 8, 5),
+                    LocalDate.of(2020, 8, 6),
+                    new Place(
+                            0,
+                            Collections.emptyList(),
+                            Collections.emptyList(),
+                            null
+                    )
+            ));
+            final List<EventDays> INVALID_EVENT_DAYS = List.of(new EventDays(
+                    LocalDate.of(2020, 8, 6),
+                    LocalDate.of(2020, 8, 6),
+                    new Place(
+                            0,
+                            Collections.emptyList(),
+                            Collections.emptyList(),
+                            null
+                    )
+            ));
+
             Event event0 = new Event();
             event0.setEventTypeId(0);
             event0.setName(List.of(new LocaleItem("en", "name0")));
-            event0.setStartDate(LocalDate.of(2020, 8, 5));
-            event0.setEndDate(LocalDate.of(2020, 8, 6));
+            event0.setDays(VALID_EVENT_DAYS);
             event0.setSiteLink(List.of(new LocaleItem("en", "siteLink0")));
             event0.setYoutubeLink("youtubeLink0");
-            event0.setPlaceId(0);
             event0.setTalkIds(List.of(0L));
             event0.setTimeZone("Europe/Moscow");
 
@@ -3735,57 +3754,36 @@ class ConferenceDataLoaderExecutorTest {
             Event event3 = new Event();
             event3.setEventTypeId(0);
             event3.setName(List.of(new LocaleItem("en", "name0")));
-            event3.setStartDate(LocalDate.of(2020, 8, 6));
+            event3.setDays(INVALID_EVENT_DAYS);
 
             Event event4 = new Event();
             event4.setEventTypeId(0);
             event4.setName(List.of(new LocaleItem("en", "name0")));
-            event4.setStartDate(LocalDate.of(2020, 8, 5));
-            event4.setEndDate(LocalDate.of(2020, 8, 7));
+            event4.setDays(VALID_EVENT_DAYS);
+            event4.setSiteLink(List.of(new LocaleItem("en", "siteLink5")));
 
             Event event5 = new Event();
             event5.setEventTypeId(0);
             event5.setName(List.of(new LocaleItem("en", "name0")));
-            event5.setStartDate(LocalDate.of(2020, 8, 5));
-            event5.setEndDate(LocalDate.of(2020, 8, 6));
-            event5.setSiteLink(List.of(new LocaleItem("en", "siteLink5")));
+            event5.setDays(VALID_EVENT_DAYS);
+            event5.setSiteLink(List.of(new LocaleItem("en", "siteLink0")));
+            event5.setYoutubeLink("youtubeLink6");
 
             Event event6 = new Event();
             event6.setEventTypeId(0);
             event6.setName(List.of(new LocaleItem("en", "name0")));
-            event6.setStartDate(LocalDate.of(2020, 8, 5));
-            event6.setEndDate(LocalDate.of(2020, 8, 6));
+            event6.setDays(VALID_EVENT_DAYS);
             event6.setSiteLink(List.of(new LocaleItem("en", "siteLink0")));
-            event6.setYoutubeLink("youtubeLink6");
+            event6.setYoutubeLink("youtubeLink0");
+            event6.setTalkIds(List.of(8L));
 
             Event event7 = new Event();
             event7.setEventTypeId(0);
             event7.setName(List.of(new LocaleItem("en", "name0")));
-            event7.setStartDate(LocalDate.of(2020, 8, 5));
-            event7.setEndDate(LocalDate.of(2020, 8, 6));
+            event7.setDays(VALID_EVENT_DAYS);
             event7.setSiteLink(List.of(new LocaleItem("en", "siteLink0")));
             event7.setYoutubeLink("youtubeLink0");
-            event7.setPlaceId(7);
-
-            Event event8 = new Event();
-            event8.setEventTypeId(0);
-            event8.setName(List.of(new LocaleItem("en", "name0")));
-            event8.setStartDate(LocalDate.of(2020, 8, 5));
-            event8.setEndDate(LocalDate.of(2020, 8, 6));
-            event8.setSiteLink(List.of(new LocaleItem("en", "siteLink0")));
-            event8.setYoutubeLink("youtubeLink0");
-            event8.setPlaceId(0);
-            event8.setTalkIds(List.of(8L));
-
-            Event event9 = new Event();
-            event9.setEventTypeId(0);
-            event9.setName(List.of(new LocaleItem("en", "name0")));
-            event9.setStartDate(LocalDate.of(2020, 8, 5));
-            event9.setEndDate(LocalDate.of(2020, 8, 6));
-            event9.setSiteLink(List.of(new LocaleItem("en", "siteLink0")));
-            event9.setYoutubeLink("youtubeLink0");
-            event9.setPlaceId(0);
-            event9.setTalkIds(List.of(0L));
+            event7.setTalkIds(List.of(0L));
 
             return Stream.of(
                     arguments(event0, event0, false),
@@ -3795,9 +3793,7 @@ class ConferenceDataLoaderExecutorTest {
                     arguments(event0, event4, true),
                     arguments(event0, event5, true),
                     arguments(event0, event6, true),
-                    arguments(event0, event7, true),
-                    arguments(event0, event8, true),
-                    arguments(event0, event9, true)
+                    arguments(event0, event7, true)
             );
         }
 
