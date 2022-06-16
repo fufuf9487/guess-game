@@ -199,41 +199,59 @@ class StatisticsServiceImplTest {
         event0 = new Event();
         event0.setId(0);
         event0.setEventType(eventType0);
-        event0.setStartDate(EVENT_START_DATE0);
-        event0.setEndDate(EVENT_END_DATE0);
+        event0.setDays(List.of(new EventDays(
+                EVENT_START_DATE0,
+                EVENT_END_DATE0,
+                new Place()
+        )));
         event0.setTalks(List.of(talk0));
 
         event1 = new Event();
         event1.setId(1);
         event1.setEventType(eventType1);
-        event1.setStartDate(EVENT_START_DATE1);
-        event1.setEndDate(EVENT_END_DATE1);
+        event1.setDays(List.of(new EventDays(
+                EVENT_START_DATE1,
+                EVENT_END_DATE1,
+                new Place()
+        )));
         event1.setTalks(List.of(talk1));
 
         event2 = new Event();
         event2.setId(2);
         event2.setEventType(eventType2);
-        event2.setStartDate(EVENT_START_DATE2);
-        event2.setEndDate(EVENT_END_DATE2);
+        event2.setDays(List.of(new EventDays(
+                EVENT_START_DATE2,
+                EVENT_END_DATE2,
+                new Place()
+        )));
         event2.setTalks(List.of(talk2));
 
         event3 = new Event();
         event3.setId(3);
         event3.setEventType(eventType2);
-        event3.setStartDate(EVENT_START_DATE3);
-        event3.setEndDate(EVENT_END_DATE3);
+        event3.setDays(List.of(new EventDays(
+                EVENT_START_DATE3,
+                EVENT_END_DATE3,
+                new Place()
+        )));
 
         event4 = new Event();
         event4.setId(4);
         event4.setEventType(eventType2);
-        event4.setStartDate(EVENT_START_DATE4);
-        event4.setEndDate(EVENT_END_DATE4);
+        event4.setDays(List.of(new EventDays(
+                EVENT_START_DATE4,
+                EVENT_END_DATE4,
+                new Place()
+        )));
 
         event5 = new Event();
         event5.setId(5);
         event5.setEventType(eventType3);
-        event5.setStartDate(EVENT_START_DATE5);
-        event5.setEndDate(EVENT_END_DATE5);
+        event5.setDays(List.of(new EventDays(
+                EVENT_START_DATE5,
+                EVENT_END_DATE5,
+                new Place()
+        )));
 
         eventType0.setEvents(List.of(event0));
         eventType1.setEvents(List.of(event1));

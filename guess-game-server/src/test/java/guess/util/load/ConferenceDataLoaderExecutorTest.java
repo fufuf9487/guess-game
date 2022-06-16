@@ -296,7 +296,11 @@ class ConferenceDataLoaderExecutorTest {
 
             Event event0 = new Event();
             event0.setId(0);
-            event0.setStartDate(EVENT_DATE);
+            event0.setDays(List.of(new EventDays(
+                    EVENT_DATE,
+                    EVENT_DATE,
+                    place0
+            )));
             event0.setPlace(place0);
 
             EventType eventType0 = new EventType();
@@ -3025,36 +3029,61 @@ class ConferenceDataLoaderExecutorTest {
             Event event0 = new Event();
             event0.setEventType(eventType0);
             event0.setName(List.of(new LocaleItem(Language.ENGLISH.getCode(), "Name0")));
+            event0.setDays(List.of());
 
             Event event1 = new Event();
             event1.setEventType(eventType1);
             event1.setName(List.of(new LocaleItem(Language.ENGLISH.getCode(), "Name1")));
-            event1.setStartDate(now);
+            event1.setDays(List.of(new EventDays(
+                    now,
+                    null,
+                    new Place()
+            )));
 
             Event event2 = new Event();
             event2.setEventType(eventType1);
             event2.setName(List.of(new LocaleItem(Language.ENGLISH.getCode(), "Name2")));
-            event2.setStartDate(tomorrow);
+            event2.setDays(List.of(new EventDays(
+                    tomorrow,
+                    null,
+                    new Place()
+            )));
 
             Event event3 = new Event();
             event3.setEventType(eventType1);
             event3.setName(List.of(new LocaleItem(Language.ENGLISH.getCode(), "Name3")));
-            event3.setStartDate(yesterday);
+            event3.setDays(List.of(new EventDays(
+                    yesterday,
+                    null,
+                    new Place()
+            )));
 
             Event event4 = new Event();
             event4.setEventType(eventType1);
             event4.setName(List.of(new LocaleItem(Language.ENGLISH.getCode(), "Name4")));
-            event4.setStartDate(yesterday);
+            event4.setDays(List.of(new EventDays(
+                    yesterday,
+                    null,
+                    new Place()
+            )));
 
             Event event5 = new Event();
             event5.setEventType(eventType1);
             event5.setName(List.of(new LocaleItem(Language.ENGLISH.getCode(), "Name5")));
-            event5.setStartDate(yesterday);
+            event5.setDays(List.of(new EventDays(
+                    yesterday,
+                    null,
+                    new Place()
+            )));
 
             Event event6 = new Event();
             event6.setEventType(eventType1);
             event6.setName(List.of(new LocaleItem(Language.ENGLISH.getCode(), "Name6")));
-            event6.setStartDate(yesterday);
+            event6.setDays(List.of(new EventDays(
+                    yesterday,
+                    null,
+                    new Place()
+            )));
 
             Talk talk0 = new Talk();
 
