@@ -80,7 +80,8 @@ public class OlapDaoImpl implements OlapDao {
         var id = new AtomicLong(-1);
         Set<City> cities = eventTypeDao.getEventTypes().stream()
                 .flatMap(et -> et.getEvents().stream())
-                .map(e -> e.getPlace().getCity())
+                .flatMap(e -> e.getDays().stream())
+                .map(ed -> ed.getPlace().getCity())
                 .distinct()
                 .map(li -> new City(id.incrementAndGet(), li))
                 .collect(Collectors.toSet());

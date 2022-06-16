@@ -574,7 +574,7 @@ class ContentfulDataLoaderTest {
 
             assertEquals(expected, actual);
             assertEquals(expected.getName(), actual.getName());
-            assertEquals(expected.getEndDate(), actual.getEndDate());
+            assertEquals(expected.getDays(), actual.getDays());
             assertEquals(expected.getYoutubeLink(), actual.getYoutubeLink());
 
             String expectedMapCoordinates = (expected.getPlace() != null) ? expected.getPlace().getMapCoordinates() : null;
@@ -694,8 +694,7 @@ class ContentfulDataLoaderTest {
 
                     assertEquals(expectedEvent, event);
                     assertEquals(expectedEvent.getName(), event.getName());
-                    assertEquals(expectedEvent.getStartDate(), event.getStartDate());
-                    assertEquals(expectedEvent.getEndDate(), event.getEndDate());
+                    assertEquals(expectedEvent.getDays(), event.getDays());
                 } else {
                     assertThrows(expectedException, () -> contentfulDataLoader.getEvent(conference, startDate, conferenceCode, eventTemplate));
                 }
@@ -1643,8 +1642,7 @@ class ContentfulDataLoaderTest {
 
             if ((expected != null) && (event != null)) {
                 assertEquals(expected.getName(), event.getName());
-                assertEquals(expected.getStartDate(), event.getStartDate());
-                assertEquals(expected.getEndDate(), event.getEndDate());
+                assertEquals(expected.getDays(), event.getDays());
             }
         }
     }

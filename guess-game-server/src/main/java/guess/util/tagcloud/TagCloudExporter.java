@@ -55,14 +55,14 @@ public class TagCloudExporter {
 
         Optional<Event> resourceOptionalEvent = resourceOptionalEventType
                 .flatMap(et -> et.getEvents().stream()
-                        .filter(e -> e.getStartDate().equals(startDate))
+                        .filter(e -> e.getFirstStartDate().equals(startDate))
                         .findFirst());
         var resourceEvent = resourceOptionalEvent
                 .orElseThrow(() -> new IllegalStateException(String.format("No event found for start date %s (in resource files)", startDate)));
         log.info("Event (in resource files): nameEn: {}, nameRu: {}, startDate: {}, endDate: {}",
                 LocalizationUtils.getString(resourceEvent.getName(), Language.ENGLISH),
                 LocalizationUtils.getString(resourceEvent.getName(), Language.RUSSIAN),
-                resourceEvent.getStartDate(), resourceEvent.getEndDate());
+                resourceEvent.getFirstStartDate(), resourceEvent.getLastEndDate());
 
         export(resourceEvent.getTalks(), true, String.format("event%d.txt", resourceEvent.getId()));
     }
