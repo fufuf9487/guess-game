@@ -104,45 +104,25 @@ class OlapServiceImplTest {
         EventDays eventDays0 = new EventDays(
                 LocalDate.of(2020, 9, 5),
                 LocalDate.of(2020, 9, 6),
-                new Place(
-                        0,
-                        Collections.emptyList(),
-                        Collections.emptyList(),
-                        null
-                )
+                place0
         );
 
         EventDays eventDays1 = new EventDays(
                 LocalDate.of(2021, 10, 7),
                 LocalDate.of(2021, 10, 9),
-                new Place(
-                        0,
-                        Collections.emptyList(),
-                        Collections.emptyList(),
-                        null
-                )
+                place1
         );
 
         EventDays eventDays2 = new EventDays(
                 LocalDate.of(2021, 5, 1),
                 LocalDate.of(2021, 5, 2),
-                new Place(
-                        0,
-                        Collections.emptyList(),
-                        Collections.emptyList(),
-                        null
-                )
+                place2
         );
 
         EventDays eventDays3 = new EventDays(
                 LocalDate.of(2021, 6, 10),
                 LocalDate.of(2021, 6, 12),
-                new Place(
-                        0,
-                        Collections.emptyList(),
-                        Collections.emptyList(),
-                        null
-                )
+                place2
         );
 
         Event event0 = new Event();

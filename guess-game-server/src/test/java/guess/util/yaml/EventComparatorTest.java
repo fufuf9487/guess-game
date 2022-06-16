@@ -1,6 +1,8 @@
 package guess.util.yaml;
 
 import guess.domain.source.Event;
+import guess.domain.source.EventDays;
+import guess.domain.source.Place;
 import guess.domain.source.Talk;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -79,16 +81,32 @@ class EventComparatorTest {
             Event event1 = new Event();
 
             Event event2 = new Event();
-            event2.setStartDate(START_DATE0);
+            event2.setDays(List.of(new EventDays(
+                    START_DATE0,
+                    null,
+                    new Place()
+            )));
 
             Event event3 = new Event();
-            event3.setStartDate(START_DATE1);
+            event3.setDays(List.of(new EventDays(
+                    START_DATE1,
+                    null,
+                    new Place()
+            )));
 
             Event event4 = new Event();
-            event4.setStartDate(START_DATE2);
+            event4.setDays(List.of(new EventDays(
+                    START_DATE2,
+                    null,
+                    new Place()
+            )));
 
             Event event5 = new Event();
-            event5.setStartDate(START_DATE0);
+            event5.setDays(List.of(new EventDays(
+                    START_DATE0,
+                    null,
+                    new Place()
+            )));
 
             return Stream.of(
                     arguments(event0, event1, COMPARE_TRACK_TIME_RESULT, 0),

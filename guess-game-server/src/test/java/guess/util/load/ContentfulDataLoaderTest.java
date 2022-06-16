@@ -398,6 +398,11 @@ class ContentfulDataLoaderTest {
         private Stream<Arguments> data() {
             final String YOUTUBE_PLAY_LIST = "https://youtube.com";
             final String MAP_COORDINATES = "59.762236, 30.356121";
+            final String CITY_NAME0 = "City Name0";
+            final String CITY_NAME1 = "City Name1";
+            final String CITY_NAME2 = "City Name2";
+            final String CITY_NAME3 = "City Name3";
+            final String CITY_NAME4 = "City Name4";
 
             ContentfulSys contentfulSys0 = new ContentfulSys();
             contentfulSys0.setId("sys0");
@@ -481,26 +486,58 @@ class ContentfulDataLoaderTest {
             Event event0 = new Event();
             event0.setId(-1);
             event0.setName(List.of(new LocaleItem(Language.ENGLISH.getCode(), "Event Name0")));
-            event0.setStartDate(LocalDate.of(2020, 1, 1));
-            event0.setEndDate(LocalDate.of(2020, 1, 1));
+            event0.setDays(List.of(new EventDays(
+                    LocalDate.of(2020, 1, 1),
+                    LocalDate.of(2020, 1, 1),
+                    new Place(
+                            -1,
+                            List.of(new LocaleItem(Language.ENGLISH.getCode(), CITY_NAME0)),
+                            Collections.emptyList(),
+                            null
+                    )
+            )));
 
             Event event1 = new Event();
             event1.setId(-1);
             event1.setName(List.of(new LocaleItem(Language.ENGLISH.getCode(), "Наименование события1")));
-            event1.setStartDate(LocalDate.of(2020, 1, 1));
-            event1.setEndDate(LocalDate.of(2020, 1, 1));
+            event1.setDays(List.of(new EventDays(
+                    LocalDate.of(2020, 1, 1),
+                    LocalDate.of(2020, 1, 1),
+                    new Place(
+                            -1,
+                            List.of(new LocaleItem(Language.ENGLISH.getCode(), CITY_NAME1)),
+                            Collections.emptyList(),
+                            null
+                    )
+            )));
 
             Event event2 = new Event();
             event2.setId(-1);
             event2.setName(List.of(new LocaleItem(Language.ENGLISH.getCode(), "Event Name2")));
-            event2.setStartDate(LocalDate.of(2020, 1, 1));
-            event2.setEndDate(LocalDate.of(2020, 1, 2));
+            event2.setDays(List.of(new EventDays(
+                    LocalDate.of(2020, 1, 1),
+                    LocalDate.of(2020, 1, 2),
+                    new Place(
+                            -1,
+                            List.of(new LocaleItem(Language.ENGLISH.getCode(), CITY_NAME2)),
+                            Collections.emptyList(),
+                            null
+                    )
+            )));
 
             Event event3 = new Event();
             event3.setId(-1);
             event3.setName(List.of(new LocaleItem(Language.ENGLISH.getCode(), "Event Name3")));
-            event3.setStartDate(LocalDate.of(2020, 1, 1));
-            event3.setEndDate(LocalDate.of(2020, 1, 1));
+            event3.setDays(List.of(new EventDays(
+                    LocalDate.of(2020, 1, 1),
+                    LocalDate.of(2020, 1, 1),
+                    new Place(
+                            -1,
+                            List.of(new LocaleItem(Language.ENGLISH.getCode(), CITY_NAME3)),
+                            Collections.emptyList(),
+                            null
+                    )
+            )));
             event3.setYoutubeLink(YOUTUBE_PLAY_LIST);
 
             Place place4 = new Place();
@@ -509,30 +546,38 @@ class ContentfulDataLoaderTest {
             Event event4 = new Event();
             event4.setId(-1);
             event4.setName(List.of(new LocaleItem(Language.ENGLISH.getCode(), "Event Name4")));
-            event4.setStartDate(LocalDate.of(2020, 1, 1));
-            event4.setEndDate(LocalDate.of(2020, 1, 1));
+            event4.setDays(List.of(new EventDays(
+                    LocalDate.of(2020, 1, 1),
+                    LocalDate.of(2020, 1, 1),
+                    new Place(
+                            -1,
+                            List.of(new LocaleItem(Language.ENGLISH.getCode(), CITY_NAME3)),
+                            Collections.emptyList(),
+                            null
+                    )
+            )));
             event4.setPlace(place4);
 
             // Cities
             ContentfulCityFields contentfulCityFields0 = new ContentfulCityFields();
             contentfulCityFields0.setCityName(Map.of(
-                    ContentfulDataLoader.ENGLISH_LOCALE, "City Name0"));
+                    ContentfulDataLoader.ENGLISH_LOCALE, CITY_NAME0));
 
             ContentfulCityFields contentfulCityFields1 = new ContentfulCityFields();
             contentfulCityFields1.setCityName(Map.of(
-                    ContentfulDataLoader.ENGLISH_LOCALE, "City Name1"));
+                    ContentfulDataLoader.ENGLISH_LOCALE, CITY_NAME1));
 
             ContentfulCityFields contentfulCityFields2 = new ContentfulCityFields();
             contentfulCityFields2.setCityName(Map.of(
-                    ContentfulDataLoader.ENGLISH_LOCALE, "City Name2"));
+                    ContentfulDataLoader.ENGLISH_LOCALE, CITY_NAME2));
 
             ContentfulCityFields contentfulCityFields3 = new ContentfulCityFields();
             contentfulCityFields3.setCityName(Map.of(
-                    ContentfulDataLoader.ENGLISH_LOCALE, "City Name3"));
+                    ContentfulDataLoader.ENGLISH_LOCALE, CITY_NAME3));
 
             ContentfulCityFields contentfulCityFields4 = new ContentfulCityFields();
             contentfulCityFields4.setCityName(Map.of(
-                    ContentfulDataLoader.ENGLISH_LOCALE, "City Name4"));
+                    ContentfulDataLoader.ENGLISH_LOCALE, CITY_NAME4));
 
             ContentfulCity contentfulCity0 = new ContentfulCity();
             contentfulCity0.setSys(contentfulSys0);
