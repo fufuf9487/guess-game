@@ -8,13 +8,7 @@ import java.util.List;
  * Event.
  */
 public class Event extends AbstractEvent {
-    //TODO: delete
-    public record EventDates(LocalDate startDate, LocalDate endDate) {
-    }
-
     private List<EventDays> days;
-    private LocalDate startDate;    //TODO: delete
-    private LocalDate endDate;      //TODO: delete
 
     private long placeId;           //TODO: delete
     private Place place;            //TODO: delete
@@ -22,13 +16,11 @@ public class Event extends AbstractEvent {
     public Event() {
     }
 
-    public Event(Nameable nameable, EventType eventType, List<EventDays> days, EventDates dates, EventLinks links, Place place,
+    public Event(Nameable nameable, EventType eventType, List<EventDays> days, EventLinks links, Place place,
                  String timeZone, List<Talk> talks) {
         super(nameable, eventType, links, timeZone, talks);
 
         this.days = days;
-        this.startDate = dates.startDate;   //TODO: delete
-        this.endDate = dates.endDate;       //TODO: delete
 
         this.place = place;                 //TODO: delete
         this.placeId = place.getId();       //TODO: delete
@@ -40,22 +32,6 @@ public class Event extends AbstractEvent {
 
     public void setDays(List<EventDays> days) {
         this.days = days;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
     }
 
     public long getPlaceId() {
@@ -112,8 +88,6 @@ public class Event extends AbstractEvent {
                 "id=" + getId() +
                 ", eventType=" + getEventType() +
                 ", name=" + getName() +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
                 ", place=" + place +
                 ", talks=" + getTalks() +
                 '}';

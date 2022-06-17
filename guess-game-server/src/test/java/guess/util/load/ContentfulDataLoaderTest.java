@@ -648,10 +648,6 @@ class ContentfulDataLoaderTest {
                                     new Place()
                             )
                     ),
-                    new Event.EventDates(
-                            LocalDate.of(2016, 12, 7),
-                            LocalDate.of(2016, 12, 7)
-                    ),
                     new Event.EventLinks(Collections.emptyList(), null),
                     new Place(),
                     null,
@@ -671,10 +667,6 @@ class ContentfulDataLoaderTest {
                                     LocalDate.of(2017, 12, 7),
                                     new Place()
                             )
-                    ),
-                    new Event.EventDates(
-                            LocalDate.of(2017, 12, 7),
-                            LocalDate.of(2017, 12, 7)
                     ),
                     new Event.EventLinks(Collections.emptyList(), null),
                     new Place(),
@@ -717,10 +709,6 @@ class ContentfulDataLoaderTest {
                                                                 LocalDate.of(2016, 12, 7),
                                                                 new Place()
                                                         )
-                                                ),
-                                                new Event.EventDates(
-                                                        LocalDate.of(2016, 12, 7),
-                                                        LocalDate.of(2016, 12, 7)
                                                 ),
                                                 new Event.EventLinks(Collections.emptyList(), null),
                                                 new Place(),
@@ -1654,10 +1642,6 @@ class ContentfulDataLoaderTest {
                                                             new LocaleItem("en", "Microsoft Talo, Keilalahdentie 2-4, 02150 Espoo")),
                                                     "60.1704769, 24.8279349")
                                     )
-                            ),
-                            new Event.EventDates(
-                                    LocalDate.of(2016, 12, 7),
-                                    LocalDate.of(2016, 12, 7)
                             ),
                             new Event.EventLinks(
                                     List.of(

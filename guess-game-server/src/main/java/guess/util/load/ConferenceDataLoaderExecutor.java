@@ -1927,10 +1927,6 @@ public class ConferenceDataLoaderExecutor {
                 ),
                 null,
                 days,
-                new Event.EventDates(
-                        null,
-                        null
-                ),
                 new Event.EventLinks(
                         Collections.emptyList(),
                         null

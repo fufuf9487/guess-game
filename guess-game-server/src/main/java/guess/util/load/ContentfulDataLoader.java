@@ -404,10 +404,6 @@ public class ContentfulDataLoader extends CmsDataLoader {
                                         (addressLink != null) ? getFirstMapValue(addressLink) : null)
                         )
                 ),
-                new Event.EventDates(
-                        eventStartDate,
-                        eventEndDate
-                ),
                 new Event.EventLinks(
                         extractLocaleItems(
                                 extractLocaleValue(conferenceLink, ENGLISH_LOCALE),
@@ -995,10 +991,6 @@ public class ContentfulDataLoader extends CmsDataLoader {
                                                     null),
                                             "60.1704769, 24.8279349")
                             )
-                    ),
-                    new Event.EventDates(
-                            LocalDate.of(2016, 12, 7),
-                            LocalDate.of(2016, 12, 7)
                     ),
                     new Event.EventLinks(
                             extractLocaleItems(

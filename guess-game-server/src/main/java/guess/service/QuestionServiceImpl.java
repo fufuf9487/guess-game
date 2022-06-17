@@ -63,10 +63,6 @@ public class QuestionServiceImpl implements QuestionService {
                                     ),
                                     eventType,
                                     Collections.emptyList(),
-                                    new Event.EventDates(
-                                            null,
-                                            null
-                                    ),
                                     new Event.EventLinks(
                                             null,
                                             null

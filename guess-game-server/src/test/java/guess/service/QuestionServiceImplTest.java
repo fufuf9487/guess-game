@@ -94,10 +94,6 @@ class QuestionServiceImplTest {
                         ),
                         eventType,
                         Collections.emptyList(),
-                        new Event.EventDates(
-                                null,
-                                null
-                        ),
                         new Event.EventLinks(
                                 null,
                                 null
