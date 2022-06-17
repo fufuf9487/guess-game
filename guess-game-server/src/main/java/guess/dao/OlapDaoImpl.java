@@ -9,6 +9,7 @@ import guess.domain.statistics.olap.dimension.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
@@ -143,21 +144,37 @@ public class OlapDaoImpl implements OlapDao {
                 // Year dimension
                 YearDimension yearDimension = new YearDimension(event.getFirstStartDate().getYear());
 
-                // City dimension
-                CityDimension cityDimension = new CityDimension(cityMap.get(event.getPlace().getCity()));
+                long previousDays = 0;
 
-                // Event type, city and year dimensions
-                Set<Dimension<?>> eventTypeAndCityAndYearDimensions = Set.of(eventTypeDimension, cityDimension, yearDimension);
+                // Iterate event parts
+                for (EventDays eventDays : event.getDays()) {
+                    long firstDayNumber = previousDays + 1;
+                    long days = ChronoUnit.DAYS.between(eventDays.getStartDate(), eventDays.getEndDate()) + 1;
+                    long lastDayNumber = previousDays + days;
 
-                // Event measure values
-                eventTypesCube.addMeasureEntity(eventTypeAndCityAndYearDimensions, MeasureType.DURATION, event);
-                eventTypesCube.addMeasureEntity(eventTypeAndCityAndYearDimensions, MeasureType.EVENTS_QUANTITY, event);
+                    // City dimension
+                    CityDimension cityDimension = new CityDimension(cityMap.get(eventDays.getPlace().getCity()));
 
-                for (Talk talk : event.getTalks()) {
-                    // Talk measure values
-                    eventTypesCube.addMeasureEntity(eventTypeAndCityAndYearDimensions, MeasureType.TALKS_QUANTITY, talk);
+                    // Event type, city and year dimensions
+                    Set<Dimension<?>> eventTypeAndCityAndYearDimensions = Set.of(eventTypeDimension, cityDimension, yearDimension);
 
-                    iterateSpeakers(cubes, eventTypeDimension, yearDimension, eventTypeAndCityAndYearDimensions, event, talk);
+                    // Event measure values
+                    eventTypesCube.addMeasureEntity(eventTypeAndCityAndYearDimensions, MeasureType.DURATION, EventPart.of(event, eventDays));
+                    eventTypesCube.addMeasureEntity(eventTypeAndCityAndYearDimensions, MeasureType.EVENTS_QUANTITY, event);
+
+                    // Iterate event part talks
+                    for (Talk talk : event.getTalks()) {
+                        long safeTalkDay = (talk.getTalkDay() != null) ? talk.getTalkDay() : 1;
+
+                        if ((safeTalkDay >= firstDayNumber) && (safeTalkDay <= lastDayNumber)) {
+                            // Talk measure values
+                            eventTypesCube.addMeasureEntity(eventTypeAndCityAndYearDimensions, MeasureType.TALKS_QUANTITY, talk);
+
+                            iterateSpeakers(cubes, eventTypeDimension, yearDimension, eventTypeAndCityAndYearDimensions, event, talk);
+                        }
+                    }
+
+                    previousDays += days;
                 }
             }
         }

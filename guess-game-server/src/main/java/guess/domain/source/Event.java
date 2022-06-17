@@ -50,16 +50,6 @@ public class Event extends AbstractEvent {
         this.place = place;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        return super.equals(o);
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
-
     public LocalDate getFirstStartDate() {
         if ((days != null) && !days.isEmpty()) {
             return days.get(0).getStartDate();
@@ -80,6 +70,16 @@ public class Event extends AbstractEvent {
         return days.stream()
                 .mapToLong(ed -> ChronoUnit.DAYS.between(ed.getStartDate(), ed.getEndDate()) + 1)
                 .sum();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 
     @Override

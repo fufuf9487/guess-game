@@ -4,7 +4,10 @@ import guess.dao.EventDao;
 import guess.dao.EventTypeDao;
 import guess.domain.auxiliary.EventDateMinTrackTime;
 import guess.domain.auxiliary.EventMinTrackTimeEndDayTime;
-import guess.domain.source.*;
+import guess.domain.source.Event;
+import guess.domain.source.EventDays;
+import guess.domain.source.EventPart;
+import guess.domain.source.Talk;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -91,7 +94,7 @@ public class EventServiceImpl implements EventService {
                 if (!eventDaysFromDateTime.isEmpty()) {
                     EventDays eventDays = eventDaysFromDateTime.get(0);
 
-                    return createEventPart(event, eventDays);
+                    return EventPart.of(event, eventDays);
                 } else {
                     return null;
                 }
@@ -180,7 +183,7 @@ public class EventServiceImpl implements EventService {
             var event = entry.getKey();
             Map<Long, Optional<LocalTime>> minTrackTimeInTalkDays = entry.getValue();
             long previousDays = 0;
-            
+
             for (EventDays eventDays : event.getDays()) {
                 if ((eventDays.getStartDate() != null) && (eventDays.getEndDate() != null) && (!eventDays.getStartDate().isAfter(eventDays.getEndDate()))) {
                     long days = ChronoUnit.DAYS.between(eventDays.getStartDate(), eventDays.getEndDate()) + 1;
@@ -246,31 +249,9 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventPart createEventPart(Event event, EventDays eventDays) {
-        return new EventPart(
-                new Nameable(
-                        event.getId(),
-                        event.getName()
-                ),
-                event.getEventType(),
-                new EventPart.EventDates(
-                        eventDays.getStartDate(),
-                        eventDays.getEndDate()
-                ),
-                new AbstractEvent.EventLinks(
-                        event.getSiteLink(),
-                        event.getYoutubeLink()
-                ),
-                eventDays.getPlace(),
-                event.getTimeZone(),
-                event.getTalks()
-        );
-    }
-
-    @Override
     public List<EventPart> convertEventToEventParts(Event event) {
         return event.getDays().stream()
-                .map(ed -> createEventPart(event, ed))
+                .map(ed -> EventPart.of(event, ed))
                 .toList();
     }
 

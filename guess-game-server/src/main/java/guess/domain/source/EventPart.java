@@ -1,7 +1,9 @@
 package guess.domain.source;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Event part.
@@ -62,14 +64,43 @@ public class EventPart extends AbstractEvent {
         this.place = place;
     }
 
+    public long getDuration() {
+        return ChronoUnit.DAYS.between(startDate, endDate) + 1;
+    }
+    
+    public static EventPart of(Event event, EventDays eventDays) {
+        return new EventPart(
+                new Nameable(
+                        event.getId(),
+                        event.getName()
+                ),
+                event.getEventType(),
+                new EventPart.EventDates(
+                        eventDays.getStartDate(),
+                        eventDays.getEndDate()
+                ),
+                new AbstractEvent.EventLinks(
+                        event.getSiteLink(),
+                        event.getYoutubeLink()
+                ),
+                eventDays.getPlace(),
+                event.getTimeZone(),
+                event.getTalks()
+        );
+    }
+
     @Override
     public boolean equals(Object o) {
-        return super.equals(o);
+        if (this == o) return true;
+        if (!(o instanceof EventPart)) return false;
+        if (!super.equals(o)) return false;
+        EventPart eventPart = (EventPart) o;
+        return Objects.equals(getStartDate(), eventPart.getStartDate());
     }
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return Objects.hash(super.hashCode(), getStartDate());
     }
 
     @Override

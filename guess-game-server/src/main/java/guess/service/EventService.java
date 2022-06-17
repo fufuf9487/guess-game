@@ -1,7 +1,6 @@
 package guess.service;
 
 import guess.domain.source.Event;
-import guess.domain.source.EventDays;
 import guess.domain.source.EventPart;
 import guess.domain.source.Talk;
 
@@ -20,8 +19,6 @@ public interface EventService {
     EventPart getDefaultEventPart(boolean isConferences, boolean isMeetups);
 
     Event getEventByTalk(Talk talk);
-
-    EventPart createEventPart(Event event, EventDays eventDays);
 
     List<EventPart> convertEventToEventParts(Event event);
 
