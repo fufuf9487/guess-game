@@ -86,8 +86,6 @@ class OlapDaoImplTest {
         eventType0.setEvents(List.of(event0));
         event0.setPlace(place0);
         event0.setDays(List.of(eventDays0));
-        event0.setStartDate(LocalDate.of(2020, 9, 5));
-        event0.setEndDate(LocalDate.of(2020, 9, 6));
 
         event1 = new Event();
         event1.setId(1);
@@ -96,8 +94,6 @@ class OlapDaoImplTest {
         eventType1.setEvents(List.of(event1));
         event1.setPlace(place1);
         event1.setDays(List.of(eventDays1));
-        event1.setStartDate(LocalDate.of(2021, 10, 7));
-        event1.setEndDate(LocalDate.of(2021, 10, 9));
 
         Event event2 = new Event();
         event2.setId(2);
@@ -106,15 +102,11 @@ class OlapDaoImplTest {
         eventType2.setEvents(List.of(event2));
         event2.setPlace(place1);
         event2.setDays(List.of(eventDays2));
-        event2.setStartDate(LocalDate.of(2021, 5, 1));
-        event2.setEndDate(LocalDate.of(2021, 5, 2));
 
         Event event3 = new Event();
         event3.setId(3);
         event3.setPlace(place1);
         event3.setDays(List.of(eventDays3));
-        event3.setStartDate(LocalDate.of(2021, 6, 10));
-        event3.setEndDate(LocalDate.of(2021, 6, 12));
 
         company0 = new Company();
         company0.setId(0);

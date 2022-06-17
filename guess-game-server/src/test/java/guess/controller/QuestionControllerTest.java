@@ -112,13 +112,11 @@ class QuestionControllerTest {
 
         Event event0 = new Event();
         event0.setId(0);
-        event0.setStartDate(LocalDate.of(2020, 10, 29));
         event0.setEventType(eventType0);
         event0.setDays(List.of(eventDays0));
 
         Event event1 = new Event();
         event1.setId(1);
-        event1.setStartDate(LocalDate.of(2020, 10, 30));
         event1.setEventType(eventType0);
         event1.setDays(List.of(eventDays1));
 

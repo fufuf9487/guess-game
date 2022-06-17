@@ -80,8 +80,6 @@ class EventControllerTest {
                 LocalDate.of(2020, 10, 30),
                 place0
         )));
-        event0.setStartDate(LocalDate.of(2020, 10, 30));
-        event0.setEndDate(LocalDate.of(2020, 10, 30));
         event0.setEventType(eventType0);
 
         Event event1 = new Event();
@@ -91,8 +89,6 @@ class EventControllerTest {
                 LocalDate.of(2020, 10, 29),
                 place0
         )));
-        event1.setStartDate(LocalDate.of(2020, 10, 29));
-        event1.setEndDate(LocalDate.of(2020, 10, 29));
         event1.setEventType(eventType0);
 
         Event event2 = new Event();
@@ -102,8 +98,6 @@ class EventControllerTest {
                 LocalDate.of(2020, 10, 31),
                 place0
         )));
-        event2.setStartDate(LocalDate.of(2020, 10, 31));
-        event2.setEndDate(LocalDate.of(2020, 10, 31));
         event2.setEventType(eventType0);
 
         given(eventService.getEvents(conferences, meetups, organizerId, eventTypeId)).willReturn(List.of(event0, event1, event2));
@@ -277,8 +271,6 @@ class EventControllerTest {
 
         Event event0 = new Event();
         event0.setId(0);
-        event0.setStartDate(LocalDate.of(2020, 10, 30));
-        event0.setEndDate(LocalDate.of(2020, 10, 30));
         event0.setTalks(List.of(talk0, talk1));
         event0.setEventType(eventType0);
         event0.setDays(List.of(eventDays0));

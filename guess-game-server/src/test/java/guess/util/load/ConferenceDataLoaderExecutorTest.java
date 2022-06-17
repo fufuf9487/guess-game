@@ -1829,13 +1829,11 @@ class ConferenceDataLoaderExecutorTest {
             Event event0 = new Event();
             event0.setId(0);
             event0.setEventType(eventType0);
-            event0.setStartDate(LocalDate.of(2020, 10, 3));
             event0.setTalks(List.of(talk0));
 
             Event event1 = new Event();
             event1.setId(1);
             event1.setEventType(eventType1);
-            event1.setStartDate(LocalDate.of(2020, 10, 3));
 
             return Stream.of(
                     arguments(List.of(talk0), talk0, Collections.emptyList(), null, false),

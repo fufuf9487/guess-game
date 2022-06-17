@@ -151,8 +151,6 @@ class EventServiceImplTest {
                         null
                 )
         )));
-        event0.setStartDate(EVENT_START_DATE0);
-        event0.setEndDate(EVENT_END_DATE0);
         event0.setTalks(List.of(talk0));
 
         event1 = new Event();
@@ -168,8 +166,6 @@ class EventServiceImplTest {
                         null
                 )
         )));
-        event1.setStartDate(EVENT_START_DATE1);
-        event1.setEndDate(EVENT_END_DATE1);
         event1.setTalks(List.of(talk1));
 
         event2 = new Event();
@@ -185,8 +181,6 @@ class EventServiceImplTest {
                         null
                 )
         )));
-        event2.setStartDate(EVENT_START_DATE2);
-        event2.setEndDate(EVENT_END_DATE2);
         event2.setTalks(List.of(talk2));
 
         event3 = new Event();
@@ -217,7 +211,6 @@ class EventServiceImplTest {
                         null
                 )
         )));
-        event4.setStartDate(EVENT_START_DATE4);
         event4.setTalks(List.of(talk2));
 
         event5 = new Event();
@@ -233,7 +226,6 @@ class EventServiceImplTest {
                         null
                 )
         )));
-        event5.setEndDate(EVENT_END_DATE5);
         event5.setTalks(List.of(talk2));
 
         event6 = new Event();
@@ -249,8 +241,6 @@ class EventServiceImplTest {
                         null
                 )
         )));
-        event6.setStartDate(EVENT_START_DATE6);
-        event6.setEndDate(EVENT_END_DATE6);
         event6.setTalks(List.of(talk2));
 
         eventType0.setEvents(List.of(event0));

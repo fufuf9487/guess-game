@@ -202,7 +202,6 @@ class SpeakerControllerTest {
 
         Event event = new Event();
         event.setId(0);
-        event.setStartDate(LocalDate.of(2020, 10, 30));
         event.setEventType(eventType);
         event.setDays(List.of(eventDays));
 

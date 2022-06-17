@@ -17,7 +17,6 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
@@ -120,22 +119,16 @@ class TalkServiceImplTest {
         event0 = new Event();
         event0.setId(0);
         event0.setEventType(eventType0);
-        event0.setStartDate(LocalDate.of(2020, 10, 27));
-        event0.setEndDate(LocalDate.of(2020, 10, 27));
         event0.setTalks(List.of(talk0));
 
         event1 = new Event();
         event1.setId(1);
         event1.setEventType(eventType1);
-        event1.setStartDate(LocalDate.of(2020, 10, 28));
-        event1.setEndDate(LocalDate.of(2020, 10, 28));
         event1.setTalks(List.of(talk1));
 
         event2 = new Event();
         event2.setId(2);
         event2.setEventType(eventType2);
-        event2.setStartDate(LocalDate.of(2020, 10, 29));
-        event2.setEndDate(LocalDate.of(2020, 10, 29));
         event2.setTalks(List.of(talk2));
 
         eventType0.setEvents(List.of(event0));

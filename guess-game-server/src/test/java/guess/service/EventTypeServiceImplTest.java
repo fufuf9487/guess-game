@@ -21,7 +21,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
@@ -123,7 +122,6 @@ class EventTypeServiceImplTest {
 
         Event event = new Event();
         event.setEventType(eventType);
-        event.setStartDate(LocalDate.of(2020, 9, 10));
 
         eventTypeService.getEventTypeByEvent(event);
         Mockito.verify(eventTypeDao, VerificationModeFactory.times(1)).getEventTypeByEvent(event);

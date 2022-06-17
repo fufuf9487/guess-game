@@ -132,13 +132,9 @@ class EventTypeControllerTest {
 
         Event event0 = new Event();
         event0.setId(0);
-        event0.setStartDate(LocalDate.of(2020, 10, 29));
-        event0.setEndDate(LocalDate.of(2020, 10, 29));
 
         Event event1 = new Event();
         event1.setId(1);
-        event1.setStartDate(LocalDate.of(2020, 10, 30));
-        event1.setEndDate(LocalDate.of(2020, 10, 30));
 
         Organizer organizer = new Organizer();
         organizer.setId(0);
@@ -176,7 +172,7 @@ class EventTypeControllerTest {
 
         event0.setDays(List.of(eventDays0));
         event1.setDays(List.of(eventDays1));
-        
+
         EventPart eventPart0 = new EventPart();
         eventPart0.setId(0);
         eventPart0.setEventType(eventType);

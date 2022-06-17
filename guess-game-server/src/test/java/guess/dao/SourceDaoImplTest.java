@@ -154,8 +154,6 @@ class SourceDaoImplTest {
                         Collections.emptyList(),
                         null
                 ))));
-        event0.setStartDate(LocalDate.of(2020, 1, 1));
-        event0.setEndDate(LocalDate.of(2020, 1, 2));
         event0.setTalkIds(List.of(0L));
         event0.setTalks(List.of(talk0));
         event0.setTimeZoneId(ZoneId.of("Europe/Moscow"));
@@ -174,8 +172,6 @@ class SourceDaoImplTest {
                         Collections.emptyList(),
                         null
                 ))));
-        event1.setStartDate(LocalDate.of(2020, 2, 1));
-        event1.setEndDate(LocalDate.of(2020, 2, 2));
         event1.setTalkIds(List.of(1L));
         event1.setTalks(List.of(talk1));
 
@@ -193,8 +189,6 @@ class SourceDaoImplTest {
                         Collections.emptyList(),
                         null
                 ))));
-        event2.setStartDate(LocalDate.of(2020, 3, 1));
-        event2.setEndDate(LocalDate.of(2020, 3, 2));
         event2.setTalkIds(List.of(2L));
         event2.setTalks(List.of(talk2));
 
@@ -209,8 +203,6 @@ class SourceDaoImplTest {
                         Collections.emptyList(),
                         null
                 ))));
-        event3.setStartDate(LocalDate.of(2020, 4, 1));
-        event3.setEndDate(LocalDate.of(2020, 4, 2));
 
         SourceInformation sourceInformation = new SourceInformation(
                 List.of(place0, place1, place2),
