@@ -251,28 +251,17 @@ class YamlUtilsTest {
             Place place0 = new Place();
             place0.setId(0);
 
-            Place place1 = new Place();
-            place1.setId(1);
+            EventDays eventDays0 = new EventDays();
+            eventDays0.setPlaceId(0);
 
-            EventDays eventDays0 = new EventDays(
-                    null,
-                    null,
-                    place0
-            );
-
-            EventDays eventDays1 = new EventDays(
-                    null,
-                    null,
-                    place1
-            );
+            EventDays eventDays1 = new EventDays();
+            eventDays1.setPlaceId(1);
 
             Event event0 = new Event();
             event0.setDays(List.of(eventDays0));
-            event0.setPlaceId(0);
 
             Event event1 = new Event();
             event1.setDays(List.of(eventDays1));
-            event1.setPlaceId(1);
 
             return Stream.of(
                     arguments(Collections.emptyMap(), List.of(event0), NullPointerException.class),
@@ -287,11 +276,15 @@ class YamlUtilsTest {
         @MethodSource("data")
         void linkSpeakersToTalks(Map<Long, Place> places, List<Event> events, Class<? extends Exception> expected) {
             if (expected == null) {
-                events.forEach(et -> assertNull(et.getPlace()));
+                events.stream()
+                        .flatMap(e -> e.getDays().stream())
+                        .forEach(ed -> assertNull(ed.getPlace()));
 
                 assertDoesNotThrow(() -> YamlUtils.linkEventsToPlaces(places, events));
 
-                events.forEach(et -> assertNotNull(et.getPlace()));
+                events.stream()
+                        .flatMap(e -> e.getDays().stream())
+                        .forEach(ed -> assertNotNull(ed.getPlace()));
             } else {
                 assertThrows(expected, () -> YamlUtils.linkEventsToPlaces(places, events));
             }

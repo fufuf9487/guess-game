@@ -209,15 +209,9 @@ public class YamlUtils {
      */
     static void linkEventsToPlaces(Map<Long, Place> places, List<Event> events) {
         for (Event event : events) {
-            // Find place by id
-            var place = places.get(event.getPlaceId());
-            Objects.requireNonNull(place,
-                    () -> String.format("Place id %d not found for event %s", event.getPlaceId(), event));
-            event.setPlace(place);
-            
             for (EventDays eventDays : event.getDays()) {
                 // Find place by id
-                place = places.get(eventDays.getPlaceId());
+                Place place = places.get(eventDays.getPlaceId());
                 Objects.requireNonNull(place,
                         () -> String.format("Place id %d not found for event days %s", eventDays.getPlaceId(), eventDays));
                 eventDays.setPlace(place);
