@@ -141,9 +141,6 @@ public class OlapDaoImpl implements OlapDao {
             EventTypeDimension eventTypeDimension = new EventTypeDimension(eventType);
 
             for (Event event : eventType.getEvents()) {
-                // Year dimension
-                YearDimension yearDimension = new YearDimension(event.getFirstStartDate().getYear());
-
                 long previousDays = 0;
 
                 // Iterate event parts
@@ -151,6 +148,9 @@ public class OlapDaoImpl implements OlapDao {
                     long firstDayNumber = previousDays + 1;
                     long days = ChronoUnit.DAYS.between(eventDays.getStartDate(), eventDays.getEndDate()) + 1;
                     long lastDayNumber = previousDays + days;
+
+                    // Year dimension
+                    YearDimension yearDimension = new YearDimension(eventDays.getStartDate().getYear());
 
                     // City dimension
                     CityDimension cityDimension = new CityDimension(cityMap.get(eventDays.getPlace().getCity()));
