@@ -350,7 +350,7 @@ public class ConferenceDataLoaderExecutor {
                 resourceSourceInformation.getEvents(),
                 lastTalksId);
 
-        // Find place
+        // Find places
         Map<Long, Place> resourceIdPlaces = resourceSourceInformation.getPlaces().stream()
                 .collect(Collectors.toMap(
                         Identifier::getId,
@@ -374,7 +374,7 @@ public class ConferenceDataLoaderExecutor {
         cmsPlace.setVenueAddress(fixVenueAddress(cmsPlace));
         var resourcePlace = findResourcePlace(cmsPlace, resourceIdPlaces, resourceRuCityVenueAddressPlaces, resourceEnCityVenueAddressPlaces);
         var lastPlaceId = new AtomicLong(getLastId(resourceSourceInformation.getPlaces()));
-        LoadResult<Place> placeLoadResult = getPlaceLoadResult(cmsPlace, resourcePlace, lastPlaceId);
+        LoadResult<List<Place>> placeLoadResult = getPlaceLoadResult(cmsPlace, resourcePlace, lastPlaceId);
 
         cmsEvent.setPlaceId(cmsPlace.getId());
 
@@ -1014,27 +1014,28 @@ public class ConferenceDataLoaderExecutor {
      * @param lastPlaceId   identifier of last place
      * @return place load result
      */
-    static LoadResult<Place> getPlaceLoadResult(Place place, Place resourcePlace, AtomicLong lastPlaceId) {
-        Place placeToAppend = null;
-        Place placeToUpdate = null;
+    static LoadResult<List<Place>> getPlaceLoadResult(Place place, Place resourcePlace, AtomicLong lastPlaceId) {
+        List<Place> placesToAppend = new ArrayList<>();
+        List<Place> placesToUpdate = new ArrayList<>();
 
-        if (resourcePlace == null) {
-            // Place not exists
-            place.setId(lastPlaceId.incrementAndGet());
-            placeToAppend = place;
-        } else {
-            // Place exists
-            place.setId(resourcePlace.getId());
-
-            if (needUpdate(resourcePlace, place)) {
-                placeToUpdate = place;
-            }
-        }
+        //TODO: implement
+//        if (resourcePlace == null) {
+//            // Place not exists
+//            place.setId(lastPlaceId.incrementAndGet());
+//            placeToAppend = place;
+//        } else {
+//            // Place exists
+//            place.setId(resourcePlace.getId());
+//
+//            if (needUpdate(resourcePlace, place)) {
+//                placeToUpdate = place;
+//            }
+//        }
 
         return new LoadResult<>(
-                null,
-                placeToAppend,
-                placeToUpdate);
+                Collections.emptyList(),
+                placesToAppend,
+                placesToUpdate);
     }
 
     /**
@@ -1092,7 +1093,7 @@ public class ConferenceDataLoaderExecutor {
      * @throws NoSuchFieldException if field name is invalid
      */
     static void saveFiles(LoadResult<List<Company>> companyLoadResult, SpeakerLoadResult speakerLoadResult, LoadResult<List<Talk>> talkLoadResult,
-                          LoadResult<Place> placeLoadResult, LoadResult<Event> eventLoadResult,
+                          LoadResult<List<Place>> placeLoadResult, LoadResult<Event> eventLoadResult,
                           String imageWidthParameterName) throws IOException, NoSuchFieldException {
         List<Company> companiesToAppend = companyLoadResult.itemToAppend();
 
@@ -1227,16 +1228,16 @@ public class ConferenceDataLoaderExecutor {
      * @throws IOException          if file creation error occurs
      * @throws NoSuchFieldException if field name is invalid
      */
-    static void savePlaces(LoadResult<Place> placeLoadResult) throws IOException, NoSuchFieldException {
-        var placeToAppend = placeLoadResult.itemToAppend();
-        var placeToUpdate = placeLoadResult.itemToUpdate();
+    static void savePlaces(LoadResult<List<Place>> placeLoadResult) throws IOException, NoSuchFieldException {
+        var placesToAppend = placeLoadResult.itemToAppend();
+        var placesToUpdate = placeLoadResult.itemToUpdate();
 
-        if (placeToAppend != null) {
-            savePlace(placeToAppend, "place-to-append.yml");
+        if (!placesToAppend.isEmpty()) {
+            savePlaces(placesToAppend, "places-to-append.yml");
         }
 
-        if (placeToUpdate != null) {
-            savePlace(placeToUpdate, "place-to-update.yml");
+        if (!placesToUpdate.isEmpty()) {
+            savePlaces(placesToUpdate, "places-to-update.yml");
         }
     }
 
@@ -1359,15 +1360,15 @@ public class ConferenceDataLoaderExecutor {
     }
 
     /**
-     * Saves place to file.
+     * Saves places to file.
      *
-     * @param place    place
+     * @param places   places
      * @param filename filename
      * @throws IOException          if file creation error occurs
      * @throws NoSuchFieldException if field name is invalid
      */
-    static void savePlace(Place place, String filename) throws IOException, NoSuchFieldException {
-        YamlUtils.save(new PlaceList(Collections.singletonList(place)), filename);
+    static void savePlaces(List<Place> places, String filename) throws IOException, NoSuchFieldException {
+        YamlUtils.save(new PlaceList(places), filename);
     }
 
     /**
