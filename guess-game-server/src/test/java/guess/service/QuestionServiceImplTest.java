@@ -5,7 +5,10 @@ import guess.dao.EventTypeDao;
 import guess.dao.QuestionDao;
 import guess.domain.Conference;
 import guess.domain.GuessMode;
-import guess.domain.source.*;
+import guess.domain.source.Event;
+import guess.domain.source.EventType;
+import guess.domain.source.Nameable;
+import guess.domain.source.Organizer;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -95,12 +98,6 @@ class QuestionServiceImplTest {
                         eventType,
                         Collections.emptyList(),
                         new Event.EventLinks(
-                                null,
-                                null
-                        ),
-                        new Place(
-                                -1L,
-                                null,
                                 null,
                                 null
                         ),

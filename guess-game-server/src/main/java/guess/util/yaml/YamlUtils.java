@@ -392,7 +392,7 @@ public class YamlUtils {
                     new PropertyMatcher(EventDays.class,
                             List.of("startDate", "endDate", "placeId")),
                     new PropertyMatcher(Event.class,
-                            List.of("eventTypeId", "name", "days", "siteLink", "youtubeLink", "placeId", "timeZone", "talkIds")),
+                            List.of("eventTypeId", "name", "days", "siteLink", "youtubeLink", "timeZone", "talkIds")),
                     new PropertyMatcher(Talk.class,
                             List.of("id", "name", "shortDescription", "longDescription", "talkDay", "trackTime", "track",
                                     "language", "presentationLinks", "materialLinks", "videoLinks", "speakerIds")),

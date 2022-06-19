@@ -301,7 +301,6 @@ class ConferenceDataLoaderExecutorTest {
                     EVENT_DATE,
                     place0
             )));
-            event0.setPlace(place0);
 
             EventType eventType0 = new EventType();
             eventType0.setId(0);
@@ -3957,7 +3956,7 @@ class ConferenceDataLoaderExecutorTest {
 
         assertEquals(EN_TEXT, LocalizationUtils.getString(actual.getName(), Language.ENGLISH));
         assertEquals(RU_TEXT, LocalizationUtils.getString(actual.getName(), Language.RUSSIAN));
-        assertEquals(PLACE_ID, actual.getPlace().getId());
+        assertEquals(PLACE_ID, actual.getDays().get(0).getPlace().getId());
     }
 
     @Test

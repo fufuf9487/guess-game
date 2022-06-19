@@ -297,11 +297,9 @@ class YamlUtilsTest {
     class LinkTalksToEventsTest {
         private Stream<Arguments> data() {
             Event event0 = new Event();
-            event0.setPlaceId(0);
             event0.setTalkIds(List.of(0L));
 
             Event event1 = new Event();
-            event1.setPlaceId(1);
             event1.setTalkIds(List.of(1L));
 
             Talk talk0 = new Talk();

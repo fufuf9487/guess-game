@@ -67,12 +67,6 @@ public class QuestionServiceImpl implements QuestionService {
                                             null,
                                             null
                                     ),
-                                    new Place(
-                                            -1L,
-                                            null,
-                                            null,
-                                            null
-                                    ),
                                     null,
                                     Collections.emptyList()
                             )

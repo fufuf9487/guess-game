@@ -10,20 +10,14 @@ import java.util.List;
 public class Event extends AbstractEvent {
     private List<EventDays> days;
 
-    private long placeId;           //TODO: delete
-    private Place place;            //TODO: delete
-
     public Event() {
     }
 
-    public Event(Nameable nameable, EventType eventType, List<EventDays> days, EventLinks links, Place place,
-                 String timeZone, List<Talk> talks) {
+    public Event(Nameable nameable, EventType eventType, List<EventDays> days, EventLinks links, String timeZone,
+                 List<Talk> talks) {
         super(nameable, eventType, links, timeZone, talks);
 
         this.days = days;
-
-        this.place = place;                 //TODO: delete
-        this.placeId = place.getId();       //TODO: delete
     }
 
     public List<EventDays> getDays() {
@@ -32,22 +26,6 @@ public class Event extends AbstractEvent {
 
     public void setDays(List<EventDays> days) {
         this.days = days;
-    }
-
-    public long getPlaceId() {
-        return placeId;
-    }
-
-    public void setPlaceId(long placeId) {
-        this.placeId = placeId;
-    }
-
-    public Place getPlace() {
-        return place;
-    }
-
-    public void setPlace(Place place) {
-        this.place = place;
     }
 
     public LocalDate getFirstStartDate() {
@@ -88,7 +66,6 @@ public class Event extends AbstractEvent {
                 "id=" + getId() +
                 ", eventType=" + getEventType() +
                 ", name=" + getName() +
-                ", place=" + place +
                 ", talks=" + getTalks() +
                 '}';
     }

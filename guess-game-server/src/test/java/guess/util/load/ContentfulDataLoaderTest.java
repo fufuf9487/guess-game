@@ -540,9 +540,6 @@ class ContentfulDataLoaderTest {
             )));
             event3.setYoutubeLink(YOUTUBE_PLAY_LIST);
 
-            Place place4 = new Place();
-            place4.setMapCoordinates(MAP_COORDINATES);
-
             Event event4 = new Event();
             event4.setId(-1);
             event4.setName(List.of(new LocaleItem(Language.ENGLISH.getCode(), "Event Name4")));
@@ -551,12 +548,11 @@ class ContentfulDataLoaderTest {
                     LocalDate.of(2020, 1, 1),
                     new Place(
                             -1,
-                            List.of(new LocaleItem(Language.ENGLISH.getCode(), CITY_NAME3)),
+                            List.of(new LocaleItem(Language.ENGLISH.getCode(), CITY_NAME4)),
                             Collections.emptyList(),
-                            null
+                            MAP_COORDINATES
                     )
             )));
-            event4.setPlace(place4);
 
             // Cities
             ContentfulCityFields contentfulCityFields0 = new ContentfulCityFields();
@@ -622,8 +618,8 @@ class ContentfulDataLoaderTest {
             assertEquals(expected.getDays(), actual.getDays());
             assertEquals(expected.getYoutubeLink(), actual.getYoutubeLink());
 
-            String expectedMapCoordinates = (expected.getPlace() != null) ? expected.getPlace().getMapCoordinates() : null;
-            String actualMapCoordinates = (actual.getPlace() != null) ? actual.getPlace().getMapCoordinates() : null;
+            String expectedMapCoordinates = (!expected.getDays().isEmpty() && (expected.getDays().get(0).getPlace()) != null) ? expected.getDays().get(0).getPlace().getMapCoordinates() : null;
+            String actualMapCoordinates = (!actual.getDays().isEmpty() && (actual.getDays().get(0).getPlace() != null)) ? actual.getDays().get(0).getPlace().getMapCoordinates() : null;
             assertEquals(expectedMapCoordinates, actualMapCoordinates);
         }
     }
@@ -649,7 +645,6 @@ class ContentfulDataLoaderTest {
                             )
                     ),
                     new Event.EventLinks(Collections.emptyList(), null),
-                    new Place(),
                     null,
                     Collections.emptyList());
 
@@ -669,7 +664,6 @@ class ContentfulDataLoaderTest {
                             )
                     ),
                     new Event.EventLinks(Collections.emptyList(), null),
-                    new Place(),
                     null,
                     Collections.emptyList());
 
@@ -711,7 +705,6 @@ class ContentfulDataLoaderTest {
                                                         )
                                                 ),
                                                 new Event.EventLinks(Collections.emptyList(), null),
-                                                new Place(),
                                                 null,
                                                 Collections.emptyList());
                                     } else {
@@ -1649,14 +1642,6 @@ class ContentfulDataLoaderTest {
                                             new LocaleItem("ru", "https://dotnext-helsinki.com")),
                                     "https://www.youtube.com/playlist?list=PLtWrKx3nUGBcaA5j9UT6XMnoGM6a2iCE5"
                             ),
-                            new Place(
-                                    15,
-                                    List.of(
-                                            new LocaleItem("en", "Helsinki"),
-                                            new LocaleItem("ru", "Хельсинки")),
-                                    List.of(
-                                            new LocaleItem("en", "Microsoft Talo, Keilalahdentie 2-4, 02150 Espoo")),
-                                    "60.1704769, 24.8279349"),
                             "Europe/Helsinki",
                             Collections.emptyList()))
             );

@@ -410,15 +410,6 @@ public class ContentfulDataLoader extends CmsDataLoader {
                                 extractLocaleValue(conferenceLink, RUSSIAN_LOCALE)),
                         (youtubePlayList != null) ? getFirstMapValue(youtubePlayList) : null
                 ),
-                new Place(
-                        -1,
-                        extractLocaleItems(
-                                extractCity(eventCityLink, cityMap, entryErrorSet, ENGLISH_LOCALE, nameEn),
-                                extractCity(eventCityLink, cityMap, entryErrorSet, RUSSIAN_LOCALE, nameEn)),
-                        extractLocaleItems(
-                                extractLocaleValue(venueAddress, ENGLISH_LOCALE),
-                                extractLocaleValue(venueAddress, RUSSIAN_LOCALE)),
-                        (addressLink != null) ? getFirstMapValue(addressLink) : null),
                 null,
                 Collections.emptyList());
     }
@@ -998,15 +989,6 @@ public class ContentfulDataLoader extends CmsDataLoader {
                                     "https://dotnext-helsinki.com"),
                             "https://www.youtube.com/playlist?list=PLtWrKx3nUGBcaA5j9UT6XMnoGM6a2iCE5"
                     ),
-                    new Place(
-                            15,
-                            extractLocaleItems(
-                                    "Helsinki",
-                                    "Хельсинки"),
-                            extractLocaleItems(
-                                    "Microsoft Talo, Keilalahdentie 2-4, 02150 Espoo",
-                                    null),
-                            "60.1704769, 24.8279349"),
                     "Europe/Helsinki",
                     Collections.emptyList());
         } else {

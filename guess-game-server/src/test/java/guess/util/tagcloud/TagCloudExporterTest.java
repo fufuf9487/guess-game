@@ -55,7 +55,6 @@ class TagCloudExporterTest {
                 EVENT_DATE,
                 place0
         )));
-        event0.setPlace(place0);
 
         eventType0 = new EventType();
         eventType0.setId(0);

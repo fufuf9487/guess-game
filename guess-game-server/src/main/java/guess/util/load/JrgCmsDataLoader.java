@@ -385,12 +385,6 @@ public class JrgCmsDataLoader extends CmsDataLoader {
                         Collections.emptyList(),
                         null
                 ),
-                new Place(
-                        eventTemplate.getPlace().getId(),
-                        Collections.emptyList(),
-                        Collections.emptyList(),
-                        null
-                ),
                 null,
                 Collections.emptyList());
     }

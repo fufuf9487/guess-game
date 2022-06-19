@@ -130,7 +130,6 @@ class OlapServiceImplTest {
         event0.setEventTypeId(eventType0.getId());
         event0.setEventType(eventType0);
         eventType0.setEvents(List.of(event0));
-        event0.setPlace(place0);
         event0.setDays(List.of(eventDays0));
 
         Event event1 = new Event();
@@ -138,7 +137,6 @@ class OlapServiceImplTest {
         event1.setEventTypeId(eventType1.getId());
         event1.setEventType(eventType1);
         eventType1.setEvents(List.of(event1));
-        event1.setPlace(place1);
         event1.setDays(List.of(eventDays1));
 
         Event event2 = new Event();
@@ -146,12 +144,10 @@ class OlapServiceImplTest {
         event2.setEventTypeId(eventType2.getId());
         event2.setEventType(eventType2);
         eventType2.setEvents(List.of(event2));
-        event2.setPlace(place2);
         event2.setDays(List.of(eventDays2));
 
         Event event3 = new Event();
         event3.setId(3);
-        event3.setPlace(place2);
         event3.setDays(List.of(eventDays3));
 
         company0 = new Company();

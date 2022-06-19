@@ -1952,12 +1952,6 @@ public class ConferenceDataLoaderExecutor {
                         Collections.emptyList(),
                         null
                 ),
-                new Place(
-                        placeIds.get(0),
-                        Collections.emptyList(),
-                        Collections.emptyList(),
-                        null
-                ),
                 null,
                 Collections.emptyList());
     }
