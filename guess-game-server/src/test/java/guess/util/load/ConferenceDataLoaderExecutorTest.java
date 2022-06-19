@@ -1914,28 +1914,28 @@ class ConferenceDataLoaderExecutorTest {
                 mockedStatic.when(() -> ConferenceDataLoaderExecutor.getPlaceLoadResult(Mockito.anyList(), Mockito.anyList(), Mockito.any()))
                         .thenCallRealMethod();
                 mockedStatic.when(() -> ConferenceDataLoaderExecutor.fixVenueAddress(Mockito.any(Place.class)))
-                                .thenAnswer(
-                                        (Answer<List<LocaleItem>>) invocation -> {
-                                            Object[] args = invocation.getArguments();
-                                            Place place = (Place) args[0];
-                                            
-                                            return place.getVenueAddress();
-                                        }
-                                );
-                mockedStatic.when(() -> ConferenceDataLoaderExecutor.findResourcePlace(Mockito.any(Place.class), Mockito.anyMap(), Mockito.anyMap(), Mockito.anyMap()))
-                                .thenAnswer(
-                                        (Answer<Place>) invocation -> {
-                                            Object[] args = invocation.getArguments();
-                                            Place place = (Place) args[0];
-                                            Map<Long, Place> resourceIdPlaces = (Map<Long, Place>) args[1];
+                        .thenAnswer(
+                                (Answer<List<LocaleItem>>) invocation -> {
+                                    Object[] args = invocation.getArguments();
+                                    Place place = (Place) args[0];
 
-                                            if (place.getId() >= 0) {
-                                                return resourceIdPlaces.get(place.getId());
-                                            } else {
-                                                return null;
-                                            }
-                                        }
-                                );
+                                    return place.getVenueAddress();
+                                }
+                        );
+                mockedStatic.when(() -> ConferenceDataLoaderExecutor.findResourcePlace(Mockito.any(Place.class), Mockito.anyMap(), Mockito.anyMap(), Mockito.anyMap()))
+                        .thenAnswer(
+                                (Answer<Place>) invocation -> {
+                                    Object[] args = invocation.getArguments();
+                                    Place place = (Place) args[0];
+                                    Map<Long, Place> resourceIdPlaces = (Map<Long, Place>) args[1];
+
+                                    if (place.getId() >= 0) {
+                                        return resourceIdPlaces.get(place.getId());
+                                    } else {
+                                        return null;
+                                    }
+                                }
+                        );
                 mockedStatic.when(() -> ConferenceDataLoaderExecutor.needUpdate(Mockito.any(Place.class), Mockito.any(Place.class)))
                         .thenAnswer(
                                 (Answer<Boolean>) invocation -> {
@@ -2505,9 +2505,14 @@ class ConferenceDataLoaderExecutorTest {
     }
 
     @Test
-    void savePlaces() {
-        try (MockedStatic<YamlUtils> mockedStatic = Mockito.mockStatic(YamlUtils.class)) {
-            assertDoesNotThrow(() -> ConferenceDataLoaderExecutor.savePlaces(List.of(new Place()), "filename"));
+    void logAndSavePlaces() {
+        try (MockedStatic<LocalizationUtils> localizationUtilsMockedStatic = Mockito.mockStatic(LocalizationUtils.class);
+             MockedStatic<YamlUtils> yamlUtilsMockedStatic = Mockito.mockStatic(YamlUtils.class)
+        ) {
+            localizationUtilsMockedStatic.when(() -> LocalizationUtils.getString(Mockito.anyList(), Mockito.any(Language.class)))
+                    .thenReturn("");
+
+            assertDoesNotThrow(() -> ConferenceDataLoaderExecutor.logAndSavePlaces(List.of(new Place()), "{}", "filename"));
         }
     }
 

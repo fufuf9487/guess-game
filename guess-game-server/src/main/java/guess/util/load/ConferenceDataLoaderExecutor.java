@@ -1239,11 +1239,11 @@ public class ConferenceDataLoaderExecutor {
         var placesToUpdate = placeLoadResult.itemToUpdate();
 
         if (!placesToAppend.isEmpty()) {
-            savePlaces(placesToAppend, "places-to-append.yml");
+            logAndSavePlaces(placesToAppend, "Places (to append resource file): {}", "places-to-append.yml");
         }
 
         if (!placesToUpdate.isEmpty()) {
-            savePlaces(placesToUpdate, "places-to-update.yml");
+            logAndSavePlaces(placesToUpdate, "Places (to update resource file): {}", "places-to-update.yml");
         }
     }
 
@@ -1366,14 +1366,21 @@ public class ConferenceDataLoaderExecutor {
     }
 
     /**
-     * Saves places to file.
+     * Logs and saves places.
      *
-     * @param places   places
-     * @param filename filename
+     * @param logMessage log message
+     * @param filename   filename
      * @throws IOException          if file creation error occurs
      * @throws NoSuchFieldException if field name is invalid
      */
-    static void savePlaces(List<Place> places, String filename) throws IOException, NoSuchFieldException {
+    static void logAndSavePlaces(List<Place> places, String logMessage, String filename) throws IOException, NoSuchFieldException {
+        log.info(logMessage, places.size());
+        places.forEach(
+                p -> log.trace("Place: nameEn: '{}', name: '{}'",
+                        LocalizationUtils.getString(p.getCity(), Language.ENGLISH),
+                        LocalizationUtils.getString(p.getCity(), Language.RUSSIAN))
+        );
+
         YamlUtils.save(new PlaceList(places), filename);
     }
 
