@@ -1935,8 +1935,8 @@ public class ConferenceDataLoaderExecutor {
                         null,
                         null,
                         new Place(id,
-                                Collections.emptyList(),
-                                Collections.emptyList(),
+                                new ArrayList<>(),
+                                new ArrayList<>(),
                                 null
                         )))
                 .toList();
