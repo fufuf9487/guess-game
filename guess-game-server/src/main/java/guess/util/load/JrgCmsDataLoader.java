@@ -550,20 +550,31 @@ public class JrgCmsDataLoader extends CmsDataLoader {
                 .toList();
         Map<String, Speaker> speakerMap = getSpeakerMap(validJrgCmsActivities);
 
+        logNotTalkActivities(validJrgCmsActivities);
+
         return validJrgCmsActivities.stream()
                 .filter(a -> dayTrackTimeMap.containsKey(a.getId()))
-                .peek(this::logNotTalkActivity)
                 .map(a -> JrgCmsDataLoader.createTalk(a, speakerMap, talkId, dayTrackTimeMap))
                 .sorted(Comparator.comparing(Talk::getTalkDay).thenComparing(Talk::getTrackTime).thenComparing(Talk::getTrack))
                 .toList();
     }
 
-    void logNotTalkActivity(JrgCmsActivity jrgCmsActivity) {
-        if (!TALK_ACTIVITY_TYPE.equals(jrgCmsActivity.getType())) {
-            JrgCmsTalk jrgCmsTalk = jrgCmsActivity.getData();
+    void logNotTalkActivities(List<JrgCmsActivity> jrgCmsActivities) {
+        jrgCmsActivities.stream()
+                .filter(a -> !TALK_ACTIVITY_TYPE.equals(a.getType()))
+                .sorted((a1, a2) -> {
+                    JrgCmsTalk t1 = a1.getData();
+                    JrgCmsTalk t2 = a2.getData();
+                    String title1 = t1.getTitle().get(RUSSIAN_TEXT_KEY);
+                    String title2 = t2.getTitle().get(RUSSIAN_TEXT_KEY);
 
-            log.warn("Not a talk: {}, '{}'", jrgCmsActivity.getType(), jrgCmsTalk.getTitle().get(RUSSIAN_TEXT_KEY));
-        }
+                    return title1.compareTo(title2);
+                })
+                .forEach(a -> {
+                    JrgCmsTalk jrgCmsTalk = a.getData();
+
+                    log.warn("Not a talk: '{}', ({})", jrgCmsTalk.getTitle().get(RUSSIAN_TEXT_KEY), a.getType());
+                });
     }
 
     @Override
