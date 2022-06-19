@@ -70,6 +70,7 @@ public class JrgCmsDataLoader extends CmsDataLoader {
     private static final String FILTER_PARAM_NAME = "$filter";
     private static final String ORDERBY_PARAM_NAME = "$orderby";
 
+    private static final String TALK_ACTIVITY_TYPE = "TALK";
     private static final String SPEAKER_ROLE = "SPEAKER";
     private static final String JAVA_CHAMPION_TITULUS = "Java Champion";
     private static final String TWITTER_CONTACT_TYPE = "twitter";
@@ -551,9 +552,18 @@ public class JrgCmsDataLoader extends CmsDataLoader {
 
         return validJrgCmsActivities.stream()
                 .filter(a -> dayTrackTimeMap.containsKey(a.getId()))
+                .peek(this::logNotTalkActivity)
                 .map(a -> JrgCmsDataLoader.createTalk(a, speakerMap, talkId, dayTrackTimeMap))
                 .sorted(Comparator.comparing(Talk::getTalkDay).thenComparing(Talk::getTrackTime).thenComparing(Talk::getTrack))
                 .toList();
+    }
+
+    void logNotTalkActivity(JrgCmsActivity jrgCmsActivity) {
+        if (!TALK_ACTIVITY_TYPE.equals(jrgCmsActivity.getType())) {
+            JrgCmsTalk jrgCmsTalk = jrgCmsActivity.getData();
+
+            log.warn("Not a talk: {}, '{}'", jrgCmsActivity.getType(), jrgCmsTalk.getTitle().get(RUSSIAN_TEXT_KEY));
+        }
     }
 
     @Override

@@ -6,6 +6,7 @@ import java.util.List;
 
 public class JrgCmsActivity {
     private String id;
+    private String type;
     private JrgCmsTalk data;
     private List<JrgCmsParticipant> participants;
 
@@ -15,6 +16,14 @@ public class JrgCmsActivity {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public JrgCmsTalk getData() {
