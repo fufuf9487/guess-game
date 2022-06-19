@@ -8001,7 +8001,7 @@ speakers:
     habr: barancev
   - id: 548
     photoFileName: 0548.jpg
-    photoUpdatedAt: 2021-10-26T10:00:02.148Z[UTC]
+    photoUpdatedAt: 2022-03-31T19:03:56Z[UTC]
     name:
       - {language: en, text: "Ekaterina Bateeva"}
       - {language: ru, text: "Екатерина Батеева"}
@@ -11506,7 +11506,7 @@ speakers:
             \ HashiСorp;\n- SRE management;\n- company transformation;\n- внедрение DevOps;\n- RnD."
   - id: 793
     photoFileName: 0793.jpg
-    photoUpdatedAt: 2020-05-14T10:14:19.928Z[UTC]
+    photoUpdatedAt: 2022-03-31T19:03:43Z[UTC]
     name:
       - {language: en, text: "Pavel Strelchenko"}
       - {language: ru, text: "Павел Стрельченко"}
@@ -11777,20 +11777,20 @@ speakers:
     habr: smartdev
   - id: 812
     photoFileName: 0812.jpg
+    photoUpdatedAt: 2022-03-31T19:03:35Z[UTC]
     name:
       - {language: en, text: "Alexandr Guzenko"}
       - {language: ru, text: "Александр Гузенко"}
     companyIds: [674]
     bio:
-      - {language: en, text: "Was in love with computers since childhood, literally grew up with the indusrty and was there\
-            \ at the very dawn of it. Since 2015 has been writing Android apps. Worked at QIWI, Russian payment service provider,\
-            \ had written the main app for them, was telling people about FinTech. Now Alexandr is working at Tinkoff.ru,\
-            \ writing the \"Clients\" app. He was always interested in security, including security of the mobile apps, so\
-            \ he surely has something to tell about it."}
+      - {language: en, text: "From childhood I was fascinated by computers, literally grew up with this industry, got into\
+            \ its very dawn. Since 2015, he has been writing applications for Android. I worked at QIWI, wrote the main wallet\
+            \ application, told people about fintech. Now she works at Tinkoff.ru on the Tinkoff Business project. For the\
+            \ last couple of years he has been working on mobile infrastructure (MobileDevOps) and automation."}
       - {language: ru, text: "C детства был увлечён компьютерами, буквально рос вместе с этой индустрией, попал в самый её\
             \ рассвет. С 2015 года пишет приложения под Android. Работал в QIWI, писал главное приложение кошелька, расска\
-            зывал людям о финтехе. Сейчас работает в Tinkoff.ru, пишет приложение «Клиенты». Александр всегда интересовалс\
-            я безопасностью, в том числе мобильных приложений, поэтому ему есть что вам рассказать в этой области."}
+            зывал людям о финтехе. Сейчас работает в Tinkoff.ru на проекте Тинькофф Бизнес. Последние пару лет занимается\
+            \ мобильной инфраструктурой(MobileDevOps) и автоматизацией"}
     twitter: JACKS0N23
     habr: Jacks0n23
   - id: 813
@@ -19194,14 +19194,23 @@ speakers:
     habr: anioutka
   - id: 1365
     photoFileName: 1365.jpg
-    photoUpdatedAt: 2021-11-22T06:59:24.515Z[UTC]
+    photoUpdatedAt: 2022-06-06T15:25:06Z[UTC]
     name:
       - {language: en, text: "Alexander Sychev"}
       - {language: ru, text: "Александр Сычев"}
     companyIds: [665]
     bio:
-      - {language: en, text: "Head of Mobile Development."}
-      - {language: ru, text: "Руководитель мобильной разработки."}
+      - language: en
+        text: "<p>IT-optimist from the center of Moscow.</p>\n<ul>\n<li>He has been creating iOS apps for 11 years, and is\
+            \ fluent in Objective-C and Swift.</li>\n<li>For 7 years he has led large mobile development teams (SberHealth,\
+            \ SberBank, RAMBLER&amp;Co).</li>\n<li>Has been speaking and organizing IT conferences for 7 years.</li>\n<li>Has\
+            \ been teaching iOS development in schools for 5 years. Graduated with honors from the miniMBA at SberUniversity.</li>\n\
+            </ul>"
+      - language: ru
+        text: "<p>IT-оптимист из центра Москвы.</p>\n<ul>\n<li>11 лет создает приложения под iOS, отлично владеет Objective-C\
+            \ и Swift.</li>\n<li>7 лет руководит большими командами мобильной разработки (СберЗдоровье, СберБанк, RAMBLER&amp;Co).</li>\n\
+            <li>7 лет выступает и организует IT-конференции.</li>\n<li>5 лет преподает в школах iOS-разработки. Окончил с\
+            \ отличием miniMBA в СберУниверситете.</li>\n</ul>"
     gitHub: Brain89
     habr: Brain89
   - id: 1366
@@ -19234,17 +19243,14 @@ speakers:
     twitter: antonshilov_
   - id: 1368
     photoFileName: 1368.jpg
-    photoUpdatedAt: 2020-11-05T14:18:35.534Z[UTC]
+    photoUpdatedAt: 2022-06-06T13:59:16Z[UTC]
     name:
-      - {language: en, text: "Roman Golofaev"}
+      - {language: en, text: "Roman Golofayev"}
       - {language: ru, text: "Роман Голофаев"}
-    companyIds: [429]
+    companyIds: [814]
     bio:
-      - {language: en, text: "Мobile developer since 2011. A large number of applications, services and projects in bank.\
-            \ Currently his role is a Community lead."}
-      - {language: ru, text: "Занимается мобильной разработкой с 2011 года. За плечами большое количество приложений и реа\
-            лизованных банковских проектов. Сейчас является Community lead и развивает экспертизу и стандарты разработки в\
-            \ Райффайзен."}
+      - {language: en, text: "<p>Head of mobile development at Pochtatech.</p>"}
+      - {language: ru, text: "<p>Руководитель мобильной разработки в Почтатех.</p>"}
   - id: 1369
     photoFileName: 1369.jpg
     photoUpdatedAt: 2020-11-05T14:06:35.057Z[UTC]
@@ -29399,7 +29405,7 @@ speakers:
     gitHub: Toxa2033
   - id: 2059
     photoFileName: 2059.jpg
-    photoUpdatedAt: 2022-05-30T14:31:50Z[UTC]
+    photoUpdatedAt: 2022-06-15T14:22:33Z[UTC]
     name:
       - {language: en, text: "Timur Gasymov"}
       - {language: ru, text: "Тимур Гасымов"}
@@ -29407,8 +29413,7 @@ speakers:
     bio:
       - {language: en, text: "<p>Seven years of experience in Android development. One year of developing for iOS. Five years\
             \ of life with WebView.</p>"}
-      - {language: ru, text: "<span style=\"color: rgb(35, 35, 35);\">Семь лет опыта разработки под Android. Год разработк\
-            и под iOS. Пять лет жизни с WebView. Android техлид.</span>"}
+      - {language: ru, text: "<p>Семь лет опыта разработки под Android. Год разработки под iOS. Пять лет жизни с WebView.</p>"}
   - id: 2060
     photoFileName: 2060.jpg
     photoUpdatedAt: 2022-04-30T13:34:57Z[UTC]
@@ -30349,3 +30354,28 @@ speakers:
       - {language: ru, text: "<p>Лид тестирования на проекте разработки сети самообслуживания в Тинькофф (банкоматы). Разв\
             ивает тестирование на стыке ПО и железа, внедряет shift-left testing и избавляет от антипаттернов.</p>"}
     habr: DenisSibra
+  - id: 2122
+    photoFileName: 2122.jpg
+    photoUpdatedAt: 2022-06-15T13:28:49Z[UTC]
+    name:
+      - {language: en, text: "Alexander Pahomov"}
+      - {language: ru, text: "Александр Пахомов"}
+    companyIds: [613]
+    bio:
+      - {language: en, text: "<p>Has been working on native development for iOS for a little over three years. Works in Alfa-Bank\
+            \ on Alfa-Mobile Business project. Always been interested in what you can see only when you get down to the level\
+            \ below.</p>"}
+      - {language: ru, text: "<p>Занимается нативной разработкой под iOS чуть более трёх лет. Работает в Альфа-Банке на пр\
+            оекте Альфа-Мобайл Бизнес. Всегда интересовался тем, что можно увидеть, только опустившись на уровень ниже.</p>"}
+  - id: 2123
+    photoFileName: 2123.jpg
+    photoUpdatedAt: 2022-06-06T15:22:59Z[UTC]
+    name:
+      - {language: en, text: "Dmitry Aliev"}
+      - {language: ru, text: "Дмитрий Алиев"}
+    companyIds: [429]
+    bio:
+      - {language: en, text: "<p>Graduated from NSU's Faculty of Mechanics. From 2015 to 2021 he was an iOS developer, now\
+            \ developing mobile communities in Raifa.</p>"}
+      - {language: ru, text: "<p>Окончил мехмат НГУ. С 2015 по 2021 был iOS-разработчиком, сейчас развивает мобильные сооб\
+            щества в Райфе.</p>"}

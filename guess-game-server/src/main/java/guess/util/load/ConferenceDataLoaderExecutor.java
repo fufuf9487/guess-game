@@ -2211,7 +2211,9 @@ public class ConferenceDataLoaderExecutor {
 //                                "Хроники Мобиуса. Истории с технических собеседований: от смеха до слёз",
 //                                "Хроники Мобиуса. Декларативный UI: куда мы катимся",
 //                                "Хроники Мобиуса. Подводим итоги, но не заканчиваем",
-//                                "Открытие офлайн-части конференции Mobius 2022 Spring", "Закрытие конференции Mobius 2022 Spring")));
+//                                "Открытие офлайн-части конференции Mobius 2022 Spring", "Закрытие конференции Mobius 2022 Spring",
+//                                "BoF-сессия: нужны ли алгоритмы в мобильной разработке?",
+//                                "BoF-сессия: подглядываем в конфиги друг друга. Какие инструменты для разработки, практики и гаджеты посоветовать коллегам?")));
 //        loadTalksSpeakersEvent(Conference.HEISENBUG, LocalDate.of(2022, 5, 30), "2022 Spring",
 //                LoadSettings.eventTemplateAndInvalidTalksSet(
 //                        createEventTemplate("Heisenbug 2022 Spring", null, List.of(24L, 4L)),

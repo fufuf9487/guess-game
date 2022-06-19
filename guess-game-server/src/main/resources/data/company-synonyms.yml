@@ -348,7 +348,9 @@ companySynonyms:
         Raiffeisen,
         Райффайзен,
         RaiffeisenBank,
-        Райффайзенбанк
+        Райффайзенбанк,
+        "Raiffeisen Bank",
+        "Райффайзен Банк"
     ]
   - name: RTSoft
     synonyms: [
@@ -387,7 +389,9 @@ companySynonyms:
         Сбербанк-Технологии,
         SberX,
         "SberBank Online",
-        "СберБанк Онлайн"
+        "СберБанк Онлайн",
+        SberHealth,
+        СберЗдоровье
     ]
   - name: Sibur
     synonyms: [
