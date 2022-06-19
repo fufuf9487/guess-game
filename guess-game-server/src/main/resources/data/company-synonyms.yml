@@ -197,10 +197,10 @@ companySynonyms:
         "SKB Contur",
         "СКБ Контур"
     ]
-  - name: KURS
+  - name: KURS-IT
     synonyms: [
-      KURS-IT,
-      КУРС-ИТ
+      KURS,
+      КУРС
     ]
   - name: LightSource
     synonyms: [

@@ -8899,9 +8899,9 @@ speakers:
         text: "<p>13 years in IT. Head of QA in Dodo Engineering.</p>\n<p>Background: analytics, project management. Mentor,\
             \ writes and automates in Java. Believes that \"simple\" tests can be written for as complex systems as you want.</p>"
       - language: ru
-        text: "<p>13 лет в IT. Head of QA в Додо Инжиниринг.</p>\n<p>Бэкграунд: аналитика, управление проектами. Ментор, п\
-            ишет и автоматизирует на Java. Верит в то, что &laquo;простые&raquo; тесты могут быть написаны для сколь угодн\
-            о сложных систем.</p>"
+        text: "<p>13 лет в IT. Head of QA в Dodo Engineering.</p>\n<p>Бэкграунд: аналитика, управление проектами. Ментор,\
+            \ пишет и автоматизирует на Java. Верит в то, что &laquo;простые&raquo; тесты могут быть написаны для сколь уг\
+            одно сложных систем.</p>"
     gitHub: dtuchs
   - id: 610
     photoFileName: 0610.jpg
@@ -13089,7 +13089,7 @@ speakers:
     companyIds: [496]
   - id: 911
     photoFileName: 0911.jpg
-    photoUpdatedAt: 2020-02-13T13:33:13.530Z[UTC]
+    photoUpdatedAt: 2022-06-09T09:25:20Z[UTC]
     name:
       - {language: en, text: "Alexandra Svatikova"}
       - {language: ru, text: "Александра Сватикова"}
@@ -13099,9 +13099,8 @@ speakers:
         text: "An application security expert in OK.RU.\nShe started her career in IT as a Java developer but then became\
             \ interested in secure development and app sec. Has been specializing in web and mobile application security for\
             \ 8 years now."
-      - language: ru
-        text: "Эксперт по информационной безопасности в Одноклассниках. \nПуть в IT начинала как Java-разработчик, но свер\
-            нула не туда. Последние 8 лет занимается безопасностью веб- и мобильных приложений."
+      - {language: ru, text: "Тимлид продуктовой безопасности в Одноклассниках. Путь в IT начинала как Java-разработчик, н\
+            о свернула не туда. Последние 8 лет занимается безопасностью веб- и мобильных приложений."}
     habr: alexandra_s
   - id: 912
     photoFileName: 0912.jpg
@@ -30379,3 +30378,46 @@ speakers:
             \ developing mobile communities in Raifa.</p>"}
       - {language: ru, text: "<p>Окончил мехмат НГУ. С 2015 по 2021 был iOS-разработчиком, сейчас развивает мобильные сооб\
             щества в Райфе.</p>"}
+  - id: 2124
+    photoFileName: 2124.jpg
+    photoUpdatedAt: 2022-06-08T08:03:22Z[UTC]
+    name:
+      - {language: en, text: "Anton Smolyanin"}
+      - {language: ru, text: "Антон Смолянин"}
+    companyIds: [653]
+    bio:
+      - {language: en, text: "<p>Anton has been involved in test automation for more than 8 years. Worked with both Android\
+            \ and iOS. Web has always been a supplement to cell phones. Wrote in Java, Swift, Python and a pinch of JS. Worked\
+            \ at LG, Grid Dynamics and VK. Helped test the main Odnoklassniki client for the last 5 years. Currently he is\
+            \ in the process of setting up the iOS farm.</p>"}
+      - {language: ru, text: "<p>Занимается автоматизацией тестирования больше 8 лет. Работал и с Android, и c iOS. Веб вс\
+            егда был дополнением к мобилкам. Писал на Java, Swift, Python и щепотке JS. Работал в LG, Grid Dynamics и VK.\
+            \ Последние 5 лет помогает тестировать основной клиент &laquo;Одноклассников&raquo;. Сейчас занимается настрой\
+            кой фермы под iOS.</p>"}
+  - id: 2125
+    photoFileName: 2125.jpg
+    photoUpdatedAt: 2022-06-08T11:17:33Z[UTC]
+    name:
+      - {language: en, text: "Ivan Boklach"}
+      - {language: ru, text: "Иван Боклач"}
+    companyIds: [613]
+    bio:
+      - {language: en, text: "<p>Ivan is head of quality assurance at Alfa-Bank. He builds the testing process in 50+ teams.</p>"}
+      - {language: ru, text: "<p>Иван &mdash; руководитель направления по обеспечению качества в Альфа-Банке. Выстраивает\
+            \ процесс тестирования в 50+ командах.</p>"}
+  - id: 2126
+    photoFileName: 2126.jpg
+    photoUpdatedAt: 2022-06-14T13:38:45Z[UTC]
+    name:
+      - {language: en, text: "Artem Sokovets"}
+      - {language: ru, text: "Артём Соковец"}
+    companyIds: [665]
+    bio:
+      - {language: en, text: "<p>Artem works at Sberbank International as Engineering Manager. He contributes to the development,\
+            \ architecture of high-load services and personal growth of the team. In his spare time he likes to go skiing\
+            \ and spend time with a cup of good tea and an interesting technical book. Remembers Java and Kotlin.</p>"}
+      - {language: ru, text: "<p>Артем работает в Sberbank International на позиции Engineering Manager. Вносит свой вклад\
+            \ в разработку, архитектуру высоконагруженных сервисов и личный рост команды. В свободное время любит покатать\
+            ся на лыжах и провести время за чашечкой хорошего чая и интересной технической книгой. Помнит про Java и Kotlin.</p>"}
+    twitter: SokovetsArtem
+    gitHub: artsok

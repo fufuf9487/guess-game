@@ -2304,8 +2304,8 @@ companies:
     siteLink: https://www.croc.ru
   - id: 634
     name:
-      - {language: en, text: KURS}
-      - {language: ru, text: КУРС}
+      - {language: en, text: KURS-IT}
+      - {language: ru, text: КУРС-ИТ}
     siteLink: http://www.curs.ru
   - id: 635
     name:

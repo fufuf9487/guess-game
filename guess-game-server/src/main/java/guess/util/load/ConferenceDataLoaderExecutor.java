@@ -2218,7 +2218,9 @@ public class ConferenceDataLoaderExecutor {
 //                LoadSettings.eventTemplateAndInvalidTalksSet(
 //                        createEventTemplate("Heisenbug 2022 Spring", null, List.of(24L, 4L)),
 //                        Set.of("Heisenbug: что было и что будет", "Подведем итоги онлайн-части Heisenbug 2022 Spring",
-//                                "Открытие офлайн-части конференции Heisenbug 2022 Spring", "Закрытие конференции Heisenbug 2022 Spring")));
+//                                "Открытие офлайн-части конференции Heisenbug 2022 Spring", "Закрытие конференции Heisenbug 2022 Spring",
+//                                "BoF-сессия: будущее роботизации в России",
+//                                "BoF-сессия: способы улучшения качества в условиях постоянного сокращения Time To Market")));
 //        loadTalksSpeakersEvent(Conference.HYDRA, LocalDate.of(2022, 6, 2), "2022");
 //        loadTalksSpeakersEvent(Conference.HYDRA, LocalDate.of(2022, 6, 26), "2022");
 //        loadTalksSpeakersEvent(Conference.CPP_RUSSIA, LocalDate.of(2022, 6, 6), "2022");
