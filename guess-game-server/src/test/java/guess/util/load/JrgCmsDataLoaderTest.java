@@ -10,8 +10,8 @@ import guess.domain.source.cms.jrgcms.speaker.JrgContact;
 import guess.domain.source.cms.jrgcms.talk.JrgTalkPresentation;
 import guess.domain.source.cms.jrgcms.talk.JrgTalkPresentationFile;
 import guess.domain.source.image.UrlDates;
+import guess.util.FileUtils;
 import guess.util.LocalizationUtils;
-import guess.util.yaml.YamlUtils;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -36,21 +36,23 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 @DisplayName("JrgCmsDataLoader class tests")
 class JrgCmsDataLoaderTest {
+    private static final String OPTIONS_DIRECTORY_NAME = "options";
+
     @BeforeEach
     void setUp() throws IOException {
-        YamlUtils.clearOutputDirectory();
+        FileUtils.deleteDirectory(OPTIONS_DIRECTORY_NAME);
     }
 
     @AfterEach
     void tearDown() throws IOException {
-        YamlUtils.clearOutputDirectory();
+        FileUtils.deleteDirectory(OPTIONS_DIRECTORY_NAME);
     }
 
     @Test
     void getTokenFromCacheAndStoreTokenInCache() throws IOException {
         try (MockedStatic<JrgCmsDataLoader> mockedStatic = Mockito.mockStatic(JrgCmsDataLoader.class)) {
             mockedStatic.when(JrgCmsDataLoader::getOptionsDirectoryName)
-                    .thenReturn(YamlUtils.OUTPUT_DIRECTORY_NAME);
+                    .thenReturn(OPTIONS_DIRECTORY_NAME);
             mockedStatic.when(() -> JrgCmsDataLoader.storeTokenInCache(Mockito.any(JrgCmsTokenResponse.class)))
                     .thenCallRealMethod();
             mockedStatic.when(JrgCmsDataLoader::getTokenFromCache)
@@ -68,7 +70,7 @@ class JrgCmsDataLoaderTest {
             assertDoesNotThrow(() -> JrgCmsDataLoader.storeTokenInCache(jrgCmsTokenResponse));
 
             tokenResponse = JrgCmsDataLoader.getTokenFromCache();
-            
+
             assertNotNull(tokenResponse);
             assertEquals(ACCESS_TOKEN, tokenResponse.getAccessToken());
         }
