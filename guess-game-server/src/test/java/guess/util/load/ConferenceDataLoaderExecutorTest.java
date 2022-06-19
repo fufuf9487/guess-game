@@ -457,7 +457,7 @@ class ConferenceDataLoaderExecutorTest {
                                 }
                         );
                 conferenceDataLoaderExecutorMockedStatic.when(() -> ConferenceDataLoaderExecutor.getPlaceLoadResult(
-                                Mockito.any(Place.class), Mockito.any(Place.class), Mockito.any()))
+                                Mockito.anyList(), Mockito.anyList(), Mockito.any()))
                         .thenReturn(new LoadResult<>(
                                 Collections.emptyList(),
                                 Collections.emptyList(),
@@ -1862,9 +1862,21 @@ class ConferenceDataLoaderExecutorTest {
         private Stream<Arguments> data() {
             Place place0 = new Place();
             place0.setId(0);
+            place0.setCity(List.of(new LocaleItem(Language.ENGLISH.getCode(), "City0")));
 
             Place place1 = new Place();
             place1.setId(1);
+            place1.setCity(List.of(new LocaleItem(Language.ENGLISH.getCode(), "City1")));
+
+            EventDays eventDays0 = new EventDays(null, null, place0);
+            EventDays eventDays1 = new EventDays(null, null, place1);
+
+            List<Place> resourcePlaces = List.of(new Place(
+                    0,
+                    List.of(new LocaleItem(Language.ENGLISH.getCode(), "Online")),
+                    Collections.emptyList(),
+                    null
+            ));
 
             LoadResult<List<Place>> placeLoadResult0 = new LoadResult<>(
                     Collections.emptyList(),
@@ -1878,22 +1890,52 @@ class ConferenceDataLoaderExecutorTest {
 
             LoadResult<List<Place>> placeLoadResult2 = new LoadResult<>(
                     Collections.emptyList(),
+                    List.of(place1),
+                    List.of(place0));
+
+            LoadResult<List<Place>> placeLoadResult3 = new LoadResult<>(
+                    Collections.emptyList(),
                     Collections.emptyList(),
                     Collections.emptyList());
 
             return Stream.of(
-//                    arguments(place0, null, new AtomicLong(-1), placeLoadResult0),
-//                    arguments(place0, place0, new AtomicLong(-1), placeLoadResult1),
-                    arguments(place0, place1, new AtomicLong(-1), placeLoadResult2)
+                    arguments(List.of(eventDays0), Collections.emptyList(), new AtomicLong(-1), placeLoadResult0),
+                    arguments(List.of(eventDays0), resourcePlaces, new AtomicLong(-1), placeLoadResult1),
+                    arguments(List.of(eventDays0, eventDays1), resourcePlaces, new AtomicLong(-1), placeLoadResult2),
+                    arguments(Collections.emptyList(), resourcePlaces, new AtomicLong(-1), placeLoadResult3)
             );
         }
 
         @ParameterizedTest
         @MethodSource("data")
-        void getPlaceLoadResult(Place place, Place resourcePlace, AtomicLong lastPlaceId, LoadResult<List<Place>> expected) {
+        @SuppressWarnings("unchecked")
+        void getPlaceLoadResult(List<EventDays> eventDaysList, List<Place> resourcePlaces, AtomicLong lastPlaceId, LoadResult<List<Place>> expected) {
             try (MockedStatic<ConferenceDataLoaderExecutor> mockedStatic = Mockito.mockStatic(ConferenceDataLoaderExecutor.class)) {
-                mockedStatic.when(() -> ConferenceDataLoaderExecutor.getPlaceLoadResult(Mockito.nullable(Place.class), Mockito.nullable(Place.class), Mockito.any()))
+                mockedStatic.when(() -> ConferenceDataLoaderExecutor.getPlaceLoadResult(Mockito.anyList(), Mockito.anyList(), Mockito.any()))
                         .thenCallRealMethod();
+                mockedStatic.when(() -> ConferenceDataLoaderExecutor.fixVenueAddress(Mockito.any(Place.class)))
+                                .thenAnswer(
+                                        (Answer<List<LocaleItem>>) invocation -> {
+                                            Object[] args = invocation.getArguments();
+                                            Place place = (Place) args[0];
+                                            
+                                            return place.getVenueAddress();
+                                        }
+                                );
+                mockedStatic.when(() -> ConferenceDataLoaderExecutor.findResourcePlace(Mockito.any(Place.class), Mockito.anyMap(), Mockito.anyMap(), Mockito.anyMap()))
+                                .thenAnswer(
+                                        (Answer<Place>) invocation -> {
+                                            Object[] args = invocation.getArguments();
+                                            Place place = (Place) args[0];
+                                            Map<Long, Place> resourceIdPlaces = (Map<Long, Place>) args[1];
+
+                                            if (place.getId() >= 0) {
+                                                return resourceIdPlaces.get(place.getId());
+                                            } else {
+                                                return null;
+                                            }
+                                        }
+                                );
                 mockedStatic.when(() -> ConferenceDataLoaderExecutor.needUpdate(Mockito.any(Place.class), Mockito.any(Place.class)))
                         .thenAnswer(
                                 (Answer<Boolean>) invocation -> {
@@ -1905,7 +1947,7 @@ class ConferenceDataLoaderExecutorTest {
                                 }
                         );
 
-                assertEquals(expected, ConferenceDataLoaderExecutor.getPlaceLoadResult(place, resourcePlace, lastPlaceId));
+                assertEquals(expected, ConferenceDataLoaderExecutor.getPlaceLoadResult(eventDaysList, resourcePlaces, lastPlaceId));
             }
         }
     }

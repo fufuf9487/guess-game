@@ -351,32 +351,9 @@ public class ConferenceDataLoaderExecutor {
                 lastTalksId);
 
         // Find places
-        Map<Long, Place> resourceIdPlaces = resourceSourceInformation.getPlaces().stream()
-                .collect(Collectors.toMap(
-                        Identifier::getId,
-                        p -> p
-                ));
-        Map<CityVenueAddress, Place> resourceRuCityVenueAddressPlaces = resourceSourceInformation.getPlaces().stream()
-                .collect(Collectors.toMap(
-                        p -> new CityVenueAddress(
-                                LocalizationUtils.getString(p.getCity(), Language.RUSSIAN).trim(),
-                                LocalizationUtils.getString(p.getVenueAddress(), Language.RUSSIAN).trim()),
-                        p -> p
-                ));
-        Map<CityVenueAddress, Place> resourceEnCityVenueAddressPlaces = resourceSourceInformation.getPlaces().stream()
-                .collect(Collectors.toMap(
-                        p -> new CityVenueAddress(
-                                LocalizationUtils.getString(p.getCity(), Language.ENGLISH).trim(),
-                                LocalizationUtils.getString(p.getVenueAddress(), Language.ENGLISH).trim()),
-                        p -> p
-                ));
-        var cmsPlace = cmsEvent.getPlace();
-        cmsPlace.setVenueAddress(fixVenueAddress(cmsPlace));
-        var resourcePlace = findResourcePlace(cmsPlace, resourceIdPlaces, resourceRuCityVenueAddressPlaces, resourceEnCityVenueAddressPlaces);
-        var lastPlaceId = new AtomicLong(getLastId(resourceSourceInformation.getPlaces()));
-        LoadResult<List<Place>> placeLoadResult = getPlaceLoadResult(cmsPlace, resourcePlace, lastPlaceId);
-
-        cmsEvent.setPlaceId(cmsPlace.getId());
+        List<Place> resourcePlaces = resourceSourceInformation.getPlaces();
+        var lastPlaceId = new AtomicLong(getLastId(resourcePlaces));
+        LoadResult<List<Place>> placeLoadResult = getPlaceLoadResult(cmsEvent.getDays(), resourcePlaces, lastPlaceId);
 
         // Find event
         cmsEvent.setEventType(resourceEventType);
@@ -949,6 +926,7 @@ public class ConferenceDataLoaderExecutor {
                             t -> LocalizationUtils.getString(t.getName(), Language.ENGLISH).trim(),
                             Collectors.toSet()
                     ));
+
             talks.forEach(
                     t -> {
                         var resourceTalk = findResourceTalk(t, resourceRuNameTalks, resourceEnNameTalks);
@@ -1009,28 +987,56 @@ public class ConferenceDataLoaderExecutor {
     /**
      * Gets place load result.
      *
-     * @param place         place
-     * @param resourcePlace resource place
-     * @param lastPlaceId   identifier of last place
+     * @param eventDaysList  event days list
+     * @param resourcePlaces resource places
+     * @param lastPlaceId    identifier of last place
      * @return place load result
      */
-    static LoadResult<List<Place>> getPlaceLoadResult(Place place, Place resourcePlace, AtomicLong lastPlaceId) {
+    static LoadResult<List<Place>> getPlaceLoadResult(List<EventDays> eventDaysList, List<Place> resourcePlaces, AtomicLong lastPlaceId) {
         List<Place> placesToAppend = new ArrayList<>();
         List<Place> placesToUpdate = new ArrayList<>();
 
-        //TODO: implement
-//        if (resourcePlace == null) {
-//            // Place not exists
-//            place.setId(lastPlaceId.incrementAndGet());
-//            placeToAppend = place;
-//        } else {
-//            // Place exists
-//            place.setId(resourcePlace.getId());
-//
-//            if (needUpdate(resourcePlace, place)) {
-//                placeToUpdate = place;
-//            }
-//        }
+        Map<Long, Place> resourceIdPlaces = resourcePlaces.stream()
+                .collect(Collectors.toMap(
+                        Identifier::getId,
+                        p -> p
+                ));
+        Map<CityVenueAddress, Place> resourceRuCityVenueAddressPlaces = resourcePlaces.stream()
+                .collect(Collectors.toMap(
+                        p -> new CityVenueAddress(
+                                LocalizationUtils.getString(p.getCity(), Language.RUSSIAN).trim(),
+                                LocalizationUtils.getString(p.getVenueAddress(), Language.RUSSIAN).trim()),
+                        p -> p
+                ));
+        Map<CityVenueAddress, Place> resourceEnCityVenueAddressPlaces = resourcePlaces.stream()
+                .collect(Collectors.toMap(
+                        p -> new CityVenueAddress(
+                                LocalizationUtils.getString(p.getCity(), Language.ENGLISH).trim(),
+                                LocalizationUtils.getString(p.getVenueAddress(), Language.ENGLISH).trim()),
+                        p -> p
+                ));
+
+        eventDaysList.forEach(
+                ed -> {
+                    var cmsPlace = ed.getPlace();
+                    cmsPlace.setVenueAddress(fixVenueAddress(cmsPlace));
+                    var resourcePlace = findResourcePlace(cmsPlace, resourceIdPlaces, resourceRuCityVenueAddressPlaces,
+                            resourceEnCityVenueAddressPlaces);
+
+                    if (resourcePlace == null) {
+                        // Place not exists
+                        cmsPlace.setId(lastPlaceId.incrementAndGet());
+                        placesToAppend.add(cmsPlace);
+                    } else {
+                        // Place exists
+                        cmsPlace.setId(resourcePlace.getId());
+
+                        if (needUpdate(resourcePlace, cmsPlace)) {
+                            placesToUpdate.add(cmsPlace);
+                        }
+                    }
+                }
+        );
 
         return new LoadResult<>(
                 Collections.emptyList(),
