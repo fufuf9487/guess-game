@@ -163,19 +163,26 @@ public class OlapDaoImpl implements OlapDao {
                     eventTypesCube.addMeasureEntity(eventTypeAndCityAndYearDimensions, MeasureType.EVENTS_QUANTITY, event);
 
                     // Iterate event part talks
-                    for (Talk talk : event.getTalks()) {
-                        long safeTalkDay = (talk.getTalkDay() != null) ? talk.getTalkDay() : 1;
-
-                        if ((safeTalkDay >= firstDayNumber) && (safeTalkDay <= lastDayNumber)) {
-                            // Talk measure values
-                            eventTypesCube.addMeasureEntity(eventTypeAndCityAndYearDimensions, MeasureType.TALKS_QUANTITY, talk);
-
-                            iterateSpeakers(cubes, eventTypeDimension, yearDimension, eventTypeAndCityAndYearDimensions, event, talk);
-                        }
-                    }
+                    iterateTalks(cubes, eventTypeDimension, yearDimension, eventTypeAndCityAndYearDimensions, event,
+                            firstDayNumber, lastDayNumber);
 
                     previousDays += days;
                 }
+            }
+        }
+    }
+    
+    void iterateTalks(Cubes cubes, EventTypeDimension eventTypeDimension, YearDimension yearDimension,
+                      Set<Dimension<?>> eventTypeAndCityAndYearDimensions, Event event,
+                      long firstDayNumber, long lastDayNumber) {
+        for (Talk talk : event.getTalks()) {
+            long safeTalkDay = (talk.getTalkDay() != null) ? talk.getTalkDay() : 1;
+
+            if ((safeTalkDay >= firstDayNumber) && (safeTalkDay <= lastDayNumber)) {
+                // Talk measure values
+                cubes.eventTypesCube.addMeasureEntity(eventTypeAndCityAndYearDimensions, MeasureType.TALKS_QUANTITY, talk);
+
+                iterateSpeakers(cubes, eventTypeDimension, yearDimension, eventTypeAndCityAndYearDimensions, event, talk);
             }
         }
     }
