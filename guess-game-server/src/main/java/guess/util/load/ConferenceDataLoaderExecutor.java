@@ -1029,10 +1029,12 @@ public class ConferenceDataLoaderExecutor {
                         placesToAppend.add(cmsPlace);
                     } else {
                         // Place exists
-                        cmsPlace.setId(resourcePlace.getId());
+                        if (cmsPlace.getId() < 0) {
+                            cmsPlace.setId(resourcePlace.getId());
 
-                        if (needUpdate(resourcePlace, cmsPlace)) {
-                            placesToUpdate.add(cmsPlace);
+                            if (needUpdate(resourcePlace, cmsPlace)) {
+                                placesToUpdate.add(cmsPlace);
+                            }
                         }
                     }
                 }
