@@ -1858,50 +1858,72 @@ class ConferenceDataLoaderExecutorTest {
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     @DisplayName("getPlaceLoadResult method tests")
     class GetPlaceLoadResultTest {
-        private Stream<Arguments> data() {
-            Place place0 = new Place();
-            place0.setId(0);
-            place0.setCity(List.of(new LocaleItem(Language.ENGLISH.getCode(), "City0")));
-
-            Place place1 = new Place();
-            place1.setId(1);
-            place1.setCity(List.of(new LocaleItem(Language.ENGLISH.getCode(), "City1")));
-
-            EventDays eventDays0 = new EventDays(null, null, place0);
-            EventDays eventDays1 = new EventDays(null, null, place1);
-
-            List<Place> resourcePlaces = List.of(new Place(
-                    0,
-                    List.of(new LocaleItem(Language.ENGLISH.getCode(), "Online")),
-                    Collections.emptyList(),
+        private static Place createPlace(long id, String city, String venueAddress) {
+            return new Place(
+                    id,
+                    List.of(new LocaleItem(Language.ENGLISH.getCode(), city)),
+                    List.of(new LocaleItem(Language.ENGLISH.getCode(), venueAddress)),
                     null
-            ));
+            );
+        }
+
+        private static Place createPlace(long id, String city) {
+            return createPlace(id, city, "");
+        }
+
+        private static EventDays createEventDays(long id, String city, String venueAddress) {
+            return new EventDays(null, null, createPlace(id, city, venueAddress));
+        }
+
+        private static EventDays createEventDays(long id, String city) {
+            return createEventDays(id, city, "");
+        }
+
+        private Stream<Arguments> data() {
+            List<Place> resourcePlaces = List.of(
+                    createPlace(0, "Online"),
+                    createPlace(1, "Moscow")
+            );
 
             LoadResult<List<Place>> placeLoadResult0 = new LoadResult<>(
                     Collections.emptyList(),
-                    List.of(place0),
+                    List.of(createPlace(43, "City0")),
                     Collections.emptyList());
 
             LoadResult<List<Place>> placeLoadResult1 = new LoadResult<>(
                     Collections.emptyList(),
                     Collections.emptyList(),
-                    List.of(place0));
+                    Collections.emptyList());
 
             LoadResult<List<Place>> placeLoadResult2 = new LoadResult<>(
                     Collections.emptyList(),
-                    List.of(place1),
-                    List.of(place0));
+                    Collections.emptyList(),
+                    List.of(createPlace(1, "Moscow", "Tverskaya")));
 
             LoadResult<List<Place>> placeLoadResult3 = new LoadResult<>(
                     Collections.emptyList(),
-                    Collections.emptyList(),
-                    Collections.emptyList());
+                    List.of(createPlace(43, "City0"), createPlace(44, "City1")),
+                    List.of(createPlace(1, "Moscow", "Tverskaya")));
 
             return Stream.of(
-                    arguments(List.of(eventDays0), Collections.emptyList(), new AtomicLong(-1), placeLoadResult0),
-                    arguments(List.of(eventDays0), resourcePlaces, new AtomicLong(-1), placeLoadResult1),
-                    arguments(List.of(eventDays0, eventDays1), resourcePlaces, new AtomicLong(-1), placeLoadResult2),
-                    arguments(Collections.emptyList(), resourcePlaces, new AtomicLong(-1), placeLoadResult3)
+                    arguments(List.of(
+                            createEventDays(-1, "City0")
+                    ), resourcePlaces, new AtomicLong(42), placeLoadResult0),
+                    arguments(List.of(
+                            createEventDays(0, "")
+                    ), resourcePlaces, new AtomicLong(42), placeLoadResult1),
+                    arguments(List.of(
+                            createEventDays(-1, "Moscow", "Tverskaya")
+                    ), resourcePlaces, new AtomicLong(42), placeLoadResult2),
+                    arguments(List.of(
+                            createEventDays(-1, "Moscow")
+                    ), resourcePlaces, new AtomicLong(42), placeLoadResult1),
+                    arguments(List.of(
+                            createEventDays(-1, "City0"),
+                            createEventDays(-1, "City1"),
+                            createEventDays(-1, "Moscow", "Tverskaya")
+                    ), resourcePlaces, new AtomicLong(42), placeLoadResult3),
+                    arguments(Collections.emptyList(), resourcePlaces, new AtomicLong(42), placeLoadResult1)
             );
         }
 
@@ -1927,11 +1949,15 @@ class ConferenceDataLoaderExecutorTest {
                                     Object[] args = invocation.getArguments();
                                     Place place = (Place) args[0];
                                     Map<Long, Place> resourceIdPlaces = (Map<Long, Place>) args[1];
+                                    Map<CityVenueAddress, Place> resourceEnCityVenueAddressPlaces = (Map<CityVenueAddress, Place>) args[3];
 
                                     if (place.getId() >= 0) {
                                         return resourceIdPlaces.get(place.getId());
                                     } else {
-                                        return null;
+                                        String city = LocalizationUtils.getString(place.getCity(), Language.ENGLISH);
+                                        CityVenueAddress cityVenueAddress = new CityVenueAddress(city, "");
+
+                                        return resourceEnCityVenueAddressPlaces.get(cityVenueAddress);
                                     }
                                 }
                         );
@@ -1941,8 +1967,12 @@ class ConferenceDataLoaderExecutorTest {
                                     Object[] args = invocation.getArguments();
                                     Place a = (Place) args[0];
                                     Place b = (Place) args[1];
+                                    String aCity = LocalizationUtils.getString(a.getCity(), Language.ENGLISH);
+                                    String bCity = LocalizationUtils.getString(b.getCity(), Language.ENGLISH);
+                                    String aVenueAddress = LocalizationUtils.getString(a.getVenueAddress(), Language.ENGLISH);
+                                    String bVenueAddress = LocalizationUtils.getString(b.getVenueAddress(), Language.ENGLISH);
 
-                                    return ((a.getId() == 0) && (b.getId() == 0));
+                                    return !((a.getId() == b.getId()) && aCity.equals(bCity) && aVenueAddress.equals(bVenueAddress));
                                 }
                         );
 
