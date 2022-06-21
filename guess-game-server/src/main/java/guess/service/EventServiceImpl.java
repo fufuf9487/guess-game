@@ -188,21 +188,7 @@ public class EventServiceImpl implements EventService {
                 if ((eventDays.getStartDate() != null) && (eventDays.getEndDate() != null) && (!eventDays.getStartDate().isAfter(eventDays.getEndDate()))) {
                     long days = ChronoUnit.DAYS.between(eventDays.getStartDate(), eventDays.getEndDate()) + 1;
 
-                    for (long i = 1; i <= days; i++) {
-                        LocalDate date = eventDays.getStartDate().plusDays(i - 1);
-
-                        Optional<LocalTime> localTimeOptional;
-                        long totalDayNumber = previousDays + i;
-                        if (minTrackTimeInTalkDays.containsKey(totalDayNumber)) {
-                            localTimeOptional = minTrackTimeInTalkDays.get(totalDayNumber);
-                        } else {
-                            localTimeOptional = Optional.empty();
-                        }
-
-                        var minTrackTime = localTimeOptional.orElse(LocalTime.of(0, 0));
-
-                        result.add(new EventDateMinTrackTime(event, date, minTrackTime));
-                    }
+                    iteratesDays(days, eventDays, previousDays, minTrackTimeInTalkDays, result, event);
 
                     previousDays += days;
                 }
@@ -210,6 +196,25 @@ public class EventServiceImpl implements EventService {
         }
 
         return result;
+    }
+
+    void iteratesDays(long days, EventDays eventDays, long previousDays, Map<Long, Optional<LocalTime>> minTrackTimeInTalkDays,
+                      List<EventDateMinTrackTime> result, Event event) {
+        for (long i = 1; i <= days; i++) {
+            LocalDate date = eventDays.getStartDate().plusDays(i - 1);
+            Optional<LocalTime> localTimeOptional;
+            long totalDayNumber = previousDays + i;
+
+            if (minTrackTimeInTalkDays.containsKey(totalDayNumber)) {
+                localTimeOptional = minTrackTimeInTalkDays.get(totalDayNumber);
+            } else {
+                localTimeOptional = Optional.empty();
+            }
+
+            var minTrackTime = localTimeOptional.orElse(LocalTime.of(0, 0));
+
+            result.add(new EventDateMinTrackTime(event, date, minTrackTime));
+        }
     }
 
     /**
