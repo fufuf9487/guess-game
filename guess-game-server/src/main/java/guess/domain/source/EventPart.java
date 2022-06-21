@@ -29,24 +29,12 @@ public class EventPart extends AbstractEvent {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
     public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
     public Place getPlace() {
         return place;
-    }
-
-    public void setPlace(Place place) {
-        this.place = place;
     }
 
     public long getDuration() {

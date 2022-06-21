@@ -1115,18 +1115,18 @@ public class ConferenceDataLoaderExecutor {
         List<Talk> talksToAppend = talkLoadResult.itemToAppend();
         List<Talk> talksToUpdate = talkLoadResult.itemToUpdate();
 
-        var placeToAppend = placeLoadResult.itemToAppend();
-        var placeToUpdate = placeLoadResult.itemToUpdate();
+        List<Place> placesToAppend = placeLoadResult.itemToAppend();
+        List<Place> placesToUpdate = placeLoadResult.itemToUpdate();
 
-        var eventToAppend = eventLoadResult.itemToAppend();
-        var eventToUpdate = eventLoadResult.itemToUpdate();
+        Event eventToAppend = eventLoadResult.itemToAppend();
+        Event eventToUpdate = eventLoadResult.itemToUpdate();
 
         if (companiesToAppend.isEmpty() &&
                 urlFilenamesToAppend.isEmpty() && urlFilenamesToUpdate.isEmpty() &&
                 speakersToAppend.isEmpty() && speakersToUpdate.isEmpty() &&
                 talksToDelete.isEmpty() && talksToAppend.isEmpty() && talksToUpdate.isEmpty() &&
-                (eventToAppend == null) && (eventToUpdate == null) &&
-                (placeToAppend == null) && (placeToUpdate == null)) {
+                placesToAppend.isEmpty() && placesToUpdate.isEmpty() &&
+                (eventToAppend == null) && (eventToUpdate == null)) {
             log.info("All companies, speakers, talks, place and event are up-to-date");
         } else {
             YamlUtils.clearOutputDirectory();
