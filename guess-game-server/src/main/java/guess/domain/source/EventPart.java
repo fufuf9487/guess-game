@@ -9,27 +9,20 @@ import java.util.Objects;
  * Event part.
  */
 public class EventPart extends AbstractEvent {
-    public record EventDates(LocalDate startDate, LocalDate endDate) {
-    }
-
     private LocalDate startDate;
     private LocalDate endDate;
-
-    private long placeId;
     private Place place;
 
     public EventPart() {
     }
 
-    public EventPart(Nameable nameable, EventType eventType, EventDates dates, EventLinks links, Place place,
-                     String timeZone, List<Talk> talks) {
+    public EventPart(Nameable nameable, EventType eventType, EventLinks links, String timeZone, List<Talk> talks,
+                     EventDays eventDays) {
         super(nameable, eventType, links, timeZone, talks);
 
-        this.startDate = dates.startDate;
-        this.endDate = dates.endDate;
-
-        this.place = place;
-        this.placeId = place.getId();
+        this.startDate = eventDays.getStartDate();
+        this.endDate = eventDays.getEndDate();
+        this.place = eventDays.getPlace();
     }
 
     public LocalDate getStartDate() {
@@ -48,14 +41,6 @@ public class EventPart extends AbstractEvent {
         this.endDate = endDate;
     }
 
-    public long getPlaceId() {
-        return placeId;
-    }
-
-    public void setPlaceId(long placeId) {
-        this.placeId = placeId;
-    }
-
     public Place getPlace() {
         return place;
     }
@@ -67,7 +52,7 @@ public class EventPart extends AbstractEvent {
     public long getDuration() {
         return ChronoUnit.DAYS.between(startDate, endDate) + 1;
     }
-    
+
     public static EventPart of(Event event, EventDays eventDays) {
         return new EventPart(
                 new Nameable(
@@ -75,17 +60,13 @@ public class EventPart extends AbstractEvent {
                         event.getName()
                 ),
                 event.getEventType(),
-                new EventPart.EventDates(
-                        eventDays.getStartDate(),
-                        eventDays.getEndDate()
-                ),
                 new AbstractEvent.EventLinks(
                         event.getSiteLink(),
                         event.getYoutubeLink()
                 ),
-                eventDays.getPlace(),
                 event.getTimeZone(),
-                event.getTalks()
+                event.getTalks(),
+                eventDays
         );
     }
 
