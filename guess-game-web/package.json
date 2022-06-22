@@ -28,7 +28,7 @@
     "chart.js": "^3.8.0",
     "core-js": "^3.23.1",
     "get-video-id": "^3.6.4",
-    "ngx-markdown": "^14.0.0",
+    "ngx-markdown": "^14.0.1",
     "primeicons": "^5.0.0",
     "primeng": "^13.4.1",
     "rxjs": "^7.5.5",
