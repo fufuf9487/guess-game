@@ -174,41 +174,17 @@ class EventTypeControllerTest {
         event1.setDays(List.of(eventDays1));
 
         EventPart eventPart0 = new EventPart(
-                new Nameable(
-                        0,
-                        Collections.emptyList()
-                ),
+                0,
                 eventType,
-                new AbstractEvent.EventLinks(
-                        Collections.emptyList(),
-                        null
-                ),
-                null,
-                Collections.emptyList(),
-                new EventDays(
-                        LocalDate.of(2020, 10, 29),
-                        LocalDate.of(2020, 10, 30),
-                        new Place()
-                )
+                LocalDate.of(2020, 10, 29),
+                LocalDate.of(2020, 10, 30)
         );
 
         EventPart eventPart1 = new EventPart(
-                new Nameable(
-                        1,
-                        Collections.emptyList()
-                ),
+                1,
                 eventType,
-                new AbstractEvent.EventLinks(
-                        Collections.emptyList(),
-                        null
-                ),
-                null,
-                Collections.emptyList(),
-                new EventDays(
-                        LocalDate.of(2020, 10, 30),
-                        LocalDate.of(2020, 10, 30),
-                        new Place()
-                )
+                LocalDate.of(2020, 10, 30),
+                LocalDate.of(2020, 10, 30)
         );
 
         given(eventTypeService.getEventTypeById(0)).willReturn(eventType);

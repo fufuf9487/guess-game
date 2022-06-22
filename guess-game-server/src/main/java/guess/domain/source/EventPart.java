@@ -25,6 +25,14 @@ public class EventPart extends AbstractEvent {
         this.place = eventDays.getPlace();
     }
 
+    public EventPart(long id, EventType eventType, LocalDate startDate, LocalDate endDate) {
+        setId(id);
+        setEventType(eventType);
+
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
     public LocalDate getStartDate() {
         return startDate;
     }
@@ -48,7 +56,7 @@ public class EventPart extends AbstractEvent {
                         event.getName()
                 ),
                 event.getEventType(),
-                new AbstractEvent.EventLinks(
+                new EventLinks(
                         event.getSiteLink(),
                         event.getYoutubeLink()
                 ),

@@ -118,6 +118,95 @@ class EventControllerTest {
         Mockito.verify(localeService, VerificationModeFactory.times(1)).getLanguage(httpSession);
     }
 
+    @Test
+    void getEventParts() throws Exception {
+        MockHttpSession httpSession = new MockHttpSession();
+
+        boolean conferences = true;
+        boolean meetups = true;
+        Long organizerId = null;
+        Long eventTypeId = 0L;
+
+        Organizer organizer0 = new Organizer();
+        organizer0.setId(0);
+
+        EventType eventType0 = new EventType();
+        eventType0.setId(0);
+        eventType0.setOrganizer(organizer0);
+
+        Place place0 = new Place();
+        place0.setId(0);
+        place0.setCity(Collections.emptyList());
+        place0.setVenueAddress(Collections.emptyList());
+
+        Event event0 = new Event();
+        event0.setId(0);
+        event0.setDays(List.of(new EventDays(
+                LocalDate.of(2020, 10, 30),
+                LocalDate.of(2020, 11, 1),
+                place0
+        )));
+        event0.setEventType(eventType0);
+
+        Event event1 = new Event();
+        event1.setId(1);
+        event1.setDays(List.of(new EventDays(
+                LocalDate.of(2020, 10, 29),
+                LocalDate.of(2020, 10, 29),
+                place0
+        )));
+        event1.setEventType(eventType0);
+
+        Event event2 = new Event();
+        event2.setId(2);
+        event2.setDays(List.of(new EventDays(
+                LocalDate.of(2020, 10, 31),
+                LocalDate.of(2020, 10, 31),
+                place0
+        )));
+        event2.setEventType(eventType0);
+
+        EventPart eventPart0 = new EventPart(
+                0,
+                eventType0,
+                LocalDate.of(2020, 10, 30),
+                LocalDate.of(2020, 11, 1)
+        );
+
+        EventPart eventPart1 = new EventPart(
+                1,
+                eventType0,
+                LocalDate.of(2020, 10, 29),
+                LocalDate.of(2020, 10, 29)
+        );
+
+        EventPart eventPart2 = new EventPart(
+                2,
+                eventType0,
+                LocalDate.of(2020, 10, 31),
+                LocalDate.of(2020, 10, 31)
+        );
+
+        given(eventService.getEvents(conferences, meetups, organizerId, eventTypeId)).willReturn(List.of(event0, event1, event2));
+        given(eventService.convertEventsToEventParts(List.of(event0, event1, event2))).willReturn(List.of(eventPart0, eventPart1, eventPart2));
+        given(localeService.getLanguage(httpSession)).willReturn(Language.ENGLISH);
+
+        mvc.perform(get("/api/event/event-parts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("conferences", Boolean.toString(conferences))
+                        .param("meetups", Boolean.toString(meetups))
+                        .param("eventTypeId", "0")
+                        .session(httpSession))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(3)))
+                .andExpect(jsonPath("$[0].id", is(2)))
+                .andExpect(jsonPath("$[1].id", is(0)))
+                .andExpect(jsonPath("$[2].id", is(1)));
+        Mockito.verify(eventService, VerificationModeFactory.times(1)).getEvents(conferences, meetups, organizerId, eventTypeId);
+        Mockito.verify(eventService, VerificationModeFactory.times(1)).convertEventsToEventParts(List.of(event0, event1, event2));
+        Mockito.verify(localeService, VerificationModeFactory.times(1)).getLanguage(httpSession);
+    }
+
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     @DisplayName("getDefaultEvent method tests")
@@ -168,6 +257,38 @@ class EventControllerTest {
                             .session(httpSession))
                     .andExpect(status().isOk());
             Mockito.verify(eventService, VerificationModeFactory.times(1)).getDefaultEvent(IS_CONFERENCES, IS_MEETUPS);
+            Mockito.verify(localeService, VerificationModeFactory.times(1)).getLanguage(httpSession);
+            Mockito.reset(eventService, localeService);
+        }
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DisplayName("getDefaultEventPartHomeInfo method tests")
+    class GetDefaultEventPartHomeInfoTest {
+        private Stream<Arguments> data() {
+            return Stream.of(
+                    arguments(new Object[]{null}),
+                    arguments(new EventPart())
+            );
+        }
+
+        @ParameterizedTest
+        @MethodSource("data")
+        void getDefaultEventPartHomeInfo(EventPart defaultEventPart) throws Exception {
+            final boolean IS_CONFERENCES = Boolean.TRUE;
+            final boolean IS_MEETUPS = Boolean.TRUE;
+
+            MockHttpSession httpSession = new MockHttpSession();
+
+            given(eventService.getDefaultEventPart(IS_CONFERENCES, IS_MEETUPS)).willReturn(defaultEventPart);
+            given(localeService.getLanguage(httpSession)).willReturn(Language.ENGLISH);
+
+            mvc.perform(get("/api/event/default-event-part-home-info")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .session(httpSession))
+                    .andExpect(status().isOk());
+            Mockito.verify(eventService, VerificationModeFactory.times(1)).getDefaultEventPart(IS_CONFERENCES, IS_MEETUPS);
             Mockito.verify(localeService, VerificationModeFactory.times(1)).getLanguage(httpSession);
             Mockito.reset(eventService, localeService);
         }
