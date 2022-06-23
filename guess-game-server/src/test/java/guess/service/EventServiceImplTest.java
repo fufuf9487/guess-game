@@ -425,11 +425,11 @@ class EventServiceImplTest {
         final LocalDateTime DATE_TIME = LocalDateTime.now();
 
         Mockito.doCallRealMethod().when(eventService).getDefaultEventPart(IS_CONFERENCES, IS_MEETUPS, DATE_TIME);
-        Mockito.when(eventService.getDefaultEvent(Mockito.eq(IS_CONFERENCES), Mockito.eq(IS_MEETUPS), Mockito.eq(DATE_TIME))).thenReturn(new Event());
+        Mockito.when(eventService.getDefaultEvent(IS_CONFERENCES, IS_MEETUPS, DATE_TIME)).thenReturn(new Event());
 
         eventService.getDefaultEventPart(IS_CONFERENCES, IS_MEETUPS, DATE_TIME);
         Mockito.verify(eventService, VerificationModeFactory.times(1)).getDefaultEventPart(IS_CONFERENCES, IS_MEETUPS, DATE_TIME);
-        Mockito.verify(eventService, VerificationModeFactory.times(1)).getDefaultEvent(Mockito.eq(IS_CONFERENCES), Mockito.eq(IS_MEETUPS), Mockito.eq(DATE_TIME));
+        Mockito.verify(eventService, VerificationModeFactory.times(1)).getDefaultEvent(IS_CONFERENCES, IS_MEETUPS, DATE_TIME);
         Mockito.verify(eventService, VerificationModeFactory.times(1)).getEventPartFromEvent(Mockito.any(Event.class), Mockito.eq(DATE_TIME));
         Mockito.verifyNoMoreInteractions(eventService);
     }
