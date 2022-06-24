@@ -78,12 +78,12 @@ public class EventServiceImpl implements EventService {
             } else {
                 List<EventDays> eventDaysFromDateTime = event.getDays().stream()
                         .filter(ed -> {
-                            var zonedEndDateTime = ZonedDateTime.of(
+                            ZonedDateTime zonedEndDateTime = ZonedDateTime.of(
                                     ed.getEndDate(),
                                     LocalTime.of(0, 0, 0),
                                     event.getFinalTimeZoneId());
                             ZonedDateTime zonedNextDayEndDateTime = zonedEndDateTime.plus(1, ChronoUnit.DAYS);
-                            var eventUtcEndLocalDateTime = zonedNextDayEndDateTime
+                            LocalDateTime eventUtcEndLocalDateTime = zonedNextDayEndDateTime
                                     .withZoneSameInstant(ZoneId.of("UTC"))
                                     .toLocalDateTime();
 
