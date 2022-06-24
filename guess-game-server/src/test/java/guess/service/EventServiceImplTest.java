@@ -51,8 +51,6 @@ class EventServiceImplTest {
     private static final LocalTime TALK_TRACK_TIME1;
     private static final LocalTime TALK_TRACK_TIME2;
 
-    private static Organizer organizer0;
-    private static Organizer organizer1;
     private static EventType eventType0;
     private static EventType eventType1;
     private static EventType eventType2;
@@ -89,10 +87,10 @@ class EventServiceImplTest {
 
     @BeforeAll
     static void init() {
-        organizer0 = new Organizer();
+        Organizer organizer0 = new Organizer();
         organizer0.setId(0);
 
-        organizer1 = new Organizer();
+        Organizer organizer1 = new Organizer();
         organizer1.setId(1);
 
         eventType0 = new EventType();
@@ -432,6 +430,70 @@ class EventServiceImplTest {
         Mockito.verify(eventService, VerificationModeFactory.times(1)).getDefaultEvent(IS_CONFERENCES, IS_MEETUPS, DATE_TIME);
         Mockito.verify(eventService, VerificationModeFactory.times(1)).getEventPartFromEvent(Mockito.any(Event.class), Mockito.eq(DATE_TIME));
         Mockito.verifyNoMoreInteractions(eventService);
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DisplayName("getEventPartFromEvent method tests")
+    class GetEventPartFromEventTest {
+        private Stream<Arguments> data() {
+            final LocalDate DATE0 = LocalDate.of(2022, 6, 23);
+            final LocalDate DATE1 = LocalDate.of(2022, 6, 24);
+            final LocalDateTime DATE_TIME0 = LocalDateTime.of(2022, 7, 1, 0, 0, 0);
+            final LocalDateTime DATE_TIME1 = LocalDateTime.of(2022, 6, 1, 0, 0, 0);
+
+            Place place0 = new Place();
+
+            EventDays eventDays0 = new EventDays(
+                    DATE0,
+                    DATE1,
+                    place0
+            );
+
+            ZoneId zoneId0 = ZoneId.of("Europe/Moscow");
+
+            Event event0 = new Event();
+            event0.setId(0);
+
+            Event event1 = new Event();
+            event1.setId(1);
+            event1.setDays(Collections.emptyList());
+
+            Event event2 = new Event();
+            event2.setId(2);
+            event2.setDays(List.of(eventDays0));
+            event2.setTimeZoneId(zoneId0);
+
+            EventPart eventPart0 = new EventPart(
+                    2,
+                    new EventType(),
+                    DATE0,
+                    DATE1
+            );
+
+            return Stream.of(
+                    arguments(null, null, null),
+                    arguments(null, DATE_TIME0, null),
+                    arguments(event0, null, null),
+                    arguments(event0, DATE_TIME0, null),
+                    arguments(event1, null, null),
+                    arguments(event1, DATE_TIME0, null),
+                    arguments(event2, DATE_TIME0, null),
+                    arguments(event2, DATE_TIME1, eventPart0)
+            );
+        }
+
+        @ParameterizedTest
+        @MethodSource("data")
+        void getEventPartFromEvent(Event event, LocalDateTime dateTime, EventPart expected) {
+            EventDao eventDao = Mockito.mock(EventDao.class);
+            EventTypeDao eventTypeDao = Mockito.mock(EventTypeDao.class);
+            EventServiceImpl eventService = Mockito.mock(EventServiceImpl.class, Mockito.withSettings().useConstructor(eventDao, eventTypeDao));
+
+            Mockito.doCallRealMethod().when(eventService).getEventPartFromEvent(Mockito.nullable(Event.class), Mockito.any(LocalDateTime.class));
+
+            assertEquals(expected, eventService.getEventPartFromEvent(event, dateTime));
+        }
     }
 
     @Nested
