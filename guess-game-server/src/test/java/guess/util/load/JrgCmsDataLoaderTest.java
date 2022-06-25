@@ -20,8 +20,14 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.internal.verification.VerificationModeFactory;
 import org.mockito.stubbing.Answer;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.net.URI;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Collections;
@@ -83,6 +89,69 @@ class JrgCmsDataLoaderTest {
 
             assertNotNull(tokenResponse);
             assertEquals(ACCESS_TOKEN, tokenResponse.getAccessToken());
+        }
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DisplayName("getToken method tests")
+    class GetTokenTest {
+        private Stream<Arguments> data() {
+            final String CLIENT_ID = "clientId";
+            final String CLIENT_SECRET = "clientSecret";
+
+            return Stream.of(
+                    arguments(null, null, IllegalArgumentException.class),
+                    arguments(null, CLIENT_SECRET, IllegalArgumentException.class),
+                    arguments(CLIENT_ID, null, IllegalArgumentException.class),
+                    arguments(CLIENT_ID, CLIENT_SECRET, null)
+            );
+        }
+
+        @ParameterizedTest
+        @MethodSource("data")
+        void getToken(String clientId, String clientSecret, Class<? extends Exception> expectedException) {
+            try (MockedStatic<JrgCmsDataLoader> mockedStatic = Mockito.mockStatic(JrgCmsDataLoader.class)) {
+                mockedStatic.when(() -> JrgCmsDataLoader.getToken(Mockito.nullable(String.class), Mockito.nullable(String.class)))
+                        .thenCallRealMethod();
+
+                if (expectedException == null) {
+                    final String ACCESS_TOKEN = "accessToken";
+
+                    JrgCmsTokenResponse tokenResponse = new JrgCmsTokenResponse();
+                    tokenResponse.setAccessToken(ACCESS_TOKEN);
+
+                    ResponseEntity<JrgCmsTokenResponse> responseEntity = new ResponseEntity<>(tokenResponse, HttpStatus.OK);
+
+                    RestTemplate restTemplateMock = Mockito.mock(RestTemplate.class);
+                    Mockito.when(restTemplateMock.exchange(Mockito.any(URI.class), Mockito.eq(HttpMethod.POST),
+                                    Mockito.nullable(HttpEntity.class), Mockito.eq(JrgCmsTokenResponse.class)))
+                            .thenReturn(responseEntity);
+
+                    mockedStatic.when(JrgCmsDataLoader::getRestTemplate)
+                            .thenReturn(restTemplateMock);
+
+                    JrgCmsTokenResponse actual = JrgCmsDataLoader.getToken(clientId, clientSecret);
+
+                    assertEquals(ACCESS_TOKEN, actual.getAccessToken());
+                } else {
+                    assertThrows(expectedException, () -> JrgCmsDataLoader.getToken(clientId, clientSecret));
+                }
+            }
+        }
+    }
+
+    @Test
+    void getToken() {
+        try (MockedStatic<JrgCmsDataLoader> mockedStatic = Mockito.mockStatic(JrgCmsDataLoader.class)) {
+            mockedStatic.when(JrgCmsDataLoader::getToken)
+                    .thenCallRealMethod();
+
+            JrgCmsDataLoader.getToken();
+
+            mockedStatic.verify(JrgCmsDataLoader::getToken);
+            mockedStatic.verify(() -> JrgCmsDataLoader.getToken(Mockito.nullable(String.class), Mockito.nullable(String.class)));
+            mockedStatic.verifyNoMoreInteractions();
         }
     }
 

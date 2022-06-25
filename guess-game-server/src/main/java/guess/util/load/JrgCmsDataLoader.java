@@ -153,12 +153,11 @@ public class JrgCmsDataLoader extends CmsDataLoader {
     /**
      * Gets token.
      *
+     * @param clientId     client identifier
+     * @param clientSecret client secret
      * @return token response
      */
-    static JrgCmsTokenResponse getToken() {
-        String clientId = System.getProperty("clientId");
-        String clientSecret = System.getProperty("clientSecret");
-
+    static JrgCmsTokenResponse getToken(String clientId, String clientSecret) {
         if ((clientId == null) || (clientSecret == null)) {
             throw new IllegalArgumentException(String.format(
                     "Client identifier and/or secret is/are null (clientId: %s, clientSecret: %s)",
@@ -190,6 +189,18 @@ public class JrgCmsDataLoader extends CmsDataLoader {
                 .getBody();
 
         return Objects.requireNonNull(tokenResponse);
+    }
+
+    /**
+     * Gets token.
+     *
+     * @return token response
+     */
+    static JrgCmsTokenResponse getToken() {
+        String clientId = System.getProperty("clientId");
+        String clientSecret = System.getProperty("clientSecret");
+
+        return getToken(clientId, clientSecret);
     }
 
     /**
