@@ -49,6 +49,16 @@ class JrgCmsDataLoaderTest {
     }
 
     @Test
+    void getRestTemplate() {
+        assertNotNull(JrgCmsDataLoader.getRestTemplate());
+    }
+
+    @Test
+    void getOptionsDirectoryName() {
+        assertNotNull(JrgCmsDataLoader.getOptionsDirectoryName());
+    }
+
+    @Test
     void getTokenFromCacheAndStoreTokenInCache() throws IOException {
         try (MockedStatic<JrgCmsDataLoader> mockedStatic = Mockito.mockStatic(JrgCmsDataLoader.class)) {
             mockedStatic.when(JrgCmsDataLoader::getOptionsDirectoryName)
@@ -214,15 +224,18 @@ class JrgCmsDataLoaderTest {
             jrgTalkPresentationFile1.setLinks(jrgCmsLinks1);
 
             JrgTalkPresentation jrgTalkPresentation0 = new JrgTalkPresentation();
-            jrgTalkPresentation0.setFiles(List.of(jrgTalkPresentationFile0));
 
             JrgTalkPresentation jrgTalkPresentation1 = new JrgTalkPresentation();
-            jrgTalkPresentation1.setFiles(List.of(jrgTalkPresentationFile0, jrgTalkPresentationFile1));
+            jrgTalkPresentation1.setFiles(List.of(jrgTalkPresentationFile0));
+
+            JrgTalkPresentation jrgTalkPresentation2 = new JrgTalkPresentation();
+            jrgTalkPresentation2.setFiles(List.of(jrgTalkPresentationFile0, jrgTalkPresentationFile1));
 
             return Stream.of(
                     arguments(null, Collections.emptyList()),
-                    arguments(jrgTalkPresentation0, List.of(CONTENT0)),
-                    arguments(jrgTalkPresentation1, List.of(CONTENT0, CONTENT1))
+                    arguments(jrgTalkPresentation0, Collections.emptyList()),
+                    arguments(jrgTalkPresentation1, List.of(CONTENT0)),
+                    arguments(jrgTalkPresentation2, List.of(CONTENT0, CONTENT1))
             );
         }
 
