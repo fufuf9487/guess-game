@@ -20,10 +20,8 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.internal.verification.VerificationModeFactory;
 import org.mockito.stubbing.Answer;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -34,6 +32,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
@@ -152,6 +151,76 @@ class JrgCmsDataLoaderTest {
             mockedStatic.verify(JrgCmsDataLoader::getToken);
             mockedStatic.verify(() -> JrgCmsDataLoader.getToken(Mockito.nullable(String.class), Mockito.nullable(String.class)));
             mockedStatic.verifyNoMoreInteractions();
+        }
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DisplayName("makeRequest method tests")
+    class MakeRequestTest {
+        private Stream<Arguments> data() {
+            final int RESULT = 42;
+            final String ACCESS_TOKEN0 = "accessToken0";
+            final String ACCESS_TOKEN1 = "accessToken1";
+            final String ACCESS_TOKEN2 = "accessToken2";
+            final String ACCESS_TOKEN3 = "accessToken3";
+
+            Function<String, Integer> requestFunction0 = s -> RESULT;
+
+            Function<String, Integer> requestFunction1 = s -> {
+                return switch (s) {
+                    case ACCESS_TOKEN0, ACCESS_TOKEN2 ->
+                            throw HttpClientErrorException.create(null, HttpStatus.UNAUTHORIZED, "", new HttpHeaders(), null, null);
+                    case ACCESS_TOKEN1 -> RESULT;
+                    default ->
+                            throw HttpClientErrorException.create(null, HttpStatus.BAD_REQUEST, "", new HttpHeaders(), null, null);
+                };
+            };
+
+            JrgCmsTokenResponse tokenResponse0 = new JrgCmsTokenResponse();
+
+            JrgCmsTokenResponse tokenResponse1 = new JrgCmsTokenResponse();
+            tokenResponse1.setAccessToken(ACCESS_TOKEN0);
+
+            JrgCmsTokenResponse tokenResponse2 = new JrgCmsTokenResponse();
+            tokenResponse2.setAccessToken(ACCESS_TOKEN1);
+
+            JrgCmsTokenResponse tokenResponse3 = new JrgCmsTokenResponse();
+            tokenResponse3.setAccessToken(ACCESS_TOKEN2);
+
+            JrgCmsTokenResponse tokenResponse4 = new JrgCmsTokenResponse();
+            tokenResponse4.setAccessToken(ACCESS_TOKEN3);
+
+            return Stream.of(
+                    arguments(requestFunction0, null, tokenResponse0, null, RESULT),
+                    arguments(requestFunction0, tokenResponse0, tokenResponse0, null, RESULT),
+                    arguments(requestFunction0, tokenResponse1, null, null, RESULT),
+                    arguments(requestFunction1, tokenResponse1, tokenResponse2, null, RESULT),
+                    arguments(requestFunction1, tokenResponse1, tokenResponse3, HttpClientErrorException.Unauthorized.class, null),
+                    arguments(requestFunction1, tokenResponse1, tokenResponse4, HttpClientErrorException.BadRequest.class, null)
+            );
+        }
+
+        @ParameterizedTest
+        @MethodSource("data")
+        @SuppressWarnings("unchecked")
+        void makeRequest(Function<String, Integer> requestFunction, JrgCmsTokenResponse getTokenFromCacheResult,
+                         JrgCmsTokenResponse getTokenResult, Class<? extends Exception> expectedException, Integer expectedValue)
+                throws IOException, NoSuchFieldException {
+            try (MockedStatic<JrgCmsDataLoader> mockedStatic = Mockito.mockStatic(JrgCmsDataLoader.class)) {
+                mockedStatic.when(() -> JrgCmsDataLoader.makeRequest(Mockito.any(Function.class)))
+                        .thenCallRealMethod();
+                mockedStatic.when(JrgCmsDataLoader::getTokenFromCache)
+                        .thenReturn(getTokenFromCacheResult);
+                mockedStatic.when(JrgCmsDataLoader::getToken)
+                        .thenReturn(getTokenResult);
+
+                if (expectedException == null) {
+                    assertEquals(expectedValue, JrgCmsDataLoader.makeRequest(requestFunction));
+                } else {
+                    assertThrowsExactly(expectedException, () -> JrgCmsDataLoader.makeRequest(requestFunction));
+                }
+            }
         }
     }
 
