@@ -267,7 +267,12 @@ public class JrgCmsDataLoader extends CmsDataLoader {
                                     e -> e.getEventProject().getIv(),
                                     Collectors.mapping(
                                             e -> e.getEventVersion().getIv(),
-                                            Collectors.toList()
+                                            Collectors.collectingAndThen(
+                                                    Collectors.toCollection(ArrayList::new), l -> {
+                                                        l.sort(String::compareTo);
+
+                                                        return l;
+                                                    })
                                     )
                             )
                     );
