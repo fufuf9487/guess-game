@@ -277,10 +277,7 @@ public class JrgCmsDataLoader extends CmsDataLoader {
                             )
                     );
 
-            return tags.entrySet().stream()
-                    .sorted(Map.Entry.comparingByKey())
-                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
-                            (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+            return new LinkedHashMap<>(tags);
         });
     }
 
