@@ -76,8 +76,8 @@ public class JrgCmsDataLoader extends CmsDataLoader {
     private static final String TWITTER_CONTACT_TYPE = "twitter";
     private static final String GITHUB_CONTACT_TYPE = "github";
 
-    private static final String ENGLISH_TEXT_KEY = "en";
-    private static final String RUSSIAN_TEXT_KEY = "ru";
+    static final String ENGLISH_TEXT_KEY = "en";
+    static final String RUSSIAN_TEXT_KEY = "ru";
 
     private static final EnumMap<Conference, String> CONFERENCE_EVENT_PROJECT_MAP = new EnumMap<>(Conference.class);
     private static final Map<String, Conference> EVENT_PROJECT_CONFERENCE_MAP;

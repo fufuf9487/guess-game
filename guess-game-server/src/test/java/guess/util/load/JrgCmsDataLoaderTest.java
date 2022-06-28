@@ -1,11 +1,14 @@
 package guess.util.load;
 
+import guess.domain.Conference;
 import guess.domain.Language;
+import guess.domain.source.EventType;
 import guess.domain.source.LocaleItem;
 import guess.domain.source.cms.jrgcms.JrgCmsLinks;
 import guess.domain.source.cms.jrgcms.JrgCmsObject;
 import guess.domain.source.cms.jrgcms.JrgCmsPhoto;
 import guess.domain.source.cms.jrgcms.JrgCmsTokenResponse;
+import guess.domain.source.cms.jrgcms.event.JrgCmsAboutPage;
 import guess.domain.source.cms.jrgcms.event.JrgCmsConferenceSiteContent;
 import guess.domain.source.cms.jrgcms.event.JrgCmsConferenceSiteContentResponse;
 import guess.domain.source.cms.jrgcms.event.JrgCmsEvent;
@@ -33,6 +36,7 @@ import java.net.URI;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
@@ -282,6 +286,7 @@ class JrgCmsDataLoaderTest {
                             Mockito.nullable(HttpEntity.class), Mockito.eq(JrgCmsConferenceSiteContentResponse.class)))
                     .thenReturn(responseEntity);
 
+            // Mock methods
             mockedStatic.when(() -> JrgCmsDataLoader.makeRequest(Mockito.any(Function.class)))
                     .thenAnswer(
                             (Answer<Map<String, List<String>>>) invocation -> {
@@ -294,17 +299,134 @@ class JrgCmsDataLoaderTest {
             mockedStatic.when(JrgCmsDataLoader::getRestTemplate)
                     .thenReturn(restTemplateMock);
 
+            // Mock method under test
             JrgCmsDataLoader jrgCmsDataLoader = Mockito.mock(JrgCmsDataLoader.class);
             Mockito.when(jrgCmsDataLoader.getTags(Mockito.anyString()))
                     .thenCallRealMethod();
 
+            // Expected result
             Map<String, List<String>> expected = new LinkedHashMap<>();
             expected.put(HEISENBUG_EVENT_PROJECT, List.of(AUTUMN_EVENT_VERSION, SPRING_EVENT_VERSION));
             expected.put(MOBIUS_EVENT_PROJECT, List.of(SPRING_EVENT_VERSION));
 
+            // Actual result
             Map<String, List<String>> actual = jrgCmsDataLoader.getTags("2022");
 
             assertEquals(expected, actual);
+        }
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void getEventTypes() throws IOException, NoSuchFieldException {
+        try (MockedStatic<JrgCmsDataLoader> mockedStatic = Mockito.mockStatic(JrgCmsDataLoader.class)) {
+            final String MOBIUS_EVENT_PROJECT = "MOBIUS";
+            final String HEISENBUG_EVENT_PROJECT = "HEISENBUG";
+            final String SPRING_EVENT_VERSION = "2022 Spring";
+            final String AUTUMN_EVENT_VERSION = "2022 Autumn";
+
+            // Event projects
+            JrgCmsObject<String> eventProjectObject0 = new JrgCmsObject<>();
+            eventProjectObject0.setIv(MOBIUS_EVENT_PROJECT);
+
+            JrgCmsObject<String> eventProjectObject1 = new JrgCmsObject<>();
+            eventProjectObject1.setIv(HEISENBUG_EVENT_PROJECT);
+
+            // Event versions
+            JrgCmsObject<String> eventVersion0 = new JrgCmsObject<>();
+            eventVersion0.setIv(SPRING_EVENT_VERSION);
+
+            JrgCmsObject<String> eventVersion1 = new JrgCmsObject<>();
+            eventVersion1.setIv(AUTUMN_EVENT_VERSION);
+
+            // Event about pages
+            JrgCmsAboutPage jrgCmsAboutPage0 = new JrgCmsAboutPage();
+            jrgCmsAboutPage0.setMain("");
+
+            JrgCmsAboutPage jrgCmsAboutPage1 = new JrgCmsAboutPage();
+            jrgCmsAboutPage1.setMain("");
+
+            Map<String, JrgCmsAboutPage> aboutPage = new HashMap<>();
+            aboutPage.put(JrgCmsDataLoader.ENGLISH_TEXT_KEY, jrgCmsAboutPage0);
+            aboutPage.put(JrgCmsDataLoader.RUSSIAN_TEXT_KEY, jrgCmsAboutPage1);
+
+            // Events
+            JrgCmsEvent jrgCmsEvent0 = new JrgCmsEvent();
+            jrgCmsEvent0.setEventProject(eventProjectObject0);
+            jrgCmsEvent0.setEventVersion(eventVersion0);
+            jrgCmsEvent0.setAboutPage(aboutPage);
+
+            JrgCmsEvent jrgCmsEvent1 = new JrgCmsEvent();
+            jrgCmsEvent1.setEventProject(eventProjectObject1);
+            jrgCmsEvent1.setEventVersion(eventVersion0);
+            jrgCmsEvent1.setAboutPage(aboutPage);
+
+            JrgCmsEvent jrgCmsEvent2 = new JrgCmsEvent();
+            jrgCmsEvent2.setEventProject(eventProjectObject1);
+            jrgCmsEvent2.setEventVersion(eventVersion1);
+            jrgCmsEvent2.setAboutPage(aboutPage);
+
+            // Conference sile contents
+            JrgCmsConferenceSiteContent jrgCmsConferenceSiteContent0 = new JrgCmsConferenceSiteContent();
+            jrgCmsConferenceSiteContent0.setData(jrgCmsEvent0);
+
+            JrgCmsConferenceSiteContent jrgCmsConferenceSiteContent1 = new JrgCmsConferenceSiteContent();
+            jrgCmsConferenceSiteContent1.setData(jrgCmsEvent1);
+
+            JrgCmsConferenceSiteContent jrgCmsConferenceSiteContent2 = new JrgCmsConferenceSiteContent();
+            jrgCmsConferenceSiteContent2.setData(jrgCmsEvent2);
+
+            // Conference sile content list
+            JrgCmsConferenceSiteContentResponse response = new JrgCmsConferenceSiteContentResponse();
+            response.setItems(List.of(jrgCmsConferenceSiteContent0, jrgCmsConferenceSiteContent1, jrgCmsConferenceSiteContent2));
+
+            ResponseEntity<JrgCmsConferenceSiteContentResponse> responseEntity = new ResponseEntity<>(response, HttpStatus.OK);
+
+            RestTemplate restTemplateMock = Mockito.mock(RestTemplate.class);
+            Mockito.when(restTemplateMock.exchange(Mockito.any(URI.class), Mockito.eq(HttpMethod.GET),
+                            Mockito.nullable(HttpEntity.class), Mockito.eq(JrgCmsConferenceSiteContentResponse.class)))
+                    .thenReturn(responseEntity);
+
+            // Mock methods
+            mockedStatic.when(() -> JrgCmsDataLoader.makeRequest(Mockito.any(Function.class)))
+                    .thenAnswer(
+                            (Answer<List<EventType>>) invocation -> {
+                                Object[] args = invocation.getArguments();
+                                Function<String, List<EventType>> requestFunction = (Function<String, List<EventType>>) args[0];
+
+                                return requestFunction.apply("");
+                            }
+                    );
+            mockedStatic.when(JrgCmsDataLoader::getRestTemplate)
+                    .thenReturn(restTemplateMock);
+            mockedStatic.when(() -> JrgCmsDataLoader.createEventType(Mockito.any(JrgCmsEvent.class), Mockito.any(AtomicLong.class), Mockito.any(Conference.class)))
+                    .thenAnswer(
+                            (Answer<EventType>) invocation -> {
+                                Object[] args = invocation.getArguments();
+                                Conference conference = (Conference) args[2];
+
+                                EventType eventType = new EventType();
+                                eventType.setConference(conference);
+
+                                return eventType;
+                            }
+                    );
+
+            // Mock method under test
+            JrgCmsDataLoader jrgCmsDataLoader = Mockito.mock(JrgCmsDataLoader.class);
+            Mockito.when(jrgCmsDataLoader.getEventTypes())
+                    .thenCallRealMethod();
+
+            // Actual result
+            List<EventType> actual = jrgCmsDataLoader.getEventTypes();
+
+            assertEquals(2, actual.size());
+            assertEquals(1, actual.stream()
+                    .filter(et -> Conference.MOBIUS.equals(et.getConference()))
+                    .count());
+            assertEquals(1, actual.stream()
+                    .filter(et -> Conference.HEISENBUG.equals(et.getConference()))
+                    .count());
         }
     }
 
