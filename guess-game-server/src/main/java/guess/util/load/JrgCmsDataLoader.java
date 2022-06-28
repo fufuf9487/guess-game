@@ -277,7 +277,13 @@ public class JrgCmsDataLoader extends CmsDataLoader {
                             )
                     );
 
-            return new LinkedHashMap<>(tags);
+            Map<String, List<String>> result = new LinkedHashMap<>();
+
+            tags.entrySet().stream()
+                    .sorted(Map.Entry.comparingByKey())
+                    .forEach(entry -> result.put(entry.getKey(), entry.getValue()));
+
+            return result;
         });
     }
 
