@@ -430,6 +430,73 @@ class JrgCmsDataLoaderTest {
         }
     }
 
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DisplayName("createEventType method tests")
+    class CreateEventTypeTest {
+        private JrgCmsEvent createJrgCmsEvent(String enLongDescription, String ruLongDescription) {
+            JrgCmsAboutPage jrgCmsAboutPage0 = new JrgCmsAboutPage();
+            jrgCmsAboutPage0.setMain(enLongDescription);
+
+            JrgCmsAboutPage jrgCmsAboutPage1 = new JrgCmsAboutPage();
+            jrgCmsAboutPage1.setMain(ruLongDescription);
+
+            Map<String, JrgCmsAboutPage> aboutPage0 = new HashMap<>();
+            aboutPage0.put(JrgCmsDataLoader.ENGLISH_TEXT_KEY, jrgCmsAboutPage0);
+            aboutPage0.put(JrgCmsDataLoader.RUSSIAN_TEXT_KEY, jrgCmsAboutPage1);
+
+            JrgCmsEvent jrgCmsEvent = new JrgCmsEvent();
+            jrgCmsEvent.setAboutPage(aboutPage0);
+
+            return jrgCmsEvent;
+        }
+
+        private EventType createEventType(long id, Conference conference, String enLongDescription, String ruLongDescription) {
+            EventType eventType = new EventType();
+
+            eventType.setId(id);
+            eventType.setConference(conference);
+            eventType.setLongDescription(List.of(
+                    new LocaleItem(Language.ENGLISH.getCode(), enLongDescription),
+                    new LocaleItem(Language.RUSSIAN.getCode(), ruLongDescription)
+            ));
+
+            return eventType;
+        }
+
+        private Stream<Arguments> data() {
+            final long ID0 = 42;
+            final long ID1 = 43;
+            final String ENGLISH_LONG_DESCRIPTION0 = "LongDescription0";
+            final String ENGLISH_LONG_DESCRIPTION1 = "LongDescription1";
+            final String RUSSIAN_LONG_DESCRIPTION0 = "ДлинноеОписание0";
+            final String RUSSIAN_LONG_DESCRIPTION1 = "ДлинноеОписание1";
+            final Conference CONFERENCE0 = Conference.HEISENBUG;
+            final Conference CONFERENCE1 = Conference.MOBIUS;
+
+            JrgCmsEvent jrgCmsEvent0 = createJrgCmsEvent(ENGLISH_LONG_DESCRIPTION0, RUSSIAN_LONG_DESCRIPTION0);
+            JrgCmsEvent jrgCmsEvent1 = createJrgCmsEvent(ENGLISH_LONG_DESCRIPTION1, RUSSIAN_LONG_DESCRIPTION1);
+
+            EventType eventType0 = createEventType(ID0, CONFERENCE0, ENGLISH_LONG_DESCRIPTION0, RUSSIAN_LONG_DESCRIPTION0);
+            EventType eventType1 = createEventType(ID1, CONFERENCE1, ENGLISH_LONG_DESCRIPTION1, RUSSIAN_LONG_DESCRIPTION1);
+
+            return Stream.of(
+                    arguments(jrgCmsEvent0, new AtomicLong(ID0), CONFERENCE0, eventType0),
+                    arguments(jrgCmsEvent1, new AtomicLong(ID1), CONFERENCE1, eventType1)
+            );
+        }
+
+        @ParameterizedTest
+        @MethodSource("data")
+        void createEventType(JrgCmsEvent et, AtomicLong id, Conference conference, EventType expected) {
+            EventType actual = JrgCmsDataLoader.createEventType(et, id, conference);
+
+            assertEquals(expected, actual);
+            assertEquals(expected.getConference(), actual.getConference());
+            assertEquals(expected.getLongDescription(), actual.getLongDescription());
+        }
+    }
+
     @Test
     void getImageWidthParameterName() {
         assertEquals("width", new JrgCmsDataLoader().getImageWidthParameterName());
