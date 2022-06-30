@@ -2,8 +2,7 @@ package guess.util.load;
 
 import guess.domain.Conference;
 import guess.domain.Language;
-import guess.domain.source.EventType;
-import guess.domain.source.LocaleItem;
+import guess.domain.source.*;
 import guess.domain.source.cms.jrgcms.JrgCmsLinks;
 import guess.domain.source.cms.jrgcms.JrgCmsObject;
 import guess.domain.source.cms.jrgcms.JrgCmsPhoto;
@@ -33,6 +32,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.net.URI;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.*;
@@ -494,6 +494,111 @@ class JrgCmsDataLoaderTest {
             assertEquals(expected, actual);
             assertEquals(expected.getConference(), actual.getConference());
             assertEquals(expected.getLongDescription(), actual.getLongDescription());
+        }
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DisplayName("getEvent method tests")
+    class GetEventTest {
+        private Stream<Arguments> data() {
+            final String EN_NAME0 = "Name0";
+            final String RU_NAME0 = "Наименование0";
+            final String EN_NAME1 = "Name1";
+            final String RU_NAME1 = "Наименование1";
+            final String EN_NAME2 = "Name2";
+            final String RU_NAME2 = "Наименование2";
+            final LocalDate START_DATE0 = LocalDate.of(2022, 6, 29);
+            final LocalDate END_DATE0 = LocalDate.of(2022, 6, 30);
+            final LocalDate START_DATE1 = LocalDate.of(2022, 7, 1);
+            final LocalDate END_DATE1 = LocalDate.of(2022, 7, 2);
+
+            // Names
+            List<LocaleItem> name0 = List.of(
+                    new LocaleItem(Language.ENGLISH.getCode(), EN_NAME0),
+                    new LocaleItem(Language.RUSSIAN.getCode(), RU_NAME0)
+            );
+
+            List<LocaleItem> name1 = List.of(
+                    new LocaleItem(Language.ENGLISH.getCode(), EN_NAME1),
+                    new LocaleItem(Language.RUSSIAN.getCode(), RU_NAME1)
+            );
+
+            List<LocaleItem> name2 = List.of(
+                    new LocaleItem(Language.ENGLISH.getCode(), EN_NAME2),
+                    new LocaleItem(Language.RUSSIAN.getCode(), RU_NAME2)
+            );
+
+            // Places
+            Place place0 = new Place();
+            place0.setId(0);
+
+            Place place1 = new Place();
+            place1.setId(1);
+
+            // Event templates
+            Event eventTemplate0 = new Event();
+            eventTemplate0.setName(name0);
+            eventTemplate0.setDays(Collections.emptyList());
+
+            Event eventTemplate1 = new Event();
+            eventTemplate1.setName(name1);
+            eventTemplate1.setDays(List.of(new EventDays(null, null, place0)));
+
+            Event eventTemplate2 = new Event();
+            eventTemplate2.setName(name2);
+            eventTemplate2.setDays(List.of(new EventDays(null, null, place1)));
+
+            // Events
+            Event event0 = new Event();
+            event0.setId(-1L);
+            event0.setName(name1);
+            event0.setDays(List.of(new EventDays(START_DATE0, END_DATE0, place0)));
+
+            Event event1 = new Event();
+            event1.setId(-1L);
+            event1.setName(name2);
+            event1.setDays(List.of(new EventDays(START_DATE1, END_DATE1, place1)));
+
+            // Results of getEventDatesList method
+            List<JrgCmsDataLoader.EventDates> getEventDatesListResult0 = List.of(
+                    new JrgCmsDataLoader.EventDates(START_DATE0, END_DATE0)
+            );
+
+            List<JrgCmsDataLoader.EventDates> getEventDatesListResult1 = List.of(
+                    new JrgCmsDataLoader.EventDates(START_DATE1, END_DATE1)
+            );
+
+            return Stream.of(
+                    arguments(null, null, null, eventTemplate0, getEventDatesListResult0, IllegalArgumentException.class, null),
+                    arguments(null, null, null, eventTemplate1, getEventDatesListResult0, null, event0),
+                    arguments(null, null, null, eventTemplate2, getEventDatesListResult1, null, event1)
+            );
+        }
+
+        @ParameterizedTest
+        @MethodSource("data")
+        void getEvent(Conference conference, LocalDate startDate, String conferenceCode, Event eventTemplate,
+                      List<JrgCmsDataLoader.EventDates> getEventDatesListResult, Class<? extends Exception> expectedException,
+                      Event expectedValue) throws IOException, NoSuchFieldException {
+            JrgCmsDataLoader jrgCmsDataLoader = Mockito.mock(JrgCmsDataLoader.class);
+
+            Mockito.when(jrgCmsDataLoader.getEvent(Mockito.nullable(Conference.class), Mockito.nullable(LocalDate.class), Mockito.nullable(String.class), Mockito.any(Event.class)))
+                    .thenCallRealMethod();
+            Mockito.when(jrgCmsDataLoader.getEventId(Mockito.any(Conference.class), Mockito.any(String.class)))
+                    .thenReturn(42L);
+            Mockito.when(jrgCmsDataLoader.getEventDatesList(Mockito.anyLong()))
+                    .thenReturn(getEventDatesListResult);
+
+            if (expectedException == null) {
+                Event actual = jrgCmsDataLoader.getEvent(conference, startDate, conferenceCode, eventTemplate);
+
+                assertEquals(expectedValue, actual);
+                assertEquals(expectedValue.getName(), actual.getName());
+                assertEquals(expectedValue.getDays(), actual.getDays());
+            } else {
+                assertThrows(expectedException, () -> jrgCmsDataLoader.getEvent(conference, startDate, conferenceCode, eventTemplate));
+            }
         }
     }
 

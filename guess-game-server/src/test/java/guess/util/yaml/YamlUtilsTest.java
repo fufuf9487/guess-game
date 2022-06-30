@@ -25,6 +25,16 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 @DisplayName("YamlUtils class tests")
 @TestMethodOrder(OrderAnnotation.class)
 class YamlUtilsTest {
+    @BeforeEach
+    void setUp() throws IOException {
+        YamlUtils.clearOutputDirectory();
+    }
+
+    @AfterEach
+    void tearDown() throws IOException {
+        YamlUtils.clearOutputDirectory();
+    }
+
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     @DisplayName("getSourceInformation method tests")
@@ -482,16 +492,6 @@ class YamlUtilsTest {
         void listToMap(List<Speaker> speakers, boolean expected) {
             assertEquals(expected, YamlUtils.findSpeakerDuplicates(speakers));
         }
-    }
-
-    @BeforeEach
-    void setUp() throws IOException {
-        YamlUtils.clearOutputDirectory();
-    }
-
-    @AfterEach
-    void tearDown() throws IOException {
-        YamlUtils.clearOutputDirectory();
     }
 
     @Test
