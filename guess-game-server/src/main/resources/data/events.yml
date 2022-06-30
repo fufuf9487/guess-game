@@ -615,7 +615,7 @@ events:
     siteLink:
       - {language: en, text: "https://holyjs-moscow.ru/en/"}
       - {language: ru, text: "https://holyjs-moscow.ru/"}
-    youtubeLink: https://www.youtube.com/playlist?list=PL8sJahqnzh8IYDYRieNB0axR-8siPTVuh
+    youtubeLink: https://www.youtube.com/playlist?list=PL8sJahqnzh8IlH_MOaG91bCt5DpG5TWLD
     talkIds: [3336, 3337, 3338, 3513, 3529, 3514, 3499, 3339, 3340, 3515, 3341, 3342, 3343, 3530, 3516, 3517, 3518, 3344,
         3345, 3346, 3519, 3500, 3520, 3473, 3348, 3474, 3352, 3351, 3350, 3531, 3521, 3532, 3353, 3354, 3355, 3522, 3523,
         3501, 3357, 3533, 3358, 3359, 3360, 3524, 3534, 3361, 3362, 3363, 3535, 3525, 3364, 3502, 3365]
