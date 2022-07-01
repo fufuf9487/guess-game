@@ -119,6 +119,10 @@ public class JrgCmsDataLoader extends CmsDataLoader {
         return OPTIONS_DIRECTORY_NAME;
     }
 
+    public Long getEventId() {
+        return eventId;
+    }
+
     public void setEventId(Long eventId) {
         this.eventId = eventId;
     }
@@ -415,13 +419,13 @@ public class JrgCmsDataLoader extends CmsDataLoader {
 
     @Override
     public List<Talk> getTalks(Conference conference, LocalDate startDate, String conferenceCode, boolean ignoreDemoStage) throws IOException, NoSuchFieldException {
-        if (eventId == null) {
-            eventId = getEventId(conference, conferenceCode);
+        if (getEventId() == null) {
+            setEventId(getEventId(conference, conferenceCode));
         }
 
-        Map<String, DayTrackTime> dayTrackTimeMap = getDayTrackTimeMap(eventId);
+        Map<String, DayTrackTime> dayTrackTimeMap = getDayTrackTimeMap(getEventId());
 
-        return getTalks(eventId, ignoreDemoStage, dayTrackTimeMap);
+        return getTalks(getEventId(), ignoreDemoStage, dayTrackTimeMap);
     }
 
     /**

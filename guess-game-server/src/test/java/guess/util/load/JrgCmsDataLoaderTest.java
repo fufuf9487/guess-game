@@ -37,6 +37,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
@@ -617,13 +618,26 @@ class JrgCmsDataLoaderTest {
         @MethodSource("data")
         void getTalks(Conference conference, LocalDate startDate, String conferenceCode, boolean ignoreDemoStage,
                       Long eventId) throws IOException, NoSuchFieldException {
+            AtomicReference<Long> internalEventId = new AtomicReference<>();
+
             JrgCmsDataLoader jrgCmsDataLoader = Mockito.mock(JrgCmsDataLoader.class);
 
             Mockito.when(jrgCmsDataLoader.getTalks(Mockito.nullable(Conference.class), Mockito.nullable(LocalDate.class),
                             Mockito.nullable(String.class), Mockito.anyBoolean()))
                     .thenCallRealMethod();
+            Mockito.when(jrgCmsDataLoader.getEventId())
+                    .thenAnswer(
+                            (Answer<Long>) invocation -> (eventId != null) ? eventId : internalEventId.get()
+                    );
+            Mockito.when(jrgCmsDataLoader.getEventId(Mockito.nullable(Conference.class), Mockito.nullable(String.class)))
+                    .thenReturn(43L);
+            Mockito.doAnswer(
+                    invocation -> {
+                        internalEventId.set(invocation.getArgument(0));
 
-            jrgCmsDataLoader.setEventId(eventId);
+                        return null;
+                    }
+            ).when(jrgCmsDataLoader).setEventId(Mockito.nullable(Long.class));
 
             assertDoesNotThrow(() -> jrgCmsDataLoader.getTalks(conference, startDate, conferenceCode, ignoreDemoStage));
         }
