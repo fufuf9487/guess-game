@@ -70,6 +70,16 @@ class JrgCmsDataLoaderTest {
     }
 
     @Test
+    void getEventId() {
+        assertDoesNotThrow(() -> new JrgCmsDataLoader().getEventId());
+    }
+
+    @Test
+    void setEventId() {
+        assertDoesNotThrow(() -> new JrgCmsDataLoader().setEventId(42L));
+    }
+
+    @Test
     void getTokenFromCacheAndStoreTokenInCache() throws IOException {
         try (MockedStatic<JrgCmsDataLoader> mockedStatic = Mockito.mockStatic(JrgCmsDataLoader.class)) {
             mockedStatic.when(JrgCmsDataLoader::getOptionsDirectoryName)
