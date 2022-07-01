@@ -119,6 +119,10 @@ public class JrgCmsDataLoader extends CmsDataLoader {
         return OPTIONS_DIRECTORY_NAME;
     }
 
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
+    }
+
     /**
      * Stores token in cache.
      *

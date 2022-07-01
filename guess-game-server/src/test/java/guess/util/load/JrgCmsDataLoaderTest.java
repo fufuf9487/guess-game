@@ -602,6 +602,33 @@ class JrgCmsDataLoaderTest {
         }
     }
 
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DisplayName("getTalks method tests")
+    class GetTalksTest {
+        private Stream<Arguments> data() {
+            return Stream.of(
+                    arguments(null, null, null, false, null),
+                    arguments(null, null, null, false, 42L)
+            );
+        }
+
+        @ParameterizedTest
+        @MethodSource("data")
+        void getTalks(Conference conference, LocalDate startDate, String conferenceCode, boolean ignoreDemoStage,
+                      Long eventId) throws IOException, NoSuchFieldException {
+            JrgCmsDataLoader jrgCmsDataLoader = Mockito.mock(JrgCmsDataLoader.class);
+
+            Mockito.when(jrgCmsDataLoader.getTalks(Mockito.nullable(Conference.class), Mockito.nullable(LocalDate.class),
+                            Mockito.nullable(String.class), Mockito.anyBoolean()))
+                    .thenCallRealMethod();
+
+            jrgCmsDataLoader.setEventId(eventId);
+
+            assertDoesNotThrow(() -> jrgCmsDataLoader.getTalks(conference, startDate, conferenceCode, ignoreDemoStage));
+        }
+    }
+
     @Test
     void getImageWidthParameterName() {
         assertEquals("width", new JrgCmsDataLoader().getImageWidthParameterName());
