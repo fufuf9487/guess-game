@@ -1704,7 +1704,7 @@ public class ConferenceDataLoaderExecutor {
         var resourceSourceInformation = YamlUtils.readSourceInformation();
         List<Event> events = resourceSourceInformation.getEvents().stream()
                 .filter(e -> e.getEventType().isEventTypeConference())
-                .sorted(Comparator.comparing(Event::getFirstStartDate))
+                .sorted(Comparator.comparing(Event::getFirstStartDate).reversed())
                 .toList();
 
         events.forEach(event -> {
