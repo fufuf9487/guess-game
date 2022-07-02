@@ -387,12 +387,13 @@ class JrgCmsDataLoaderTest {
             JrgCmsConferenceSiteContent jrgCmsConferenceSiteContent2 = new JrgCmsConferenceSiteContent();
             jrgCmsConferenceSiteContent2.setData(jrgCmsEvent2);
 
-            // Conference sile content list
+            // Conference site content list
             JrgCmsConferenceSiteContentResponse response = new JrgCmsConferenceSiteContentResponse();
             response.setItems(List.of(jrgCmsConferenceSiteContent0, jrgCmsConferenceSiteContent1, jrgCmsConferenceSiteContent2));
 
             ResponseEntity<JrgCmsConferenceSiteContentResponse> responseEntity = new ResponseEntity<>(response, HttpStatus.OK);
 
+            // Mock RestTemplate
             RestTemplate restTemplateMock = Mockito.mock(RestTemplate.class);
             Mockito.when(restTemplateMock.exchange(Mockito.any(URI.class), Mockito.eq(HttpMethod.GET),
                             Mockito.nullable(HttpEntity.class), Mockito.eq(JrgCmsConferenceSiteContentResponse.class)))
@@ -650,6 +651,90 @@ class JrgCmsDataLoaderTest {
             ).when(jrgCmsDataLoader).setEventId(Mockito.nullable(Long.class));
 
             assertDoesNotThrow(() -> jrgCmsDataLoader.getTalks(conference, startDate, conferenceCode, ignoreDemoStage));
+        }
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DisplayName("getEventId method tests")
+    class GetEventIdTest {
+        private Stream<Arguments> data() {
+            final Conference CONFERENCE = Conference.JPOINT;
+            final String CONFERENCE_CODE = "2022 Spring";
+            final long IV0 = 42;
+            final long IV1 = 43;
+
+            // Events ids
+            JrgCmsObject<Long> eventId0 = new JrgCmsObject<>();
+            eventId0.setIv(IV0);
+
+            JrgCmsObject<Long> eventId1 = new JrgCmsObject<>();
+            eventId1.setIv(IV1);
+
+            // Events
+            JrgCmsEvent jrgCmsEvent0 = new JrgCmsEvent();
+            jrgCmsEvent0.setEventId(eventId0);
+
+            JrgCmsEvent jrgCmsEvent1 = new JrgCmsEvent();
+            jrgCmsEvent1.setEventId(eventId1);
+
+            // Conference sile contents
+            JrgCmsConferenceSiteContent jrgCmsConferenceSiteContent0 = new JrgCmsConferenceSiteContent();
+            jrgCmsConferenceSiteContent0.setData(jrgCmsEvent0);
+
+            JrgCmsConferenceSiteContent jrgCmsConferenceSiteContent1 = new JrgCmsConferenceSiteContent();
+            jrgCmsConferenceSiteContent1.setData(jrgCmsEvent1);
+
+            return Stream.of(
+                    arguments(CONFERENCE, CONFERENCE_CODE, Collections.emptyList(), IllegalStateException.class, 0),
+                    arguments(CONFERENCE, CONFERENCE_CODE, List.of(jrgCmsConferenceSiteContent0, jrgCmsConferenceSiteContent1), IllegalStateException.class, 0),
+                    arguments(CONFERENCE, CONFERENCE_CODE, List.of(jrgCmsConferenceSiteContent0), null, IV0),
+                    arguments(CONFERENCE, CONFERENCE_CODE, List.of(jrgCmsConferenceSiteContent1), null, IV1)
+            );
+        }
+
+        @ParameterizedTest
+        @MethodSource("data")
+        @SuppressWarnings("unchecked")
+        void getEventId(Conference conference, String conferenceCode, List<JrgCmsConferenceSiteContent> items,
+                        Class<? extends Exception> expectedException, long expectedValue) throws IOException, NoSuchFieldException {
+            try (MockedStatic<JrgCmsDataLoader> mockedStatic = Mockito.mockStatic(JrgCmsDataLoader.class)) {
+                // Conference site content list
+                JrgCmsConferenceSiteContentResponse response = new JrgCmsConferenceSiteContentResponse();
+                response.setItems(items);
+
+                ResponseEntity<JrgCmsConferenceSiteContentResponse> responseEntity = new ResponseEntity<>(response, HttpStatus.OK);
+
+                // Mock RestTemplate
+                RestTemplate restTemplateMock = Mockito.mock(RestTemplate.class);
+                Mockito.when(restTemplateMock.exchange(Mockito.any(URI.class), Mockito.eq(HttpMethod.GET),
+                                Mockito.nullable(HttpEntity.class), Mockito.eq(JrgCmsConferenceSiteContentResponse.class)))
+                        .thenReturn(responseEntity);
+
+                // Mock methods
+                mockedStatic.when(() -> JrgCmsDataLoader.makeRequest(Mockito.any(Function.class)))
+                        .thenAnswer(
+                                (Answer<Long>) invocation -> {
+                                    Object[] args = invocation.getArguments();
+                                    Function<String, Long> requestFunction = (Function<String, Long>) args[0];
+
+                                    return requestFunction.apply("");
+                                }
+                        );
+                mockedStatic.when(JrgCmsDataLoader::getRestTemplate)
+                        .thenReturn(restTemplateMock);
+
+                // Mock method under test
+                JrgCmsDataLoader jrgCmsDataLoader = Mockito.mock(JrgCmsDataLoader.class);
+                Mockito.when(jrgCmsDataLoader.getEventId(Mockito.any(Conference.class), Mockito.anyString()))
+                        .thenCallRealMethod();
+
+                if (expectedException == null) {
+                    assertEquals(expectedValue, jrgCmsDataLoader.getEventId(conference, conferenceCode));
+                } else {
+                    assertThrows(expectedException, () -> jrgCmsDataLoader.getEventId(conference, conferenceCode));
+                }
+            }
         }
     }
 
