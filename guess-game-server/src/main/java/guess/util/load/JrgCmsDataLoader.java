@@ -53,7 +53,7 @@ public class JrgCmsDataLoader extends CmsDataLoader {
     public record EventDates(LocalDate startDate, LocalDate endDate) {
     }
 
-    private record ScheduleInfo(List<JrgCmsDay> sortedDays, List<EventDates> eventDatesList) {
+    record ScheduleInfo(List<JrgCmsDay> sortedDays, List<EventDates> eventDatesList) {
     }
 
     private static final String REQUEST_TOKEN_URL = "https://squidex.jugru.team/identity-server/connect/token";

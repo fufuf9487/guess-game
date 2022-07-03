@@ -15,6 +15,9 @@ import guess.domain.source.cms.jrgcms.speaker.JrgCmsSpeaker;
 import guess.domain.source.cms.jrgcms.speaker.JrgContact;
 import guess.domain.source.cms.jrgcms.talk.JrgTalkPresentation;
 import guess.domain.source.cms.jrgcms.talk.JrgTalkPresentationFile;
+import guess.domain.source.cms.jrgcms.talk.schedule.JrgCmsDay;
+import guess.domain.source.cms.jrgcms.talk.schedule.JrgCmsSchedule;
+import guess.domain.source.cms.jrgcms.talk.schedule.JrgCmsScheduleResponse;
 import guess.domain.source.image.UrlDates;
 import guess.util.FileUtils;
 import guess.util.LocalizationUtils;
@@ -736,6 +739,83 @@ class JrgCmsDataLoaderTest {
                 }
             }
         }
+    }
+
+    @Test
+    void getScheduleInfo() {
+        try (MockedStatic<JrgCmsDataLoader> jrgCmsDataLoaderMockedStatic = Mockito.mockStatic(JrgCmsDataLoader.class);
+             MockedStatic<CmsDataLoader> cmsDataLoaderMockedStatic = Mockito.mockStatic(CmsDataLoader.class)) {
+            // Days
+            JrgCmsDay jrgCmsDay0 = new JrgCmsDay();
+            jrgCmsDay0.setDayStartsAt("2022-05-14T00:00:00Z");
+
+            JrgCmsDay jrgCmsDay1 = new JrgCmsDay();
+            jrgCmsDay1.setDayStartsAt("2022-05-15T00:00:00Z");
+
+            JrgCmsDay jrgCmsDay2 = new JrgCmsDay();
+            jrgCmsDay2.setDayStartsAt("2022-05-17T00:00:00Z");
+
+            // Schedule
+            JrgCmsSchedule jrgCmsSchedule = new JrgCmsSchedule();
+            jrgCmsSchedule.setDays(List.of(jrgCmsDay0, jrgCmsDay1, jrgCmsDay2));
+
+            // Schedule response
+            JrgCmsScheduleResponse response = new JrgCmsScheduleResponse();
+            response.setData(jrgCmsSchedule);
+
+            // Mock RestTemplate
+            RestTemplate restTemplateMock = Mockito.mock(RestTemplate.class);
+            Mockito.when(restTemplateMock.getForObject(Mockito.any(URI.class), Mockito.eq(JrgCmsScheduleResponse.class)))
+                    .thenReturn(response);
+
+            // Mock methods
+            jrgCmsDataLoaderMockedStatic.when(JrgCmsDataLoader::getRestTemplate)
+                    .thenReturn(restTemplateMock);
+            cmsDataLoaderMockedStatic.when(() -> CmsDataLoader.createEventLocalDate(Mockito.anyString()))
+                    .thenAnswer(
+                            (Answer<LocalDate>) invocation -> {
+                                Object[] args = invocation.getArguments();
+                                String zonedDateTimeString = (String) args[0];
+
+                                return ZonedDateTime.ofInstant(
+                                                ZonedDateTime.parse(zonedDateTimeString).toInstant(),
+                                                ZoneId.of("UTC"))
+                                        .toLocalDate();
+                            }
+                    );
+
+            // Mock method under test
+            JrgCmsDataLoader jrgCmsDataLoader = Mockito.mock(JrgCmsDataLoader.class);
+            Mockito.when(jrgCmsDataLoader.getScheduleInfo(Mockito.anyLong()))
+                    .thenCallRealMethod();
+
+            // Expected result
+            List<JrgCmsDataLoader.EventDates> expectedEventDatesList = List.of(
+                    new JrgCmsDataLoader.EventDates(LocalDate.of(2022, 5, 14), LocalDate.of(2022, 5, 15)),
+                    new JrgCmsDataLoader.EventDates(LocalDate.of(2022, 5, 17), LocalDate.of(2022, 5, 17))
+            );
+
+            // Actual result
+            JrgCmsDataLoader.ScheduleInfo actual = jrgCmsDataLoader.getScheduleInfo(42);
+
+            assertEquals(expectedEventDatesList, actual.eventDatesList());
+        }
+    }
+
+    @Test
+    void getEventDatesList() {
+        final long EVENT_ID = 42;
+
+        JrgCmsDataLoader jrgCmsDataLoader = Mockito.mock(JrgCmsDataLoader.class);
+        Mockito.when(jrgCmsDataLoader.getEventDatesList(Mockito.anyLong()))
+                .thenCallRealMethod();
+        Mockito.when(jrgCmsDataLoader.getScheduleInfo(Mockito.anyLong()))
+                .thenReturn(new JrgCmsDataLoader.ScheduleInfo(Collections.emptyList(), Collections.emptyList()));
+
+        assertDoesNotThrow(() -> jrgCmsDataLoader.getEventDatesList(EVENT_ID));
+        Mockito.verify(jrgCmsDataLoader, VerificationModeFactory.times(1)).getEventDatesList(EVENT_ID);
+        Mockito.verify(jrgCmsDataLoader, VerificationModeFactory.times(1)).getScheduleInfo(EVENT_ID);
+        Mockito.verifyNoMoreInteractions(jrgCmsDataLoader);
     }
 
     @Test
