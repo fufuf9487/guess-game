@@ -149,4 +149,17 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>conference-information-loading</id>
+            <dependencies>
+                <dependency>
+                    <groupId>com.twelvemonkeys.imageio</groupId>
+                    <artifactId>imageio-jpeg</artifactId>
+                    <version>${imageio.version}</version>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 </project>
