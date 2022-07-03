@@ -420,7 +420,7 @@ public class ConferenceDataLoaderExecutor {
      */
     static List<Talk> deleteOpeningAndClosingTalks(List<Talk> talks) {
         Set<String> deletedTalks = Set.of("Conference opening", "Conference closing", "School opening", "School closing",
-                "Открытие", "Закрытие", "Открытие конференции", "Закрытие конференции");
+                "Открытие", "Закрытие", "Открытие конференции", "Закрытие конференции", "Opening");
 
         return talks.stream()
                 .filter(t -> {
@@ -428,7 +428,7 @@ public class ConferenceDataLoaderExecutor {
                     String ruName = LocalizationUtils.getString(t.getName(), Language.RUSSIAN).trim();
 
                     if (deletedTalks.contains(enName) || deletedTalks.contains(ruName)) {
-                        log.warn("Conference opening or closing talk is deleted, name: '{}', '{}', talkDay: {}, trackTime: {}, track: {}, language: {}",
+                        log.warn("Conference opening or closing talk is deleted, name: {'{}', '{}'}, talkDay: {}, trackTime: {}, track: {}, language: {}",
                                 enName, ruName, t.getTalkDay(), t.getTrackTime(), t.getTrack(), t.getLanguage());
 
                         return false;
@@ -2223,8 +2223,11 @@ public class ConferenceDataLoaderExecutor {
 //                                "Открытие офлайн-части конференции Heisenbug 2022 Spring", "Закрытие конференции Heisenbug 2022 Spring",
 //                                "BoF-сессия: будущее роботизации в России",
 //                                "BoF-сессия: способы улучшения качества в условиях постоянного сокращения Time To Market")));
-//        loadTalksSpeakersEvent(Conference.HYDRA, LocalDate.of(2022, 6, 2), "2022");
-//        loadTalksSpeakersEvent(Conference.HYDRA, LocalDate.of(2022, 6, 26), "2022");
+//        loadTalksSpeakersEvent(Conference.HYDRA, LocalDate.of(2022, 6, 2), "2022",
+//                LoadSettings.eventTemplateAndInvalidTalksSet(
+//                        createEventTemplate("Hydra 2022", null, List.of(24L, 4L)),
+//                        Set.of("Hydra 2022 Online Conference Opening", "Summing Up Online Hydra 2022",
+//                                "C++ Russia 2022 & Hydra 2022 in-person opening", "C++ Russia 2022 & Hydra 2022 closing")));
 //        loadTalksSpeakersEvent(Conference.CPP_RUSSIA, LocalDate.of(2022, 6, 6), "2022");
 //        loadTalksSpeakersEvent(Conference.CPP_RUSSIA, LocalDate.of(2022, 6, 26), "2022");
 //        loadTalksSpeakersEvent(Conference.HOLY_JS, LocalDate.of(2022, 6, 8), "2022 Spring");

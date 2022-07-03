@@ -587,7 +587,11 @@ class ConferenceDataLoaderExecutorTest {
 
             Talk talk8 = new Talk();
             talk8.setId(8);
-            talk8.setName(List.of(new LocaleItem("en", "name8")));
+            talk8.setName(List.of(new LocaleItem("en", "Opening")));
+
+            Talk talk9 = new Talk();
+            talk9.setId(9);
+            talk9.setName(List.of(new LocaleItem("en", "name8")));
 
             return Stream.of(
                     arguments(Collections.emptyList(), Collections.emptyList()),
@@ -599,14 +603,15 @@ class ConferenceDataLoaderExecutorTest {
                     arguments(List.of(talk5), Collections.emptyList()),
                     arguments(List.of(talk6), Collections.emptyList()),
                     arguments(List.of(talk7), Collections.emptyList()),
+                    arguments(List.of(talk8), Collections.emptyList()),
                     arguments(List.of(talk0, talk1), Collections.emptyList()),
                     arguments(List.of(talk0, talk1, talk2), Collections.emptyList()),
                     arguments(List.of(talk0, talk1, talk2, talk3), Collections.emptyList()),
-                    arguments(List.of(talk8), List.of(talk8)),
-                    arguments(List.of(talk0, talk8), List.of(talk8)),
-                    arguments(List.of(talk0, talk1, talk8), List.of(talk8)),
-                    arguments(List.of(talk0, talk1, talk2, talk8), List.of(talk8)),
-                    arguments(List.of(talk0, talk1, talk2, talk3, talk8), List.of(talk8))
+                    arguments(List.of(talk9), List.of(talk9)),
+                    arguments(List.of(talk0, talk9), List.of(talk9)),
+                    arguments(List.of(talk0, talk1, talk9), List.of(talk9)),
+                    arguments(List.of(talk0, talk1, talk2, talk9), List.of(talk9)),
+                    arguments(List.of(talk0, talk1, talk2, talk3, talk9), List.of(talk9))
             );
         }
 

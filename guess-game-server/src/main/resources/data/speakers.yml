@@ -357,7 +357,7 @@ speakers:
     javaChampion: true
   - id: 19
     photoFileName: 0019.jpg
-    photoUpdatedAt: 2022-03-31T19:04:37Z[UTC]
+    photoUpdatedAt: 2022-06-02T11:51:39Z[UTC]
     name:
       - {language: en, text: "Ivan Ponomarev"}
       - {language: ru, text: "Иван Пономарёв"}
@@ -1017,7 +1017,7 @@ speakers:
     gitHub: rfscholte
   - id: 58
     photoFileName: 0058.jpg
-    photoUpdatedAt: 2020-02-25T11:51:16.829Z[UTC]
+    photoUpdatedAt: 2022-03-31T19:06:12Z[UTC]
     name:
       - {language: en, text: "Nikita Koval"}
       - {language: ru, text: "Никита Коваль"}
@@ -1055,7 +1055,7 @@ speakers:
     gitHub: ashutakGG
   - id: 60
     photoFileName: 0060.jpg
-    photoUpdatedAt: 2021-04-12T12:43:11.245Z[UTC]
+    photoUpdatedAt: 2022-03-31T19:05:36Z[UTC]
     name:
       - {language: en, text: "Vadim Tsesko"}
       - {language: ru, text: "Вадим Цесько"}
@@ -1063,7 +1063,7 @@ speakers:
     bio:
       - {language: en, text: "Currently, lead developer at Odnoklassniki Platform. Joined IT/CS field in 2004 with hydroacoustic\
             \ systems and research projects on static code analysis. Had been developing high-performance distributed services\
-            \ at Yandex. Verticals for more than 5 years. Occasionally gives lectures on parallel computing and distributed\
+            \ at Yandex.Verticals for more than 5 years. Occasionally gives lectures on parallel computing and distributed\
             \ data storage."}
       - {language: ru, text: "Ведущий разработчик в Платформе Одноклассников. Начал свой путь в IT/CS в 2004 с создания си\
             стем гидроакустики и исследовательских проектов по статическому анализу кода. Затем больше 5 лет разрабатывал\
@@ -2098,7 +2098,7 @@ speakers:
     gitHub: xpinjection
   - id: 124
     photoFileName: 0124.jpg
-    photoUpdatedAt: 2021-04-12T12:59:30.915Z[UTC]
+    photoUpdatedAt: 2022-03-31T19:05:56Z[UTC]
     name:
       - {language: en, text: "Oleg Anastasyev"}
       - {language: ru, text: "Олег Анастасьев"}
@@ -2280,7 +2280,7 @@ speakers:
     gitHub: stereohorse
   - id: 136
     photoFileName: 0136.jpg
-    photoUpdatedAt: 2021-08-19T12:18:54.344Z[UTC]
+    photoUpdatedAt: 2022-03-31T19:06:41Z[UTC]
     name:
       - {language: en, text: "Vladimir Ozerov"}
       - {language: ru, text: "Владимир Озеров"}
@@ -4874,7 +4874,7 @@ speakers:
       - {language: ru, text: "Окончил МГУ им. Ломоносова. В Яндексе с 2008 года. Руководит группой разработки СУБД ClickHouse."}
   - id: 332
     photoFileName: 0332.jpg
-    photoUpdatedAt: 2019-06-25T07:49:27.592Z[UTC]
+    photoUpdatedAt: 2022-05-23T12:39:46Z[UTC]
     name:
       - {language: en, text: "Anton Polukhin"}
       - {language: ru, text: "Антон Полухин"}
@@ -5903,15 +5903,16 @@ speakers:
             \ memory allocation and reclamation."
   - id: 402
     photoFileName: 0402.jpg
+    photoUpdatedAt: 2022-04-25T13:28:26Z[UTC]
     name:
       - {language: en, text: "Petr Kuznetsov"}
     companyIds: [417]
     bio:
-      - language: en
-        text: "Petr Kuznetsov is a Professor of Computer Science at Télécom Paris,\nInstitut Polytechnique Paris, France.\
-            \ Before joining Télécom Paris, he\nhas received his PhD from École Polytechnique Fédérale de Lausanne\n(EPFL),\
-            \ has worked at Max Planck Institute for Software Systems and\nTechnical University of Berlin. His research interests\
-            \ concern\ntheoretical and practical aspects of concurrency and fault-tolerant\ndistributed computing."
+      - {language: en, text: "<p>Petr Kuznetsov is a computer science professor at T&eacute;l&eacute;com Paris and the Institut\
+            \ Polytechnique Paris in France.Before joining T&eacute;l&eacute;com Paris, he received his PhD from &Eacute;cole\
+            \ Polytechnique F&eacute;d&eacute;rale de Lausanne (EPFL), has worked at the Max Planck Institute for Software\
+            \ Systems and the Technical University of Berlin. His research interests concern theoretical and practical aspects\
+            \ of concurrency and fault-tolerant distributed computing.</p>"}
   - id: 403
     photoFileName: 0403.jpg
     name:
@@ -6875,16 +6876,15 @@ speakers:
     twitter: shchegrikovich
   - id: 465
     photoFileName: 0465.jpg
-    photoUpdatedAt: 2020-05-14T07:43:39.401Z[UTC]
+    photoUpdatedAt: 2022-03-31T19:06:16Z[UTC]
     name:
       - {language: en, text: "Dmitry Ivanov"}
       - {language: ru, text: "Дмитрий Иванов"}
-    companyIds: [242]
+    companyIds: []
     bio:
-      - {language: en, text: "Head of Software Analysis Team at Huawei R&D center in Saint-Petersburg. Formerly JetBrains\
-            \ Rider Technical Leader."}
-      - {language: ru, text: "Возглавляет группу анализа программ в R&D центре компании Huawei в Санкт-Петербурге. В прошл\
-            ом технический лидер JetBrains Rider."}
+      - {language: en, text: "<p>Dmitry is Software Automation Lab Leader, ex. Technical Leader of JetBrains Rider, concurrency\
+            \ and data structures expert in ReSharper, author of reactive distributed protocol used in various JetBrains applications,\
+            \ ex.&nbsp; team leader in Yota.</p>"}
     twitter: korifey_ad
   - id: 466
     photoFileName: 0466.jpg
@@ -7646,11 +7646,11 @@ speakers:
     companyIds: []
   - id: 520
     photoFileName: 0520.jpg
-    photoUpdatedAt: 2020-02-04T12:01:39.473Z[UTC]
+    photoUpdatedAt: 2022-05-13T13:49:56Z[UTC]
     name:
       - {language: en, text: "Stanislav Sidristy"}
       - {language: ru, text: "Станислав Сидристый"}
-    companyIds: [685]
+    companyIds: [920]
     bio:
       - language: en
         text: "Stanislav worked in many large companies, gaining development experience on the .NET platform. The speaker\
@@ -7671,6 +7671,7 @@ speakers:
             тайский языки. Книга настолько легко читается, что понемногу начала выходить её <a href=\"https://anchor.fm/stanislav-sidristij\"\
             >аудиоверсия</a>."
     twitter: sidristij
+    gitHub: sidristij
   - id: 521
     photoFileName: 0521.jpg
     name:
@@ -14219,29 +14220,22 @@ speakers:
     twitter: geek_timofey
   - id: 996
     photoFileName: 0996.jpg
-    photoUpdatedAt: 2020-01-23T08:14:14.923Z[UTC]
+    photoUpdatedAt: 2022-06-14T10:51:50Z[UTC]
     name:
       - {language: en, text: "Roman Rusyaev"}
       - {language: ru, text: "Роман Русяев"}
     companyIds: [457]
     bio:
       - language: en
-        text: "Roman is a developer of compiler for neural networks in Russian Samsung R&D center. That compiler generates\
-            \ code for NPU (Neural Processing Unit). Compiled neural networks are deployed in flagship phones as such Galaxy\
-            \ Note 10.\nAlso he worked as a developer of optimizing compiler for Elbrus and SPARC microprocessors from C,\
-            \ C++ and Fortran input languages. He has implemented:\n- architecture-independent and architecture-dependent\
-            \ optimizations;\n- C++ zero-cost exception handling in middle-end of optimizing compiler;\n- [AddressSanitizer,\
-            \ MemorySanitizer and LeakSanitizer](https://github.com/google/sanitizers/wiki) in compiler as well as porting\
-            \ [compiler-rt](https://compiler-rt.llvm.org) library for Elbrus platform."
-      - language: ru
-        text: "Занимается разработкой компилятора нейронных сетей для NPU (Neural Processing Unit) в российском центре Samsung\
-            \ R&D. Скомпилированные нейронные сети поставляются в составе флагманских телефонов Samsung, таких как Galaxy\
-            \ Note 10.\nИмеется опыт разработки оптимизирующего компилятора под VLIW-архитектуру «Эльбрус» и архитектуру SPARC\
-            \ с языков C, C++, Fortran. В процессе разработки оптимизирующего компилятора, занимался реализацией:\n- платф\
-            ормозависимых и платформонезависимых оптимизаций;\n- оптимальной обработки исключений С++ (zero-cost exception\
-            \ handling) в части middle-end компилятора;\n- [санитайзеров](https://github.com/google/sanitizers/wiki): AddressSanitizer,\
-            \ MemorySanitizer, LeakSanitizer, включая портирование библиотеки [compiler-rt](https://compiler-rt.llvm.org)\
-            \ на платформу «Эльбрус»."
+        text: "<p>Roman is currently developing compilers at Huawei. Earlier he was involved in the development of the compiler\
+            \ of neural networks for NPU (Neural Processing Unit) in the Russian center of Samsung R&amp;D. He has experience\
+            \ in developing VLIW-optimizing compiler for Elbrus and SPARC architectures from C, C++, Fortran languages. In\
+            \ the process of optimizing compiler development he was involved in implementation:</p>\n<ul>\n<li>platform-dependent\
+            \ and platform-independent optimizations;</li>\n<li>zero-cost exception handling in the middle-end part of the\
+            \ compiler;</li>\n<li><a style=\"color: #dca10d;\" href=\"https://github.com/google/sanitizers/wiki\" target=\"\
+            _blank\" rel=\"noopener noreferrer\">sanitizers</a>: AddressSanitizer, MemorySanitizer, LeakSanitizer, including\
+            \ porting of the&nbsp;<a style=\"color: #dca10d;\" href=\"https://compiler-rt.llvm.org/\" target=\"_blank\" rel=\"\
+            noopener noreferrer\">compiler-rt</a>&nbsp;library to the Elbrus platform</li>\n</ul>"
   - id: 997
     photoFileName: 0997.jpg
     photoUpdatedAt: 2019-09-04T13:30:04.205Z[UTC]
@@ -17363,14 +17357,14 @@ speakers:
     gitHub: ntschutta
   - id: 1223
     photoFileName: 1223.jpg
-    photoUpdatedAt: 2020-04-17T12:20:31.891Z[UTC]
+    photoUpdatedAt: 2022-05-23T08:03:55Z[UTC]
     name:
       - {language: en, text: "Anton Podkopaev"}
     companyIds: [344, 286, 650]
     bio:
-      - language: en
-        text: "Anton Podkopaev is a postdoctoral researcher at MPI-SWS, a docent at NRU HSE, and a researcher at JetBrains\
-            \ Research. He did his PhD at St. Petersburg University.\nAnton's main area of research is weak memory concurrency."
+      - {language: en, text: "Anton Podkopaev is a postdoctoral researcher at MPI-SWS, a docent at NRU HSE, and a researcher\
+            \ at JetBrains Research. He did his PhD at St. Petersburg University. Anton's main area of research is weak memory\
+            \ concurrency."}
     twitter: inf_anlun
     gitHub: anlun
   - id: 1224
@@ -21323,7 +21317,7 @@ speakers:
       - {language: ru, text: "Разработчик команды больших данных в ivi."}
   - id: 1514
     photoFileName: 1514.jpg
-    photoUpdatedAt: 2020-11-13T10:50:33.695Z[UTC]
+    photoUpdatedAt: 2022-03-31T19:06:29Z[UTC]
     name:
       - {language: en, text: "Nikolay Markov"}
       - {language: ru, text: "Николай Марков"}
@@ -23616,15 +23610,15 @@ speakers:
     gitHub: apavlo
   - id: 1666
     photoFileName: 1666.jpg
-    photoUpdatedAt: 2021-05-31T10:40:27.345Z[UTC]
+    photoUpdatedAt: 2022-05-18T15:37:53Z[UTC]
     name:
       - {language: en, text: "Andrey Fomichev"}
     companyIds: [689]
     bio:
-      - {language: en, text: "Andrey Fomichev is the Head of the Data Storage and Processing Department at Yandex. He works\
-            \ at Yandex starting from 2008, was engaged in the development of Web Search Crawler, Yandex Infrastructure, and\
-            \ Yandex Cloud. Topics of interest include databases and distributed systems. Andrey holds a Ph.D. degree in computer\
-            \ science from Moscow State University."}
+      - {language: en, text: "<p>Head of the YDB project from the beginning. He works at&nbsp;Yandex as an Engineering Director\
+            \ (head of department) and holds a PhD from Moscow State University. <span class=\"blue-complex-underline\" data-startindex=\"\
+            152\" data-endindex=\"256\" data-paragraphid=\"3\">He has a passion for designing and implementing complex distributed\
+            \ systems and data management software.</span></p>"}
     twitter: fomichev
   - id: 1667
     photoFileName: 1667.jpg
@@ -24624,7 +24618,7 @@ speakers:
             \ \r\nВ последние годы занимается DE в самых разных его ипостасях."
   - id: 1734
     photoFileName: 1734.jpg
-    photoUpdatedAt: 2021-08-11T10:14:05.580Z[UTC]
+    photoUpdatedAt: 2022-05-12T07:59:21Z[UTC]
     name:
       - {language: en, text: "Artem Aliev"}
       - {language: ru, text: "Артём Алиев"}
@@ -26208,7 +26202,7 @@ speakers:
     gitHub: Lezh1k
   - id: 1837
     photoFileName: 1837.jpg
-    photoUpdatedAt: 2021-10-11T08:03:41.747Z[UTC]
+    photoUpdatedAt: 2022-05-04T14:58:08Z[UTC]
     name:
       - {language: en, text: "Konstantin Osipov"}
       - {language: ru, text: "Константин Осипов"}
@@ -26223,18 +26217,18 @@ speakers:
     habr: kostja
   - id: 1838
     photoFileName: 1838.jpg
-    photoUpdatedAt: 2020-06-25T11:25:17.046Z[UTC]
+    photoUpdatedAt: 2022-06-14T10:44:29Z[UTC]
     name:
       - {language: en, text: "Pavel Kosov"}
       - {language: ru, text: "Павел Косов"}
-    companyIds: [242]
+    companyIds: []
     bio:
-      - {language: en, text: "Senior Engineer at Huawei Russian Research Institute, LLVM Team. He has more than 10 years of\
+      - {language: en, text: "He has more than 10 years of\
             \ experience in commercial development, his main experience is the creation and improvement of compilers for C/C++\
             \ and system utilities for both common and exotic architectures. He was also engaged in the development of graphic\
             \ and game engines for web/desktop/mobile apps."}
       - language: ru
-        text: "Главный инженер Huawei Russian Research Institute, LLVM Team. За плечами более 10 лет в коммерческой разраб\
+        text: "За плечами более 10 лет в коммерческой разраб\
             отке, основной опыт — создание и улучшение компиляторов для С/С++ и системных утилит как для распространенных\
             , так и для довольно экзотических архитектур. Кроме этого, занимался разработкой графических и игровых движков\
             \ для веб/десктоп/мобильных приложений. \n\nВ качестве хобби занимается исследованием возможностей функциональ\
@@ -28515,25 +28509,24 @@ speakers:
             хёнчхане и 2020 в Токио."
   - id: 1997
     photoFileName: 1997.jpg
-    photoUpdatedAt: 2021-11-12T04:29:55.815Z[UTC]
+    photoUpdatedAt: 2022-06-03T09:55:11Z[UTC]
     name:
       - {language: en, text: "Pavel Matsula"}
       - {language: ru, text: "Павел Мацула"}
     companyIds: [620]
     bio:
-      - language: en
-        text: "Head of team developing native clients at VK for the last 1,5 years.\r\n\r\nPreviously worked on distributed\
-            \ backend in other large company. Used to do research in mathematical and imitation modelling, and also developed\
-            \ interpretator for modelling language. Used to read lectures on C++ and AST. \r\n\r\nTakes interest in tasks\
-            \ for optimizing any code performance. Used to be a professional musician, so the tasks of real-time audio processing\
-            \ are of special interest for him."
-      - language: ru
-        text: "Последние полтора года руководит командой разработки нативных клиентов в VK. \r\n\r\nПеред этим работал над\
-            \ распределенным бэкендом в другой крупной технологической компании. В прошлом занимался научными исследования\
-            ми в области математического и имитационного моделирования, в том числе разрабатывал интерпретатор для языка м\
-            оделирования, а также долгое время читал лекции по C++ и АСД в университете. \r\n\r\nНаибольший интерес вызыва\
-            ют задачи оптимизации производительности любого кода, до которого удается дотянуться. Профессионально занималс\
-            я музыкой, поэтому отдельный личный интерес представляют задачи обработки аудио в реальном времени."
+      - {language: en, text: "<p>For the last year and a half Pavel has been managing the development team of VK Calls native\
+            \ clients. Before that, he worked on a distributed backend at another large technology company. In the past, he\
+            \ has done research in mathematical and simulation modeling, including developing an interpreter for a modeling\
+            \ language, and has lectured on C++ and ASD at university for a long time. He is most interested in performance\
+            \ optimization of any code he can get his hands on. Professionally involved in music, so a separate personal interest\
+            \ are the tasks of audio processing in real time.</p>"}
+      - {language: ru, text: "<p>Последние полтора года руководит командой разработки нативных клиентов VK Звонки. Перед э\
+            тим работал над распределенным бэкендом в другой крупной технологической компании. В прошлом занимался научным\
+            и исследованиями в области математического и имитационного моделирования, в том числе разрабатывал интерпретат\
+            ор для языка моделирования, а также долгое время читал лекции по C++ и АСД в университете. Наибольший интерес\
+            \ вызывают задачи оптимизации производительности любого кода, до которого удается дотянуться. Профессионально\
+            \ занимался музыкой, поэтому отдельный личный интерес представляют задачи обработки аудио в реальном времени.</p>"}
   - id: 1998
     photoFileName: 1998.jpg
     photoUpdatedAt: 2021-11-11T14:40:38.623Z[UTC]
@@ -30421,3 +30414,265 @@ speakers:
             ся на лыжах и провести время за чашечкой хорошего чая и интересной технической книгой. Помнит про Java и Kotlin.</p>"}
     twitter: SokovetsArtem
     gitHub: artsok
+  - id: 2127
+    photoFileName: 2127.jpg
+    photoUpdatedAt: 2022-05-06T09:54:25Z[UTC]
+    name:
+      - {language: en, text: "Raphael Carvalho"}
+    companyIds: [829]
+    bio:
+      - {language: en, text: "<p>Carvalho took his first steps into the open source world by contributing to the Linux kernel\
+            \ and Syslinux, which is a suite of lightweight IBM PC bootloaders. Carvalho joined Cloudius Systems (pivoted\
+            \ to ScyllaDB), an Israeli startup, which has been his workplace since then. Back then, he worked on OSv, an open-source\
+            \ modular unikernel to run unmodified Linux apps on the cloud. As of October 2014, he worked on Seastar, the famous\
+            \ framework for writing high-performance servers on modern hardware. As of 2015, he started working on ScyllaDB,\
+            \ a NoSQL data store compatible with Apache Cassandra that works on top of Seastar. In 2018, Raph became fascinated\
+            \ with the Meltdown security bug and worked directly with the researchers who disclosed it, having his name listed\
+            \ in the official Meltdown paper for presenting a real-world exploit in collaboration with Pavel Boldin.</p>"}
+    twitter: raphael_scarv
+    gitHub: raphaelsc
+  - id: 2128
+    photoFileName: 2128.jpg
+    photoUpdatedAt: 2022-05-16T07:26:15Z[UTC]
+    name:
+      - {language: en, text: "Anton Malakhov"}
+    companyIds: [242]
+    bio:
+      - {language: en, text: "<p><span class=\"red-underline\" data-startindex=\"0\" data-endindex=\"4\" data-paragraphid=\"\
+            27\">Intel</span> TBB core <span class=\"red-underline\" data-startindex=\"15\" data-endindex=\"23\" data-paragraphid=\"\
+            27\">developer</span> for 9+ years since its inception. <span class=\"red-underline\" data-startindex=\"59\" data-endindex=\"\
+            69\" data-paragraphid=\"27\">Contributed</span> to the Intel OpenCL runtime for the CPU, Python's threading composability\
+            \ story, and Julia-lang multithreading. 2 patents, 3 proposals for the C++ standard, multiple papers and conferences:\
+            \ expert in composable, shared memory parallelism, and data structures.&nbsp;</p>"}
+    gitHub: anton-malakhov
+    habr: anton-malakhov
+  - id: 2129
+    photoFileName: 2129.jpg
+    photoUpdatedAt: 2022-05-13T10:10:55Z[UTC]
+    name:
+      - {language: en, text: "Sergey Petrenko"}
+    companyIds: [511]
+    bio:
+      - {language: en, text: "<p>C programmer at Tarantool, write tests for my stuff in Lua. Working on replication mostly.\
+            \ Participated in synchronous replication and Raft-based leader election algorithm development.</p>"}
+      - {language: ru, text: "<p>C programmer at Tarantool, write tests for my stuff in Lua. Working on replication mostly.\
+            \ Participated in synchronous replication and Raft-based leader election algorithm development.&nbsp;</p>"}
+  - id: 2130
+    photoFileName: 2130.jpg
+    photoUpdatedAt: 2022-05-13T10:11:35Z[UTC]
+    name:
+      - {language: en, text: "Boris Stepanenko"}
+    companyIds: [511]
+    bio:
+      - {language: en, text: "<p>Developing Tarantool. Mostly focused on horizontal scalability. Previously worked as a researcher\
+            \ in Infotecs, was developing security functions virtualization system and researching problems related to horizontal\
+            \ scalability of stateful firewall.</p>"}
+      - {language: ru, text: "<p>Developing Tarantool. Mostly focused on horizontal scalability. Previously worked as a researcher\
+            \ in Infotecs, was developing security functions virtualization system and researching problems related to horizontal\
+            \ scalability of stateful firewall.&nbsp;</p>"}
+    gitHub: grafin
+  - id: 2131
+    photoFileName: 2131.jpg
+    photoUpdatedAt: 2022-04-25T13:38:24Z[UTC]
+    name:
+      - {language: en, text: "Janna Burman"}
+    companyIds: [916]
+    bio:
+      - {language: en, text: "<p>Janna Burman is an associate professor (Ma&icirc;tre de Conference) in Computer Science at\
+            \ Paris-Saclay University, since 2013. She received her Ph.D. in 2010 from Technion, Israel Institute of Technology,\
+            \ and did her post-docs at INRIA Sophia-Antipolis (2010&ndash;2011) and INRIA-Saclay (2011&ndash;2013). She is\
+            \ carrying out her research at LISN: Laboratoire Interdisciplinaire des Sciences du Num&eacute;rique, in the Parallel\
+            \ Systems team. Her main research interests are distributed algorithms and systems, with a particular focus on\
+            \ networks of mobile agents, fault-tolerance, self-stabilization, population protocols, and the beeping model.</p>"}
+  - id: 2132
+    photoFileName: 2132.jpg
+    photoUpdatedAt: 2022-05-11T08:12:58Z[UTC]
+    name:
+      - {language: en, text: "Pavel Emelyanov"}
+    companyIds: [829]
+    bio:
+      - {language: en, text: "<p>Pavel is an ex-Linux kernel hacker now applying his experience to the database area.</p>"}
+    gitHub: xemul
+  - id: 2133
+    photoFileName: 2133.jpg
+    photoUpdatedAt: 2022-06-15T18:57:38Z[UTC]
+    name:
+      - {language: en, text: "Alexander Kirsanov"}
+    companyIds: []
+    bio:
+      - {language: en, text: "<p>He leads Remote Development and Collaboration Tools (Code With Me, Gateway).&nbsp; Before\
+            \ that, he worked on Rider. The product that embraced IDE process separation<span class=\"red-underline\" data-startindex=\"\
+            158\" data-endindex=\"159\" data-paragraphid=\"5\">. </span>We still share a lot of code.</p>"}
+      - {language: ru, text: "<p>He leads Remote Development and Collaboration Tools (Code With Me, Gateway). Before that,\
+            \ he worked on Rider. The product that embraced IDE process separation<span class=\"red-underline\" data-startindex=\"\
+            215\" data-endindex=\"216\" data-paragraphid=\"4\">. </span>We still share a lot of code.</p>"}
+  - id: 2134
+    photoFileName: 2134.jpg
+    photoUpdatedAt: 2022-04-27T12:36:46Z[UTC]
+    name:
+      - {language: en, text: "Satyam Shekhar"}
+    companyIds: [917]
+    bio:
+      - {language: en, text: "<p>Satyam is co-founder and principal architect at <a href=\"https://www.netspring.io/\">NetSpring.io</a>.</p>"}
+      - {language: ru, text: "<p>Satyam is co-founder and principal architect at <a href=\"https://www.netspring.io/\">NetSpring.io</a>,\
+            \ an operational intelligence startup that provides continuous analytics on real-time operational data. In his\
+            \ current role, he is focused on building a streaming-first data platform that brings together the scale and throughput\
+            \ of modern data warehouses and latency and incremental querying of streaming query engines. Previously, he was\
+            \ a founding engineer at ThoughtSpot, where he helped build the natural language search engine and an in-memory\
+            \ database to power relational searches. While at Google, he was a member of the founding team that invented the\
+            \ QUIC protocol (nicknamed TCP/2) and also contributed to the development of the HTTP/2 standard (then called\
+            \ SPDY).</p>"}
+    gitHub: satyamshekhar
+  - id: 2135
+    photoFileName: 2135.jpg
+    photoUpdatedAt: 2022-05-11T08:01:35Z[UTC]
+    name:
+      - {language: en, text: "Ilya Kokorin"}
+    companyIds: [279]
+    bio:
+      - {language: en, text: "<p class=\"root-block-node\" data-changed=\"false\" data-paragraphid=\"7\">Ilya is a researcher\
+            \ at ITMO University, where he has also received his Bachelor in Computer Science. He has also almost finished\
+            \ his Master's in Computer Science there. Also, in ITMO, he helps in teaching the \"Programming of Distributed\
+            \ Systems\" course. His research focuses on parallel and concurrent data structures under the supervision of Vitaly\
+            \ Aksenov. Before that, he had a research internship at IST Austria under the supervision of Professor Dan Alistarh.\
+            \ His research there focused mainly on concurrent data structures and applying machine learning methods for speeding\
+            \ up indexing of data structures. He also took part in a research project on HTAP DBMS engines with the GridGain\
+            \ development company (creators of Apache Ignite).</p>"}
+    gitHub: KokorinIlya
+  - id: 2136
+    photoFileName: 2136.jpg
+    photoUpdatedAt: 2022-05-23T12:35:49Z[UTC]
+    name:
+      - {language: en, text: "Konstantin Vladimirov"}
+    companyIds: [826]
+    bio:
+      - {language: en, text: "<p>For the last three years has been working on a graphical compiler for Intel.Total experience\
+            \ in compilers about 12 years. Passionate about heterogeneous programming. Teaches C++ at MIPT.</p>"}
+      - {language: ru, text: "<p>For the last three years has been working on a graphical compiler for Intel.Total experience\
+            \ in compilers about 12 years. Passionate about heterogeneous programming. Teaches C++ at MIPT.&nbsp;</p>"}
+  - id: 2137
+    photoFileName: 2137.jpg
+    photoUpdatedAt: 2022-05-18T15:51:36Z[UTC]
+    name:
+      - {language: en, text: "Ilnaz Nizametdinov"}
+    companyIds: [689]
+    bio:
+      - {language: en, text: "<p>A biography will be published later.</p>"}
+    twitter: nizametdinov
+    gitHub: CyberROFL
+  - id: 2138
+    photoFileName: 2138.jpg
+    photoUpdatedAt: 2022-06-26T05:34:49Z[UTC]
+    name:
+      - {language: en, text: "Vladislav Stolyarov"}
+    companyIds: [424]
+    bio:
+      - {language: en, text: "Senior C++ developer at PVS-Studio. He has been developing the C++ analyzer for more than 2\
+            \ years. In his free time, he is writing a front-end for Solidity."}
+      - {language: ru, text: "<p>Senior C++ developer at PVS-Studio. He has been developing the C++ analyzer for more than\
+            \ 2 years. In his free time, he is writing a front-end for Solidity.</p>"}
+  - id: 2139
+    photoFileName: 2139.jpg
+    photoUpdatedAt: 2022-05-30T12:14:57Z[UTC]
+    name:
+      - {language: en, text: "Konstantin Ushakov"}
+    companyIds: [918]
+    bio:
+      - {language: en, text: "CEO of OKTET Labs (Russia) and OKTET (independent Israeli entity). Developer for 19 years."}
+  - id: 2140
+    photoFileName: 2140.jpg
+    photoUpdatedAt: 2022-03-31T19:05:52Z[UTC]
+    name:
+      - {language: en, text: "Vitaly Aksenov"}
+    companyIds: [279]
+    bio:
+      - language: en
+        text: "Vitaliy Aksenov currently is a researcher at ITMO University. His research focuses on practice and theory of\
+            \ concurrent data structures.\n\nBefore ITMO University, Vitaliy was a post-doc in IST Austria under the guidance\
+            \ of professor Dan Alistarh and received his PhD from Paris 7 Diderot and ITMO University under the guidance of\
+            \ professor Petr Kuznetsov."
+    gitHub: Aksenov239
+  - id: 2141
+    photoFileName: 2141.jpg
+    photoUpdatedAt: 2022-06-03T10:35:02Z[UTC]
+    name:
+      - {language: en, text: "Sergey Yakushkin"}
+    companyIds: [919]
+    bio:
+      - {language: en, text: "<p>Director of software engineering at Syntacore, company developing microprocessor technologies\
+            \ based on RISC-V architecture and co-founder of RISC-V International. Open-source core SCR1 and toolchain are\
+            \ one of the most popular RISC-V processor projects at GitHub. Graduated from SPbSU, worked at Intel, Huawei,\
+            \ Synopsys on C/C++/OpenCL compilers, toolchains, debugging and simulation tools, designed domain-specific programming\
+            \ and architecture description languages. Published papers at international compiler and EDA conferences such\
+            \ as LLVM, DATE, DAC, HPCA.</p>"}
+      - {language: ru, text: "<p>Director of software engineering at Syntacore, company developing microprocessor technologies\
+            \ based on RISC-V architecture and co-founder of RISC-V International. Open-source core SCR1 and toolchain are\
+            \ one of the most popular RISC-V processor projects at GitHub. Graduated from SPbSU, worked at Intel, Huawei,\
+            \ Synopsys&nbsp; on C/C++/OpenCL compilers, toolchains, debugging and simulation tools, designed domain-specific\
+            \ programming and architecture description languages. Published papers at international compiler and EDA conferences\
+            \ such as LLVM, DATE, DAC, HPCA.</p>"}
+  - id: 2143
+    photoFileName: 2143.jpg
+    photoUpdatedAt: 2022-06-14T10:35:14Z[UTC]
+    name:
+      - {language: en, text: "Alexander Kobotov"}
+    companyIds: [242]
+    bio:
+      - {language: en, text: "Alexander has been into programming for over 30 years. Worked at Intel, Yandex, Align Technologies,\
+            \ and now Huawei. He worked his way up from intern to principal engineer. He was mostly involved in optimization\
+            \ of computational algorithms. Proud of his contributions to the Intel MKL and Yandex CatBoost projects. In his\
+            \ spare time he teaches programming to NSU students, writes music and goes hiking."}
+    gitHub: akobotov
+  - id: 2144
+    photoFileName: 2144.jpg
+    photoUpdatedAt: 2022-06-03T08:37:02Z[UTC]
+    name:
+      - {language: en, text: "Roman Karhu"}
+      - {language: ru, text: "Роман Карху"}
+    companyIds: []
+    bio:
+      - language: en
+        text: "<p>Research Engineer. He was educated at SPbSTU, Department of Intellectual Technologies. He was involved in\
+            \ the development of e-commerce systems, and the implementation of ERP-systems. He has developed several start-ups\
+            \ in smart-home and IoT, took part in the development of two blockchain platforms.</p>\n<p>He is involved in compiler\
+            \ research, machine learning, mobile OS, profiling and performance issues. Hobbies: neural networks, brain, genome,\
+            \ genetic algorithms, evolutionary modeling.</p>"
+      - language: ru
+        text: "<p>Инженер-исследователь. Образование получил в СПбГПУ на Кафедре Интеллектуальных Технологий. Занимался ра\
+            зработкой систем электронной коммерции, внедрением ERP-систем. Развивал несколько стартапов по smart-home, IoT,\
+            \ участвовал в разработке двух блокчейн-платформ.</p>\n<p>Занимается исследованием компиляторов, машинным обуч\
+            ением, мобильными ОС, вопросами профайлинга и перформанса. Хобби: нейронные сети, мозг, геном, генетические ал\
+            горитмы, эволюционное моделирование.</p>"
+  - id: 2145
+    photoFileName: 2145.jpg
+    photoUpdatedAt: 2022-06-03T07:11:08Z[UTC]
+    name:
+      - {language: en, text: "Maria Dziuba"}
+      - {language: ru, text: "Мария Дзюба"}
+    companyIds: []
+    bio:
+      - {language: en, text: "<p>Bachelor's student of the Computer Technologies Department of ITMO University.</p>"}
+      - {language: ru, text: "<p>Студентка бакалавриата факультета компьютерных технологий Университета ИТМО.</p>"}
+  - id: 2146
+    photoFileName: 2146.jpg
+    photoUpdatedAt: 2022-06-20T11:55:04Z[UTC]
+    name:
+      - {language: en, text: "Daniil Podolsky"}
+    companyIds: []
+    bio:
+      - {language: en, text: "<p>Project manager of Git in Sky, IT consultant, freelancer. In IT since 1990. Since 2000, consults\
+            \ a variety of Internet startups on building efficient and secure server systems.</p>"}
+      - {language: ru, text: "<p>Project manager of Git in Sky, IT consultant, freelancer. In IT since 1990. Since 2000, consults\
+            \ a variety of Internet startups&nbsp; on building efficient and secure server systems.</p>"}
+    gitHub: onokonem
+    habr: onokonem
+  - id: 2147
+    photoFileName: 2147.jpg
+    photoUpdatedAt: 2022-03-31T19:06:20Z[UTC]
+    name:
+      - {language: en, text: "Ivan Prisyazhniy"}
+    companyIds: [921]
+    bio:
+      - language: en
+        text: "Software Engineer at Workato.\n\nIvan's areas of interest are distributed systems and databases. He went through\
+            \ different projects and now helps Workato to make their platform even better."

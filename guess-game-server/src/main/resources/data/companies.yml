@@ -3348,3 +3348,27 @@ companies:
       - {language: en, text: Celsus.ai}
       - {language: ru, text: Цельс}
     siteLink: https://celsus.ai
+  - id: 916
+    name:
+      - {language: en, text: "Université Paris-Saclay, CNRS, LISN"}
+    siteLink: https://www.lisn.upsaclay.fr
+  - id: 917
+    name:
+      - {language: en, text: NetSpring}
+    siteLink: https://www.netspring.io
+  - id: 918
+    name:
+      - {language: en, text: OKTET}
+    siteLink: http://oktetlabs.ru
+  - id: 919
+    name:
+      - {language: en, text: Syntacore}
+    siteLink: https://syntacore.com
+  - id: 920
+    name:
+      - {language: en, text: "Speech Technology Center"}
+    siteLink: https://speechpro.com
+  - id: 921
+    name:
+      - {language: en, text: Workato}
+    siteLink: https://www.workato.com
