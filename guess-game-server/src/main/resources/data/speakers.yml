@@ -6880,12 +6880,13 @@ speakers:
     name:
       - {language: en, text: "Dmitry Ivanov"}
       - {language: ru, text: "Дмитрий Иванов"}
-    companyIds: []
+    companyIds: [242]
     bio:
       - {language: en, text: "<p>Dmitry is Software Automation Lab Leader, ex. Technical Leader of JetBrains Rider, concurrency\
             \ and data structures expert in ReSharper, author of reactive distributed protocol used in various JetBrains applications,\
             \ ex.&nbsp; team leader in Yota.</p>"}
     twitter: korifey_ad
+    gitHub: korifey
   - id: 466
     photoFileName: 0466.jpg
     photoUpdatedAt: 2020-02-06T12:23:19.894Z[UTC]
