@@ -2227,9 +2227,31 @@ public class ConferenceDataLoaderExecutor {
 //                LoadSettings.eventTemplateAndInvalidTalksSet(
 //                        createEventTemplate("Hydra 2022", null, List.of(24L, 4L)),
 //                        Set.of("Hydra 2022 Online Conference Opening", "Summing Up Online Hydra 2022",
-//                                "C++ Russia 2022 & Hydra 2022 in-person opening", "C++ Russia 2022 & Hydra 2022 closing")));
-//        loadTalksSpeakersEvent(Conference.CPP_RUSSIA, LocalDate.of(2022, 6, 6), "2022");
-//        loadTalksSpeakersEvent(Conference.CPP_RUSSIA, LocalDate.of(2022, 6, 26), "2022");
+//                                "C++ Russia 2022 & Hydra 2022 in-person opening", "C++ Russia 2022 & Hydra 2022 closing",
+//                                "Monolith vs Microservices, and How to Work Effectively with the Latter in C++",
+//                                "Memory as a Concept in Heterogeneous Systems",
+//                                "Is there life without RTTI or how to write your own dynamic_cast",
+//                                "Interview with Anton Polukhin",
+//                                "File system and network stacks in Userland: why we must use them in 2022",
+//                                "Using machine learning to improve inlining in LLVM",
+//                                "C++ compiler and optimizations for open RISC-V instruction set architecture",
+//                                "Interview with Konstantin Vladimirov",
+//                                "How to make your life easier when developing a client application in modern C++: an example of VK Calls",
+//                                "Type Sanitizer: a way to detect violations of strict aliasing rules in C++",
+//                                "What a C++ developer should keep in mind about processor architecture",
+//                                "Overview of recent research in the field of selection of optimal sequences of optimization passes using ML")));
+//        loadTalksSpeakersEvent(Conference.CPP_RUSSIA, LocalDate.of(2022, 6, 6), "2022",
+//                LoadSettings.eventTemplateAndInvalidTalksSet(
+//                        createEventTemplate("С++ Russia 2022", null, List.of(24L, 4L)),
+//                        Set.of("Открытие конференции C++ Russia 2022", "Разговор в студии про C++ в ML",
+//                                "Разговор об автопилотах", "Подведение итогов online-части конференции",
+//                                "Открытие офлайн-части конференций C++ Russia 2022 и Hydra 2022",
+//                                "Закрытие конференций C++ Russia 2022 и Hydra 2022",
+//                                "Distributed transactions implementation trade-offs",
+//                                "Интервью с Вадимом Цесько",
+//                                "Parallel Asynchronous Replication between YDB Database Instances",
+//                                "What about Binary Search Trees?", "Thread pools: variety of algorithms and features",
+//                                "Интервью с Андреем Фомичевым", "OK S3", "Круглый стол. Concurrency")));
 //        loadTalksSpeakersEvent(Conference.HOLY_JS, LocalDate.of(2022, 6, 8), "2022 Spring");
 //        loadTalksSpeakersEvent(Conference.HOLY_JS, LocalDate.of(2022, 6, 23), "2022 Spring");
 //        loadTalksSpeakersEvent(Conference.JPOINT, LocalDate.of(2022, 6, 13), "2022");

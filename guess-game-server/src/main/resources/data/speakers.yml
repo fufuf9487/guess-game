@@ -7649,28 +7649,24 @@ speakers:
     photoFileName: 0520.jpg
     photoUpdatedAt: 2022-05-13T13:49:56Z[UTC]
     name:
-      - {language: en, text: "Stanislav Sidristy"}
+      - {language: en, text: "Stanislav Sidristij"}
       - {language: ru, text: "Станислав Сидристый"}
     companyIds: [920]
     bio:
-      - language: en
-        text: "Stanislav worked in many large companies, gaining development experience on the .NET platform. The speaker\
-            \ of many conferences, including .NEXT, SpbDotNet, the author, and main speaker of the CLRium seminars.\nStanislav's\
-            \ interests for a long time lay in the field of memory management algorithms and techniques for manipulating the\
-            \ CLR runtime from unsafe code. But recently, the vector has been changed to a more practical part of development:\
-            \ multithreading, blocking, and non-blocking algorithms.\nHe is the author of the online book <a href=\"https://github.com/sidristij/dotnetbook\"\
-            > .NET Platform Architecture </a>, which is widely used due to its good translation into English and Chinese.\
-            \ The book is so easy to read that its <a href=\"https://anchor.fm/stanislav-sidristij\">audio version</a> gradually\
-            \ began to be published."
-      - language: ru
-        text: "Станислав работал во многих крупных компаниях, набирая опыт разработки на платформе .NET. Спикер многих кон\
-            ференций, в том числе .NEXT, SpbDotNet, автор и основной спикер семинаров CLRium. \nИнтересы Станислава долгое\
-            \ время лежали в области алгоритмов управления памятью и техник манимулирования рантаймом CLR из unsafe кода.\
-            \ Но в последнее время вектор изменен на более практичную часть разработки: многопоточность, блокирующие и неб\
-            локирующие алгоритмы.\nЯвляется автором онлайн-книги <a href=\"https://github.com/sidristij/dotnetbook\">.NET\
-            \ Platform Architecture</a>, получившей широкое распространение благодаря хорошему переводу на английский и ки\
-            тайский языки. Книга настолько легко читается, что понемногу начала выходить её <a href=\"https://anchor.fm/stanislav-sidristij\"\
-            >аудиоверсия</a>."
+      - {language: en, text: "Stanislav worked in many large companies, gaining experience developing on the .NET platform.\
+            \ Stanislav is a speaker at many conferences, including .NEXT, SpbDotNet, the author and the main speaker of CLRium\
+            \ seminars. For a long time, Stanislav has been interested in the field of memory management algorithms and unsafe\
+            \ code manipulation of CLR runtime. But lately the vector has been changed for more practical part of development:\
+            \ multithreading, blocking and non-blocking algorithms, memory optimization practices. He is the author of the\
+            \ online book .NET Platform Architecture, which has been widely distributed thanks to a good translation into\
+            \ English and Chinese."}
+      - {language: ru, text: "<p>Станислав работал во многих крупных компаниях, набирая опыт разработки на платформе .NET.\
+            \ Спикер многих конференций, в том числе DotNext, SpbDotNet, автор и основной спикер семинаров CLRium. Интерес\
+            ы Станислава долгое время лежали в области алгоритмов управления памятью и техник манипулирования рантаймом CLR\
+            \ из unsafe кода. Но в последнее время вектор изменен на более практичную часть разработки: многопоточность, б\
+            локирующие и неблокирующие алгоритмы, практика оптимизации памяти. Является автором онлайн-книги .NET Platform\
+            \ Architecture, получившей широкое распространение благодаря хорошему переводу на английский и китайский языки\
+            .</p>"}
     twitter: sidristij
     gitHub: sidristij
   - id: 521
