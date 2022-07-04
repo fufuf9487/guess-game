@@ -5152,18 +5152,17 @@ speakers:
     gitHub: zmij
   - id: 351
     photoFileName: 0351.jpg
-    photoUpdatedAt: 2020-01-22T13:48:22.084Z[UTC]
+    photoUpdatedAt: 2022-04-25T13:05:28Z[UTC]
     name:
       - {language: en, text: "Pavel Novikov"}
       - {language: ru, text: "Павел Новиков"}
     companyIds: [27]
     bio:
-      - language: en
-        text: "Got an engineering degree in missilery from BMSTU.\n\nLoves C++ and knows how to cook it.\n\nLikes metaprogramming,\
-            \ multithreading and asynchronous programming, coroutine adoption enthusiast."
-      - language: ru
-        text: "Выпускник МГТУ имени Н.Э. Баумана (ракетостроение).\n\nЛюбит C++ и умеет его готовить.\n\nЛюбитель метапрог\
-            раммирования, многопоточного и асинхронного программирования, энтузиаст распространения корутин."
+      - {language: en, text: "Got an engineering degree in missilery at BMSTU. </p><p>Loves C++ and knows how to cook it.\
+            \ </p><p>Likes metaprogramming, multithreading and asynchronous programming. Coroutine adoption enthusiast."}
+      - {language: ru, text: "Выпускник МГТУ имени Н. Э. Баумана (ракетостроение). </p><p>Любит C++ и умеет его готовить.\
+            \ </p><p>Любитель метапрограммирования, многопоточного и асинхронного программирования. Энтузиаст распростране\
+            ния корутин."}
     twitter: cpp_ape
   - id: 352
     photoFileName: 0352.jpg
@@ -30812,19 +30811,6 @@ speakers:
             \ года в стартапе (Unity).&nbsp;<br />Увлекается игрой на гитаре, вокалом, шахматами и StarCraft 2.</p>"}
     gitHub: Minatych
     habr: Minatych
-  - id: 2155
-    photoFileName: 2155.jpg
-    photoUpdatedAt: 2022-04-25T13:05:28Z[UTC]
-    name:
-      - {language: en, text: "Pavel Novikov"}
-      - {language: ru, text: "Павел Новиков"}
-    companyIds: []
-    bio:
-      - {language: en, text: "Got an engineering degree in missilery at BMSTU. </p><p>Loves C++ and knows how to cook it.\
-            \ </p><p>Likes metaprogramming, multithreading and asynchronous programming. Coroutine adoption enthusiast."}
-      - {language: ru, text: "Выпускник МГТУ имени Н. Э. Баумана (ракетостроение). </p><p>Любит C++ и умеет его готовить.\
-            \ </p><p>Любитель метапрограммирования, многопоточного и асинхронного программирования. Энтузиаст распростране\
-            ния корутин."}
   - id: 2156
     photoFileName: 2156.jpg
     photoUpdatedAt: 2022-04-28T13:14:20Z[UTC]
