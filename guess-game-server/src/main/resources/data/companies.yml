@@ -3358,7 +3358,7 @@ companies:
     siteLink: https://www.netspring.io
   - id: 918
     name:
-      - {language: en, text: OKTET}
+      - {language: en, text: "OKTET Labs"}
     siteLink: http://oktetlabs.ru
   - id: 919
     name:
@@ -3372,3 +3372,29 @@ companies:
     name:
       - {language: en, text: Workato}
     siteLink: https://www.workato.com
+  - id: 922
+    name:
+      - {language: en, text: "RTU MIREA"}
+      - {language: ru, text: "РТУ МИРЭА"}
+    siteLink: https://www.mirea.ru
+  - id: 923
+    name:
+      - {language: en, text: "Catalyst Aerospace Technologies"}
+    siteLink: https://ctlst.tech
+  - id: 924
+    name:
+      - {language: en, text: "N-able Technology"}
+    siteLink: https://www.n-able.com
+  - id: 925
+    name:
+      - {language: en, text: Sudo}
+      - {language: ru, text: Судо}
+    siteLink: https://sudo.team
+  - id: 926
+    name:
+      - {language: en, text: "think-cell Software"}
+    siteLink: https://www.think-cell.com
+  - id: 927
+    name:
+      - {language: en, text: "Parity Technologies"}
+    siteLink: https://www.parity.io

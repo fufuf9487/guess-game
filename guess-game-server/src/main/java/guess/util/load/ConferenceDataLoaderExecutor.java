@@ -2242,7 +2242,7 @@ public class ConferenceDataLoaderExecutor {
 //                                "Overview of recent research in the field of selection of optimal sequences of optimization passes using ML")));
 //        loadTalksSpeakersEvent(Conference.CPP_RUSSIA, LocalDate.of(2022, 6, 6), "2022",
 //                LoadSettings.eventTemplateAndInvalidTalksSet(
-//                        createEventTemplate("С++ Russia 2022", null, List.of(24L, 4L)),
+//                        createEventTemplate("C++ Russia 2022", null, List.of(24L, 4L)),
 //                        Set.of("Открытие конференции C++ Russia 2022", "Разговор в студии про C++ в ML",
 //                                "Разговор об автопилотах", "Подведение итогов online-части конференции",
 //                                "Открытие офлайн-части конференций C++ Russia 2022 и Hydra 2022",
@@ -2253,10 +2253,7 @@ public class ConferenceDataLoaderExecutor {
 //                                "What about Binary Search Trees?", "Thread pools: variety of algorithms and features",
 //                                "Интервью с Андреем Фомичевым", "OK S3", "Круглый стол. Concurrency")));
 //        loadTalksSpeakersEvent(Conference.HOLY_JS, LocalDate.of(2022, 6, 8), "2022 Spring");
-//        loadTalksSpeakersEvent(Conference.HOLY_JS, LocalDate.of(2022, 6, 23), "2022 Spring");
 //        loadTalksSpeakersEvent(Conference.JPOINT, LocalDate.of(2022, 6, 13), "2022");
-//        loadTalksSpeakersEvent(Conference.JPOINT, LocalDate.of(2022, 6, 24), "2022");
 //        loadTalksSpeakersEvent(Conference.DOT_NEXT, LocalDate.of(2022, 6, 16), "2022 Spring");
-//        loadTalksSpeakersEvent(Conference.DOT_NEXT, LocalDate.of(2022, 6, 27), "2022 Spring");
     }
 }

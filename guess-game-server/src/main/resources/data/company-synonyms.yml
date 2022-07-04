@@ -287,6 +287,10 @@ companySynonyms:
     synonyms: [
         Odnoklassniki
     ]
+  - name: "OKTET Labs"
+    synonyms: [
+        OKTET
+    ]
   - name: Oracle
     synonyms: [
         "Oracle Labs"
