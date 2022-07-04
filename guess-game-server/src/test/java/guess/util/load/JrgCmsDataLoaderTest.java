@@ -13,11 +13,10 @@ import guess.domain.source.cms.jrgcms.event.JrgCmsConferenceSiteContentResponse;
 import guess.domain.source.cms.jrgcms.event.JrgCmsEvent;
 import guess.domain.source.cms.jrgcms.speaker.JrgCmsSpeaker;
 import guess.domain.source.cms.jrgcms.speaker.JrgContact;
+import guess.domain.source.cms.jrgcms.talk.JrgCmsActivity;
 import guess.domain.source.cms.jrgcms.talk.JrgTalkPresentation;
 import guess.domain.source.cms.jrgcms.talk.JrgTalkPresentationFile;
-import guess.domain.source.cms.jrgcms.talk.schedule.JrgCmsDay;
-import guess.domain.source.cms.jrgcms.talk.schedule.JrgCmsSchedule;
-import guess.domain.source.cms.jrgcms.talk.schedule.JrgCmsScheduleResponse;
+import guess.domain.source.cms.jrgcms.talk.schedule.*;
 import guess.domain.source.image.UrlDates;
 import guess.util.FileUtils;
 import guess.util.LocalizationUtils;
@@ -36,6 +35,7 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.net.URI;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.*;
@@ -64,7 +64,7 @@ class JrgCmsDataLoaderTest {
 
     @Test
     void getRestTemplate() {
-        assertNotNull(JrgCmsDataLoader.getRestTemplate());
+        assertDoesNotThrow(JrgCmsDataLoader::getRestTemplate);
     }
 
     @Test
@@ -816,6 +816,111 @@ class JrgCmsDataLoaderTest {
         Mockito.verify(jrgCmsDataLoader, VerificationModeFactory.times(1)).getEventDatesList(EVENT_ID);
         Mockito.verify(jrgCmsDataLoader, VerificationModeFactory.times(1)).getScheduleInfo(EVENT_ID);
         Mockito.verifyNoMoreInteractions(jrgCmsDataLoader);
+    }
+
+    @Test
+    void getDayTrackTimeMap() {
+        try (MockedStatic<CmsDataLoader> cmsDataLoaderMockedStatic = Mockito.mockStatic(CmsDataLoader.class)) {
+            final String ACTIVITY_ID1 = "1";
+            final String ACTIVITY_ID2 = "2";
+            final String ACTIVITY_ID3 = "3";
+            final String ACTIVITY_ID4 = "4";
+
+            // Activities
+            JrgCmsActivity jrgCmsActivity1 = new JrgCmsActivity();
+            jrgCmsActivity1.setId(ACTIVITY_ID1);
+
+            JrgCmsActivity jrgCmsActivity2 = new JrgCmsActivity();
+            jrgCmsActivity2.setId(ACTIVITY_ID2);
+
+            JrgCmsActivity jrgCmsActivity3 = new JrgCmsActivity();
+            jrgCmsActivity3.setId(ACTIVITY_ID3);
+
+            JrgCmsActivity jrgCmsActivity4 = new JrgCmsActivity();
+            jrgCmsActivity4.setId(ACTIVITY_ID4);
+
+            // Slots
+            JrgCmsSlot jrgCmsSlot0 = new JrgCmsSlot();
+
+            JrgCmsSlot jrgCmsSlot1 = new JrgCmsSlot();
+            jrgCmsSlot1.setSlotStartTime("2022-05-14T08:45:00Z");
+            jrgCmsSlot1.setActivity(jrgCmsActivity1);
+
+            JrgCmsSlot jrgCmsSlot2 = new JrgCmsSlot();
+            jrgCmsSlot2.setSlotStartTime("2022-05-14T09:45:00Z");
+            jrgCmsSlot2.setActivity(jrgCmsActivity2);
+
+            JrgCmsSlot jrgCmsSlot3 = new JrgCmsSlot();
+            jrgCmsSlot3.setSlotStartTime("2022-05-14T11:15:00Z");
+            jrgCmsSlot3.setActivity(jrgCmsActivity3);
+
+            JrgCmsSlot jrgCmsSlot4 = new JrgCmsSlot();
+            jrgCmsSlot4.setSlotStartTime("2022-05-14T13:00:00Z");
+            jrgCmsSlot4.setActivity(jrgCmsActivity4);
+
+            // Tracks
+            JrgCmsTrack jrgCmsTrack0 = new JrgCmsTrack();
+            jrgCmsTrack0.setTrackNumber(1L);
+            jrgCmsTrack0.setSlots(List.of(jrgCmsSlot0));
+
+            JrgCmsTrack jrgCmsTrack1 = new JrgCmsTrack();
+            jrgCmsTrack1.setTrackNumber(2L);
+            jrgCmsTrack1.setSlots(List.of(jrgCmsSlot1));
+
+            JrgCmsTrack jrgCmsTrack2 = new JrgCmsTrack();
+            jrgCmsTrack2.setTrackNumber(3L);
+            jrgCmsTrack2.setSlots(List.of(jrgCmsSlot2));
+
+            JrgCmsTrack jrgCmsTrack3 = new JrgCmsTrack();
+            jrgCmsTrack3.setTrackNumber(4L);
+            jrgCmsTrack3.setSlots(List.of(jrgCmsSlot3));
+
+            JrgCmsTrack jrgCmsTrack4 = new JrgCmsTrack();
+            jrgCmsTrack4.setTrackNumber(5L);
+            jrgCmsTrack4.setSlots(List.of(jrgCmsSlot4));
+
+            // Days
+            JrgCmsDay jrgCmsDay0 = new JrgCmsDay();
+            jrgCmsDay0.setDayNumber(1L);
+            jrgCmsDay0.setTracks(List.of(jrgCmsTrack0, jrgCmsTrack1));
+
+            JrgCmsDay jrgCmsDay1 = new JrgCmsDay();
+            jrgCmsDay1.setDayNumber(2L);
+            jrgCmsDay1.setTracks(List.of(jrgCmsTrack2, jrgCmsTrack3));
+
+            JrgCmsDay jrgCmsDay2 = new JrgCmsDay();
+            jrgCmsDay2.setDayNumber(3L);
+            jrgCmsDay2.setTracks(List.of(jrgCmsTrack4));
+
+            // Mock methods
+            JrgCmsDataLoader jrgCmsDataLoader = Mockito.mock(JrgCmsDataLoader.class);
+            Mockito.when(jrgCmsDataLoader.getDayTrackTimeMap(Mockito.anyLong()))
+                    .thenCallRealMethod();
+            Mockito.when(jrgCmsDataLoader.getScheduleInfo(Mockito.anyLong()))
+                    .thenReturn(new JrgCmsDataLoader.ScheduleInfo(List.of(jrgCmsDay0, jrgCmsDay1, jrgCmsDay2), Collections.emptyList()));
+
+            cmsDataLoaderMockedStatic.when(() -> CmsDataLoader.createEventLocalTime(Mockito.anyString()))
+                    .thenAnswer(
+                            (Answer<LocalTime>) invocation -> {
+                                Object[] args = invocation.getArguments();
+                                String zonedDateTimeString = (String) args[0];
+
+                                return ZonedDateTime.ofInstant(
+                                                ZonedDateTime.parse(zonedDateTimeString).toInstant(),
+                                                ZoneId.of("UTC"))
+                                        .toLocalTime();
+                            }
+                    );
+
+            // Expected result
+            Map<String, DayTrackTime> expected = new HashMap<>();
+            expected.put(ACTIVITY_ID1, new DayTrackTime(1L, 2L, LocalTime.of(8, 45)));
+            expected.put(ACTIVITY_ID2, new DayTrackTime(2L, 3L, LocalTime.of(9, 45)));
+            expected.put(ACTIVITY_ID3, new DayTrackTime(2L, 4L, LocalTime.of(11, 15)));
+            expected.put(ACTIVITY_ID4, new DayTrackTime(3L, 5L, LocalTime.of(13, 0)));
+
+            assertEquals(expected, jrgCmsDataLoader.getDayTrackTimeMap(42));
+        }
     }
 
     @Test
