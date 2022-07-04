@@ -152,7 +152,7 @@
 
     <profiles>
         <profile>
-            <id>conference-information-loading</id>
+            <id>conference-data-loading</id>
             <dependencies>
                 <dependency>
                     <groupId>com.twelvemonkeys.imageio</groupId>
