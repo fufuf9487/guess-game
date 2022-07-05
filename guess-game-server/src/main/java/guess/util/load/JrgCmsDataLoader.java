@@ -662,13 +662,14 @@ public class JrgCmsDataLoader extends CmsDataLoader {
      * @return speaker
      */
     static Speaker createSpeaker(JrgCmsSpeaker jrgCmsSpeaker, AtomicLong speakerId, AtomicLong companyId, boolean checkEnTextExistence) {
+        Map<String, String> company = (jrgCmsSpeaker.getCompany() != null) ? jrgCmsSpeaker.getCompany() : Collections.emptyMap();
         var urlDates = extractPhoto(jrgCmsSpeaker);
         List<LocaleItem> lastName = extractLocaleItems(jrgCmsSpeaker.getLastName());
         List<LocaleItem> firstName = extractLocaleItems(jrgCmsSpeaker.getFirstName());
         String enSpeakerName = getSpeakerName(lastName, firstName, Language.ENGLISH);
         String ruSpeakerName = getSpeakerFixedName(getSpeakerName(lastName, firstName, Language.RUSSIAN));
 
-        List<LocaleItem> name = extractLocaleItems(jrgCmsSpeaker.getCompany());
+        List<LocaleItem> name = extractLocaleItems(company);
         String enName = LocalizationUtils.getString(name, Language.ENGLISH);
         String ruName = LocalizationUtils.getString(name, Language.RUSSIAN);
 

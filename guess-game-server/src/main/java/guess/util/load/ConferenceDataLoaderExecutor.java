@@ -2252,7 +2252,10 @@ public class ConferenceDataLoaderExecutor {
 //                                "Parallel Asynchronous Replication between YDB Database Instances",
 //                                "What about Binary Search Trees?", "Thread pools: variety of algorithms and features",
 //                                "Интервью с Андреем Фомичевым", "OK S3", "Круглый стол. Concurrency")));
-//        loadTalksSpeakersEvent(Conference.HOLY_JS, LocalDate.of(2022, 6, 8), "2022 Spring");
+//        loadTalksSpeakersEvent(Conference.HOLY_JS, LocalDate.of(2022, 6, 8), "2022 Spring",
+//                LoadSettings.eventTemplateAndInvalidTalksSet(
+//                        createEventTemplate("HolyJS 2022 Spring", null, List.of(24L, 4L)),
+//                        Set.of()));
 //        loadTalksSpeakersEvent(Conference.JPOINT, LocalDate.of(2022, 6, 13), "2022");
 //        loadTalksSpeakersEvent(Conference.DOT_NEXT, LocalDate.of(2022, 6, 16), "2022 Spring");
     }
