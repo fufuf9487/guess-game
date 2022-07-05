@@ -573,7 +573,7 @@ public class JrgCmsDataLoader extends CmsDataLoader {
         var talkId = new AtomicLong(-1);
         List<JrgCmsActivity> validJrgCmsActivities = Objects.requireNonNull(response)
                 .getData().stream()
-                .filter(a -> JrgCmsDataLoader.isValidTalk(a, ignoreDemoStage))
+                .filter(a -> isValidTalk(a, ignoreDemoStage))
                 .toList();
         Map<String, Speaker> speakerMap = getSpeakerMap(validJrgCmsActivities);
 
@@ -581,7 +581,7 @@ public class JrgCmsDataLoader extends CmsDataLoader {
 
         return validJrgCmsActivities.stream()
                 .filter(a -> dayTrackTimeMap.containsKey(a.getId()))
-                .map(a -> JrgCmsDataLoader.createTalk(a, speakerMap, talkId, dayTrackTimeMap))
+                .map(a -> createTalk(a, speakerMap, talkId, dayTrackTimeMap))
                 .sorted(Comparator.comparing(Talk::getTalkDay).thenComparing(Talk::getTrackTime).thenComparing(Talk::getTrack))
                 .toList();
     }

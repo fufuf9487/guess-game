@@ -14,6 +14,7 @@ import guess.domain.source.cms.jrgcms.event.JrgCmsEvent;
 import guess.domain.source.cms.jrgcms.speaker.JrgCmsSpeaker;
 import guess.domain.source.cms.jrgcms.speaker.JrgContact;
 import guess.domain.source.cms.jrgcms.talk.JrgCmsActivity;
+import guess.domain.source.cms.jrgcms.talk.JrgCmsActivityResponse;
 import guess.domain.source.cms.jrgcms.talk.JrgTalkPresentation;
 import guess.domain.source.cms.jrgcms.talk.JrgTalkPresentationFile;
 import guess.domain.source.cms.jrgcms.talk.schedule.*;
@@ -920,6 +921,74 @@ class JrgCmsDataLoaderTest {
             expected.put(ACTIVITY_ID4, new DayTrackTime(3L, 5L, LocalTime.of(13, 0)));
 
             assertEquals(expected, jrgCmsDataLoader.getDayTrackTimeMap(42));
+        }
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void getTalks() {
+        try (MockedStatic<JrgCmsDataLoader> mockedStatic = Mockito.mockStatic(JrgCmsDataLoader.class)) {
+            final String ID0 = "0";
+            final String ID1 = "1";
+            final String ID2 = "2";
+
+            // Activities
+            JrgCmsActivity jrgCmsActivity0 = new JrgCmsActivity();
+            jrgCmsActivity0.setId(ID0);
+
+            JrgCmsActivity jrgCmsActivity1 = new JrgCmsActivity();
+            jrgCmsActivity1.setId(ID1);
+
+            JrgCmsActivity jrgCmsActivity2 = new JrgCmsActivity();
+            jrgCmsActivity2.setId(ID2);
+
+            // Activity response
+            JrgCmsActivityResponse response = new JrgCmsActivityResponse();
+            response.setData(List.of(jrgCmsActivity0, jrgCmsActivity1, jrgCmsActivity2));
+
+            // Mock RestTemplate
+            RestTemplate restTemplateMock = Mockito.mock(RestTemplate.class);
+            Mockito.when(restTemplateMock.getForObject(Mockito.any(URI.class), Mockito.eq(JrgCmsActivityResponse.class)))
+                    .thenReturn(response);
+
+            // Mock methods
+            mockedStatic.when(JrgCmsDataLoader::getRestTemplate)
+                    .thenReturn(restTemplateMock);
+            mockedStatic.when(() -> JrgCmsDataLoader.isValidTalk(Mockito.any(JrgCmsActivity.class), Mockito.anyBoolean()))
+                    .thenReturn(true);
+            mockedStatic.when(() -> JrgCmsDataLoader.getSpeakerMap(Mockito.anyList()))
+                    .thenReturn(Collections.emptyMap());
+            mockedStatic.when(() -> JrgCmsDataLoader.createTalk(Mockito.any(JrgCmsActivity.class), Mockito.anyMap(), Mockito.any(AtomicLong.class), Mockito.anyMap()))
+                    .thenAnswer(
+                            (Answer<Talk>) invocation -> {
+                                Object[] args = invocation.getArguments();
+                                JrgCmsActivity jrgCmsActivity = (JrgCmsActivity) args[0];
+                                Map<String, DayTrackTime> dayTrackTimeMap = (Map<String, DayTrackTime>) args[3];
+                                DayTrackTime dayTrackTime = dayTrackTimeMap.get(jrgCmsActivity.getId());
+
+                                Talk talk = new Talk();
+                                talk.setTalkDay(dayTrackTime.dayNumber());
+                                talk.setTrackTime(dayTrackTime.startTime());
+                                talk.setTrack(dayTrackTime.trackNumber());
+
+                                return talk;
+                            }
+                    );
+
+            // Mock method under test
+            JrgCmsDataLoader jrgCmsDataLoader = Mockito.mock(JrgCmsDataLoader.class);
+            Mockito.when(jrgCmsDataLoader.getTalks(Mockito.anyLong(), Mockito.anyBoolean(), Mockito.anyMap()))
+                    .thenCallRealMethod();
+
+            Map<String, DayTrackTime> dayTrackTimeMap = new HashMap<>();
+            dayTrackTimeMap.put(ID0, new DayTrackTime(2L, 1L, LocalTime.of(10, 0)));
+            dayTrackTimeMap.put(ID1, new DayTrackTime(1L, 1L, LocalTime.of(10, 0)));
+
+            List<Talk> actual = jrgCmsDataLoader.getTalks(42, false, dayTrackTimeMap);
+
+            assertEquals(2, actual.size());
+            assertEquals(1, actual.get(0).getTalkDay());
+            assertEquals(2, actual.get(1).getTalkDay());
         }
     }
 
