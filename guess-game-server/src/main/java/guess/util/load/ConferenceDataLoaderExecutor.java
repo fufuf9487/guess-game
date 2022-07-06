@@ -886,7 +886,7 @@ public class ConferenceDataLoaderExecutor {
         talks.forEach(
                 t -> t.setSpeakerIds(t.getSpeakers().stream()
                         .map(Speaker::getId)
-                        .toList()
+                        .collect(Collectors.toCollection(ArrayList::new))
                 )
         );
     }
@@ -2255,7 +2255,15 @@ public class ConferenceDataLoaderExecutor {
 //        loadTalksSpeakersEvent(Conference.HOLY_JS, LocalDate.of(2022, 6, 8), "2022 Spring",
 //                LoadSettings.eventTemplateAndInvalidTalksSet(
 //                        createEventTemplate("HolyJS 2022 Spring", null, List.of(24L, 4L)),
-//                        Set.of()));
+//                        Set.of("Открытие конференции HolyJS 2022 Spring", "Тяжелое утро с HolyJS: релокация",
+//                                "Тяжелое утро с HolyJS: про собеседования с обеих сторон",
+//                                "Тяжелое утро с HolyJS. Когда определяешь, как человек проведет этот день: доступность для незрячих",
+//                                "Тяжелое утро с HolyJS: архитектура и архитекторы",
+//                                "Подведение итогов онлайн-части HolyJS 2022 Spring",
+//                                "Открытие офлайн-дня HolyJS 2022 Spring", "HolyJS: вспомнить всё (2016)",
+//                                "HolyJS: вспомнить всё (2017)", "HolyJS: вспомнить всё (2018)", "Lightning talks",
+//                                "HolyJS: Вспомнить всё (2019)", "HolyJS: вспомнить всё (2020–2021)",
+//                                "HolyJS 2022 Spring Closing")));
 //        loadTalksSpeakersEvent(Conference.JPOINT, LocalDate.of(2022, 6, 13), "2022");
 //        loadTalksSpeakersEvent(Conference.DOT_NEXT, LocalDate.of(2022, 6, 16), "2022 Spring");
     }

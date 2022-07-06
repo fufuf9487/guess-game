@@ -39,6 +39,13 @@ companySynonyms:
     synonyms: [
         AVAST
     ]
+  - name: "Ax-Team"
+    synonyms: [
+        AxTeam,
+        "Ax-Team (ex. Accenture)",
+        "АксТим (ex-Accenture)",
+        Accenture
+    ]
   - name: "Azul Systems"
     synonyms: [
         Azul
@@ -118,6 +125,10 @@ companySynonyms:
   - name: "DPI.Solutions"
     synonyms: [
         "DPI Solutions"
+    ]
+  - name: "Emma Technologies"
+    synonyms: [
+        Emma
     ]
   - name: "EPAM Systems"
     synonyms: [
@@ -485,6 +496,7 @@ companySynonyms:
         Yandex.Market,
         Яндекс.Маркет,
         Yandex.Cloud,
+        "Yandex Cloud",
         Яндекс.Облако,
         Yandex.Taxi,
         Яндекс.Такси,

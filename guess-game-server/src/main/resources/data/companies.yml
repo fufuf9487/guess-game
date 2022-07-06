@@ -2638,8 +2638,8 @@ companies:
     siteLink: https://ontarget-group.com
   - id: 728
     name:
-      - {language: en, text: Accenture}
-    siteLink: https://www.accenture.com
+      - {language: en, text: "Ax-Team"}
+      - {language: ru, text: АксТим}
   - id: 729
     name:
       - {language: en, text: Sportmaster}
@@ -3398,3 +3398,39 @@ companies:
     name:
       - {language: en, text: "Parity Technologies"}
     siteLink: https://www.parity.io
+  - id: 928
+    name:
+      - {language: en, text: Evrone}
+    siteLink: https://evrone.com
+  - id: 929
+    name:
+      - {language: en, text: MediaSoft}
+    siteLink: https://mediasoft.team
+  - id: 930
+    name:
+      - {language: en, text: "White Frame"}
+    siteLink: https://whiteframe.ru
+  - id: 931
+    name:
+      - {language: en, text: Invent.us}
+    siteLink: https://invent.us
+  - id: 932
+    name:
+      - {language: en, text: "Fusion Tech"}
+    siteLink: https://fusion-tech.pro
+  - id: 933
+    name:
+      - {language: en, text: "Kapital Bank"}
+    siteLink: https://www.kapitalbank.az
+  - id: 934
+    name:
+      - {language: en, text: slay_lines}
+    siteLink: https://slaylines.io
+  - id: 935
+    name:
+      - {language: en, text: Roketo}
+    siteLink: https://www.roke.to
+  - id: 937
+    name:
+      - {language: en, text: "Emma Technologies"}
+    siteLink: https://emma-app.com
