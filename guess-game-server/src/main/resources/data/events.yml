@@ -635,7 +635,10 @@ events:
     days:
       - {startDate: "2022-06-08", endDate: "2022-06-10", placeId: 24}
       - {startDate: "2022-06-23", endDate: "2022-06-23", placeId: 4}
-    siteLink: []
+    siteLink:
+      - {language: en, text: "https://2022spring.holyjs.ru/en"}
+      - {language: ru, text: "https://2022spring.holyjs.ru"}
+    youtubeLink: https://www.youtube.com/playlist?list=PL8sJahqnzh8K6ytqC6yjEFVaatyYT7zzR
     talkIds: [3840, 3841, 3842, 3843, 3844, 3845, 3846, 3847, 3848, 3849, 3850, 3851, 3852, 3853, 3854, 3855, 3856, 3857,
               3858, 3859, 3860, 3861, 3862, 3863, 3864, 3865, 3866, 3867, 3868, 3869, 3870, 3871, 3872, 3873, 3874, 3875, 3876,
               3877, 3878]
