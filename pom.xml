@@ -36,6 +36,7 @@
         <snakeyaml.version>1.30</snakeyaml.version>
         <imageio.version>3.8.2</imageio.version>
         <spring-boot.version>2.7.1</spring-boot.version>
+        <webp-imageio.version>0.1.6</webp-imageio.version>
 
         <ng.build.arguments>-- --configuration=production</ng.build.arguments>
 

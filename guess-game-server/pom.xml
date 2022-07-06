@@ -159,6 +159,11 @@
                     <artifactId>imageio-jpeg</artifactId>
                     <version>${imageio.version}</version>
                 </dependency>
+                <dependency>
+                    <groupId>org.sejda.imageio</groupId>
+                    <artifactId>webp-imageio</artifactId>
+                    <version>${webp-imageio.version}</version>
+                </dependency>
             </dependencies>
         </profile>
     </profiles>
