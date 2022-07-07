@@ -3421,3 +3421,28 @@ companies:
     name:
       - {language: en, text: "Emma Technologies"}
     siteLink: https://emma-app.com
+  - id: 938
+    name:
+      - {language: en, text: Machinet.net}
+    siteLink: https://machinet.net
+  - id: 939
+    name:
+      - {language: en, text: "Data Egret"}
+    siteLink: https://dataegret.ru
+  - id: 940
+    name:
+      - {language: en, text: Rosbank}
+      - {language: ru, text: Росбанк}
+    siteLink: https://www.rosbank.ru
+  - id: 941
+    name:
+      - {language: en, text: Natera}
+    siteLink: https://www.natera.com
+  - id: 942
+    name:
+      - {language: en, text: InfraTech}
+      - {language: ru, text: ИнфраТех}
+    siteLink: https://rosinfra.ru/infratech
+  - id: 943
+    name:
+      - {language: en, text: AproximaLabs}

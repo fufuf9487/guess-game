@@ -2264,7 +2264,11 @@ public class ConferenceDataLoaderExecutor {
 //                                "HolyJS: вспомнить всё (2017)", "HolyJS: вспомнить всё (2018)", "Lightning talks",
 //                                "HolyJS: Вспомнить всё (2019)", "HolyJS: вспомнить всё (2020–2021)",
 //                                "HolyJS 2022 Spring Closing")));
-//        loadTalksSpeakersEvent(Conference.JPOINT, LocalDate.of(2022, 6, 13), "2022");
+//        loadTalksSpeakersEvent(Conference.JPOINT, LocalDate.of(2022, 6, 13), "2022",
+//                LoadSettings.eventTemplateAndInvalidTalksSet(
+//                        createEventTemplate("JPoint 2022", null, List.of(24L, 4L)),
+//                        Set.of("Открытие конференции JPoint 2022", "Подведем итоги онлайн-части JPoint 2022",
+//                                "Открытие офлайн-части конференции JPoint 2022", "Закрытие конференции JPoint 2022")));
 //        loadTalksSpeakersEvent(Conference.DOT_NEXT, LocalDate.of(2022, 6, 16), "2022 Spring");
     }
 }
