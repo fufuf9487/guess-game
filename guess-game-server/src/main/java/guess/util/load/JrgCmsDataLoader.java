@@ -70,7 +70,7 @@ public class JrgCmsDataLoader extends CmsDataLoader {
     private static final String FILTER_PARAM_NAME = "$filter";
     private static final String ORDERBY_PARAM_NAME = "$orderby";
 
-    private static final String TALK_ACTIVITY_TYPE = "TALK";
+    static final String TALK_ACTIVITY_TYPE = "TALK";
     private static final String SPEAKER_ROLE = "SPEAKER";
     private static final String JAVA_CHAMPION_TITULUS = "Java Champion";
     private static final String TWITTER_CONTACT_TYPE = "twitter";
@@ -586,7 +586,7 @@ public class JrgCmsDataLoader extends CmsDataLoader {
                 .toList();
     }
 
-    void logNotTalkActivities(List<JrgCmsActivity> jrgCmsActivities) {
+    static void logNotTalkActivities(List<JrgCmsActivity> jrgCmsActivities) {
         jrgCmsActivities.stream()
                 .filter(a -> !TALK_ACTIVITY_TYPE.equals(a.getType()))
                 .sorted((a1, a2) -> {

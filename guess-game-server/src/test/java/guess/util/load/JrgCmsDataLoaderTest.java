@@ -13,10 +13,7 @@ import guess.domain.source.cms.jrgcms.event.JrgCmsConferenceSiteContentResponse;
 import guess.domain.source.cms.jrgcms.event.JrgCmsEvent;
 import guess.domain.source.cms.jrgcms.speaker.JrgCmsSpeaker;
 import guess.domain.source.cms.jrgcms.speaker.JrgContact;
-import guess.domain.source.cms.jrgcms.talk.JrgCmsActivity;
-import guess.domain.source.cms.jrgcms.talk.JrgCmsActivityResponse;
-import guess.domain.source.cms.jrgcms.talk.JrgTalkPresentation;
-import guess.domain.source.cms.jrgcms.talk.JrgTalkPresentationFile;
+import guess.domain.source.cms.jrgcms.talk.*;
 import guess.domain.source.cms.jrgcms.talk.schedule.*;
 import guess.domain.source.image.UrlDates;
 import guess.util.FileUtils;
@@ -990,6 +987,29 @@ class JrgCmsDataLoaderTest {
             assertEquals(1, actual.get(0).getTalkDay());
             assertEquals(2, actual.get(1).getTalkDay());
         }
+    }
+
+    @Test
+    void logNotTalkActivities() {
+        // Talks
+        JrgCmsTalk jrgCmsTalk1 = new JrgCmsTalk();
+        jrgCmsTalk1.setTitle(Map.of(JrgCmsDataLoader.RUSSIAN_TEXT_KEY, "Наименование1"));
+
+        JrgCmsTalk jrgCmsTalk2 = new JrgCmsTalk();
+        jrgCmsTalk2.setTitle(Map.of(JrgCmsDataLoader.RUSSIAN_TEXT_KEY, "Наименование2"));
+        
+        // Activities
+        JrgCmsActivity jrgCmsActivity0 = new JrgCmsActivity();
+        jrgCmsActivity0.setType(JrgCmsDataLoader.TALK_ACTIVITY_TYPE);
+
+        JrgCmsActivity jrgCmsActivity1 = new JrgCmsActivity();
+        jrgCmsActivity1.setType("BOF");
+        jrgCmsActivity1.setData(jrgCmsTalk1);
+
+        JrgCmsActivity jrgCmsActivity2 = new JrgCmsActivity();
+        jrgCmsActivity2.setData(jrgCmsTalk2);
+        
+        assertDoesNotThrow(() -> JrgCmsDataLoader.logNotTalkActivities(List.of(jrgCmsActivity0, jrgCmsActivity1, jrgCmsActivity2)));
     }
 
     @Test
