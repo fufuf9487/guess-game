@@ -29357,7 +29357,7 @@ speakers:
     name:
       - {language: en, text: "Evgenii Sukhanov"}
       - {language: ru, text: "Евгений Суханов"}
-    companyIds: [903]
+    companyIds: [76]
     bio:
       - {language: en, text: "<p>Ex-lead of the iOS team at Tutu. Most recently a senior developer at Bolt.</p>"}
       - {language: ru, text: "<p><span style=\"font-weight: 400;\">Экс-лид iOS-команды в Туту. С недавнего времени </span><span\
@@ -30926,24 +30926,6 @@ speakers:
       - language: ru
         text: "<p>Программист в &laquo;Судо&raquo;.</p>\n<p>Магистрант кафедры компьютерных технологий Университета ИТМО.\
             \ Область научных интересов: методы декомпиляции, статический анализ.</p>"
-  - id: 2162
-    photoFileName: 2162.jpg
-    photoUpdatedAt: 2022-03-31T19:05:44Z[UTC]
-    name:
-      - {language: en, text: "Arno Schödl"}
-    companyIds: [926]
-    bio:
-      - language: en
-        text: "<p>Arno is responsible for the design, architecture, and development of all think-cell Software products. He\
-            \ oversees think-cell's R&amp;D team, Quality Assurance, and Customer Care.</p>\n<p>Before founding think-cell,\
-            \ Arno worked at Microsoft Research and McKinsey. Arno studied computer science and management and holds a Ph.D.\
-            \ from the Georgia Institute of Technology with a specialization in computer graphics.</p>"
-      - language: ru
-        text: "Arno is responsible for the design, architecture, and development of all the think-cell's software products.\
-            \ He oversees think-cell's R&D team, Quality Assurance, and Customer Care. \n\nBefore founding think-cell, Arno\
-            \ worked at Microsoft Research and McKinsey. Arno studied computer science and management and holds a Ph.D. from\
-            \ the Georgia Institute of Technology with a specialization in Computer Graphics."
-    twitter: aschoedl
   - id: 2163
     photoFileName: 2163.jpg
     photoUpdatedAt: 2022-05-26T11:50:33Z[UTC]

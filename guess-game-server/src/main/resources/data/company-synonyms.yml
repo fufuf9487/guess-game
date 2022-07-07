@@ -429,6 +429,11 @@ companySynonyms:
     synonyms: [
         "Sportmaster Lab"
     ]
+  - name: Sudo
+    synonyms: [
+        "Sudo Ltd",
+        "ООО «Судо»"
+    ]
   - name: Tinkoff
     synonyms: [
         Tinkoff.ru,
@@ -446,6 +451,10 @@ companySynonyms:
   - name: "The Atlantic Systems Guild Inc."
     synonyms: [
         "The Atlantic Systems Guild Inc., co-author of the \"Peopleware: Productive Projects and Teams\""
+    ]
+  - name: think-cell
+    synonyms: [
+        "think-cell Software"
     ]
   - name: "Uber Technologies"
     synonyms: [

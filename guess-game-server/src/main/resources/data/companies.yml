@@ -2994,11 +2994,6 @@ companies:
     name:
       - {language: en, text: "Grafana Labs"}
     siteLink: https://grafana.com
-  - id: 825
-    name:
-      - {language: en, text: "Sudo Ltd"}
-      - {language: ru, text: "ООО «Судо»"}
-    siteLink: https://sudo.team
   - id: 826
     name:
       - {language: en, text: MIPT}
@@ -3293,10 +3288,6 @@ companies:
     name:
       - {language: en, text: YetiCrab}
     siteLink: https://yeticrab.org
-  - id: 903
-    name:
-      - {language: en, text: ex-Tutu.ru}
-      - {language: ru, text: ex-Туту.ру}
   - id: 904
     name:
       - {language: en, text: "Garage Eight"}
@@ -3390,10 +3381,6 @@ companies:
       - {language: en, text: Sudo}
       - {language: ru, text: Судо}
     siteLink: https://sudo.team
-  - id: 926
-    name:
-      - {language: en, text: "think-cell Software"}
-    siteLink: https://www.think-cell.com
   - id: 927
     name:
       - {language: en, text: "Parity Technologies"}
