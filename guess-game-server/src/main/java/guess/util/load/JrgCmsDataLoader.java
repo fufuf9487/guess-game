@@ -71,7 +71,7 @@ public class JrgCmsDataLoader extends CmsDataLoader {
     private static final String ORDERBY_PARAM_NAME = "$orderby";
 
     static final String TALK_ACTIVITY_TYPE = "TALK";
-    private static final String SPEAKER_ROLE = "SPEAKER";
+    static final String SPEAKER_ROLE = "SPEAKER";
     private static final String JAVA_CHAMPION_TITULUS = "Java Champion";
     private static final String TWITTER_CONTACT_TYPE = "twitter";
     private static final String GITHUB_CONTACT_TYPE = "github";
@@ -618,7 +618,8 @@ public class JrgCmsDataLoader extends CmsDataLoader {
      */
     static boolean isValidTalk(JrgCmsActivity activity, boolean ignoreDemoStage) {
         return !ignoreDemoStage ||
-                ((activity.getData().getOptions() == null) || (activity.getData().getOptions().getDemoStage() == null) || !activity.getData().getOptions().getDemoStage());
+                ((activity.getData().getOptions() == null) ||
+                        (activity.getData().getOptions().getDemoStage() == null) || !activity.getData().getOptions().getDemoStage());
     }
 
     /**

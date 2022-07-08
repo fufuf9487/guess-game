@@ -11,6 +11,8 @@ import guess.domain.source.cms.jrgcms.event.JrgCmsAboutPage;
 import guess.domain.source.cms.jrgcms.event.JrgCmsConferenceSiteContent;
 import guess.domain.source.cms.jrgcms.event.JrgCmsConferenceSiteContentResponse;
 import guess.domain.source.cms.jrgcms.event.JrgCmsEvent;
+import guess.domain.source.cms.jrgcms.speaker.JrgCmsParticipant;
+import guess.domain.source.cms.jrgcms.speaker.JrgCmsParticipation;
 import guess.domain.source.cms.jrgcms.speaker.JrgCmsSpeaker;
 import guess.domain.source.cms.jrgcms.speaker.JrgContact;
 import guess.domain.source.cms.jrgcms.talk.*;
@@ -997,7 +999,7 @@ class JrgCmsDataLoaderTest {
 
         JrgCmsTalk jrgCmsTalk2 = new JrgCmsTalk();
         jrgCmsTalk2.setTitle(Map.of(JrgCmsDataLoader.RUSSIAN_TEXT_KEY, "Наименование2"));
-        
+
         // Activities
         JrgCmsActivity jrgCmsActivity0 = new JrgCmsActivity();
         jrgCmsActivity0.setType(JrgCmsDataLoader.TALK_ACTIVITY_TYPE);
@@ -1008,13 +1010,165 @@ class JrgCmsDataLoaderTest {
 
         JrgCmsActivity jrgCmsActivity2 = new JrgCmsActivity();
         jrgCmsActivity2.setData(jrgCmsTalk2);
-        
+
         assertDoesNotThrow(() -> JrgCmsDataLoader.logNotTalkActivities(List.of(jrgCmsActivity0, jrgCmsActivity1, jrgCmsActivity2)));
     }
 
     @Test
     void getImageWidthParameterName() {
         assertEquals("width", new JrgCmsDataLoader().getImageWidthParameterName());
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DisplayName("isValidTalk method tests")
+    class IsValidTalkTest {
+        private Stream<Arguments> data() {
+            // Options
+            JrgTalkOptions jrgTalkOptions1 = new JrgTalkOptions();
+
+            JrgTalkOptions jrgTalkOptions2 = new JrgTalkOptions();
+            jrgTalkOptions2.setDemoStage(true);
+
+            JrgTalkOptions jrgTalkOptions3 = new JrgTalkOptions();
+            jrgTalkOptions3.setDemoStage(false);
+
+            // Talks
+            JrgCmsTalk jrgCmsTalk0 = new JrgCmsTalk();
+
+            JrgCmsTalk jrgCmsTalk1 = new JrgCmsTalk();
+            jrgCmsTalk1.setOptions(jrgTalkOptions1);
+
+            JrgCmsTalk jrgCmsTalk2 = new JrgCmsTalk();
+            jrgCmsTalk2.setOptions(jrgTalkOptions2);
+
+            JrgCmsTalk jrgCmsTalk3 = new JrgCmsTalk();
+            jrgCmsTalk3.setOptions(jrgTalkOptions3);
+
+            // Activities
+            JrgCmsActivity jrgCmsActivity0 = new JrgCmsActivity();
+            jrgCmsActivity0.setData(jrgCmsTalk0);
+
+            JrgCmsActivity jrgCmsActivity1 = new JrgCmsActivity();
+            jrgCmsActivity1.setData(jrgCmsTalk1);
+
+            JrgCmsActivity jrgCmsActivity2 = new JrgCmsActivity();
+            jrgCmsActivity2.setData(jrgCmsTalk2);
+
+            JrgCmsActivity jrgCmsActivity3 = new JrgCmsActivity();
+            jrgCmsActivity3.setData(jrgCmsTalk3);
+
+            return Stream.of(
+                    arguments(null, false, true),
+                    arguments(jrgCmsActivity0, true, true),
+                    arguments(jrgCmsActivity1, true, true),
+                    arguments(jrgCmsActivity2, true, false),
+                    arguments(jrgCmsActivity3, true, true)
+            );
+        }
+
+        @ParameterizedTest
+        @MethodSource("data")
+        void isValidTalk(JrgCmsActivity activity, boolean ignoreDemoStage, boolean expected) {
+            assertEquals(expected, JrgCmsDataLoader.isValidTalk(activity, ignoreDemoStage));
+        }
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DisplayName("isValidSpeaker method tests")
+    class IsValidSpeakerTest {
+        private Stream<Arguments> data() {
+            // Participations
+            JrgCmsParticipation jrgCmsParticipation0 = new JrgCmsParticipation();
+
+            JrgCmsParticipation jrgCmsParticipation1 = new JrgCmsParticipation();
+            jrgCmsParticipation1.setRole("");
+
+            JrgCmsParticipation jrgCmsParticipation2 = new JrgCmsParticipation();
+            jrgCmsParticipation2.setRole("HOST");
+
+            JrgCmsParticipation jrgCmsParticipation3 = new JrgCmsParticipation();
+            jrgCmsParticipation3.setRole(JrgCmsDataLoader.SPEAKER_ROLE);
+
+            // Participants
+            JrgCmsParticipant jrgCmsParticipant0 = new JrgCmsParticipant();
+            jrgCmsParticipant0.setParticipation(jrgCmsParticipation0);
+
+            JrgCmsParticipant jrgCmsParticipant1 = new JrgCmsParticipant();
+            jrgCmsParticipant1.setParticipation(jrgCmsParticipation1);
+
+            JrgCmsParticipant jrgCmsParticipant2 = new JrgCmsParticipant();
+            jrgCmsParticipant2.setParticipation(jrgCmsParticipation2);
+
+            JrgCmsParticipant jrgCmsParticipant3 = new JrgCmsParticipant();
+            jrgCmsParticipant3.setParticipation(jrgCmsParticipation3);
+
+            return Stream.of(
+                    arguments(jrgCmsParticipant0, false),
+                    arguments(jrgCmsParticipant1, false),
+                    arguments(jrgCmsParticipant2, false),
+                    arguments(jrgCmsParticipant3, true)
+            );
+        }
+
+        @ParameterizedTest
+        @MethodSource("data")
+        void isValidSpeaker(JrgCmsParticipant jrgCmsParticipant, boolean expected) {
+            assertEquals(expected, JrgCmsDataLoader.isValidSpeaker(jrgCmsParticipant));
+        }
+    }
+
+    @Test
+    void getSpeakerMap() {
+        final String ID0 = "0";
+        final String ID1 = "1";
+        final String ID2 = "2";
+
+        try (MockedStatic<JrgCmsDataLoader> mockedStatic = Mockito.mockStatic(JrgCmsDataLoader.class)) {
+            // Mock methods
+            mockedStatic.when(() -> JrgCmsDataLoader.getSpeakerMap(Mockito.anyList()))
+                    .thenCallRealMethod();
+            mockedStatic.when(() -> JrgCmsDataLoader.isValidSpeaker(Mockito.any(JrgCmsParticipant.class)))
+                    .thenReturn(true);
+            mockedStatic.when(() -> JrgCmsDataLoader.createSpeaker(Mockito.any(JrgCmsSpeaker.class), Mockito.any(AtomicLong.class),
+                            Mockito.any(AtomicLong.class), Mockito.anyBoolean()))
+                    .thenReturn(new Speaker());
+
+            // Speakers
+            JrgCmsSpeaker jrgCmsSpeaker0 = new JrgCmsSpeaker();
+            jrgCmsSpeaker0.setId(ID0);
+
+            JrgCmsSpeaker jrgCmsSpeaker1 = new JrgCmsSpeaker();
+            jrgCmsSpeaker1.setId(ID1);
+
+            JrgCmsSpeaker jrgCmsSpeaker2 = new JrgCmsSpeaker();
+            jrgCmsSpeaker2.setId(ID2);
+
+            // Participants
+            JrgCmsParticipant jrgCmsParticipant0 = new JrgCmsParticipant();
+            jrgCmsParticipant0.setData(jrgCmsSpeaker0);
+
+            JrgCmsParticipant jrgCmsParticipant1 = new JrgCmsParticipant();
+            jrgCmsParticipant1.setData(jrgCmsSpeaker1);
+
+            JrgCmsParticipant jrgCmsParticipant2 = new JrgCmsParticipant();
+            jrgCmsParticipant2.setData(jrgCmsSpeaker2);
+
+            // Activities
+            JrgCmsActivity jrgCmsActivity0 = new JrgCmsActivity();
+            jrgCmsActivity0.setParticipants(List.of(jrgCmsParticipant0, jrgCmsParticipant1));
+
+            JrgCmsActivity jrgCmsActivity1 = new JrgCmsActivity();
+            jrgCmsActivity1.setParticipants(List.of(jrgCmsParticipant2));
+
+            Map<String, Speaker> actual = JrgCmsDataLoader.getSpeakerMap(List.of(jrgCmsActivity0, jrgCmsActivity1));
+
+            assertEquals(3, actual.size());
+            assertTrue(actual.containsKey(ID0));
+            assertTrue(actual.containsKey(ID1));
+            assertTrue(actual.containsKey(ID2));
+        }
     }
 
     @Test
