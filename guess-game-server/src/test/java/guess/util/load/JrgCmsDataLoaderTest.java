@@ -1179,9 +1179,15 @@ class JrgCmsDataLoaderTest {
             // Contacts
             JrgContact jrgContact0 = new JrgContact();
             jrgContact0.setType(JrgCmsDataLoader.TWITTER_CONTACT_TYPE);
+            jrgContact0.setValue("twitter0");
 
             JrgContact jrgContact1 = new JrgContact();
             jrgContact1.setType(JrgCmsDataLoader.GITHUB_CONTACT_TYPE);
+            jrgContact1.setValue("gitHub1");
+
+            JrgContact jrgContact2 = new JrgContact();
+            jrgContact2.setType(JrgCmsDataLoader.GITHUB_CONTACT_TYPE);
+            jrgContact2.setValue("gitHub2");
 
             // Speakers
             JrgCmsSpeaker jrgCmsSpeaker0 = new JrgCmsSpeaker();
@@ -1189,7 +1195,7 @@ class JrgCmsDataLoaderTest {
 
             JrgCmsSpeaker jrgCmsSpeaker1 = new JrgCmsSpeaker();
             jrgCmsSpeaker1.setCompany(Collections.emptyMap());
-            jrgCmsSpeaker1.setContacts(List.of(jrgContact1));
+            jrgCmsSpeaker1.setContacts(List.of(jrgContact1, jrgContact2));
 
             return Stream.of(
                     arguments(jrgCmsSpeaker0, new AtomicLong(-1), new AtomicLong(-1), false),
