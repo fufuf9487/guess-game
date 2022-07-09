@@ -1171,6 +1171,71 @@ class JrgCmsDataLoaderTest {
         }
     }
 
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DisplayName("createSpeaker method tests")
+    class CreateSpeakerTest {
+        private Stream<Arguments> data() {
+            // Contacts
+            JrgContact jrgContact0 = new JrgContact();
+            jrgContact0.setType(JrgCmsDataLoader.TWITTER_CONTACT_TYPE);
+
+            JrgContact jrgContact1 = new JrgContact();
+            jrgContact1.setType(JrgCmsDataLoader.GITHUB_CONTACT_TYPE);
+
+            // Speakers
+            JrgCmsSpeaker jrgCmsSpeaker0 = new JrgCmsSpeaker();
+            jrgCmsSpeaker0.setContacts(List.of(jrgContact0));
+
+            JrgCmsSpeaker jrgCmsSpeaker1 = new JrgCmsSpeaker();
+            jrgCmsSpeaker1.setCompany(Collections.emptyMap());
+            jrgCmsSpeaker1.setContacts(List.of(jrgContact1));
+
+            return Stream.of(
+                    arguments(jrgCmsSpeaker0, new AtomicLong(-1), new AtomicLong(-1), false),
+                    arguments(jrgCmsSpeaker1, new AtomicLong(-1), new AtomicLong(-1), true)
+            );
+        }
+
+        @ParameterizedTest
+        @MethodSource("data")
+        @SuppressWarnings("unchecked")
+        void createSpeaker(JrgCmsSpeaker jrgCmsSpeaker, AtomicLong speakerId, AtomicLong companyId, boolean checkEnTextExistence) {
+            try (MockedStatic<JrgCmsDataLoader> jrgCmsDataLoaderMockedStatic = Mockito.mockStatic(JrgCmsDataLoader.class);
+                 MockedStatic<LocalizationUtils> localizationUtilsMockedStatic = Mockito.mockStatic(LocalizationUtils.class);
+                 MockedStatic<CmsDataLoader> cmsDataLoaderMockedStatic = Mockito.mockStatic(CmsDataLoader.class)) {
+
+                // Mock methods
+                jrgCmsDataLoaderMockedStatic.when(() -> JrgCmsDataLoader.createSpeaker(Mockito.any(JrgCmsSpeaker.class),
+                                Mockito.any(AtomicLong.class), Mockito.any(AtomicLong.class), Mockito.anyBoolean()))
+                        .thenCallRealMethod();
+                jrgCmsDataLoaderMockedStatic.when(() -> JrgCmsDataLoader.extractPhoto(Mockito.any(JrgCmsSpeaker.class)))
+                        .thenReturn(new UrlDates(null, null, null));
+                jrgCmsDataLoaderMockedStatic.when(() -> JrgCmsDataLoader.extractLocaleItems(Mockito.nullable(Map.class)))
+                        .thenReturn(Collections.emptyList());
+                jrgCmsDataLoaderMockedStatic.when(() -> JrgCmsDataLoader.extractLocaleItems(Mockito.nullable(Map.class), Mockito.anyBoolean()))
+                        .thenReturn(Collections.emptyList());
+                jrgCmsDataLoaderMockedStatic.when(() -> JrgCmsDataLoader.getSpeakerName(Mockito.anyList(), Mockito.anyList(), Mockito.any(Language.class)))
+                        .thenReturn("");
+                jrgCmsDataLoaderMockedStatic.when(() -> JrgCmsDataLoader.getSpeakerFixedName(Mockito.nullable(String.class)))
+                        .thenReturn("");
+                jrgCmsDataLoaderMockedStatic.when(() -> JrgCmsDataLoader.extractContactValue(Mockito.anyMap(), Mockito.nullable(String.class),
+                                Mockito.any(UnaryOperator.class)))
+                        .thenReturn("");
+                localizationUtilsMockedStatic.when(() -> LocalizationUtils.getString(Mockito.anyList(), Mockito.any(Language.class)))
+                        .thenReturn("");
+                cmsDataLoaderMockedStatic.when(() -> CmsDataLoader.extractLocaleItems(Mockito.nullable(String.class), Mockito.nullable(String.class),
+                                Mockito.anyBoolean(), Mockito.anyBoolean()))
+                        .thenReturn(Collections.emptyList());
+                cmsDataLoaderMockedStatic.when(() -> CmsDataLoader.createCompanies(Mockito.nullable(String.class), Mockito.nullable(String.class),
+                                Mockito.any(AtomicLong.class), Mockito.anyBoolean()))
+                        .thenReturn(Collections.emptyList());
+
+                assertNotNull(JrgCmsDataLoader.createSpeaker(jrgCmsSpeaker, speakerId, companyId, checkEnTextExistence));
+            }
+        }
+    }
+
     @Test
     void extractLocaleItems() {
         try (MockedStatic<JrgCmsDataLoader> jrgCmsDataLoaderMockedStatic = Mockito.mockStatic(JrgCmsDataLoader.class);

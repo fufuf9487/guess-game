@@ -73,8 +73,8 @@ public class JrgCmsDataLoader extends CmsDataLoader {
     static final String TALK_ACTIVITY_TYPE = "TALK";
     static final String SPEAKER_ROLE = "SPEAKER";
     private static final String JAVA_CHAMPION_TITULUS = "Java Champion";
-    private static final String TWITTER_CONTACT_TYPE = "twitter";
-    private static final String GITHUB_CONTACT_TYPE = "github";
+    static final String TWITTER_CONTACT_TYPE = "twitter";
+    static final String GITHUB_CONTACT_TYPE = "github";
 
     static final String ENGLISH_TEXT_KEY = "en";
     static final String RUSSIAN_TEXT_KEY = "ru";
