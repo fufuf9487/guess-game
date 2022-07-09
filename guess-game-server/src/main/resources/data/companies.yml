@@ -110,10 +110,6 @@ companies:
     name:
       - {language: en, text: Allegro}
     siteLink: https://allegro.pl
-  - id: 30
-    name:
-      - {language: en, text: "ALM Works"}
-    siteLink: https://almworks.com
   - id: 31
     name:
       - {language: en, text: alwaysdata}
@@ -190,9 +186,6 @@ companies:
     name:
       - {language: en, text: Artsy}
     siteLink: https://www.artsy.net
-  - id: 53
-    name:
-      - {language: en, text: audio++}
   - id: 54
     name:
       - {language: en, text: "Australia Post"}
@@ -419,10 +412,6 @@ companies:
     name:
       - {language: en, text: CRATUS}
     siteLink: https://www.cratustech.com
-  - id: 119
-    name:
-      - {language: en, text: "Crazy Panda"}
-    siteLink: https://crazypanda.ru
   - id: 120
     name:
       - {language: en, text: "Creative Assembly"}
@@ -1516,10 +1505,6 @@ companies:
     name:
       - {language: en, text: "Progress Software"}
     siteLink: https://www.progress.com
-  - id: 420
-    name:
-      - {language: en, text: PropellerAds}
-    siteLink: https://propellerads.com
   - id: 421
     name:
       - {language: en, text: PS.kz}
@@ -1748,10 +1733,6 @@ companies:
     name:
       - {language: en, text: Solanteq}
     siteLink: https://solanteq.com
-  - id: 488
-    name:
-      - {language: en, text: "SolarWinds MSP"}
-    siteLink: https://www.solarwindsmsp.com
   - id: 489
     name:
       - {language: en, text: SonarSource}
@@ -2277,11 +2258,6 @@ companies:
       - {language: en, text: "ISP RAS"}
       - {language: ru, text: "ИСП РАН"}
     siteLink: https://www.ispras.ru
-  - id: 629
-    name:
-      - {language: en, text: "Kaluga Astral"}
-      - {language: ru, text: "Калуга Астрал"}
-    siteLink: https://astral.ru
   - id: 630
     name:
       - {language: en, text: Kontur}
@@ -2492,11 +2468,6 @@ companies:
       - {language: en, text: RTSoft}
       - {language: ru, text: РТСофт}
     siteLink: https://www.rtsoft.ru
-  - id: 685
-    name:
-      - {language: en, text: STC}
-      - {language: ru, text: ЦРТ}
-    siteLink: https://www.speechpro.ru
   - id: 686
     name:
       - {language: en, text: CFT}
@@ -2566,10 +2537,6 @@ companies:
     name:
       - {language: en, text: TestinGil}
     siteLink: http://www.testingil.com
-  - id: 710
-    name:
-      - {language: en, text: Fleetcor}
-    siteLink: https://www.fleetcor.com
   - id: 711
     name:
       - {language: en, text: "Zyfra Group"}
@@ -3057,10 +3024,6 @@ companies:
       - {language: en, text: Sovcombank}
       - {language: ru, text: Совкомбанк}
     siteLink: https://sovcombank.ru
-  - id: 842
-    name:
-      - {language: en, text: luna}
-    siteLink: https://www.missionluna.ru
   - id: 844
     name:
       - {language: en, text: Gazprombank}
