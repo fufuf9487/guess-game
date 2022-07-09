@@ -149,4 +149,22 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>conference-data-loading</id>
+            <dependencies>
+                <dependency>
+                    <groupId>com.twelvemonkeys.imageio</groupId>
+                    <artifactId>imageio-jpeg</artifactId>
+                    <version>${imageio.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.sejda.imageio</groupId>
+                    <artifactId>webp-imageio</artifactId>
+                    <version>${webp-imageio.version}</version>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 </project>

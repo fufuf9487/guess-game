@@ -1,7 +1,7 @@
 # Conference data loading
 
 <table>
-    <caption>Conferences, meetups and their tags in <i>Contentful</i> spaces</caption>
+    <caption>Conferences, meetups and their tags in <i>Contentful</i> spaces (2016-2021) and <i>Squidex</i> event version (2022)</caption>
     <tr>
         <th rowspan="2"></th>
         <th colspan="15">Conferences</th>
@@ -287,19 +287,19 @@
     </tr>
     <tr>
         <th rowspan="2">2022</th>
-        <td rowspan="2">2022<br>(2022springcpp)</td>
+        <td rowspan="2">2022<br>(2022)</td>
         <td rowspan="2">2022</td>
-        <td>2022 Spring<br>(2022spring)</td>
-        <td>2022 Spring<br>(2022spring)</td>
-        <td>2022 Spring<br>(2022spring)</td>
-        <td rowspan="2">2022<br>(2022hydra)</td>
+        <td>2022 Spring<br>(2022 Spring)</td>
+        <td>2022 Spring<br>(2022 Spring)</td>
+        <td>2022 Spring<br>(2022 Spring)</td>
+        <td rowspan="2">2022<br>(2022)</td>
         <td rowspan="2"></td>
-        <td rowspan="2">2022<br>(2022jpoint)</td>
+        <td rowspan="2">2022<br>(2022)</td>
         <td rowspan="2">2022</td>
-        <td>2022 Spring</td>
+        <td>2022 Spring<br>(2022 Spring)</td>
         <td rowspan="2"></td>
         <td rowspan="2">2022</td>
-        <td>2022 Spring</td>
+        <td>2022 Spring<br>(2022 Spring)</td>
         <td rowspan="2">2022</td>
         <td rowspan="2">2022</td>
         <td rowspan="2">2022</td>

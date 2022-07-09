@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Map;
 
 /**
  * Image utility methods.
@@ -42,12 +43,13 @@ public class ImageUtils {
     /**
      * Gets image by URL string.
      *
-     * @param urlString source URL string
+     * @param urlString               source URL string
+     * @param imageWidthParameterName name of image width parameter
      * @return image
      * @throws IOException if read error occurs
      */
-    static BufferedImage getImageByUrlString(String urlString) throws IOException {
-        var urlSpec = String.format("%s?w=%d", urlString, IMAGE_WIDTH);
+    static BufferedImage getImageByUrlString(String urlString, String imageWidthParameterName) throws IOException {
+        var urlSpec = String.format("%s?%s=%d", urlString, imageWidthParameterName, IMAGE_WIDTH);
         var url = new URL(urlSpec);
 
         return getImageByUrl(url);
@@ -56,16 +58,17 @@ public class ImageUtils {
     /**
      * Checks for need to update file.
      *
-     * @param targetPhotoUrl   source URL
-     * @param resourceFileName resource file name
+     * @param targetPhotoUrl          source URL
+     * @param resourceFileName        resource file name
+     * @param imageWidthParameterName name of image width parameter
      * @return {@code true} if need to update, {@code false} otherwise
      * @throws IOException if read error occurs
      */
-    public static boolean needUpdate(String targetPhotoUrl, String resourceFileName) throws IOException {
+    public static boolean needUpdate(String targetPhotoUrl, String resourceFileName, String imageWidthParameterName) throws IOException {
         BufferedImage fileImage = getImageByUrl(new File(resourceFileName).toURI().toURL());
 
         if (fileImage.getWidth() < IMAGE_WIDTH) {
-            BufferedImage urlImage = getImageByUrlString(targetPhotoUrl);
+            BufferedImage urlImage = getImageByUrlString(targetPhotoUrl, imageWidthParameterName);
 
             return (fileImage.getWidth() < urlImage.getWidth());
         } else {
@@ -116,15 +119,16 @@ public class ImageUtils {
     /**
      * Creates image file from URL.
      *
-     * @param sourceUrl           source URL
-     * @param destinationFileName destination file name
+     * @param sourceUrl               source URL
+     * @param destinationFileName     destination file name
+     * @param imageWidthParameterName name of image width parameter
      * @throws IOException if file creation error occurs
      */
-    public static void create(String sourceUrl, String destinationFileName) throws IOException {
+    public static void create(String sourceUrl, String destinationFileName, String imageWidthParameterName) throws IOException {
         var file = new File(String.format("%s/%s", OUTPUT_DIRECTORY_NAME, destinationFileName));
         FileUtils.checkAndCreateDirectory(file.getParentFile());
 
-        BufferedImage image = getImageByUrlString(sourceUrl);
+        BufferedImage image = getImageByUrlString(sourceUrl, imageWidthParameterName);
         var imageFormat = getImageFormatByUrlString(sourceUrl);
 
         if (!ImageFormat.JPG.equals(imageFormat)) {
@@ -135,8 +139,30 @@ public class ImageUtils {
             }
         }
 
-        if (!ImageIO.write(image, "jpg", file)) {
+        BufferedImage fixedImage = fixImageType(image);
+
+        if (!ImageIO.write(fixedImage, "jpg", file)) {
             throw new IOException(String.format("Creation error for '%s' URL and '%s' file name", sourceUrl, destinationFileName));
+        }
+    }
+
+    /**
+     * Fixes image type by alpha channel information removing.
+     *
+     * @param image source image
+     * @return fixed image
+     */
+    public static BufferedImage fixImageType(BufferedImage image) {
+        Map<Integer, Integer> imageTypes = Map.of(BufferedImage.TYPE_4BYTE_ABGR, BufferedImage.TYPE_3BYTE_BGR);
+        Integer newImageType = imageTypes.get(image.getType());
+
+        if (newImageType != null) {
+            var newImage = new BufferedImage(image.getWidth(), image.getHeight(), newImageType);
+            newImage.createGraphics().drawImage(image, 0, 0, Color.WHITE, null);
+
+            return newImage;
+        } else {
+            return image;
         }
     }
 }

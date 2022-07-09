@@ -2,6 +2,7 @@ package guess.dto.talk;
 
 import guess.domain.Language;
 import guess.domain.source.Event;
+import guess.domain.source.EventDays;
 import guess.domain.source.EventType;
 import guess.domain.source.Talk;
 import guess.dto.event.EventSuperBriefDto;
@@ -10,7 +11,10 @@ import guess.util.LocalizationUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -89,22 +93,29 @@ public class TalkBriefDto {
                                                  Function<Event, EventType> eventEventTypeFunction, Language language) {
         var event = talkEventFunction.apply(talk);
         var eventType = eventEventTypeFunction.apply(event);
+        Map<Long, LocalDate> talkDayDates = new HashMap<>();
+        long previousDays = 0;
 
-        LocalDate eventStartDate = (event != null) ? event.getStartDate() : null;
+        // Map (talk day, date)
+        for (EventDays eventDays : event.getDays()) {
+            long days = ChronoUnit.DAYS.between(eventDays.getStartDate(), eventDays.getEndDate()) + 1;
+
+            for (long i = 1; i <= days; i++) {
+                LocalDate date = eventDays.getStartDate().plusDays(i - 1);
+                talkDayDates.put(previousDays + i, date);
+            }
+
+            previousDays += days;
+        }
+
         Long talkDay = talk.getTalkDay();
         long safeTalkDay = Optional.ofNullable(talkDay).orElse(1L);
-
-        LocalDate talkDate;
-        if (eventStartDate != null) {
-            talkDate = (talkDay != null) ? eventStartDate.plusDays(safeTalkDay - 1) : eventStartDate;
-        } else {
-            talkDate = null;
-        }
+        LocalDate talkDate = talkDayDates.get(safeTalkDay);
 
         var safeLocalDate = Optional.ofNullable(talkDate).orElse(LocalDate.now());
         LocalDateTime talkTime = (talk.getTrackTime() != null) ? LocalDateTime.of(safeLocalDate, talk.getTrackTime()) : null;
 
-        EventSuperBriefDto eventSuperBriefDto = (event != null) ? EventSuperBriefDto.convertToSuperBriefDto(event, language) : null;
+        EventSuperBriefDto eventSuperBriefDto = EventSuperBriefDto.convertToSuperBriefDto(event, language);
         String eventTypeLogoFileName = (eventType != null) ? eventType.getLogoFileName() : null;
         List<SpeakerSuperBriefDto> speakers = SpeakerSuperBriefDto.convertToSuperBriefDto(talk.getSpeakers(), language);
 

@@ -3,10 +3,7 @@ package guess.controller;
 import guess.domain.Conference;
 import guess.domain.GuessMode;
 import guess.domain.Language;
-import guess.domain.source.Event;
-import guess.domain.source.EventType;
-import guess.domain.source.LocaleItem;
-import guess.domain.source.Organizer;
+import guess.domain.source.*;
 import guess.service.EventTypeService;
 import guess.service.LocaleService;
 import guess.service.QuestionService;
@@ -22,6 +19,7 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -90,15 +88,37 @@ class QuestionControllerTest {
         eventType0.setId(0);
         eventType0.setOrganizer(organizer0);
 
+        EventDays eventDays0 = new EventDays(
+                LocalDate.of(2020, 10, 29),
+                null,
+                new Place(
+                        0,
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        null
+                )
+        );
+
+        EventDays eventDays1 = new EventDays(
+                LocalDate.of(2020, 10, 30),
+                null,
+                new Place(
+                        0,
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        null
+                )
+        );
+
         Event event0 = new Event();
         event0.setId(0);
-        event0.setStartDate(LocalDate.of(2020, 10, 29));
         event0.setEventType(eventType0);
+        event0.setDays(List.of(eventDays0));
 
         Event event1 = new Event();
         event1.setId(1);
-        event1.setStartDate(LocalDate.of(2020, 10, 30));
         event1.setEventType(eventType0);
+        event1.setDays(List.of(eventDays1));
 
         given(questionService.getEvents(List.of(0L, 1L))).willReturn(List.of(event0, event1));
         given(localeService.getLanguage(httpSession)).willReturn(Language.ENGLISH);

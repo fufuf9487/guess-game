@@ -14,11 +14,13 @@
       </a>
       <span class="h4 ms-2 align-middle">{{eventDetails.event?.displayName}}</span>
 
-      <div *ngIf="isDisplayPlaceVisible()" class="mt-1">
-        <a *ngIf="eventDetails.event?.mapCoordinates" href="{{googleMapsUrlPrefix}}/{{eventDetails.event.mapCoordinates}}" class="text-dark">
-          {{eventDetails.event.displayPlace}}
-        </a>
-        <span *ngIf="!eventDetails.event?.mapCoordinates">{{eventDetails.event.displayPlace}}</span>
+      <div *ngIf="isDisplayPlacesVisible()" class="mt-1">
+        <span *ngFor="let eventDays of eventDetails.event.days; last as isLast">
+          <a *ngIf="eventDays.mapCoordinates" href="{{googleMapsUrlPrefix}}/{{eventDays.mapCoordinates}}" class="text-dark">{{getDisplayPlace(eventDays)}}</a>
+          <span *ngIf="!eventDays.mapCoordinates">{{getDisplayPlace(eventDays)}}</span>
+          <span *ngIf="isEventDaysVisible()"> ({{getEventDays(eventDays)}})</span>
+          <span *ngIf="!isLast">, </span>
+        </span>
       </div>
 
       <div *ngIf="isEventLinksVisible()" class="row mt-2">

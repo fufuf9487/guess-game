@@ -36,3 +36,8 @@ companyGroups:
         "Red Hat",
         "Kiwi TCMS"
     ]
+  - name: "Synthesized / MIPT"
+    items: [
+      "Synthesized",
+      "MIPT"
+    ]

@@ -1,6 +1,5 @@
 package guess.util.tagcloud;
 
-import guess.dao.exception.SpeakerDuplicatedException;
 import guess.domain.Conference;
 import guess.domain.Language;
 import guess.domain.source.*;
@@ -51,8 +50,11 @@ class TagCloudExporterTest {
 
         Event event0 = new Event();
         event0.setId(0);
-        event0.setStartDate(EVENT_DATE);
-        event0.setPlace(place0);
+        event0.setDays(List.of(new EventDays(
+                EVENT_DATE,
+                EVENT_DATE,
+                place0
+        )));
 
         eventType0 = new EventType();
         eventType0.setId(0);
@@ -121,7 +123,7 @@ class TagCloudExporterTest {
     }
 
     @Test
-    void exportTalksAndConference() throws SpeakerDuplicatedException, IOException {
+    void exportTalksAndConference() {
         SourceInformation sourceInformation = new SourceInformation(
                 List.of(place0),
                 List.of(organizer0),

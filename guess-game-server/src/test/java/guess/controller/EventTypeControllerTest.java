@@ -1,10 +1,8 @@
 package guess.controller;
 
 import guess.domain.Language;
-import guess.domain.source.Event;
-import guess.domain.source.EventType;
-import guess.domain.source.LocaleItem;
-import guess.domain.source.Organizer;
+import guess.domain.source.*;
+import guess.service.EventService;
 import guess.service.EventTypeService;
 import guess.service.LocaleService;
 import org.junit.jupiter.api.DisplayName;
@@ -20,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -38,6 +37,9 @@ class EventTypeControllerTest {
 
     @MockBean
     private EventTypeService eventTypeService;
+
+    @MockBean
+    private EventService eventService;
 
     @MockBean
     private LocaleService localeService;
@@ -130,13 +132,9 @@ class EventTypeControllerTest {
 
         Event event0 = new Event();
         event0.setId(0);
-        event0.setStartDate(LocalDate.of(2020, 10, 29));
-        event0.setEndDate(LocalDate.of(2020, 10, 29));
 
         Event event1 = new Event();
         event1.setId(1);
-        event1.setStartDate(LocalDate.of(2020, 10, 30));
-        event1.setEndDate(LocalDate.of(2020, 10, 30));
 
         Organizer organizer = new Organizer();
         organizer.setId(0);
@@ -147,10 +145,50 @@ class EventTypeControllerTest {
         eventType.setEvents(new ArrayList<>(List.of(event0, event1)));
         eventType.setOrganizer(organizer);
 
+        EventDays eventDays0 = new EventDays(
+                LocalDate.of(2020, 10, 29),
+                LocalDate.of(2020, 10, 29),
+                new Place(
+                        0,
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        null
+                )
+        );
+
+        EventDays eventDays1 = new EventDays(
+                LocalDate.of(2020, 10, 30),
+                LocalDate.of(2020, 10, 30),
+                new Place(
+                        0,
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        null
+                )
+        );
+
         event0.setEventType(eventType);
         event1.setEventType(eventType);
 
+        event0.setDays(List.of(eventDays0));
+        event1.setDays(List.of(eventDays1));
+
+        EventPart eventPart0 = new EventPart(
+                0,
+                eventType,
+                LocalDate.of(2020, 10, 29),
+                LocalDate.of(2020, 10, 30)
+        );
+
+        EventPart eventPart1 = new EventPart(
+                1,
+                eventType,
+                LocalDate.of(2020, 10, 30),
+                LocalDate.of(2020, 10, 30)
+        );
+
         given(eventTypeService.getEventTypeById(0)).willReturn(eventType);
+        given(eventService.convertEventsToEventParts(Mockito.anyList())).willReturn(List.of(eventPart0, eventPart1));
         given(localeService.getLanguage(httpSession)).willReturn(Language.ENGLISH);
 
         mvc.perform(get("/api/event-type/event-type/0")
@@ -159,9 +197,9 @@ class EventTypeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.eventType.id", is(0)))
                 .andExpect(jsonPath("$.eventType.name", is("Name")))
-                .andExpect(jsonPath("$.events", hasSize(2)))
-                .andExpect(jsonPath("$.events[0].id", is(1)))
-                .andExpect(jsonPath("$.events[1].id", is(0)));
+                .andExpect(jsonPath("$.eventParts", hasSize(2)))
+                .andExpect(jsonPath("$.eventParts[0].id", is(1)))
+                .andExpect(jsonPath("$.eventParts[1].id", is(0)));
         Mockito.verify(eventTypeService, VerificationModeFactory.times(1)).getEventTypeById(0);
         Mockito.verify(localeService, VerificationModeFactory.times(1)).getLanguage(httpSession);
     }

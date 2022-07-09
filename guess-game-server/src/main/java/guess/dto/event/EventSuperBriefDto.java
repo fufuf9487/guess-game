@@ -4,7 +4,6 @@ import guess.domain.Language;
 import guess.domain.source.Event;
 import guess.util.LocalizationUtils;
 
-import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -15,16 +14,14 @@ public class EventSuperBriefDto {
     private final long eventTypeId;
     private final long organizerId;
     private final String name;
-    private final LocalDate startDate;
-    private final LocalDate endDate;
+    private final List<EventDaysDto> days;
 
-    public EventSuperBriefDto(long id, long eventTypeId, long organizerId, String name, LocalDate startDate, LocalDate endDate) {
+    public EventSuperBriefDto(long id, long eventTypeId, long organizerId, String name, List<EventDaysDto> days) {
         this.id = id;
         this.eventTypeId = eventTypeId;
         this.organizerId = organizerId;
         this.name = name;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.days = days;
     }
 
     public long getId() {
@@ -43,12 +40,8 @@ public class EventSuperBriefDto {
         return name;
     }
 
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
+    public List<EventDaysDto> getDays() {
+        return days;
     }
 
     public static EventSuperBriefDto convertToSuperBriefDto(Event event, Language language) {
@@ -57,8 +50,7 @@ public class EventSuperBriefDto {
                 event.getEventType().getId(),
                 event.getEventType().getOrganizer().getId(),
                 LocalizationUtils.getString(event.getName(), language),
-                event.getStartDate(),
-                event.getEndDate());
+                EventDaysDto.convertToDto(event.getDays(), language));
     }
 
     public static List<EventSuperBriefDto> convertToSuperBriefDto(List<Event> events, Language language) {

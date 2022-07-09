@@ -39,6 +39,13 @@ companySynonyms:
     synonyms: [
         AVAST
     ]
+  - name: "Ax-Team"
+    synonyms: [
+        AxTeam,
+        "Ax-Team (ex. Accenture)",
+        "АксТим (ex-Accenture)",
+        Accenture
+    ]
   - name: "Azul Systems"
     synonyms: [
         Azul
@@ -60,6 +67,10 @@ companySynonyms:
   - name: "Chronicle Software"
     synonyms: [
         "Chronicle Software Ltd"
+    ]
+  - name: "Cisco Systems"
+    synonyms: [
+        Cisco
     ]
   - name: Computas
     synonyms: [
@@ -115,6 +126,10 @@ companySynonyms:
     synonyms: [
         "DPI Solutions"
     ]
+  - name: "Emma Technologies"
+    synonyms: [
+        Emma
+    ]
   - name: "EPAM Systems"
     synonyms: [
         EPAM
@@ -146,6 +161,10 @@ companySynonyms:
   - name: "Hibernating Rhinos"
     synonyms: [
         "Hibernating Rhinos LTD"
+    ]
+  - name: Huawei
+    synonyms: [
+        Excelsior@Huawei
     ]
   - name: Hypothesis
     synonyms: [
@@ -193,6 +212,11 @@ companySynonyms:
         "SKB Contur",
         "СКБ Контур"
     ]
+  - name: KURS-IT
+    synonyms: [
+      KURS,
+      КУРС
+    ]
   - name: LightSource
     synonyms: [
         Lightsource.ai
@@ -220,6 +244,13 @@ companySynonyms:
   - name: "Kt. Academy"
     synonyms: [
         Kt.Academy
+    ]
+  - name: Lanit
+    synonyms: [
+        Lanit-Tercom,
+        Ланит-Терком,
+        "LANIT Expertise",
+        "ЛАНИТ Экспертиза"
     ]
   - name: "Last Week in AWS"
     synonyms: [
@@ -271,6 +302,10 @@ companySynonyms:
     synonyms: [
         Odnoklassniki
     ]
+  - name: "OKTET Labs"
+    synonyms: [
+        OKTET
+    ]
   - name: Oracle
     synonyms: [
         "Oracle Labs"
@@ -286,6 +321,10 @@ companySynonyms:
   - name: "Performance Lab"
     synonyms: [
         performance-lab.ru
+    ]
+  - name: PVS-Studio
+    synonyms: [
+      "PVS-Studio LLC"
     ]
   - name: SouJava
     synonyms: [
@@ -328,7 +367,9 @@ companySynonyms:
         Raiffeisen,
         Райффайзен,
         RaiffeisenBank,
-        Райффайзенбанк
+        Райффайзенбанк,
+        "Raiffeisen Bank",
+        "Райффайзен Банк"
     ]
   - name: RTSoft
     synonyms: [
@@ -367,7 +408,9 @@ companySynonyms:
         Сбербанк-Технологии,
         SberX,
         "SberBank Online",
-        "СберБанк Онлайн"
+        "СберБанк Онлайн",
+        SberHealth,
+        СберЗдоровье
     ]
   - name: Sibur
     synonyms: [
@@ -390,6 +433,11 @@ companySynonyms:
     synonyms: [
         "Sportmaster Lab"
     ]
+  - name: Sudo
+    synonyms: [
+        "Sudo Ltd",
+        "ООО «Судо»"
+    ]
   - name: Tinkoff
     synonyms: [
         Tinkoff.ru,
@@ -407,6 +455,10 @@ companySynonyms:
   - name: "The Atlantic Systems Guild Inc."
     synonyms: [
         "The Atlantic Systems Guild Inc., co-author of the \"Peopleware: Productive Projects and Teams\""
+    ]
+  - name: think-cell
+    synonyms: [
+        "think-cell Software"
     ]
   - name: "Uber Technologies"
     synonyms: [
@@ -457,11 +509,20 @@ companySynonyms:
         Yandex.Market,
         Яндекс.Маркет,
         Yandex.Cloud,
+        "Yandex Cloud",
         Яндекс.Облако,
         Yandex.Taxi,
         Яндекс.Такси,
+        Yandex.Toloka,
+        Яндекс.Толока,
+        "Yandex (Auto.ru)",
+        "Яндекс (Авто.ру)",
         "Kinopoisk (Yandex)",
-        "Кинопоиск (Яндекс)"
+        "Кинопоиск (Яндекс)",
+        Zen,
+        Дзен,
+        Kinopoisk,
+        Кинопоиск
     ]
   - name: "ZeptoLab LLC"
     synonyms: [
@@ -477,5 +538,6 @@ companySynonyms:
         "Автор книг «The C++ Standard Library» и «C++ Templates»",
         "Acme Corp",
         Startup,
-        Стартап
+        Стартап,
+        "JMeter Committer"
     ]

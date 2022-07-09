@@ -84,12 +84,12 @@ public class SourceDaoImpl implements SourceDao {
     public List<Event> getEventsFromDateTime(LocalDateTime dateTime) {
         return sourceInformation.getEvents().stream()
                 .filter(e -> {
-                    var zonedEndDateTime = ZonedDateTime.of(
-                            e.getEndDate(),
+                    ZonedDateTime zonedEndDateTime = ZonedDateTime.of(
+                            e.getLastEndDate(),
                             LocalTime.of(0, 0, 0),
                             e.getFinalTimeZoneId());
                     ZonedDateTime zonedNextDayEndDateTime = zonedEndDateTime.plus(1, ChronoUnit.DAYS);
-                    var eventUtcEndLocalDateTime = zonedNextDayEndDateTime
+                    LocalDateTime eventUtcEndLocalDateTime = zonedNextDayEndDateTime
                             .withZoneSameInstant(ZoneId.of("UTC"))
                             .toLocalDateTime();
 

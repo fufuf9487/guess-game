@@ -65,12 +65,14 @@ public class StatisticsServiceImpl implements StatisticsService {
             Set<Speaker> eventTypeSpeakers = new HashSet<>();
 
             for (Event event : eventType.getEvents()) {
-                if ((eventTypeStartDate == null) || event.getStartDate().isBefore(eventTypeStartDate)) {
-                    eventTypeStartDate = event.getStartDate();
+                LocalDate eventStartDate = event.getFirstStartDate();
+
+                if ((eventTypeStartDate == null) || eventStartDate.isBefore(eventTypeStartDate)) {
+                    eventTypeStartDate = eventStartDate;
                     eventTypeZoneId = event.getFinalTimeZoneId();
                 }
 
-                eventTypeDuration += (ChronoUnit.DAYS.between(event.getStartDate(), event.getEndDate()) + 1);
+                eventTypeDuration += event.getDuration();
                 eventTypeTalksQuantity += event.getTalks().size();
                 event.getTalks().forEach(t -> eventTypeSpeakers.addAll(t.getSpeakers()));
             }
@@ -168,7 +170,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 
         for (Event event : events) {
             // Event metrics
-            long eventDuration = (ChronoUnit.DAYS.between(event.getStartDate(), event.getEndDate()) + 1);
+            long eventDuration = event.getDuration();
             long eventTalksQuantity = event.getTalks().size();
             Set<Speaker> eventSpeakers = new HashSet<>();
 
@@ -180,10 +182,11 @@ public class StatisticsServiceImpl implements StatisticsService {
             long eventMvpsQuantity = eventSpeakers.stream()
                     .filter(Speaker::isAnyMvp)
                     .count();
+            LocalDate eventStartDate = event.getFirstStartDate();
 
             eventMetricsList.add(new EventMetrics(
                     event,
-                    event.getStartDate(),
+                    eventStartDate,
                     eventDuration,
                     eventTalksQuantity,
                     eventSpeakers.size(),
@@ -191,8 +194,8 @@ public class StatisticsServiceImpl implements StatisticsService {
                     eventMvpsQuantity));
 
             // Totals metrics
-            if ((totalsStartDate == null) || event.getStartDate().isBefore(totalsStartDate)) {
-                totalsStartDate = event.getStartDate();
+            if ((totalsStartDate == null) || eventStartDate.isBefore(totalsStartDate)) {
+                totalsStartDate = eventStartDate;
             }
 
             totalsDuration += eventDuration;

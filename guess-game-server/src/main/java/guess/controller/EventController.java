@@ -1,13 +1,11 @@
 package guess.controller;
 
 import guess.domain.source.Event;
+import guess.domain.source.EventPart;
 import guess.domain.source.Speaker;
 import guess.domain.source.Talk;
 import guess.dto.company.CompanyBriefDto;
-import guess.dto.event.EventBriefDto;
-import guess.dto.event.EventDetailsDto;
-import guess.dto.event.EventHomeInfoDto;
-import guess.dto.event.EventSuperBriefDto;
+import guess.dto.event.*;
 import guess.dto.speaker.SpeakerBriefDto;
 import guess.dto.talk.TalkBriefDto;
 import guess.service.EventService;
@@ -46,10 +44,23 @@ public class EventController {
         var language = localeService.getLanguage(httpSession);
 
         List<Event> sortedEvents = events.stream()
-                .sorted(Comparator.comparing(Event::getStartDate).reversed())
+                .sorted(Comparator.comparing(Event::getFirstStartDate).reversed())
                 .toList();
 
         return EventBriefDto.convertToBriefDto(sortedEvents, language);
+    }
+
+    @GetMapping("/event-parts")
+    public List<EventPartBriefDto> getEventParts(@RequestParam boolean conferences, @RequestParam boolean meetups,
+                                                 @RequestParam(required = false) Long organizerId,
+                                                 @RequestParam(required = false) Long eventTypeId, HttpSession httpSession) {
+        List<Event> events = eventService.getEvents(conferences, meetups, organizerId, eventTypeId);
+        List<EventPart> eventParts = eventService.convertEventsToEventParts(events);
+        var language = localeService.getLanguage(httpSession);
+
+        return EventPartBriefDto.convertToBriefDto(eventParts, language).stream()
+                .sorted(Comparator.comparing(EventPartBriefDto::getStartDate).reversed())
+                .toList();
     }
 
     @GetMapping("/default-event")
@@ -60,20 +71,12 @@ public class EventController {
         return (defaultEvent != null) ? EventSuperBriefDto.convertToSuperBriefDto(defaultEvent, language) : null;
     }
 
-    @GetMapping("/default-event-home-info")
-    public EventHomeInfoDto getDefaultEventHomeInfo(HttpSession httpSession) {
-        var defaultEvent = eventService.getDefaultEvent(true, true);
+    @GetMapping("/default-event-part-home-info")
+    public EventPartHomeInfoDto getDefaultEventPartHomeInfo(HttpSession httpSession) {
+        var defaultEventPart = eventService.getDefaultEventPart(true, true);
         var language = localeService.getLanguage(httpSession);
 
-        return (defaultEvent != null) ? EventHomeInfoDto.convertToDto(defaultEvent, language) : null;
-    }
-
-    @GetMapping("/default-conference")
-    public EventSuperBriefDto getDefaultConference(HttpSession httpSession) {
-        var defaultEvent = eventService.getDefaultEvent(true, false);
-        var language = localeService.getLanguage(httpSession);
-
-        return (defaultEvent != null) ? EventSuperBriefDto.convertToSuperBriefDto(defaultEvent, language) : null;
+        return (defaultEventPart != null) ? EventPartHomeInfoDto.convertToDto(defaultEventPart, language) : null;
     }
 
     @GetMapping("/event/{id}")

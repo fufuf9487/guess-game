@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { SelectItem } from 'primeng/api';
 import { EventType } from '../../../shared/models/event-type/event-type.model';
-import { Event } from '../../../shared/models/event/event.model';
+import { EventPart } from '../../../shared/models/event/event-part.model';
 import { Organizer } from '../../../shared/models/organizer/organizer.model';
 import { EventTypeService } from '../../../shared/services/event-type.service';
 import { EventService } from '../../../shared/services/event.service';
@@ -28,12 +28,13 @@ export class EventsSearchComponent implements OnInit {
   public selectedEventType: EventType;
   public eventTypeSelectItems: SelectItem[] = [];
 
-  public events: Event[] = [];
+  public eventParts: EventPart[] = [];
   public multiSortMeta: any[] = [];
 
   constructor(private eventTypeService: EventTypeService, private eventService: EventService,
               public organizerService: OrganizerService, public translateService: TranslateService) {
     this.multiSortMeta.push({field: 'startDate', order: -1});
+    this.multiSortMeta.push({field: 'name', order: 1});
   }
 
   ngOnInit(): void {
@@ -93,9 +94,9 @@ export class EventsSearchComponent implements OnInit {
   }
 
   loadEvents(organizer: Organizer, eventType: EventType) {
-    this.eventService.getEvents(this.isConferences, this.isMeetups, organizer, eventType)
+    this.eventService.getEventParts(this.isConferences, this.isMeetups, organizer, eventType)
       .subscribe(data => {
-          this.events = data;
+          this.eventParts = data;
         }
       );
   }
@@ -138,10 +139,10 @@ export class EventsSearchComponent implements OnInit {
   }
 
   isNoEventsFoundVisible() {
-    return (this.events && (this.events.length === 0));
+    return (this.eventParts && (this.eventParts.length === 0));
   }
 
-  isEventsListVisible() {
-    return (this.events && (this.events.length > 0));
+  isEventPartsListVisible() {
+    return (this.eventParts && (this.eventParts.length > 0));
   }
 }

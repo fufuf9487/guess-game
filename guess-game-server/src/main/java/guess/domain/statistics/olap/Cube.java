@@ -14,18 +14,9 @@ import java.util.stream.Collectors;
  * OLAP cube.
  */
 public class Cube {
-    private static class MeasureMaps<T, S> {
-        private final Map<T, List<Measure<?>>> firstDimensionTotalMeasures;
-        private final Map<S, List<Measure<?>>> secondDimensionTotalMeasures;
-        private final Map<S, List<Measure<?>>> measuresBySecondDimensionValue;
-
-        public MeasureMaps(Map<T, List<Measure<?>>> firstDimensionTotalMeasures,
-                           Map<S, List<Measure<?>>> secondDimensionTotalMeasures,
-                           Map<S, List<Measure<?>>> measuresBySecondDimensionValue) {
-            this.firstDimensionTotalMeasures = firstDimensionTotalMeasures;
-            this.secondDimensionTotalMeasures = secondDimensionTotalMeasures;
-            this.measuresBySecondDimensionValue = measuresBySecondDimensionValue;
-        }
+    private record MeasureMaps<T, S>(Map<T, List<Measure<?>>> firstDimensionTotalMeasures,
+                                     Map<S, List<Measure<?>>> secondDimensionTotalMeasures,
+                                     Map<S, List<Measure<?>>> measuresBySecondDimensionValue) {
     }
 
     private final Set<DimensionType> dimensionTypes;

@@ -110,10 +110,6 @@ companies:
     name:
       - {language: en, text: Allegro}
     siteLink: https://allegro.pl
-  - id: 30
-    name:
-      - {language: en, text: "ALM Works"}
-    siteLink: https://almworks.com
   - id: 31
     name:
       - {language: en, text: alwaysdata}
@@ -190,9 +186,6 @@ companies:
     name:
       - {language: en, text: Artsy}
     siteLink: https://www.artsy.net
-  - id: 53
-    name:
-      - {language: en, text: audio++}
   - id: 54
     name:
       - {language: en, text: "Australia Post"}
@@ -419,10 +412,6 @@ companies:
     name:
       - {language: en, text: CRATUS}
     siteLink: https://www.cratustech.com
-  - id: 119
-    name:
-      - {language: en, text: "Crazy Panda"}
-    siteLink: https://crazypanda.ru
   - id: 120
     name:
       - {language: en, text: "Creative Assembly"}
@@ -920,12 +909,15 @@ companies:
   - id: 257
     name:
       - {language: en, text: "Independent Consultant"}
+      - {language: ru, text: "Независимый консультант"}
   - id: 258
     name:
       - {language: en, text: "Independent Developer"}
+      - {language: ru, text: "Независимый разработчик"}
   - id: 259
     name:
       - {language: en, text: "Independent Trainer"}
+      - {language: ru, text: "Независимый тренер"}
   - id: 260
     name:
       - {language: en, text: Indie}
@@ -1513,10 +1505,6 @@ companies:
     name:
       - {language: en, text: "Progress Software"}
     siteLink: https://www.progress.com
-  - id: 420
-    name:
-      - {language: en, text: PropellerAds}
-    siteLink: https://propellerads.com
   - id: 421
     name:
       - {language: en, text: PS.kz}
@@ -1745,10 +1733,6 @@ companies:
     name:
       - {language: en, text: Solanteq}
     siteLink: https://solanteq.com
-  - id: 488
-    name:
-      - {language: en, text: "SolarWinds MSP"}
-    siteLink: https://www.solarwindsmsp.com
   - id: 489
     name:
       - {language: en, text: SonarSource}
@@ -2274,11 +2258,6 @@ companies:
       - {language: en, text: "ISP RAS"}
       - {language: ru, text: "ИСП РАН"}
     siteLink: https://www.ispras.ru
-  - id: 629
-    name:
-      - {language: en, text: "Kaluga Astral"}
-      - {language: ru, text: "Калуга Астрал"}
-    siteLink: https://astral.ru
   - id: 630
     name:
       - {language: en, text: Kontur}
@@ -2301,9 +2280,9 @@ companies:
     siteLink: https://www.croc.ru
   - id: 634
     name:
-      - {language: en, text: KURS}
-      - {language: ru, text: КУРС}
-    siteLink: https://corchestra.ru
+      - {language: en, text: KURS-IT}
+      - {language: ru, text: КУРС-ИТ}
+    siteLink: http://www.curs.ru
   - id: 635
     name:
       - {language: en, text: "Kaspersky Lab"}
@@ -2311,9 +2290,9 @@ companies:
     siteLink: https://www.kaspersky.com
   - id: 636
     name:
-      - {language: en, text: Lanit-Tercom}
-      - {language: ru, text: Ланит-Терком}
-    siteLink: https://www.lanit-tercom.ru
+      - {language: en, text: Lanit}
+      - {language: ru, text: ЛАНИТ}
+    siteLink: https://www.lanit.ru
   - id: 638
     name:
       - {language: en, text: Liptsoft}
@@ -2489,11 +2468,6 @@ companies:
       - {language: en, text: RTSoft}
       - {language: ru, text: РТСофт}
     siteLink: https://www.rtsoft.ru
-  - id: 685
-    name:
-      - {language: en, text: STC}
-      - {language: ru, text: ЦРТ}
-    siteLink: https://www.speechpro.ru
   - id: 686
     name:
       - {language: en, text: CFT}
@@ -2563,10 +2537,6 @@ companies:
     name:
       - {language: en, text: TestinGil}
     siteLink: http://www.testingil.com
-  - id: 710
-    name:
-      - {language: en, text: Fleetcor}
-    siteLink: https://www.fleetcor.com
   - id: 711
     name:
       - {language: en, text: "Zyfra Group"}
@@ -2635,8 +2605,8 @@ companies:
     siteLink: https://ontarget-group.com
   - id: 728
     name:
-      - {language: en, text: Accenture}
-    siteLink: https://www.accenture.com
+      - {language: en, text: "Ax-Team"}
+      - {language: ru, text: АксТим}
   - id: 729
     name:
       - {language: en, text: Sportmaster}
@@ -2991,11 +2961,6 @@ companies:
     name:
       - {language: en, text: "Grafana Labs"}
     siteLink: https://grafana.com
-  - id: 825
-    name:
-      - {language: en, text: "Sudo Ltd"}
-      - {language: ru, text: "ООО «Судо»"}
-    siteLink: https://sudo.team
   - id: 826
     name:
       - {language: en, text: MIPT}
@@ -3059,10 +3024,6 @@ companies:
       - {language: en, text: Sovcombank}
       - {language: ru, text: Совкомбанк}
     siteLink: https://sovcombank.ru
-  - id: 842
-    name:
-      - {language: en, text: luna}
-    siteLink: https://www.missionluna.ru
   - id: 844
     name:
       - {language: en, text: Gazprombank}
@@ -3282,3 +3243,183 @@ companies:
     name:
       - {language: en, text: Ordina}
     siteLink: https://www.ordina.nl
+  - id: 901
+    name:
+      - {language: en, text: "Independent Expert"}
+      - {language: ru, text: "Независимый эксперт"}
+  - id: 902
+    name:
+      - {language: en, text: YetiCrab}
+    siteLink: https://yeticrab.org
+  - id: 904
+    name:
+      - {language: en, text: "Garage Eight"}
+    siteLink: https://garage-eight.com
+  - id: 905
+    name:
+      - {language: en, text: Rabota.ru}
+      - {language: ru, text: Работа.ру}
+    siteLink: https://www.rabota.ru
+  - id: 906
+    name:
+      - {language: en, text: "Mad Brains"}
+    siteLink: https://madbrains.ru
+  - id: 907
+    name:
+      - {language: en, text: "Credit Bank of Moscow"}
+      - {language: ru, text: "Московский кредитный банк"}
+    siteLink: https://mkb.ru
+  - id: 908
+    name:
+      - {language: en, text: "IceRock Development"}
+    siteLink: https://icerockdev.com
+  - id: 909
+    name:
+      - {language: en, text: InDriver}
+    siteLink: https://indriver.com
+  - id: 910
+    name:
+      - {language: en, text: RSTQB}
+    siteLink: https://www.rstqb.org
+  - id: 911
+    name:
+      - {language: en, text: "X5 Group"}
+    siteLink: https://www.x5.ru
+  - id: 912
+    name:
+      - {language: en, text: Wallarm}
+    siteLink: https://www.wallarm.com
+  - id: 913
+    name:
+      - {language: en, text: JettyCloud}
+    siteLink: https://www.jettycloud.com
+  - id: 914
+    name:
+      - {language: en, text: TravelX}
+    siteLink: https://travelx.ai
+  - id: 915
+    name:
+      - {language: en, text: Celsus.ai}
+      - {language: ru, text: Цельс}
+    siteLink: https://celsus.ai
+  - id: 916
+    name:
+      - {language: en, text: "Université Paris-Saclay, CNRS, LISN"}
+    siteLink: https://www.lisn.upsaclay.fr
+  - id: 917
+    name:
+      - {language: en, text: NetSpring}
+    siteLink: https://www.netspring.io
+  - id: 918
+    name:
+      - {language: en, text: "OKTET Labs"}
+    siteLink: http://oktetlabs.ru
+  - id: 919
+    name:
+      - {language: en, text: Syntacore}
+    siteLink: https://syntacore.com
+  - id: 920
+    name:
+      - {language: en, text: "Speech Technology Center"}
+    siteLink: https://speechpro.com
+  - id: 921
+    name:
+      - {language: en, text: Workato}
+    siteLink: https://www.workato.com
+  - id: 922
+    name:
+      - {language: en, text: "RTU MIREA"}
+      - {language: ru, text: "РТУ МИРЭА"}
+    siteLink: https://www.mirea.ru
+  - id: 923
+    name:
+      - {language: en, text: "Catalyst Aerospace Technologies"}
+    siteLink: https://ctlst.tech
+  - id: 924
+    name:
+      - {language: en, text: "N-able Technology"}
+    siteLink: https://www.n-able.com
+  - id: 925
+    name:
+      - {language: en, text: Sudo}
+      - {language: ru, text: Судо}
+    siteLink: https://sudo.team
+  - id: 927
+    name:
+      - {language: en, text: "Parity Technologies"}
+    siteLink: https://www.parity.io
+  - id: 928
+    name:
+      - {language: en, text: Evrone}
+    siteLink: https://evrone.com
+  - id: 929
+    name:
+      - {language: en, text: MediaSoft}
+    siteLink: https://mediasoft.team
+  - id: 930
+    name:
+      - {language: en, text: "White Frame"}
+    siteLink: https://whiteframe.ru
+  - id: 931
+    name:
+      - {language: en, text: Invent.us}
+    siteLink: https://invent.us
+  - id: 932
+    name:
+      - {language: en, text: "Fusion Tech"}
+    siteLink: https://fusion-tech.pro
+  - id: 933
+    name:
+      - {language: en, text: "Kapital Bank"}
+    siteLink: https://www.kapitalbank.az
+  - id: 934
+    name:
+      - {language: en, text: slay_lines}
+    siteLink: https://slaylines.io
+  - id: 935
+    name:
+      - {language: en, text: Roketo}
+    siteLink: https://www.roke.to
+  - id: 937
+    name:
+      - {language: en, text: "Emma Technologies"}
+    siteLink: https://emma-app.com
+  - id: 938
+    name:
+      - {language: en, text: Machinet.net}
+    siteLink: https://machinet.net
+  - id: 939
+    name:
+      - {language: en, text: "Data Egret"}
+    siteLink: https://dataegret.ru
+  - id: 940
+    name:
+      - {language: en, text: Rosbank}
+      - {language: ru, text: Росбанк}
+    siteLink: https://www.rosbank.ru
+  - id: 941
+    name:
+      - {language: en, text: Natera}
+    siteLink: https://www.natera.com
+  - id: 942
+    name:
+      - {language: en, text: InfraTech}
+      - {language: ru, text: ИнфраТех}
+    siteLink: https://rosinfra.ru/infratech
+  - id: 943
+    name:
+      - {language: en, text: AproximaLabs}
+  - id: 944
+    name:
+      - {language: en, text: Icons8}
+    siteLink: https://icons8.ru
+  - id: 945
+    name:
+      - {language: en, text: Rostelekom}
+      - {language: ru, text: Ростелеком}
+    siteLink: https://rt.ru
+  - id: 946
+    name:
+      - {language: en, text: "Otkritie Bank"}
+      - {language: ru, text: "Банк Открытие"}
+    siteLink: https://www.open.ru

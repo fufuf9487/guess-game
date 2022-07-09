@@ -33,8 +33,8 @@ public class EventComparator implements Comparator<Event> {
     }
 
     static int compareStartDate(Event event1, Event event2) {
-        LocalDate eventStartDate1 = event1.getStartDate();
-        LocalDate eventStartDate2 = event2.getStartDate();
+        LocalDate eventStartDate1 = event1.getFirstStartDate();
+        LocalDate eventStartDate2 = event2.getFirstStartDate();
 
         if (eventStartDate1 == null) {
             if (eventStartDate2 == null) {

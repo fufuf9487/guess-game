@@ -1,10 +1,10 @@
 import { EventType } from './event-type.model';
-import { Event } from '../event/event.model';
+import { EventPart } from '../event/event-part.model';
 
 export class EventTypeDetails {
   constructor(
     public eventType?: EventType,
-    public events?: Event[]
+    public eventParts?: EventPart[]
   ) {
   }
 }

@@ -209,11 +209,13 @@ public class YamlUtils {
      */
     static void linkEventsToPlaces(Map<Long, Place> places, List<Event> events) {
         for (Event event : events) {
-            // Find place by id
-            var place = places.get(event.getPlaceId());
-            Objects.requireNonNull(place,
-                    () -> String.format("Place id %d not found for event %s", event.getPlaceId(), event));
-            event.setPlace(place);
+            for (EventDays eventDays : event.getDays()) {
+                // Find place by id
+                Place place = places.get(eventDays.getPlaceId());
+                Objects.requireNonNull(place,
+                        () -> String.format("Place id %d not found for event days %s", eventDays.getPlaceId(), eventDays));
+                eventDays.setPlace(place);
+            }
         }
     }
 
@@ -361,15 +363,16 @@ public class YamlUtils {
     }
 
     /**
-     * Saves items to file.
+     * Saves entity to file.
      *
-     * @param items    items
-     * @param filename filename
-     * @throws IOException          if deletion error occurs
+     * @param entity        entity
+     * @param directoryName directory name
+     * @param filename      filename
+     * @throws IOException          if saving error occurs
      * @throws NoSuchFieldException if field name is invalid
      */
-    public static <T> void save(T items, String filename) throws IOException, NoSuchFieldException {
-        var file = new File(String.format("%s/%s", OUTPUT_DIRECTORY_NAME, filename));
+    public static <T> void save(T entity, String directoryName, String filename) throws IOException, NoSuchFieldException {
+        var file = new File(String.format("%s/%s", directoryName, filename));
         FileUtils.checkAndCreateDirectory(file.getParentFile());
 
         try (var writer = new FileWriter(file)) {
@@ -386,9 +389,10 @@ public class YamlUtils {
                                     "telegramLink", "speakerdeckLink", "habrLink", "timeZone")),
                     new PropertyMatcher(Place.class,
                             List.of("id", "city", "venueAddress", "mapCoordinates")),
+                    new PropertyMatcher(EventDays.class,
+                            List.of("startDate", "endDate", "placeId")),
                     new PropertyMatcher(Event.class,
-                            List.of("eventTypeId", "name", "startDate", "endDate", "siteLink", "youtubeLink", "placeId",
-                                    "timeZone", "talkIds")),
+                            List.of("eventTypeId", "name", "days", "siteLink", "youtubeLink", "timeZone", "talkIds")),
                     new PropertyMatcher(Talk.class,
                             List.of("id", "name", "shortDescription", "longDescription", "talkDay", "trackTime", "track",
                                     "language", "presentationLinks", "materialLinks", "videoLinks", "speakerIds")),
@@ -401,15 +405,27 @@ public class YamlUtils {
                             List.of("language", "text"))
             );
             var representer = new CustomRepresenter(propertyMatchers);
-            representer.addClassTag(items.getClass(), Tag.MAP);
+            representer.addClassTag(entity.getClass(), Tag.MAP);
 
-            var eventTypesYaml = new CustomYaml(
-                    new Constructor(items.getClass()),
+            var itemsYaml = new CustomYaml(
+                    new Constructor(entity.getClass()),
                     representer,
                     options);
-            eventTypesYaml.dump(items, writer);
+            itemsYaml.dump(entity, writer);
         }
 
         log.info("File '{}' saved", file.getAbsolutePath());
+    }
+
+    /**
+     * Saves entity to file.
+     *
+     * @param entity   entity
+     * @param filename filename
+     * @throws IOException          if saving error occurs
+     * @throws NoSuchFieldException if field name is invalid
+     */
+    public static <T> void save(T entity, String filename) throws IOException, NoSuchFieldException {
+        save(entity, OUTPUT_DIRECTORY_NAME, filename);
     }
 }

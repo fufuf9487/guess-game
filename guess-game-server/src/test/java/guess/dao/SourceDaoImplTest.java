@@ -145,8 +145,15 @@ class SourceDaoImplTest {
         event0.setEventTypeId(eventType0.getId());
         event0.setEventType(eventType0);
         eventType0.setEvents(List.of(event0));
-        event0.setStartDate(LocalDate.of(2020, 1, 1));
-        event0.setEndDate(LocalDate.of(2020, 1, 2));
+        event0.setDays(List.of(new EventDays(
+                LocalDate.of(2020, 1, 1),
+                LocalDate.of(2020, 1, 2),
+                new Place(
+                        0,
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        null
+                ))));
         event0.setTalkIds(List.of(0L));
         event0.setTalks(List.of(talk0));
         event0.setTimeZoneId(ZoneId.of("Europe/Moscow"));
@@ -156,8 +163,15 @@ class SourceDaoImplTest {
         event1.setEventTypeId(eventType1.getId());
         event1.setEventType(eventType1);
         eventType1.setEvents(List.of(event1));
-        event1.setStartDate(LocalDate.of(2020, 2, 1));
-        event1.setEndDate(LocalDate.of(2020, 2, 2));
+        event1.setDays(List.of(new EventDays(
+                LocalDate.of(2020, 2, 1),
+                LocalDate.of(2020, 2, 2),
+                new Place(
+                        0,
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        null
+                ))));
         event1.setTalkIds(List.of(1L));
         event1.setTalks(List.of(talk1));
 
@@ -166,15 +180,29 @@ class SourceDaoImplTest {
         event2.setEventTypeId(eventType2.getId());
         event2.setEventType(eventType2);
         eventType2.setEvents(List.of(event2));
-        event2.setStartDate(LocalDate.of(2020, 3, 1));
-        event2.setEndDate(LocalDate.of(2020, 3, 2));
+        event2.setDays(List.of(new EventDays(
+                LocalDate.of(2020, 3, 1),
+                LocalDate.of(2020, 3, 2),
+                new Place(
+                        0,
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        null
+                ))));
         event2.setTalkIds(List.of(2L));
         event2.setTalks(List.of(talk2));
 
         event3 = new Event();
         event3.setId(3);
-        event3.setStartDate(LocalDate.of(2020, 4, 1));
-        event3.setEndDate(LocalDate.of(2020, 4, 2));
+        event3.setDays(List.of(new EventDays(
+                LocalDate.of(2020, 4, 1),
+                LocalDate.of(2020, 4, 2),
+                new Place(
+                        0,
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        null
+                ))));
 
         SourceInformation sourceInformation = new SourceInformation(
                 List.of(place0, place1, place2),

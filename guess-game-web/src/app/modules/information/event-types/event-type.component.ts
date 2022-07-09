@@ -52,7 +52,7 @@ export class EventTypeComponent implements OnInit {
       this.eventTypeDetails.eventType?.speakerdeckLink || this.eventTypeDetails.eventType?.habrLink;
   }
 
-  isEventsListVisible() {
-    return ((this.eventTypeDetails.events) && (this.eventTypeDetails.events.length > 0));
+  isEventPartsListVisible() {
+    return ((this.eventTypeDetails.eventParts) && (this.eventTypeDetails.eventParts.length > 0));
   }
 }

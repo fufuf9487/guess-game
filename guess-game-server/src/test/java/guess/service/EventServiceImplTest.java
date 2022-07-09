@@ -5,10 +5,7 @@ import guess.dao.EventTypeDao;
 import guess.domain.Conference;
 import guess.domain.auxiliary.EventDateMinTrackTime;
 import guess.domain.auxiliary.EventMinTrackTimeEndDayTime;
-import guess.domain.source.Event;
-import guess.domain.source.EventType;
-import guess.domain.source.Organizer;
-import guess.domain.source.Talk;
+import guess.domain.source.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -54,8 +51,6 @@ class EventServiceImplTest {
     private static final LocalTime TALK_TRACK_TIME1;
     private static final LocalTime TALK_TRACK_TIME2;
 
-    private static Organizer organizer0;
-    private static Organizer organizer1;
     private static EventType eventType0;
     private static EventType eventType1;
     private static EventType eventType2;
@@ -92,10 +87,10 @@ class EventServiceImplTest {
 
     @BeforeAll
     static void init() {
-        organizer0 = new Organizer();
+        Organizer organizer0 = new Organizer();
         organizer0.setId(0);
 
-        organizer1 = new Organizer();
+        Organizer organizer1 = new Organizer();
         organizer1.setId(1);
 
         eventType0 = new EventType();
@@ -144,46 +139,106 @@ class EventServiceImplTest {
         event0 = new Event();
         event0.setId(0);
         event0.setEventType(eventType0);
-        event0.setStartDate(EVENT_START_DATE0);
-        event0.setEndDate(EVENT_END_DATE0);
+        event0.setDays(List.of(new EventDays(
+                EVENT_START_DATE0,
+                EVENT_END_DATE0,
+                new Place(
+                        0,
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        null
+                )
+        )));
         event0.setTalks(List.of(talk0));
 
         event1 = new Event();
         event1.setId(1);
         event1.setEventType(eventType1);
-        event1.setStartDate(EVENT_START_DATE1);
-        event1.setEndDate(EVENT_END_DATE1);
+        event1.setDays(List.of(new EventDays(
+                EVENT_START_DATE1,
+                EVENT_END_DATE1,
+                new Place(
+                        0,
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        null
+                )
+        )));
         event1.setTalks(List.of(talk1));
 
         event2 = new Event();
         event2.setId(2);
         event2.setEventType(eventType2);
-        event2.setStartDate(EVENT_START_DATE2);
-        event2.setEndDate(EVENT_END_DATE2);
+        event2.setDays(List.of(new EventDays(
+                EVENT_START_DATE2,
+                EVENT_END_DATE2,
+                new Place(
+                        0,
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        null
+                )
+        )));
         event2.setTalks(List.of(talk2));
 
         event3 = new Event();
         event3.setId(3);
         event3.setEventType(eventType3);
+        event3.setDays(List.of(new EventDays(
+                null,
+                null,
+                new Place(
+                        0,
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        null
+                )
+        )));
         event3.setTalks(List.of(talk2));
 
         event4 = new Event();
         event4.setId(4);
         event4.setEventType(eventType4);
-        event4.setStartDate(EVENT_START_DATE4);
+        event4.setDays(List.of(new EventDays(
+                EVENT_START_DATE4,
+                null,
+                new Place(
+                        0,
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        null
+                )
+        )));
         event4.setTalks(List.of(talk2));
 
         event5 = new Event();
         event5.setId(5);
         event5.setEventType(eventType5);
-        event5.setEndDate(EVENT_END_DATE5);
+        event5.setDays(List.of(new EventDays(
+                null,
+                EVENT_END_DATE5,
+                new Place(
+                        0,
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        null
+                )
+        )));
         event5.setTalks(List.of(talk2));
 
         event6 = new Event();
         event6.setId(6);
         event6.setEventType(eventType6);
-        event6.setStartDate(EVENT_START_DATE6);
-        event6.setEndDate(EVENT_END_DATE6);
+        event6.setDays(List.of(new EventDays(
+                EVENT_START_DATE6,
+                EVENT_END_DATE6,
+                new Place(
+                        0,
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        null
+                )
+        )));
         event6.setTalks(List.of(talk2));
 
         eventType0.setEvents(List.of(event0));
@@ -298,7 +353,21 @@ class EventServiceImplTest {
 
         eventService.getDefaultEvent(IS_CONFERENCES, IS_MEETUPS);
         Mockito.verify(eventService, VerificationModeFactory.times(1)).getDefaultEvent(IS_CONFERENCES, IS_MEETUPS);
-        Mockito.verify(eventService, VerificationModeFactory.times(1)).getDefaultEvent(Mockito.anyBoolean(), Mockito.anyBoolean(), Mockito.any(LocalDateTime.class));
+        Mockito.verify(eventService, VerificationModeFactory.times(1)).getDefaultEvent(Mockito.eq(IS_CONFERENCES), Mockito.eq(IS_MEETUPS), Mockito.any(LocalDateTime.class));
+        Mockito.verifyNoMoreInteractions(eventService);
+    }
+
+    @Test
+    void getDefaultEventPart() {
+        EventServiceImpl eventService = Mockito.mock(EventServiceImpl.class);
+        final boolean IS_CONFERENCES = Boolean.TRUE;
+        final boolean IS_MEETUPS = Boolean.FALSE;
+
+        Mockito.doCallRealMethod().when(eventService).getDefaultEventPart(IS_CONFERENCES, IS_MEETUPS);
+
+        eventService.getDefaultEventPart(IS_CONFERENCES, IS_MEETUPS);
+        Mockito.verify(eventService, VerificationModeFactory.times(1)).getDefaultEventPart(IS_CONFERENCES, IS_MEETUPS);
+        Mockito.verify(eventService, VerificationModeFactory.times(1)).getDefaultEventPart(Mockito.eq(IS_CONFERENCES), Mockito.eq(IS_MEETUPS), Mockito.any(LocalDateTime.class));
         Mockito.verifyNoMoreInteractions(eventService);
     }
 
@@ -343,6 +412,87 @@ class EventServiceImplTest {
             Mockito.doCallRealMethod().when(eventService).getEventsFromDateTime(Mockito.anyBoolean(), Mockito.anyBoolean(), Mockito.any());
 
             assertEquals(expected, eventService.getEventsFromDateTime(isConferences, isMeetups, dateTime));
+        }
+    }
+
+    @Test
+    void testGetDefaultEventPart() {
+        EventServiceImpl eventService = Mockito.mock(EventServiceImpl.class);
+        final boolean IS_CONFERENCES = Boolean.TRUE;
+        final boolean IS_MEETUPS = Boolean.FALSE;
+        final LocalDateTime DATE_TIME = LocalDateTime.now();
+
+        Mockito.doCallRealMethod().when(eventService).getDefaultEventPart(IS_CONFERENCES, IS_MEETUPS, DATE_TIME);
+        Mockito.when(eventService.getDefaultEvent(IS_CONFERENCES, IS_MEETUPS, DATE_TIME)).thenReturn(new Event());
+
+        eventService.getDefaultEventPart(IS_CONFERENCES, IS_MEETUPS, DATE_TIME);
+        Mockito.verify(eventService, VerificationModeFactory.times(1)).getDefaultEventPart(IS_CONFERENCES, IS_MEETUPS, DATE_TIME);
+        Mockito.verify(eventService, VerificationModeFactory.times(1)).getDefaultEvent(IS_CONFERENCES, IS_MEETUPS, DATE_TIME);
+        Mockito.verify(eventService, VerificationModeFactory.times(1)).getEventPartFromEvent(Mockito.any(Event.class), Mockito.eq(DATE_TIME));
+        Mockito.verifyNoMoreInteractions(eventService);
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DisplayName("getEventPartFromEvent method tests")
+    class GetEventPartFromEventTest {
+        private Stream<Arguments> data() {
+            final LocalDate DATE0 = LocalDate.of(2022, 6, 23);
+            final LocalDate DATE1 = LocalDate.of(2022, 6, 24);
+            final LocalDateTime DATE_TIME0 = LocalDateTime.of(2022, 7, 1, 0, 0, 0);
+            final LocalDateTime DATE_TIME1 = LocalDateTime.of(2022, 6, 1, 0, 0, 0);
+
+            Place place0 = new Place();
+
+            EventDays eventDays0 = new EventDays(
+                    DATE0,
+                    DATE1,
+                    place0
+            );
+
+            ZoneId zoneId0 = ZoneId.of("Europe/Moscow");
+
+            Event event0 = new Event();
+            event0.setId(0);
+
+            Event event1 = new Event();
+            event1.setId(1);
+            event1.setDays(Collections.emptyList());
+
+            Event event2 = new Event();
+            event2.setId(2);
+            event2.setDays(List.of(eventDays0));
+            event2.setTimeZoneId(zoneId0);
+
+            EventPart eventPart0 = new EventPart(
+                    2,
+                    new EventType(),
+                    DATE0,
+                    DATE1
+            );
+
+            return Stream.of(
+                    arguments(null, null, null),
+                    arguments(null, DATE_TIME0, null),
+                    arguments(event0, null, null),
+                    arguments(event0, DATE_TIME0, null),
+                    arguments(event1, null, null),
+                    arguments(event1, DATE_TIME0, null),
+                    arguments(event2, DATE_TIME0, null),
+                    arguments(event2, DATE_TIME1, eventPart0)
+            );
+        }
+
+        @ParameterizedTest
+        @MethodSource("data")
+        void getEventPartFromEvent(Event event, LocalDateTime dateTime, EventPart expected) {
+            EventDao eventDao = Mockito.mock(EventDao.class);
+            EventTypeDao eventTypeDao = Mockito.mock(EventTypeDao.class);
+            EventServiceImpl eventService = Mockito.mock(EventServiceImpl.class, Mockito.withSettings().useConstructor(eventDao, eventTypeDao));
+
+            Mockito.doCallRealMethod().when(eventService).getEventPartFromEvent(Mockito.nullable(Event.class), Mockito.any(LocalDateTime.class));
+
+            assertEquals(expected, eventService.getEventPartFromEvent(event, dateTime));
         }
     }
 
@@ -533,5 +683,38 @@ class EventServiceImplTest {
         eventService.getEventByTalk(talk0);
         Mockito.verify(eventDao, VerificationModeFactory.times(1)).getEventByTalk(talk0);
         Mockito.verifyNoMoreInteractions(eventDao);
+    }
+
+    @Test
+    void convertEventToEventParts() {
+        EventServiceImpl eventService = Mockito.mock(EventServiceImpl.class);
+
+        Mockito.doCallRealMethod().when(eventService).convertEventToEventParts(Mockito.any(Event.class));
+
+        Event event0 = new Event();
+        event0.setId(0);
+        event0.setDays(Collections.emptyList());
+
+        eventService.convertEventToEventParts(event0);
+        Mockito.verify(eventService, VerificationModeFactory.times(1)).convertEventToEventParts(Mockito.any(Event.class));
+        Mockito.verifyNoMoreInteractions(eventService);
+    }
+
+    @Test
+    void convertEventsToEventParts() {
+        EventServiceImpl eventService = Mockito.mock(EventServiceImpl.class);
+
+        Mockito.doCallRealMethod().when(eventService).convertEventsToEventParts(Mockito.anyList());
+
+        Event event0 = new Event();
+        event0.setId(0);
+
+        Event event1 = new Event();
+        event1.setId(1);
+
+        eventService.convertEventsToEventParts(List.of(event0, event1));
+        Mockito.verify(eventService, VerificationModeFactory.times(1)).convertEventsToEventParts(Mockito.anyList());
+        Mockito.verify(eventService, VerificationModeFactory.times(2)).convertEventToEventParts(Mockito.any(Event.class));
+        Mockito.verifyNoMoreInteractions(eventService);
     }
 }

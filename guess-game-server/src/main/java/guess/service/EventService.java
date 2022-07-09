@@ -1,6 +1,7 @@
 package guess.service;
 
 import guess.domain.source.Event;
+import guess.domain.source.EventPart;
 import guess.domain.source.Talk;
 
 import java.util.List;
@@ -15,5 +16,11 @@ public interface EventService {
 
     Event getDefaultEvent(boolean isConferences, boolean isMeetups);
 
+    EventPart getDefaultEventPart(boolean isConferences, boolean isMeetups);
+
     Event getEventByTalk(Talk talk);
+
+    List<EventPart> convertEventToEventParts(Event event);
+
+    List<EventPart> convertEventsToEventParts(List<Event> events);
 }

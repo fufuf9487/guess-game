@@ -25,6 +25,16 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 @DisplayName("YamlUtils class tests")
 @TestMethodOrder(OrderAnnotation.class)
 class YamlUtilsTest {
+    @BeforeEach
+    void setUp() throws IOException {
+        YamlUtils.clearOutputDirectory();
+    }
+
+    @AfterEach
+    void tearDown() throws IOException {
+        YamlUtils.clearOutputDirectory();
+    }
+
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     @DisplayName("getSourceInformation method tests")
@@ -248,14 +258,20 @@ class YamlUtilsTest {
     @DisplayName("linkEventsToPlaces method tests")
     class LinkEventsToPlacesTest {
         private Stream<Arguments> data() {
-            Event event0 = new Event();
-            event0.setPlaceId(0);
-
-            Event event1 = new Event();
-            event1.setPlaceId(1);
-
             Place place0 = new Place();
             place0.setId(0);
+
+            EventDays eventDays0 = new EventDays();
+            eventDays0.setPlaceId(0);
+
+            EventDays eventDays1 = new EventDays();
+            eventDays1.setPlaceId(1);
+
+            Event event0 = new Event();
+            event0.setDays(List.of(eventDays0));
+
+            Event event1 = new Event();
+            event1.setDays(List.of(eventDays1));
 
             return Stream.of(
                     arguments(Collections.emptyMap(), List.of(event0), NullPointerException.class),
@@ -270,11 +286,15 @@ class YamlUtilsTest {
         @MethodSource("data")
         void linkSpeakersToTalks(Map<Long, Place> places, List<Event> events, Class<? extends Exception> expected) {
             if (expected == null) {
-                events.forEach(et -> assertNull(et.getPlace()));
+                events.stream()
+                        .flatMap(e -> e.getDays().stream())
+                        .forEach(ed -> assertNull(ed.getPlace()));
 
                 assertDoesNotThrow(() -> YamlUtils.linkEventsToPlaces(places, events));
 
-                events.forEach(et -> assertNotNull(et.getPlace()));
+                events.stream()
+                        .flatMap(e -> e.getDays().stream())
+                        .forEach(ed -> assertNotNull(ed.getPlace()));
             } else {
                 assertThrows(expected, () -> YamlUtils.linkEventsToPlaces(places, events));
             }
@@ -287,11 +307,9 @@ class YamlUtilsTest {
     class LinkTalksToEventsTest {
         private Stream<Arguments> data() {
             Event event0 = new Event();
-            event0.setPlaceId(0);
             event0.setTalkIds(List.of(0L));
 
             Event event1 = new Event();
-            event1.setPlaceId(1);
             event1.setTalkIds(List.of(1L));
 
             Talk talk0 = new Talk();
@@ -476,16 +494,6 @@ class YamlUtilsTest {
         }
     }
 
-    @BeforeEach
-    void setUp() throws IOException {
-        YamlUtils.clearOutputDirectory();
-    }
-
-    @AfterEach
-    void tearDown() throws IOException {
-        YamlUtils.clearOutputDirectory();
-    }
-
     @Test
     void clearOutputDirectory() throws IOException {
         try (MockedStatic<FileUtils> mockedStatic = Mockito.mockStatic(FileUtils.class)) {
@@ -497,6 +505,7 @@ class YamlUtilsTest {
 
     @Test
     void save() {
-        assertDoesNotThrow(() -> YamlUtils.save(new EventTypeList(Collections.emptyList()), "event-types.yml"));
+        assertDoesNotThrow(() -> YamlUtils.save(new EventTypeList(Collections.emptyList()), YamlUtils.OUTPUT_DIRECTORY_NAME, "event-types.yml"));
+        assertDoesNotThrow(() -> YamlUtils.save(new EventTypeList(Collections.emptyList()), "events.yml"));
     }
 }

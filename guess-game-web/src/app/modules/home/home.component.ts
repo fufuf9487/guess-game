@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Event } from '../../shared/models/event/event.model';
+import { EventPart } from '../../shared/models/event/event-part.model';
 import { HomeState } from '../../shared/models/home-state.model';
 import { EventService } from '../../shared/services/event.service';
 import { LocaleService } from '../../shared/services/locale.service';
@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit {
   public imageDirectory = 'assets/images';
   public eventsImageDirectory = `${this.imageDirectory}/events`;
 
-  public event: Event;
+  public eventPart: EventPart;
   public eventDates: string;
   public homeState = HomeState.LoadingState;
 
@@ -30,11 +30,11 @@ export class HomeComponent implements OnInit {
 
   loadDefaultEvent() {
     if (this.translateService.currentLang) {
-      this.eventService.getDefaultEventHomeInfo()
+      this.eventService.getDefaultEventPartHomeInfo()
         .subscribe(data => {
-          this.event = data;
-          this.eventDates = (this.event) ? getEventDates(this.event, this.translateService) : null;
-          this.homeState = (this.event) ? HomeState.DefaultStateFoundState : HomeState.DefaultStateNotFoundState;
+          this.eventPart = data;
+          this.eventDates = (this.eventPart) ? getEventDates(this.eventPart.startDate, this.eventPart.endDate, this.translateService) : null;
+          this.homeState = (this.eventPart) ? HomeState.DefaultStateFoundState : HomeState.DefaultStateNotFoundState;
         });
     }
   }

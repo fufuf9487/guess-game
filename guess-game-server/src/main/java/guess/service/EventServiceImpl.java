@@ -5,6 +5,8 @@ import guess.dao.EventTypeDao;
 import guess.domain.auxiliary.EventDateMinTrackTime;
 import guess.domain.auxiliary.EventMinTrackTimeEndDayTime;
 import guess.domain.source.Event;
+import guess.domain.source.EventDays;
+import guess.domain.source.EventPart;
 import guess.domain.source.Talk;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,14 +50,56 @@ public class EventServiceImpl implements EventService {
         return getDefaultEvent(isConferences, isMeetups, LocalDateTime.now(ZoneId.of("UTC")));
     }
 
+    @Override
+    public EventPart getDefaultEventPart(boolean isConferences, boolean isMeetups) {
+        return getDefaultEventPart(isConferences, isMeetups, LocalDateTime.now(ZoneId.of("UTC")));
+    }
+
     List<Event> getEventsFromDateTime(boolean isConferences, boolean isMeetups, LocalDateTime dateTime) {
         // Find current and future events
         List<Event> eventsFromDate = eventDao.getEventsFromDateTime(dateTime);
 
-        // Select conferences only
+        // Use conferences and meetups flags
         return eventsFromDate.stream()
                 .filter(e -> ((isConferences && e.getEventType().isEventTypeConference()) || (isMeetups && !e.getEventType().isEventTypeConference())))
                 .toList();
+    }
+
+    EventPart getDefaultEventPart(boolean isConferences, boolean isMeetups, LocalDateTime dateTime) {
+        return getEventPartFromEvent(getDefaultEvent(isConferences, isMeetups, dateTime), dateTime);
+    }
+
+    EventPart getEventPartFromEvent(Event event, LocalDateTime dateTime) {
+        if (event == null) {
+            return null;
+        } else {
+            if (event.getDays() == null) {
+                return null;
+            } else {
+                List<EventDays> eventDaysFromDateTime = event.getDays().stream()
+                        .filter(ed -> {
+                            ZonedDateTime zonedEndDateTime = ZonedDateTime.of(
+                                    ed.getEndDate(),
+                                    LocalTime.of(0, 0, 0),
+                                    event.getFinalTimeZoneId());
+                            ZonedDateTime zonedNextDayEndDateTime = zonedEndDateTime.plus(1, ChronoUnit.DAYS);
+                            LocalDateTime eventUtcEndLocalDateTime = zonedNextDayEndDateTime
+                                    .withZoneSameInstant(ZoneId.of("UTC"))
+                                    .toLocalDateTime();
+
+                            return dateTime.isBefore(eventUtcEndLocalDateTime);
+                        })
+                        .toList();
+
+                if (!eventDaysFromDateTime.isEmpty()) {
+                    EventDays eventDays = eventDaysFromDateTime.get(0);
+
+                    return EventPart.of(event, eventDays);
+                } else {
+                    return null;
+                }
+            }
+        }
     }
 
     Event getDefaultEvent(boolean isConferences, boolean isMeetups, LocalDateTime dateTime) {
@@ -115,7 +159,7 @@ public class EventServiceImpl implements EventService {
         List<EventDateMinTrackTime> result = new ArrayList<>();
         Map<Event, Map<Long, Optional<LocalTime>>> minTrackTimeInTalkDaysForConferences = new LinkedHashMap<>();
 
-        // Calculate start time minimum for each days of each event
+        // Calculate start time minimum for each day of each event
         for (Event event : events) {
             List<Talk> talks = event.getTalks();
             Map<Long, Optional<LocalTime>> minStartTimeInTalkDays = talks.stream()
@@ -137,29 +181,40 @@ public class EventServiceImpl implements EventService {
         // Transform to (event, day, minTrackTime) list
         for (Map.Entry<Event, Map<Long, Optional<LocalTime>>> entry : minTrackTimeInTalkDaysForConferences.entrySet()) {
             var event = entry.getKey();
+            Map<Long, Optional<LocalTime>> minTrackTimeInTalkDays = entry.getValue();
+            long previousDays = 0;
 
-            if ((event.getStartDate() != null) && (event.getEndDate() != null) && (!event.getStartDate().isAfter(event.getEndDate()))) {
-                long days = ChronoUnit.DAYS.between(event.getStartDate(), event.getEndDate()) + 1;
-                Map<Long, Optional<LocalTime>> minTrackTimeInTalkDays = entry.getValue();
+            for (EventDays eventDays : event.getDays()) {
+                if ((eventDays.getStartDate() != null) && (eventDays.getEndDate() != null) && (!eventDays.getStartDate().isAfter(eventDays.getEndDate()))) {
+                    long days = ChronoUnit.DAYS.between(eventDays.getStartDate(), eventDays.getEndDate()) + 1;
 
-                for (long i = 1; i <= days; i++) {
-                    LocalDate date = event.getStartDate().plusDays(i - 1);
+                    iteratesDays(days, eventDays, previousDays, minTrackTimeInTalkDays, result, event);
 
-                    Optional<LocalTime> localTimeOptional;
-                    if (minTrackTimeInTalkDays.containsKey(i)) {
-                        localTimeOptional = minTrackTimeInTalkDays.get(i);
-                    } else {
-                        localTimeOptional = Optional.empty();
-                    }
-
-                    var minTrackTime = localTimeOptional.orElse(LocalTime.of(0, 0));
-
-                    result.add(new EventDateMinTrackTime(event, date, minTrackTime));
+                    previousDays += days;
                 }
             }
         }
 
         return result;
+    }
+
+    void iteratesDays(long days, EventDays eventDays, long previousDays, Map<Long, Optional<LocalTime>> minTrackTimeInTalkDays,
+                      List<EventDateMinTrackTime> result, Event event) {
+        for (long i = 1; i <= days; i++) {
+            LocalDate date = eventDays.getStartDate().plusDays(i - 1);
+            Optional<LocalTime> localTimeOptional;
+            long totalDayNumber = previousDays + i;
+
+            if (minTrackTimeInTalkDays.containsKey(totalDayNumber)) {
+                localTimeOptional = minTrackTimeInTalkDays.get(totalDayNumber);
+            } else {
+                localTimeOptional = Optional.empty();
+            }
+
+            var minTrackTime = localTimeOptional.orElse(LocalTime.of(0, 0));
+
+            result.add(new EventDateMinTrackTime(event, date, minTrackTime));
+        }
     }
 
     /**
@@ -196,5 +251,19 @@ public class EventServiceImpl implements EventService {
     @Override
     public Event getEventByTalk(Talk talk) {
         return eventDao.getEventByTalk(talk);
+    }
+
+    @Override
+    public List<EventPart> convertEventToEventParts(Event event) {
+        return event.getDays().stream()
+                .map(ed -> EventPart.of(event, ed))
+                .toList();
+    }
+
+    @Override
+    public List<EventPart> convertEventsToEventParts(List<Event> events) {
+        return events.stream()
+                .flatMap(e -> convertEventToEventParts(e).stream())
+                .toList();
     }
 }

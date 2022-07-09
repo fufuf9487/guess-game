@@ -65,31 +65,27 @@ export function findEventById(id: number, events: Event[]): Event {
   return null;
 }
 
-export function isEventStartDateVisible(event: Event): boolean {
-  return !!event.startDate;
+export function isEventStartDateVisible(startDate: Date): boolean {
+  return !!startDate;
 }
 
-export function isEventEndDateVisible(event: Event): boolean {
-  return (event.startDate && event.endDate && (event.startDate !== event.endDate));
+export function isEventEndDateVisible(startDate: Date, endDate: Date): boolean {
+  return (startDate && endDate && (startDate !== endDate));
 }
 
-export function isEventDateParenthesesVisible(event: Event): boolean {
-  return (isEventStartDateVisible(event) || isEventEndDateVisible(event));
+export function isEventHyphenVisible(startDate: Date, endDate: Date): boolean {
+  return (isEventStartDateVisible(startDate) && isEventEndDateVisible(startDate, endDate));
 }
 
-export function isEventHyphenVisible(event: Event): boolean {
-  return (isEventStartDateVisible(event) && isEventEndDateVisible(event));
-}
-
-export function getEventDates(event: Event, translateService: TranslateService): string {
-  const isEventStartDateVisibleFlag = isEventStartDateVisible(event);
-  const isEventHyphenVisibleFlag = isEventHyphenVisible(event);
-  const isEventEndDateVisibleFlag = isEventEndDateVisible(event);
+export function getEventDates(startDate: Date, endDate: Date, translateService: TranslateService): string {
+  const isEventStartDateVisibleFlag = isEventStartDateVisible(startDate);
+  const isEventHyphenVisibleFlag = isEventHyphenVisible(startDate, endDate);
+  const isEventEndDateVisibleFlag = isEventEndDateVisible(startDate, endDate);
 
   let result = '';
 
   if (isEventStartDateVisibleFlag) {
-    result += formatDate(event.startDate, 'shortDate', translateService.currentLang, undefined);
+    result += formatDate(startDate, 'shortDate', translateService.currentLang, undefined);
   }
 
   if (isEventHyphenVisibleFlag) {
@@ -97,25 +93,30 @@ export function getEventDates(event: Event, translateService: TranslateService):
   }
 
   if (isEventEndDateVisibleFlag) {
-    result += formatDate(event.endDate, 'shortDate', translateService.currentLang, undefined);
+    result += formatDate(endDate, 'shortDate', translateService.currentLang, undefined);
   }
 
   return result;
 }
 
 export function getEventDisplayName(event: Event, translateService: TranslateService): string {
-  const isEventDateParenthesesVisibleFlag = isEventDateParenthesesVisible(event);
-
   let displayName = event.name;
 
-  if (isEventDateParenthesesVisibleFlag) {
-    displayName += ' (';
+  const eventDates: string[] = [];
+
+  if (event.days) {
+    event.days.map(ed => {
+        const eventDaysDates = getEventDates(ed.startDate, ed.endDate, translateService);
+
+        if ((eventDaysDates) && (eventDaysDates.length > 0)) {
+          eventDates.push(eventDaysDates);
+        }
+      }
+    );
   }
 
-  displayName += getEventDates(event, translateService);
-
-  if (isEventDateParenthesesVisibleFlag) {
-    displayName += ')';
+  if (eventDates.length > 0) {
+    displayName += ` (${eventDates.join(', ')})`;
   }
 
   return displayName;
