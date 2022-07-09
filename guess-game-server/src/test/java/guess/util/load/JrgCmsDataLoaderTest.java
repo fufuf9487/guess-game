@@ -1210,7 +1210,6 @@ class JrgCmsDataLoaderTest {
             try (MockedStatic<JrgCmsDataLoader> jrgCmsDataLoaderMockedStatic = Mockito.mockStatic(JrgCmsDataLoader.class);
                  MockedStatic<LocalizationUtils> localizationUtilsMockedStatic = Mockito.mockStatic(LocalizationUtils.class);
                  MockedStatic<CmsDataLoader> cmsDataLoaderMockedStatic = Mockito.mockStatic(CmsDataLoader.class)) {
-
                 // Mock methods
                 jrgCmsDataLoaderMockedStatic.when(() -> JrgCmsDataLoader.createSpeaker(Mockito.any(JrgCmsSpeaker.class),
                                 Mockito.any(AtomicLong.class), Mockito.any(AtomicLong.class), Mockito.anyBoolean()))
@@ -1239,6 +1238,65 @@ class JrgCmsDataLoaderTest {
 
                 assertNotNull(JrgCmsDataLoader.createSpeaker(jrgCmsSpeaker, speakerId, companyId, checkEnTextExistence));
             }
+        }
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void createTalk() {
+        final String SPEAKER_ID0 = "0";
+        final String SPEAKER_ID1 = "1";
+        final String ACTIVITY_ID0 = "42";
+
+        try (MockedStatic<JrgCmsDataLoader> mockedStatic = Mockito.mockStatic(JrgCmsDataLoader.class)) {
+            // Mock methods
+            mockedStatic.when(() -> JrgCmsDataLoader.createTalk(Mockito.any(JrgCmsActivity.class), Mockito.anyMap(),
+                            Mockito.any(AtomicLong.class), Mockito.anyMap()))
+                    .thenCallRealMethod();
+            mockedStatic.when(() -> JrgCmsDataLoader.isValidSpeaker(Mockito.any(JrgCmsParticipant.class)))
+                    .thenReturn(true);
+            mockedStatic.when(() -> JrgCmsDataLoader.extractLocaleItems(Mockito.nullable(Map.class)))
+                    .thenReturn(Collections.emptyList());
+            mockedStatic.when(() -> JrgCmsDataLoader.extractLanguage(Mockito.nullable(String.class)))
+                    .thenReturn(Language.ENGLISH.getCode());
+            mockedStatic.when(() -> JrgCmsDataLoader.extractPresentationLinks(Mockito.any(JrgTalkPresentation.class)))
+                    .thenReturn(Collections.emptyList());
+
+            // Talk
+            JrgCmsTalk jrgCmsTalk = new JrgCmsTalk();
+            jrgCmsTalk.setTitle(Collections.emptyMap());
+
+            // Speakers
+            JrgCmsSpeaker jrgCmsSpeaker0 = new JrgCmsSpeaker();
+            jrgCmsSpeaker0.setId(SPEAKER_ID0);
+
+            JrgCmsSpeaker jrgCmsSpeaker1 = new JrgCmsSpeaker();
+            jrgCmsSpeaker1.setId(SPEAKER_ID1);
+
+            Speaker speaker0 = new Speaker();
+            speaker0.setId(0);
+
+            Speaker speaker1 = new Speaker();
+            speaker1.setId(1);
+
+            // Participants
+            JrgCmsParticipant jrgCmsParticipant0 = new JrgCmsParticipant();
+            jrgCmsParticipant0.setData(jrgCmsSpeaker0);
+
+            JrgCmsParticipant jrgCmsParticipant1 = new JrgCmsParticipant();
+            jrgCmsParticipant1.setData(jrgCmsSpeaker1);
+
+            // Activity
+            JrgCmsActivity jrgCmsActivity = new JrgCmsActivity();
+            jrgCmsActivity.setId(ACTIVITY_ID0);
+            jrgCmsActivity.setData(jrgCmsTalk);
+            jrgCmsActivity.setParticipants(List.of(jrgCmsParticipant0, jrgCmsParticipant1));
+
+            Map<String, Speaker> speakerMap = Map.of(SPEAKER_ID0, speaker0, SPEAKER_ID1, speaker1);
+            AtomicLong talkId = new AtomicLong(-1);
+            Map<String, DayTrackTime> dayTrackTimeMap = Map.of(ACTIVITY_ID0, new DayTrackTime(1L, 1L, LocalTime.of(10, 0)));
+
+            assertNotNull(JrgCmsDataLoader.createTalk(jrgCmsActivity, speakerMap, talkId, dayTrackTimeMap));
         }
     }
 
