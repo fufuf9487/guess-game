@@ -3446,3 +3446,17 @@ companies:
   - id: 943
     name:
       - {language: en, text: AproximaLabs}
+  - id: 944
+    name:
+      - {language: en, text: Icons8}
+    siteLink: https://icons8.ru
+  - id: 945
+    name:
+      - {language: en, text: Rostelekom}
+      - {language: ru, text: Ростелеком}
+    siteLink: https://rt.ru
+  - id: 946
+    name:
+      - {language: en, text: "Otkritie Bank"}
+      - {language: ru, text: "Банк Открытие"}
+    siteLink: https://www.open.ru

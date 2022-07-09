@@ -2269,6 +2269,13 @@ public class ConferenceDataLoaderExecutor {
 //                        createEventTemplate("JPoint 2022", null, List.of(24L, 4L)),
 //                        Set.of("Открытие конференции JPoint 2022", "Подведем итоги онлайн-части JPoint 2022",
 //                                "Открытие офлайн-части конференции JPoint 2022", "Закрытие конференции JPoint 2022")));
-//        loadTalksSpeakersEvent(Conference.DOT_NEXT, LocalDate.of(2022, 6, 16), "2022 Spring");
+//        loadTalksSpeakersEvent(Conference.DOT_NEXT, LocalDate.of(2022, 6, 16), "2022 Spring",
+//                LoadSettings.eventTemplateAndInvalidTalksSet(
+//                        createEventTemplate("DotNext 2022 Spring", null, List.of(24L, 4L)),
+//                        Set.of("Открытие конференции DotNext 2022 Spring", "Подведение итогов первого дня DotNext 2022 Spring",
+//                                "Подведение итогов онлайн-части DotNext 2022 Spring",
+//                                "Открытие офлайн-части конференции DotNext 2022 Spring",
+//                                "Интервью с офлайн-площадки DotNext", "Закрытие офлайн-части конференции DotNext 2022 Spring",
+//                                "BoF-сессия. Безопасная разработка", "BoF-сессия. C#: прошлое, настоящее, будущее")));
     }
 }
