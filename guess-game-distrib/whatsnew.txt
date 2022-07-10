@@ -1,5 +1,8 @@
 Guess Game
 
+Version 2.7.0 - July 10, 2022
+* Support for day ranges in events.
+
 Version 2.6.0 - April 18, 2022
 * User interface redesign.
 
