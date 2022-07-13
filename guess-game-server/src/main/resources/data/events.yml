@@ -1550,6 +1550,13 @@ events:
     days:
       - {startDate: "2019-12-12", endDate: "2019-12-12", placeId: 6}
     talkIds: [2000]
+  - eventTypeId: 13
+    name:
+      - {language: en, text: "JUG.MSK Meetup #45"}
+      - {language: ru, text: "Митап #45 JUG.MSK"}
+    days:
+      - {startDate: "2022-07-14", endDate: "2022-07-14", placeId: 6}
+    talkIds: [3968, 3969]
   # JUG.ru
   - eventTypeId: 14
     name:
