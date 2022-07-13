@@ -231,17 +231,17 @@ speakers:
     companyIds: [232]
     bio:
       - language: en
-        text: "Более 20 лет в сфере IT. Со-учредитель компании Haulmont. В прошлом занимался созданием и развитием\
-            \ корпоративных систем, в частности, ERP-системы широкого профиля и MES для автомобильного производства. В\
-            \ компании Haulmont являлся техническим руководителем проекта системы автоматизации бизнеса такси, получившей\
-            \ премию National Business Awards 2009 в Великобритании. С 2009 года руководит разработкой платформы для\
-            \ создания бизнес-приложений Jmix."
-      - language: ru
         text: "More than 20 years in IT. Co-founder of Haulmont. In the past, he was involved in the creation and\
             \ development of enterprise systems, in particular, ERP-systems of a wide profile and MES for automotive\
             \ production. At Haulmont, he was the technical project lead for the taxi business automation system that\
             \ won the National Business Awards 2009 in the UK. Since 2009, he has been leading the development of a\
             \ platform for creating business applications Jmix."
+      - language: ru
+        text: "Более 20 лет в сфере IT. Со-учредитель компании Haulmont. В прошлом занимался созданием и развитием\
+            \ корпоративных систем, в частности, ERP-системы широкого профиля и MES для автомобильного производства. В\
+            \ компании Haulmont являлся техническим руководителем проекта системы автоматизации бизнеса такси, получившей\
+            \ премию National Business Awards 2009 в Великобритании. С 2009 года руководит разработкой платформы для\
+            \ создания бизнес-приложений Jmix."
     gitHub: knstvk
     habr: krivopustov
   - id: 12
