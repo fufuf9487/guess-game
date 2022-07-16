@@ -205,20 +205,20 @@ speakers:
     name:
       - {language: en, text: "Maxim Gorelikov"}
       - {language: ru, text: "Максим Гореликов"}
-    companyIds: [683]
+    companyIds: [642]
     bio:
       - language: en
-        text: "Maxim is working on API development for mobile apps and security layers. Basically, he uses Spring and Netflix\
-            \ ecosystem, but checks out everything that is worth trying on GitHub.\n\nHe is experimenting with reactive approaches,\
-            \ a couple of experiments got to the production level.\n\nHe wants to understand not only his apps but also everything\
-            \ around them, thus he is working with all the infrastructure (logs, CI/CD, orchestration). To sum up, DevOps\
-            \ is our everything."
+        text: "10+ years experience in IT, starting from C/C++ and geophysics and now basically JVM languages/JS and\
+            \ financial services.\n\nBasically, he uses Spring and Netflix ecosystem, but checks out everything that is\
+            \ worth trying on GitHub. He is experimenting with reactive approaches.\n\nHe wants to understand not only\
+            \ his apps but also everything around them, thus he is working with all the infrastructure (logs, CI/CD,\
+            \ orchestration) and tests. To sum up, DevOps is our everything."
       - language: ru
-        text: "Занимается разработкой API для мобильных приложений и немного слоем безопасности. В основном использует эко\
-            систему Spring и Netflix, но пробует всё, что найдет хорошего на GitHub. \n\nЭкспериментирует с реактивными по\
-            дходами, несколько экспериментов успешно дожили до продакшна. \n\nХочет понимать не только свои приложения, но\
-            \ и всё, что вокруг них, поэтому работает со всей инфраструктурой (логи, CI/CD, оркестрация). В общем, DevOps\
-            \ — наше все."
+        text: "Более 10 лет разрабатывает всё подряд, начинал с С/С++ и геофизики, сейчас JVM-языки/JS и финансовые\
+            \ сервисы.\n\nВ основном использует экосистему Spring и Netflix, но пробует всё, что найдет хорошего на\
+            \ GitHub. Экспериментирует с реактивными подходами.\n\nИнтересуется тем, как работают приложения от начала\
+            \ до конца, поэтому работает с инфраструктурой (логи, CI/CD, оркестрация) и тестами. В общем, DevOps — наше\
+            \ всё и всё такое."
     twitter: gorelikoff
     gitHub: gorelikov
     habr: somemaxim
